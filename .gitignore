@@ -41,6 +41,9 @@ buck-out/
 \.buckd/
 *.keystore
 
+#keystore
+*.jks
+
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
@@ -61,3 +64,6 @@ buck-out/
 # Expo
 .expo/*
 web-build/
+
+# coverages
+coverage/

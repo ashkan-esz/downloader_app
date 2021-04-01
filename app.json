@@ -1,12 +1,17 @@
 {
-  "name": "test_expo",
-  "displayName": "test_expo",
   "expo": {
-    "name": "test_expo",
-    "slug": "test_expo",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "name": "downloader_app",
+    "icon": "./src/assets/icons/downloader_app_icon.png",
+    "version": "0.0.1",
+    "slug": "downloader_app",
+    "updates.checkAutomatically": "ON_ERROR_RECOVERY",
+    "ios": {
+      "bundleIdentifier": "com.ashkanaz2828.downloader-app",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.ashkanaz2828.downloader_app",
+      "versionCode": 1
+    }
   }
 }
