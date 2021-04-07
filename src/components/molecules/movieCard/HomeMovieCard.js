@@ -27,7 +27,7 @@ const HomeMovieCard = ({extraStyle, poster, id, title, type, tab, latestData, ne
             ? Typography.getFontSize(16)
             : Typography.getFontSize(14),
         marginTop: tab !== 'todaySeries' ? -2 : -1,
-        marginBottom: tab !== 'todaySeries' ? 0 : 1
+        marginBottom: tab !== 'todaySeries' ? 0 : 2
     }
 
     return (

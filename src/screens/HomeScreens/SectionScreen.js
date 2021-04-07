@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from '@react-navigation/native';
-import {getNews_all, getTimeLine_today, getTops_byLike_all, getUpdates_all} from "../../api";
+import {getNews_all, getTimeLine_day, getTops_byLike_all, getUpdates_all} from "../../api";
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {SectionNavBar} from "../../components/molecules";
 import {SectionMovieList} from "../../components/organisms";
@@ -34,7 +34,7 @@ const SectionScreen = () => {
             } else if (TAB === 'populars') {
                 result = await getTops_byLike_all('medium', 1);
             } else if (TAB === 'todaySeries') {
-                result = await getTimeLine_today(1);
+                result = await getTimeLine_day(0, 1);
             }
         } else {
             if (tab === 'recent') {
@@ -44,7 +44,7 @@ const SectionScreen = () => {
             } else if (tab === 'populars') {
                 result = await getTops_byLike_all('medium', pageParam);
             } else if (tab === 'todaySeries') {
-                result = await getTimeLine_today(pageParam);
+                result = await getTimeLine_day(0, pageParam);
             }
         }
 

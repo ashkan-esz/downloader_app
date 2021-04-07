@@ -6,7 +6,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeMovieListPlaceHolder = ({number, rating = true}) => {
+const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true}) => {
     const getPlaceHolders = () => {
         let array = [];
         for (let i = 0; i < number; i++) {
@@ -31,7 +31,7 @@ const HomeMovieListPlaceHolder = ({number, rating = true}) => {
         return array;
     };
     return (
-        <View style={style.container}>
+        <View style={[style.container, extraStyle]}>
             {getPlaceHolders()}
         </View>
     );
@@ -73,6 +73,7 @@ const style = StyleSheet.create({
 });
 
 HomeMovieListPlaceHolder.propTypes = {
+    extraStyle: PropTypes.object,
     number: PropTypes.number.isRequired,
     rating: PropTypes.bool,
 };

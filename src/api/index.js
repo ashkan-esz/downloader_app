@@ -1,18 +1,7 @@
 import axios from 'axios';
-import {setupCache} from 'axios-cache-adapter';
-
-
-const cache = setupCache({
-    maxAge: 3 * 60 * 1000
-});
 
 const api_withoutCache = axios.create({
     baseURL: 'https://downloader-node-api.herokuapp.com',
-});
-
-const api_withCache = axios.create({
-    baseURL: 'https://downloader-node-api.herokuapp.com',
-    adapter: cache.adapter
 });
 
 export const searchAll = async (title, dataLevel, page, count = 1) => {
@@ -149,9 +138,9 @@ export const getTrailers_singleType = async (type, page, count = 1) => {
     }
 }
 //--------------------------------
-export const getTimeLine_today = async (page, count = 1) => {
+export const getTimeLine_day = async (spacing, page, count = 1) => {
     try {
-        let response = await api_withoutCache.get(`/timeLine/today/${page}/${count}`);
+        let response = await api_withoutCache.get(`/timeLine/day/${spacing}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {

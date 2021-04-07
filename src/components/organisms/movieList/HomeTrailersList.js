@@ -37,6 +37,7 @@ const HomeTrailersList = () => {
     }
 
     if (data.length === 0 || isLoading) {
+        //todo : add section name while loading
         return (
             <HomeTrailersListPlaceHolder number={3}/>
         );
@@ -58,7 +59,7 @@ const HomeTrailersList = () => {
                 renderItem={({item}) => (
                     <HomeTrailer
                         poster={getPoster(item.poster)}
-                        trailer={getTrailer(item.trailers, '360')}
+                        trailer={getTrailer(item.trailers, '720')}
                         title={item.rawTitle || getTitleSnakeCase(item.title)}
                         genres={item.genres}
                         type={item.type}
@@ -76,14 +77,14 @@ const HomeTrailersList = () => {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
+        marginTop: 15,
     },
     scrollView: {
         marginTop: 20
     },
     sectionTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(22)
+        fontSize: Typography.getFontSize(24)
     },
     seeAll: {
         position: 'absolute',

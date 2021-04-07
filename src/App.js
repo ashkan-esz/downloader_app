@@ -21,12 +21,14 @@ LogBox.ignoreLogs([
 
 //todo : force to download new version from store
 //todo : bottom of page is white
+//todo : eject to bareflow
 //todo : stop rotation except trailer fullscreen
 //todo : remove unused dependencies
 //todo : handle error show in home screen
 //todo : fix ram usage of stack navigation
 //todo : load prev data while loading app
 //todo : sort components
+//todo : check flatLists
 // todo : use getItemLayout for flatLists
 // getItemLayout={(data, index) => (
 //     {length: 45, offset: 45 * index, index}

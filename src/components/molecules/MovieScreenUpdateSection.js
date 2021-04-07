@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
 import {AntDesign} from "@expo/vector-icons";
-import {get_hardSub_dubbed_text} from "../../utils";
+import {daysToNextEpisode, get_hardSub_dubbed_text} from "../../utils";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -76,9 +76,14 @@ const MovieScreenUpdateSection = ({data}) => {
                 }
             </Text>
             {
-                status === 'running' && <Text style={style.text} numberOfLines={1}>
-                    <Text style={style.statement}>Next episode : </Text> {nextEpisodeText}
-                </Text>
+                status === 'running' && <View>
+                    <Text style={style.text} numberOfLines={1}>
+                        <Text style={style.statement}>Next Episode : </Text> {nextEpisodeText}
+                    </Text>
+                    <Text style={style.text} numberOfLines={1}>
+                        <Text style={style.statement}>Time To Next Episode : </Text> {daysToNextEpisode(nextEpisode)}
+                    </Text>
+                </View>
             }
         </View>
     );

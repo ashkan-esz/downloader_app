@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button} from "react-native-elements";
 import {SectionNavBar} from "../molecules";
 import HomeMovieList from "./movieList/HomeMovieList";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from '@react-navigation/native';
-import {getTops_byLike_all, getNews_all, getUpdates_all, getTimeLine_today} from "../../api";
-import {Colors, Typography} from "../../styles";
+import {getTops_byLike_all, getNews_all, getUpdates_all, getTimeLine_day} from "../../api";
+import {SeeAllButton} from "../atoms";
 
 
 const HomeTopSection = () => {
     const sections = ['recent', 'updates', 'populars', 'todaySeries'];
     const [tab, setTab] = useState('recent');
-    const navigation = useNavigation();
     const queryClient = useQueryClient();
+    const navigation = useNavigation();
 
     //todo : fix wasted stale data
     //todo : also fix for section screen
@@ -28,7 +27,7 @@ const HomeTopSection = () => {
             } else if (TAB === 'populars') {
                 result = await getTops_byLike_all('medium', 0, 3);
             } else if (TAB === 'todaySeries') {
-                result = await getTimeLine_today(0, 3);
+                result = await getTimeLine_day(0, 0, 3);
             }
         } else {
             if (tab === 'recent') {
@@ -38,7 +37,7 @@ const HomeTopSection = () => {
             } else if (tab === 'populars') {
                 result = await getTops_byLike_all('medium', 0, 3);
             } else if (tab === 'todaySeries') {
-                result = await getTimeLine_today(0, 3);
+                result = await getTimeLine_day(0, 0, 3);
             }
         }
 
@@ -95,11 +94,7 @@ const HomeTopSection = () => {
                 error={isError}
                 retry={_retry}
             />
-            <Button
-                containerStyle={style.buttonContainer}
-                titleStyle={style.buttonTitle}
-                title={'See All'}
-                type={"clear"}
+            <SeeAllButton
                 onPress={() => {
                     navigation.navigate('Section', {startTab: tab});
                 }}
@@ -108,21 +103,7 @@ const HomeTopSection = () => {
     );
 };
 
-const style = StyleSheet.create({
-    buttonContainer: {
-        alignSelf: 'center',
-        justifyContent: 'center',
-        flex: 1,
-        width: '100%',
-        height: 35,
-        marginTop: 15,
-        backgroundColor: Colors.RED2
-    },
-    buttonTitle: {
-        color: '#ffffff',
-        fontSize: Typography.getFontSize(20)
-    }
-});
+const style = StyleSheet.create({});
 
 
 export default HomeTopSection;

@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
-import {ScreenLayout} from "../../components/layouts";
-import {HomeTopSection, OtaUpdate, HomeTrailersList, HomeSoonList} from "../../components/organisms";
 import {HomeAvatarAndSearch} from "../../components/molecules";
+import {
+    HomeTopSection,
+    OtaUpdate,
+    HomeTrailersList,
+    HomeSoonList,
+    HomeTimeLineSection
+} from "../../components/organisms";
+import {ScreenLayout} from "../../components/layouts";
 import {useQueryClient} from "react-query";
 import {useCheckUpdate} from "../../hooks";
 import {Mixins} from "../../styles";
@@ -53,6 +59,7 @@ const HomeScreen = () => {
                     />
 
                     <HomeTopSection/>
+                    <HomeTimeLineSection/>
                     <HomeTrailersList/>
                     <HomeSoonList/>
 

@@ -50,7 +50,7 @@ const HomeSoonList = () => {
                 onPress={() => { //todo
                 }}>
                 See All</Text>
-            <ScrollView //todo : check flatList
+            <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={style.scrollView}
@@ -79,7 +79,7 @@ const HomeSoonList = () => {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 5,
+        marginTop: 15,
         paddingBottom: 10,
     },
     scrollView: {
@@ -88,7 +88,7 @@ const style = StyleSheet.create({
     },
     sectionTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(22)
+        fontSize: Typography.getFontSize(24)
     },
     seeAll: {
         position: 'absolute',

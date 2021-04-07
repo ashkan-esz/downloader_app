@@ -1,5 +1,5 @@
 import React from "react";
-import {SearchScreen, HomeScreen, SectionScreen, TrailersScreen, MovieScreen} from '../screens';
+import {SearchScreen, HomeScreen, SectionScreen, TrailersScreen, MovieScreen, TimeLineScreen} from '../screens';
 import {Colors} from "../styles";
 import {createNativeStackNavigator} from "react-native-screens/native-stack";
 
@@ -31,7 +31,7 @@ const HomeStackNavigations = () => {
                 component={SearchScreen}
                 options={{
                     title: 'Search',
-                    headerStyle:{
+                    headerStyle: {
                         backgroundColor: '#000000',
                     },
                 }}
@@ -41,6 +41,13 @@ const HomeStackNavigations = () => {
                 component={SectionScreen}
                 options={{
                     title: 'Section',
+                }}
+            />
+            <Stack.Screen
+                name={'TimeLine'}
+                component={TimeLineScreen}
+                options={{
+                    title: 'TimeLine',
                 }}
             />
             <Stack.Screen

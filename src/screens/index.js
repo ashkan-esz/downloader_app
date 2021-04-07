@@ -6,3 +6,4 @@ export {default as HomeScreen} from './HomeScreens/HomeScreen';
 export {default as SectionScreen} from './HomeScreens/SectionScreen';
 export {default as TrailersScreen} from './HomeScreens/TrailersScreen';
 export {default as MovieScreen} from './HomeScreens/MovieScreen';
+export {default as TimeLineScreen} from './HomeScreens/TimeLineScreen';

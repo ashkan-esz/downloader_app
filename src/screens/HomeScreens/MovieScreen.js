@@ -9,10 +9,7 @@ import {useQuery, useQueryClient} from "react-query";
 import {getEpisodeCountsDuration} from "../../utils";
 import {searchByID} from "../../api";
 
-
-//todo : add day counter to new episode
 //todo : add like/dislike number and functionality to like
-
 
 const MovieScreen = () => {
     const [refreshing, setRefreshing] = useState(false);

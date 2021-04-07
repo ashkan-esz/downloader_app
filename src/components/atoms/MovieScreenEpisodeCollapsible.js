@@ -28,7 +28,12 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
     }
 
     const _renderHeader = (item, index) => {
+        const episodeLinks = getEpisodeLinks(sources, item.season, item.episode);
         const blueGradient = ['rgba(63,94,251,1)', 'rgba(252,70,107,1)'];
+        const episodeTitle = !item.title.match(/Episode \d/g) ? (' | ' + item.title) : '';
+        const gradientStyle = episodeLinks.length === 0
+            ? [style.headerGradient, {opacity: 0.4}]
+            : style.headerGradient;
 
         return (
             <TouchableOpacity onPress={() => toggleExpand(index)} activeOpacity={0.7}>
@@ -37,10 +42,10 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
                     locations={[0, 1]}
                     start={[0, 0]}
                     end={[1, 1]}
-                    style={style.headerGradient}
+                    style={gradientStyle}
                 >
                     <Text style={style.headerText} numberOfLines={1}>
-                        {'Episode : ' + item.episode + ' | ' + item.title}
+                        {'Episode : ' + item.episode + episodeTitle}
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>

@@ -4,6 +4,7 @@ import {Mixins} from "../../styles";
 import {OfflineStatusBar} from "../molecules";
 import * as Colors from "../../styles/colors";
 
+//todo : add check update
 
 const ScreenLayout = ({extraStyle, backgroundColor, paddingSides, children}) => {
     const style = StyleSheet.create({

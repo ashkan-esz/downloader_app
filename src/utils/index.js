@@ -15,7 +15,7 @@ export function getPoster(posters, offset = 1) {
     return null;
 }
 
-const trailerSources = ['film2movie', 'salamdl'];
+const trailerSources = ['valamovie', 'film2movie', 'salamdl'];
 
 export function getTrailer(trailers, quality) {
     if (!trailers || trailers.length === 0) {
@@ -26,6 +26,17 @@ export function getTrailer(trailers, quality) {
             if (trailers[i].info.includes(trailerSources[k]) &&
                 trailers[i].info.includes(quality)) {
                 return trailers[i].link;
+            }
+        }
+    }
+    let trailerQualities = ['1080', '720', '360'];
+    for (let q = 0; q < trailerQualities.length; q++) {
+        for (let k = 0; k < trailerSources.length; k++) {
+            for (let i = 0; i < trailers.length; i++) {
+                if (trailers[i].info.includes(trailerSources[k]) &&
+                    trailers[i].info.includes(trailerQualities[q])) {
+                    return trailers[i].link;
+                }
             }
         }
     }
@@ -219,4 +230,16 @@ export function getMovieQualitiesSorted(sources) {
     }
     qualities = qualities.filter(item => item.links.length > 0);
     return qualities;
+}
+
+export function daysToNextEpisode(nextEpisode) {
+    if (!nextEpisode) {
+        return 'unknown';
+    }
+    let now = new Date();
+    let releasedDate = new Date(nextEpisode.releaseStamp);
+    let oneDay = 24 * 3600 * 1000;
+    let differentTime = releasedDate.getTime() - now.getTime();
+    let differentDay = Math.floor(differentTime / oneDay);
+    return differentDay > 0 ? differentDay + ' days' : 'Today';
 }
