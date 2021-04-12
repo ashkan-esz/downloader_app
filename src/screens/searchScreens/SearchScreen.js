@@ -2,11 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {ScreenLayout} from '../../components/layouts';
 import {CustomSearchBar} from "../../components/molecules";
-import {searchAll} from "../../api";
+import {searchTitle} from "../../api";
 import {SearchMovieList} from "../../components/organisms";
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {ScrollTop} from "../../components/atoms";
 
+//todo : add type and imdb filter
 
 const SearchScreen = () => {
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
@@ -23,7 +24,7 @@ const SearchScreen = () => {
         if (!debouncedSearchValue) {
             return [];
         }
-        let result = await searchAll(debouncedSearchValue, 'low', pageParam);
+        let result = await searchTitle(debouncedSearchValue, ['movie', 'serial'], 'low', pageParam);
         if (result !== 'error') {
             return result;
         } else {

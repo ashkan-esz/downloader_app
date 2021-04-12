@@ -4,7 +4,7 @@ import {SectionNavBar} from "../molecules";
 import HomeMovieList from "./movieList/HomeMovieList";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from '@react-navigation/native';
-import {getTops_byLike_all, getNews_all, getUpdates_all, getTimeLine_day} from "../../api";
+import {getTopLikes, getNews, getUpdates, getTimeLine_day} from "../../api";
 import {SeeAllButton} from "../atoms";
 
 
@@ -21,21 +21,21 @@ const HomeTopSection = () => {
         let result;
         if (TAB) {
             if (TAB === 'recent') {
-                result = await getNews_all('medium', 0, 3);
+                result = await getNews(['movie', 'serial'], 'medium', 0, 3);
             } else if (TAB === 'updates') {
-                result = await getUpdates_all('medium', 0, 3);
+                result = await getUpdates(['movie', 'serial'], 'medium', 0, 3);
             } else if (TAB === 'populars') {
-                result = await getTops_byLike_all('medium', 0, 3);
+                result = await getTopLikes(['movie', 'serial'], 'medium', 0, 3);
             } else if (TAB === 'todaySeries') {
                 result = await getTimeLine_day(0, 0, 3);
             }
         } else {
             if (tab === 'recent') {
-                result = await getNews_all('medium', 0, 3);
+                result = await getNews(['movie', 'serial'], 'medium', 0, 3);
             } else if (tab === 'updates') {
-                result = await getUpdates_all('medium', 0, 3);
+                result = await getUpdates(['movie', 'serial'], 'medium', 0, 3);
             } else if (tab === 'populars') {
-                result = await getTops_byLike_all('medium', 0, 3);
+                result = await getTopLikes(['movie', 'serial'], 'medium', 0, 3);
             } else if (tab === 'todaySeries') {
                 result = await getTimeLine_day(0, 0, 3);
             }

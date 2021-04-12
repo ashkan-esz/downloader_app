@@ -17,8 +17,10 @@ const HomeTimeLineSection = () => {
     const queryClient = useQueryClient();
     const navigation = useNavigation();
 
-    async function getData({SPACING}) {
-        let result = await getTimeLine_day(SPACING || spacing, 0, 3);
+    async function getData({SPACING = null}) {
+        let result = (SPACING !== null)
+            ? await getTimeLine_day(SPACING, 0, 3)
+            : await getTimeLine_day(spacing, 0, 3);
         if (result !== 'error') {
             return result;
         } else {

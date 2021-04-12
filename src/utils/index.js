@@ -2,6 +2,8 @@ export const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=
 
 const posterSources = ['salamdl', 'valamovie', 'film2media', 'film2movie', 'topmovie', 'salamdl'];
 
+//todo : filter working links
+
 export function getPoster(posters, offset = 1) {
     for (let k = offset; k >= 0; k--) {
         for (let i = k; i < posterSources.length; i++) {

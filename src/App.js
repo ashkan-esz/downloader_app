@@ -28,11 +28,7 @@ LogBox.ignoreLogs([
 //todo : fix ram usage of stack navigation
 //todo : load prev data while loading app
 //todo : sort components
-//todo : check flatLists
-// todo : use getItemLayout for flatLists
-// getItemLayout={(data, index) => (
-//     {length: 45, offset: 45 * index, index}
-// )}
+
 
 enableScreens();
 

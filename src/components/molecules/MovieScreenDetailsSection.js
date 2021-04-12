@@ -35,19 +35,6 @@ const MovieScreenDetailsSection = ({data}) => {
                 </Text>
             </View>
 
-            <View style={style.row}>
-                <Text style={style.text}>
-                    <Text style={style.statement}>Country
-                        :</Text> {country.split(',').slice(0, 2).join(' , ') || 'unknown'}
-                </Text>
-                <Text style={style.text}>
-                    <Text style={style.statement}>Lang :</Text> {movieLang || 'unknown'}
-                </Text>
-                <Text style={style.text}>
-                    <Text style={style.statement}>Rated :</Text> {rated || 'unknown'}
-                </Text>
-            </View>
-
             {
                 type === 'serial' && <View style={style.row}>
                     <Text style={style.text}>
@@ -61,6 +48,16 @@ const MovieScreenDetailsSection = ({data}) => {
                     </Text>
                 </View>
             }
+
+            <Text style={style.text}>
+                <Text style={style.statement}>Country :</Text> {country || 'unknown'}
+            </Text>
+            <Text style={style.text}>
+                <Text style={style.statement}>Lang :</Text> {movieLang || 'unknown'}
+            </Text>
+            <Text style={style.text}>
+                <Text style={style.statement}>Rated :</Text> {rated || 'unknown'}
+            </Text>
 
             <Text style={style.text}>
                 <Text style={style.statement}>BoxOffice :</Text> {boxOffice || 'unknown'}

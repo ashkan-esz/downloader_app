@@ -5,7 +5,7 @@ import {MovieError} from "../../atoms";
 import {HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery} from "react-query";
-import {getTrailers_all} from "../../../api";
+import {getTrailers} from "../../../api";
 import {getPoster, getRating, getTitleSnakeCase, getTrailer} from "../../../utils";
 import {Colors, Mixins, Typography} from "../../../styles";
 
@@ -14,7 +14,7 @@ const HomeTrailersList = () => {
     const navigation = useNavigation();
 
     async function getData() {
-        let result = await getTrailers_all(1);
+        let result = await getTrailers(['movie', 'serial'], 1);
         if (result !== 'error') {
             return result;
         } else {
@@ -37,7 +37,6 @@ const HomeTrailersList = () => {
     }
 
     if (data.length === 0 || isLoading) {
-        //todo : add section name while loading
         return (
             <HomeTrailersListPlaceHolder number={3}/>
         );
@@ -53,6 +52,7 @@ const HomeTrailersList = () => {
             <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 style={style.scrollView}
                 data={data}
                 keyExtractor={(item => item.title)}

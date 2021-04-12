@@ -7,6 +7,7 @@ import {useInfiniteQuery, useQueryClient} from "react-query";
 import {useRoute} from "@react-navigation/native";
 import {getTimeLine_day} from "../../api";
 
+//todo : add type and imdb filter
 
 const TimeLineScreen = () => {
     const route = useRoute();
@@ -20,8 +21,10 @@ const TimeLineScreen = () => {
         setTimeout(() => setChangedSpacing(route.params.startSpacing), 5)
     }, []);
 
-    async function getData({pageParam = 1, SPACING}) {
-        let result = await getTimeLine_day(SPACING || spacing, pageParam, 3);
+    async function getData({pageParam = 1, SPACING = null}) {
+        let result = (SPACING !== null)
+            ? await getTimeLine_day(SPACING, pageParam, 3)
+            : await getTimeLine_day(spacing, pageParam, 3);
         if (result !== 'error') {
             return result;
         } else {

@@ -40,7 +40,7 @@ const SearchMovieList = ({
     }
 
 
-    const keyExtractor = (item) => item.title;
+    const keyExtractor = (item) => item.title + item.year;
     const renderItem = ({item}) => (
         <SearchMovieCard
             poster={getPoster(item.poster)}
@@ -63,12 +63,15 @@ const SearchMovieList = ({
         </Text>
     );
 
+    const _fadingEdgeLength = Mixins.WINDOW_HEIGHT < 700 ? 50 : 100;
+
     return (
         <View style={style.container}>
             <FlatList
                 ref={flatListRef}
                 contentContainerStyle={style.listWrapper}
                 showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 maxToRenderPerBatch={9}
                 windowSize={51}
                 data={data}
@@ -77,7 +80,7 @@ const SearchMovieList = ({
                 initialNumToRender={12}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={0.6}
-                fadingEdgeLength={Mixins.WINDOW_HEIGHT < 700 ? 50 : 100}
+                fadingEdgeLength={_fadingEdgeLength}
                 onScrollBeginDrag={() => Keyboard.dismiss()}
                 ListFooterComponent={listFooterComponent}
                 onRefresh={onRefresh}
@@ -104,7 +107,7 @@ const style = StyleSheet.create({
         textAlign: 'center',
         fontSize: Typography.getFontSize(22),
         color: Colors.RED2,
-        paddingBottom: 30,
+        paddingBottom: 45,
     }
 });
 

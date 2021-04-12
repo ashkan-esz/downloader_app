@@ -24,7 +24,7 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
         <View style={[style.container, extraStyle]}>
             <TouchableOpacity
                 style={style.leftIcon}
-                onPress={() => setSpacing((spacing - 1) % 7)}
+                onPress={() => setSpacing((spacing + 7 - 1) % 7)}
                 activeOpacity={0.5}
             >
                 <AntDesign

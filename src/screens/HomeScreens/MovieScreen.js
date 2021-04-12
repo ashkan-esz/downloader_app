@@ -18,7 +18,7 @@ const MovieScreen = () => {
     const queryClient = useQueryClient();
 
     const getData = async () => {
-        let result = await searchByID(routeParams.type, routeParams.id, 'high');
+        let result = await searchByID(routeParams.id, 'high');
         if (result !== 'error') {
             return result;
         } else {

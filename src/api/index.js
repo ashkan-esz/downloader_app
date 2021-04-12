@@ -4,10 +4,11 @@ const api_withoutCache = axios.create({
     baseURL: 'https://downloader-node-api.herokuapp.com',
 });
 
-export const searchAll = async (title, dataLevel, page, count = 1) => {
+export const searchTitle = async (title, types, dataLevel, page, count = 1) => {
     try {
         title = title.toLowerCase();
-        let response = await api_withoutCache.get(`/search/searchAll/${title}/${dataLevel}/${page}/${count}`);
+        types = JSON.stringify(types);
+        let response = await api_withoutCache.get(`/search/searchByTitle/${title}/${types}/${dataLevel}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -17,22 +18,10 @@ export const searchAll = async (title, dataLevel, page, count = 1) => {
     }
 }
 
-export const searchSingleType = async (type, title, dataLevel, page, count = 1) => {
-    try {
-        title = title.toLowerCase();
-        let response = await api_withoutCache.get(`/search/searchSingleType/${type}/${title}/${dataLevel}/${page}/${count}`);
-        return response.data || [];
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return [];
-        }
-        return 'error';
-    }
-}
 //--------------------------------
-export const searchByID = async (type, id, dataLevel) => {
+export const searchByID = async (id, dataLevel) => {
     try {
-        let response = await api_withoutCache.get(`/search/searchByID/${type}/${id}/${dataLevel}/`);
+        let response = await api_withoutCache.get(`/search/searchByID/${id}/${dataLevel}/`);
         return response.data || null;
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -41,10 +30,12 @@ export const searchByID = async (type, id, dataLevel) => {
         return 'error';
     }
 }
+
 //--------------------------------
-export const getNews_all = async (dataLevel, page, count = 1) => {
+export const getNews = async (types, dataLevel, page, count = 1) => {
     try {
-        let response = await api_withoutCache.get(`/news/getAll/${dataLevel}/${page}/${count}`);
+        types = JSON.stringify(types);
+        let response = await api_withoutCache.get(`/news/${types}/${dataLevel}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -54,18 +45,11 @@ export const getNews_all = async (dataLevel, page, count = 1) => {
     }
 }
 
-export const getNews_singleType = async (type, dataLevel, page, count = 1) => {
-    try {
-        let response = await api_withoutCache.get(`/news/getSingleType/${type}/${dataLevel}/${page}/${count}`);
-        return response.data || [];
-    } catch (e) {
-        return 'error';
-    }
-}
 //--------------------------------
-export const getUpdates_all = async (dataLevel, page, count = 1) => {
+export const getUpdates = async (types, dataLevel, page, count = 1) => {
     try {
-        let response = await api_withoutCache.get(`/updates/getAll/${dataLevel}/${page}/${count}`);
+        types = JSON.stringify(types);
+        let response = await api_withoutCache.get(`/updates/${types}/${dataLevel}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -75,18 +59,11 @@ export const getUpdates_all = async (dataLevel, page, count = 1) => {
     }
 }
 
-export const getUpdates_singleType = async (type, dataLevel, page, count = 1) => {
-    try {
-        let response = await api_withoutCache.get(`/updates/getSingleType/${type}/${dataLevel}/${page}/${count}`);
-        return response.data || [];
-    } catch (e) {
-        return 'error';
-    }
-}
 //--------------------------------
-export const getTops_byLike_all = async (dataLevel, page, count = 1) => {
+export const getTopLikes = async (types, dataLevel, page, count = 1) => {
     try {
-        let response = await api_withoutCache.get(`/tops/byLikes/getAll/${dataLevel}/${page}/${count}`);
+        types = JSON.stringify(types);
+        let response = await api_withoutCache.get(`/tops/byLikes/${types}/${dataLevel}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -96,18 +73,10 @@ export const getTops_byLike_all = async (dataLevel, page, count = 1) => {
     }
 }
 
-export const getTops_byLike_singleType = async (type, dataLevel, page, count = 1) => {
+//--------------------------------
+export const getPopularIMDBShows = async (dataLevel, page, count = 1) => {
     try {
-        let response = await api_withoutCache.get(`/tops/byLikes/getSingleType/${type}/${dataLevel}/${page}/${count}`);
-        return response.data || [];
-    } catch (e) {
-        return 'error';
-    }
-}
-
-export const getTops_popularShows = async (dataLevel, page, count = 1) => {
-    try {
-        let response = await api_withoutCache.get(`/tops/popularShows/${dataLevel}/${page}/${count}`);
+        let response = await api_withoutCache.get(`/tops/IMDBShows/${dataLevel}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -117,9 +86,10 @@ export const getTops_popularShows = async (dataLevel, page, count = 1) => {
     }
 }
 //--------------------------------
-export const getTrailers_all = async (page, count = 1) => {
+export const getTrailers = async (types, page, count = 1) => {
     try {
-        let response = await api_withoutCache.get(`/trailers/getAll/${page}/${count}`);
+        types = JSON.stringify(types);
+        let response = await api_withoutCache.get(`/trailers/${types}/${page}/${count}`);
         return response.data || [];
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -129,14 +99,6 @@ export const getTrailers_all = async (page, count = 1) => {
     }
 }
 
-export const getTrailers_singleType = async (type, page, count = 1) => {
-    try {
-        let response = await api_withoutCache.get(`/trailers/getSingleType/${type}/${page}/${count}`);
-        return response.data || [];
-    } catch (e) {
-        return 'error';
-    }
-}
 //--------------------------------
 export const getTimeLine_day = async (spacing, page, count = 1) => {
     try {

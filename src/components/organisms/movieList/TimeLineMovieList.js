@@ -65,6 +65,8 @@ const TimeLineMovieList = ({
         </Text>
     );
 
+    const _fadingEdgeLength = Mixins.WINDOW_HEIGHT < 700 ? 55 : 100;
+
     return (
         <View style={style.container}>
             <FlatList
@@ -77,8 +79,8 @@ const TimeLineMovieList = ({
                 renderItem={renderItem}
                 initialNumToRender={3}
                 onEndReached={onEndReached}
-                onEndReachedThreshold={Mixins.WINDOW_HEIGHT < 700 ? 2 : 1}
-                fadingEdgeLength={Mixins.WINDOW_HEIGHT < 700 ? 55 : 100}
+                onEndReachedThreshold={2}
+                fadingEdgeLength={_fadingEdgeLength}
                 ListFooterComponent={listFooterComponent}
                 refreshControl={
                     <RefreshControl

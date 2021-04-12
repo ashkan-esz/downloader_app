@@ -43,6 +43,7 @@ buck-out/
 
 #keystore
 *.jks
+downloader_app.jks
 
 # fastlane
 #

@@ -4,8 +4,9 @@ import {ScreenLayout} from "../../components/layouts";
 import {ScrollTop} from "../../components/atoms";
 import {TrailersMovieList} from "../../components/organisms";
 import {useInfiniteQuery, useQueryClient} from "react-query";
-import {getTrailers_all} from "../../api";
+import {getTrailers} from "../../api";
 
+//todo : add type and imdb filter
 
 const TrailersScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -18,7 +19,7 @@ const TrailersScreen = () => {
     }, []);
 
     async function getData({pageParam = 1}) {
-        let result = await getTrailers_all(pageParam);
+        let result = await getTrailers(['movie', 'serial'], pageParam);
         if (result !== 'error') {
             return result;
         } else {

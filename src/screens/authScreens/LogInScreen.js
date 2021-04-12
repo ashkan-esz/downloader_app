@@ -29,7 +29,7 @@ const LogInScreen = ({navigation}) => {
                         extraStyle={style.loginForm}
                         onSubmit={(data) => {
                             // console.log(data) //todo : do something with form data
-                            navigation.navigate('Home'); //todo : home page
+                            navigation.navigate('Home');
                         }}
                     />
 

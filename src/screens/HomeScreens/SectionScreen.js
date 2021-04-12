@@ -2,14 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from '@react-navigation/native';
-import {getNews_all, getTimeLine_day, getTops_byLike_all, getUpdates_all} from "../../api";
+import {getNews, getTimeLine_day, getTopLikes, getUpdates} from "../../api";
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {SectionNavBar} from "../../components/molecules";
 import {SectionMovieList} from "../../components/organisms";
 import {ScrollTop} from "../../components/atoms";
 
 //todo : add type and imdb filter
-//todo : fix flicring
 
 const SectionScreen = () => {
     const sections = ['recent', 'updates', 'populars', 'todaySeries'];
@@ -28,21 +27,21 @@ const SectionScreen = () => {
         let result;
         if (TAB) {
             if (TAB === 'recent') {
-                result = await getNews_all('medium', 1);
+                result = await getNews(['movie', 'serial'], 'medium', 1);
             } else if (TAB === 'updates') {
-                result = await getUpdates_all('medium', 1);
+                result = await getUpdates(['movie', 'serial'], 'medium', 1);
             } else if (TAB === 'populars') {
-                result = await getTops_byLike_all('medium', 1);
+                result = await getTopLikes(['movie', 'serial'], 'medium', 1);
             } else if (TAB === 'todaySeries') {
                 result = await getTimeLine_day(0, 1);
             }
         } else {
             if (tab === 'recent') {
-                result = await getNews_all('medium', pageParam);
+                result = await getNews(['movie', 'serial'], 'medium', pageParam);
             } else if (tab === 'updates') {
-                result = await getUpdates_all('medium', pageParam);
+                result = await getUpdates(['movie', 'serial'], 'medium', pageParam);
             } else if (tab === 'populars') {
-                result = await getTops_byLike_all('medium', pageParam);
+                result = await getTopLikes(['movie', 'serial'], 'medium', pageParam);
             } else if (tab === 'todaySeries') {
                 result = await getTimeLine_day(0, pageParam);
             }

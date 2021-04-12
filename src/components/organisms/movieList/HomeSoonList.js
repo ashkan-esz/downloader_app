@@ -1,44 +1,44 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
-import {getNews_all} from "../../../api";
+import {getNews} from "../../../api";
 import {getPoster, getTitleSnakeCase} from "../../../utils";
 import {Colors, Mixins, Typography} from "../../../styles";
+import {useQuery} from "react-query";
 
 
 const HomeSoonList = () => {
-    const [loadedData, setLoadedData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(false);
-
     async function getData() {
-        setIsLoading(true);
-        setError(false);
-        let result = await getNews_all('low', 1); //todo : replace with soon api
+        let result = await getNews(['movie', 'serial'], 'low', 1); //todo : replace with soon api
         if (result !== 'error') {
-            setLoadedData(result);
+            return result;
         } else {
-            setLoadedData([]);
-            setError(true);
+            throw new Error();
         }
-        setIsLoading(false);
     }
 
-    useEffect(() => {
-        getData();
-    }, []);
+    const {data, isLoading, isError} = useQuery(
+        ["soon"],
+        getData,
+        {placeholderData: []});
 
-    if (error) {
+    if (isError) {
         return (
-            <MovieError containerStyle={style.error}/>
+            <View style={style.container}>
+                <Text style={style.sectionTitle}>Soon</Text>
+                <MovieError containerStyle={style.error}/>
+            </View>
         );
     }
 
-    if (loadedData.length === 0 || isLoading) {
+    if (data.length === 0 || isLoading) {
         return (
-            <HomeMovieListPlaceHolder number={3} rating={false}/>
+            <View style={style.container}>
+                <Text style={style.sectionTitle}>Soon</Text>
+                <HomeMovieListPlaceHolder extraStyle={{marginTop: 20}} number={3} rating={false}/>
+            </View>
         );
     }
 
@@ -56,7 +56,7 @@ const HomeSoonList = () => {
                 contentContainerStyle={style.scrollView}
             >
                 {
-                    loadedData.map((item) => {
+                    data.map((item) => {
                         return (
                             <HomeMovieCard
                                 extraStyle={style.movieCard}
@@ -101,7 +101,7 @@ const style = StyleSheet.create({
         marginRight: 6
     },
     error: {
-        marginTop: 0,
+        marginTop: -10,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',

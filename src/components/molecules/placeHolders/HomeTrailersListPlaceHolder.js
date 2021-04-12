@@ -46,7 +46,7 @@ const style = StyleSheet.create({
     },
     sectionTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(22)
+        fontSize: Typography.getFontSize(24)
     },
     scrollView: {
         marginTop: 20
