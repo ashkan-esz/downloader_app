@@ -3,7 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "react-native-elements";
 import {TrailerImageSwitch, SectionMovieCardRating} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {getPartialQuality} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -33,7 +33,7 @@ const TrailerMovieCard = ({
         })
     }
 
-    const partialQuality = getPartialQuality(latestData.quality, 4);
+    const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 4);
 
     const typeColor = {
         color: type === 'movie' ? Colors.RED2 : 'cyan',

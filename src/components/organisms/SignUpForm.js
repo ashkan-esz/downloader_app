@@ -4,7 +4,7 @@ import {Button} from "react-native-elements";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
 const passwordStrength = require('check-password-strength');
-import {emailRegex} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {Colors, Typography} from '../../styles';
 import PropsTypes from "prop-types";
 
@@ -75,7 +75,7 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
                 rules={{
                     required: {value: true, message: 'This is required'},
                     maxLength: {value: 50, message: 'Too Long'},
-                    pattern: {value: emailRegex, message: 'Invalid Email'}
+                    pattern: {value: homeStackHelpers.emailRegex, message: 'Invalid Email'}
                 }}
                 render={({onChange, value}) => (
                     <CustomTextInput

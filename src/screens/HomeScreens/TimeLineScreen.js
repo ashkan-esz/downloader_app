@@ -7,7 +7,6 @@ import {useInfiniteQuery, useQueryClient} from "react-query";
 import {useRoute} from "@react-navigation/native";
 import {getTimeLine_day} from "../../api";
 
-//todo : add type and imdb filter
 
 const TimeLineScreen = () => {
     const route = useRoute();

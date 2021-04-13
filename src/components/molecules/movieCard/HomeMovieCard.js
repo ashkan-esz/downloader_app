@@ -3,7 +3,7 @@ import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-nativ
 import {Image, Text} from "react-native-elements";
 import {useNavigation} from "@react-navigation/native";
 import {CustomRating} from "../../atoms";
-import {getPartialQuality, getSerialState} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -47,8 +47,8 @@ const HomeMovieCard = ({extraStyle, poster, id, title, type, tab, latestData, ne
                 </Text>
                 {latestData && <Text style={[style.latestData, latestDataFontSize]} numberOfLines={1}>
                     {type === 'serial'
-                        ? getSerialState(latestData, nextEpisode, tab)
-                        : getPartialQuality(latestData.quality, 2)}
+                        ? homeStackHelpers.getSerialState(latestData, nextEpisode, tab)
+                        : homeStackHelpers.getPartialQuality(latestData.quality, 2)}
                 </Text>}
                 {!noRating && <CustomRating rating={rating}/>}
             </View>

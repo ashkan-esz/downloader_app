@@ -4,7 +4,7 @@ import {Text} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisodeCollapsible from "./MovieScreenEpisodeCollapsible";
-import {filterReleasedEpisodes} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -28,7 +28,7 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) 
     }
 
     const _renderHeader = (item, index) => {
-        const seasonEpisodes = filterReleasedEpisodes(episodes, latestData)
+        const seasonEpisodes = homeStackHelpers.filterReleasedEpisodes(episodes, latestData)
             .filter(value => value.season === item.season);
         const releasedEpisodesText = seasonEpisodes.length !== item.episodes
             ? ` | released : ${seasonEpisodes.length}`

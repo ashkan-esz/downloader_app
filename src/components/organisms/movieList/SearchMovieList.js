@@ -3,7 +3,7 @@ import {View, StyleSheet, Keyboard, FlatList} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieSearchNotFound, MovieError} from "../../atoms";
 import {SearchMovieCard} from "../../molecules";
-import {getPoster, getRating, getTitleSnakeCase} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -20,6 +20,7 @@ const SearchMovieList = ({
                              onEndReached,
                              isError,
                              retry,
+                             onScroll
                          }) => {
 
 
@@ -43,13 +44,13 @@ const SearchMovieList = ({
     const keyExtractor = (item) => item.title + item.year;
     const renderItem = ({item}) => (
         <SearchMovieCard
-            poster={getPoster(item.poster)}
-            title={item.rawTitle || getTitleSnakeCase(item.title)}
+            poster={homeStackHelpers.getPoster(item.poster)}
+            title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
             premiered={item.premiered}
             type={item.type}
             extraData={{
                 id: item._id,
-                rating: getRating(item.rating),
+                rating: homeStackHelpers.getRating(item.rating),
             }}
         />
     );
@@ -72,6 +73,7 @@ const SearchMovieList = ({
                 contentContainerStyle={style.listWrapper}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
+                onScroll={onScroll}
                 maxToRenderPerBatch={9}
                 windowSize={51}
                 data={data}
@@ -96,7 +98,7 @@ const style = StyleSheet.create({
         height: Mixins.WINDOW_HEIGHT - 130
     },
     listWrapper: {
-        marginTop: 5,
+        marginTop: 15,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: "space-between",
@@ -107,7 +109,7 @@ const style = StyleSheet.create({
         textAlign: 'center',
         fontSize: Typography.getFontSize(22),
         color: Colors.RED2,
-        paddingBottom: 45,
+        paddingBottom: 80,
     }
 });
 
@@ -122,7 +124,8 @@ SearchMovieList.propTypes = {
     onRefresh: PropTypes.func.isRequired,
     onEndReached: PropTypes.func.isRequired,
     isError: PropTypes.bool.isRequired,
-    retry: PropTypes.func.isRequired
+    retry: PropTypes.func.isRequired,
+    onScroll: PropTypes.func.isRequired,
 };
 
 

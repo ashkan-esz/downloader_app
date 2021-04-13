@@ -3,7 +3,7 @@ import {View, StyleSheet, ActivityIndicator, FlatList, RefreshControl} from 'rea
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {TrailerMovieCard} from "../../molecules";
-import {getPoster, getRating, getTitleSnakeCase, getTrailer} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -17,7 +17,8 @@ const trailersMovieList = ({
                                refreshing,
                                onRefresh,
                                isError,
-                               retry
+                               retry,
+                               onScroll
                            }) => {
     if (isError) {
         return (
@@ -40,11 +41,11 @@ const trailersMovieList = ({
     const keyExtractor = (item) => item.title;
     const renderItem = ({item}) => (
         <TrailerMovieCard
-            poster={getPoster(item.poster)}
-            trailer={getTrailer(item.trailers, '720')}
+            poster={homeStackHelpers.getPoster(item.poster)}
+            trailer={homeStackHelpers.getTrailer(item.trailers, '720')}
             id={item._id}
-            title={item.rawTitle || getTitleSnakeCase(item.title)}
-            rating={getRating(item.rating)}
+            title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
+            rating={homeStackHelpers.getRating(item.rating)}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}
@@ -71,6 +72,8 @@ const trailersMovieList = ({
             <FlatList
                 ref={flatListRef}
                 showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                onScroll={onScroll}
                 maxToRenderPerBatch={6}
                 windowSize={51}
                 data={data}
@@ -97,7 +100,7 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         height: Mixins.WINDOW_HEIGHT - 85,
-        marginTop: 15,
+        marginTop: 10,
     },
     loadingActivity: {
         marginTop: 30
@@ -109,7 +112,7 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(22),
         color: Colors.RED2,
         marginTop: -10,
-        paddingBottom: 30,
+        paddingBottom: 65,
     },
 });
 
@@ -123,6 +126,7 @@ trailersMovieList.propTypes = {
     onEndReached: PropTypes.func,
     isError: PropTypes.bool.isRequired,
     retry: PropTypes.func.isRequired,
+    onScroll: PropTypes.func.isRequired,
 };
 
 

@@ -4,7 +4,7 @@ import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
 import {getNews} from "../../../api";
-import {getPoster, getTitleSnakeCase} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import {useQuery} from "react-query";
 
@@ -60,9 +60,9 @@ const HomeSoonList = () => {
                         return (
                             <HomeMovieCard
                                 extraStyle={style.movieCard}
-                                poster={getPoster(item.poster)}
+                                poster={homeStackHelpers.getPoster(item.poster)}
                                 id={item._id}
-                                title={item.rawTitle || getTitleSnakeCase(item.title)}
+                                title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
                                 type={''}
                                 rating={0}
                                 noRating={true}

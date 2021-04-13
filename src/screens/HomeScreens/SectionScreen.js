@@ -1,20 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {LayoutAnimation, StyleSheet, View} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
-import {useRoute} from '@react-navigation/native';
-import {getNews, getTimeLine_day, getTopLikes, getUpdates} from "../../api";
-import {useInfiniteQuery, useQueryClient} from "react-query";
-import {SectionNavBar} from "../../components/molecules";
 import {SectionMovieList} from "../../components/organisms";
+import {SectionNavBar, FilterBox} from "../../components/molecules";
 import {ScrollTop} from "../../components/atoms";
+import {useRoute} from '@react-navigation/native';
+import {useInfiniteQuery, useQueryClient} from "react-query";
+import {getNews, getTimeLine_day, getTopLikes, getUpdates} from "../../api";
 
-//todo : add type and imdb filter
 
 const SectionScreen = () => {
     const sections = ['recent', 'updates', 'populars', 'todaySeries'];
     const route = useRoute();
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
+    const [expanded, setExpanded] = useState(false);
+    const [filters, setFilters] = useState({
+        types: ['movie', 'serial'],
+        imdbScore: [0, 10],
+        genres: null,
+    });
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
@@ -23,25 +28,30 @@ const SectionScreen = () => {
         setTimeout(() => setChangedTab(route.params.startTab), 5)
     }, []);
 
+    const _closeFilterBox = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setExpanded(false);
+    }
+
     async function getData({pageParam = 1, TAB}) {
         let result;
         if (TAB) {
             if (TAB === 'recent') {
-                result = await getNews(['movie', 'serial'], 'medium', 1);
+                result = await getNews(filters.types, 'medium', 1);
             } else if (TAB === 'updates') {
-                result = await getUpdates(['movie', 'serial'], 'medium', 1);
+                result = await getUpdates(filters.types, 'medium', 1);
             } else if (TAB === 'populars') {
-                result = await getTopLikes(['movie', 'serial'], 'medium', 1);
+                result = await getTopLikes(filters.types, 'medium', 1);
             } else if (TAB === 'todaySeries') {
                 result = await getTimeLine_day(0, 1);
             }
         } else {
             if (tab === 'recent') {
-                result = await getNews(['movie', 'serial'], 'medium', pageParam);
+                result = await getNews(filters.types, 'medium', pageParam);
             } else if (tab === 'updates') {
-                result = await getUpdates(['movie', 'serial'], 'medium', pageParam);
+                result = await getUpdates(filters.types, 'medium', pageParam);
             } else if (tab === 'populars') {
-                result = await getTopLikes(['movie', 'serial'], 'medium', pageParam);
+                result = await getTopLikes(filters.types, 'medium', pageParam);
             } else if (tab === 'todaySeries') {
                 result = await getTimeLine_day(0, pageParam);
             }
@@ -59,19 +69,19 @@ const SectionScreen = () => {
         async function prefetchData() {
             let promiseArray = [];
             let promise1 = queryClient.prefetchInfiniteQuery(
-                ['recent', 'sectionScreen'],
+                ['recent', 'sectionScreen', filters.types],
                 () => getData({TAB: 'recent'}));
             promiseArray.push(promise1);
             let promise2 = queryClient.prefetchInfiniteQuery(
-                ['updates', 'sectionScreen'],
+                ['updates', 'sectionScreen', filters.types],
                 () => getData({TAB: 'updates'}));
             promiseArray.push(promise2);
             let promise3 = queryClient.prefetchInfiniteQuery(
-                ['populars', 'sectionScreen'],
+                ['populars', 'sectionScreen', filters.types],
                 () => getData({TAB: 'populars'}));
             promiseArray.push(promise3);
             let promise4 = queryClient.prefetchInfiniteQuery(
-                ['todaySeries', 'sectionScreen'],
+                ['todaySeries', 'sectionScreen', filters.types],
                 () => getData({TAB: 'todaySeries'}));
             promiseArray.push(promise4);
             await Promise.all(promiseArray);
@@ -81,7 +91,7 @@ const SectionScreen = () => {
     }, []);
 
     const {data, fetchNextPage, isLoading, isFetchingNextPage, isError} = useInfiniteQuery(
-        [tab, 'sectionScreen'],
+        [tab, 'sectionScreen', filters.types],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
@@ -99,6 +109,7 @@ const SectionScreen = () => {
             flatListRef.current.scrollToOffset({animated: true, offset: 0});
         }
         setChangedTab(value);
+        _closeFilterBox();
         setTimeout(() => setTab(value), 5);
     }
 
@@ -106,7 +117,7 @@ const SectionScreen = () => {
         setRefreshing(true);
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
-            let query = queryClient.refetchQueries([sections[i], 'sectionScreen']);
+            let query = queryClient.refetchQueries([sections[i], 'sectionScreen', filters.types]);
             promiseArray.push(query);
         }
         await Promise.all(promiseArray);
@@ -114,7 +125,7 @@ const SectionScreen = () => {
     };
 
     const _retry = async () => {
-        await queryClient.refetchQueries([tab, 'sectionScreen']);
+        await queryClient.refetchQueries([tab, 'sectionScreen', filters.types]);
     };
 
     return (
@@ -129,6 +140,15 @@ const SectionScreen = () => {
                     onTabChange={_onTabChange}
                 />
 
+                {
+                    changedTab !== 'todaySeries' && <FilterBox
+                        expanded={expanded}
+                        setExpanded={setExpanded}
+                        filters={filters}
+                        setFilters={setFilters}
+                    />
+                }
+
                 <SectionMovieList
                     flatListRef={flatListRef}
                     tab={tab}
@@ -141,12 +161,13 @@ const SectionScreen = () => {
                     onRefresh={_onRefresh}
                     isError={isError}
                     retry={_retry}
+                    onScroll={_closeFilterBox}
                 />
 
                 <ScrollTop
                     flatListRef={flatListRef}
                     show={(data.pages[0].length > 0 && !isLoading && tab === changedTab && !isError)}
-                    bottom={25}
+                    bottom={changedTab !== 'todaySeries' ? (expanded ? 115 : 70) : 25}
                     right={10}
                 />
 
@@ -162,8 +183,6 @@ const style = StyleSheet.create({
         top: 70,
     }
 });
-
-SectionScreen.propTypes = {};
 
 
 export default SectionScreen;

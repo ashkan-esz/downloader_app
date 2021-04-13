@@ -1,16 +1,21 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, LayoutAnimation} from 'react-native';
 import {ScreenLayout} from '../../components/layouts';
-import {CustomSearchBar} from "../../components/molecules";
-import {searchTitle} from "../../api";
 import {SearchMovieList} from "../../components/organisms";
-import {useInfiniteQuery, useQueryClient} from "react-query";
+import {CustomSearchBar, FilterBox} from "../../components/molecules";
 import {ScrollTop} from "../../components/atoms";
+import {useInfiniteQuery, useQueryClient} from "react-query";
+import {searchTitle} from "../../api";
 
-//todo : add type and imdb filter
 
 const SearchScreen = () => {
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+    const [expanded, setExpanded] = useState(false);
+    const [filters, setFilters] = useState({
+        types: ['movie', 'serial'],
+        imdbScore: [0, 10],
+        genres: null,
+    });
     const [refreshing, setRefreshing] = useState(false);
     const searchBarRef = useRef();
     const flatListRef = useRef();
@@ -20,11 +25,16 @@ const SearchScreen = () => {
         searchBarRef.current.focus();
     }, []);
 
+    const _closeFilterBox = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setExpanded(false);
+    }
+
     const getData = async ({pageParam = 1}) => {
         if (!debouncedSearchValue) {
             return [];
         }
-        let result = await searchTitle(debouncedSearchValue, ['movie', 'serial'], 'low', pageParam);
+        let result = await searchTitle(debouncedSearchValue, filters.types, 'low', pageParam);
         if (result !== 'error') {
             return result;
         } else {
@@ -33,7 +43,7 @@ const SearchScreen = () => {
     }
 
     const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        [debouncedSearchValue, 'searchScreen'],
+        [debouncedSearchValue, 'searchScreen', filters.types],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
@@ -49,13 +59,13 @@ const SearchScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.removeQueries([debouncedSearchValue, 'searchScreen']);
+        await queryClient.removeQueries([debouncedSearchValue, 'searchScreen', filters.types]);
         setRefreshing(false);
     }
 
     const _retry = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries([debouncedSearchValue, 'searchScreen']);
+        await queryClient.refetchQueries([debouncedSearchValue, 'searchScreen', filters.types]);
         setRefreshing(false);
     }
 
@@ -69,6 +79,14 @@ const SearchScreen = () => {
                     onTextChange={setDebouncedSearchValue}
                     isLoading={isLoading || isFetching}
                     inputRef={searchBarRef}
+                    closeFilterBox={_closeFilterBox}
+                />
+
+                <FilterBox
+                    expanded={expanded}
+                    setExpanded={setExpanded}
+                    filters={filters}
+                    setFilters={setFilters}
                 />
 
                 <SearchMovieList
@@ -83,12 +101,13 @@ const SearchScreen = () => {
                     onEndReached={fetchNextPage}
                     isError={isError}
                     retry={_retry}
+                    onScroll={_closeFilterBox}
                 />
 
                 <ScrollTop
                     flatListRef={flatListRef}
                     show={(data.pages[0].length > 0 && !isLoading && !isError)}
-                    bottom={30}
+                    bottom={expanded ? 110 : 65}
                     right={3}
                 />
 

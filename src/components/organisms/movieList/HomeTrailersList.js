@@ -6,7 +6,7 @@ import {HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery} from "react-query";
 import {getTrailers} from "../../../api";
-import {getPoster, getRating, getTitleSnakeCase, getTrailer} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 
 
@@ -44,7 +44,7 @@ const HomeTrailersList = () => {
 
     return (
         <View style={style.container}>
-            <Text style={style.sectionTitle}>New Trailer</Text>
+            <Text style={style.sectionTitle}>New Trailers</Text>
             <Text
                 style={style.seeAll}
                 onPress={() => navigation.navigate('Trailers')}>
@@ -58,14 +58,14 @@ const HomeTrailersList = () => {
                 keyExtractor={(item => item.title)}
                 renderItem={({item}) => (
                     <HomeTrailer
-                        poster={getPoster(item.poster)}
-                        trailer={getTrailer(item.trailers, '720')}
-                        title={item.rawTitle || getTitleSnakeCase(item.title)}
+                        poster={homeStackHelpers.getPoster(item.poster)}
+                        trailer={homeStackHelpers.getTrailer(item.trailers, '720')}
+                        title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
                         genres={item.genres}
                         type={item.type}
                         extraData={{
                             id: item._id,
-                            rating: getRating(item.rating),
+                            rating: homeStackHelpers.getRating(item.rating),
                         }}
                     />
                 )}

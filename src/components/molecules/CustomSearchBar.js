@@ -6,7 +6,7 @@ import {Colors, Mixins} from "../../styles";
 import PropsTypes from "prop-types";
 
 
-const CustomSearchBar = ({extraStyle, onTextChange, isLoading, inputRef}) => {
+const CustomSearchBar = ({extraStyle, onTextChange, isLoading, inputRef, closeFilterBox}) => {
     const inputStyle = {
         color: '#ffffff',
         marginLeft: isLoading ? 7 : -5
@@ -28,6 +28,7 @@ const CustomSearchBar = ({extraStyle, onTextChange, isLoading, inputRef}) => {
                 inputContainerStyle={style.searchBar}
                 inputStyle={inputStyle}
                 onChangeText={(value) => {
+                    closeFilterBox();
                     setSearchValue(value);
                 }}
                 searchIcon={
@@ -51,7 +52,7 @@ const style = StyleSheet.create({
     searchBarContainer: {
         borderRadius: 25,
         ...Mixins.padding(0),
-        marginBottom: 15,
+        marginBottom: 5,
     },
     searchBar: {
         borderRadius: 25,
@@ -64,7 +65,8 @@ CustomSearchBar.propTypes = {
     extraStyle: PropsTypes.object,
     onTextChange: PropsTypes.func.isRequired,
     isLoading: PropsTypes.bool.isRequired,
-    inputRef: PropsTypes.object
+    inputRef: PropsTypes.object,
+    closeFilterBox: PropsTypes.func.isRequired
 };
 
 

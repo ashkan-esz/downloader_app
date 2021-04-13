@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
 import {AntDesign} from "@expo/vector-icons";
-import {daysToNextEpisode, get_hardSub_dubbed_text} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -26,7 +26,7 @@ const MovieScreenUpdateSection = ({data}) => {
     const makeTotalDuration = totalDuration.split(':')[0] + ' hour , ' +
         totalDuration.split(':')[1] + ' min';
 
-    const {hardSubText, dubbedText} = get_hardSub_dubbed_text(latestData, type);
+    const {hardSubText, dubbedText} = homeStackHelpers.get_hardSub_dubbed_text(latestData, type);
 
     return (
         <View style={style.container}>
@@ -81,7 +81,8 @@ const MovieScreenUpdateSection = ({data}) => {
                         <Text style={style.statement}>Next Episode : </Text> {nextEpisodeText}
                     </Text>
                     <Text style={style.text} numberOfLines={1}>
-                        <Text style={style.statement}>Time To Next Episode : </Text> {daysToNextEpisode(nextEpisode)}
+                        <Text style={style.statement}>Time To Next Episode
+                            : </Text> {homeStackHelpers.daysToNextEpisode(nextEpisode)}
                     </Text>
                 </View>
             }

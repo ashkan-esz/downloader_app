@@ -3,7 +3,7 @@ import {View, StyleSheet, FlatList, RefreshControl, ActivityIndicator} from 'rea
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {SectionMovieCard} from "../../molecules";
-import {getPoster, getRating, getTitleSnakeCase} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -19,7 +19,8 @@ const SectionMovieList = ({
                               refreshing,
                               onRefresh,
                               isError,
-                              retry
+                              retry,
+                              onScroll
                           }) => {
 
     if (isError) {
@@ -40,14 +41,14 @@ const SectionMovieList = ({
     }
 
 
-    const keyExtractor = (item) => item.title;
+    const keyExtractor = (item) => item.title + item.year;
     const renderItem = ({item}) => (
         <SectionMovieCard
             tab={tab}
-            poster={getPoster(item.poster)}
+            poster={homeStackHelpers.getPoster(item.poster)}
             id={item._id}
-            title={item.rawTitle || getTitleSnakeCase(item.title)}
-            rating={getRating(item.rating)}
+            title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
+            rating={homeStackHelpers.getRating(item.rating)}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}
@@ -74,6 +75,8 @@ const SectionMovieList = ({
             <FlatList
                 ref={flatListRef}
                 showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                onScroll={onScroll}
                 maxToRenderPerBatch={6}
                 windowSize={51}
                 data={data}
@@ -128,6 +131,7 @@ SectionMovieList.propTypes = {
     onEndReached: PropTypes.func,
     isError: PropTypes.bool.isRequired,
     retry: PropTypes.func.isRequired,
+    onScroll: PropTypes.func.isRequired,
 };
 
 

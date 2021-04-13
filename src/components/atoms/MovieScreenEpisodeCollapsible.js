@@ -4,7 +4,7 @@ import {Text} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisode from "./MovieScreenEpisode";
-import {getEpisodeLinks} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -28,7 +28,7 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
     }
 
     const _renderHeader = (item, index) => {
-        const episodeLinks = getEpisodeLinks(sources, item.season, item.episode);
+        const episodeLinks = homeStackHelpers.getEpisodeLinks(sources, item.season, item.episode);
         const blueGradient = ['rgba(63,94,251,1)', 'rgba(252,70,107,1)'];
         const episodeTitle = !item.title.match(/Episode \d/g) ? (' | ' + item.title) : '';
         const gradientStyle = episodeLinks.length === 0
@@ -53,7 +53,7 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
     }
 
     const _renderContent = (item) => {
-        const episodeLinks = getEpisodeLinks(sources, item.season, item.episode);
+        const episodeLinks = homeStackHelpers.getEpisodeLinks(sources, item.season, item.episode);
 
         return (
             <View style={style.contentContainer}>

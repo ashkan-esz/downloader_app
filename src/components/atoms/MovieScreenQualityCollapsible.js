@@ -4,7 +4,7 @@ import {Text} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisode from "./MovieScreenEpisode";
-import {getMovieQualitiesSorted} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -14,7 +14,7 @@ const MovieScreenQualityCollapsible = ({sources}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
 
     useEffect(() => {
-        let temp = getMovieQualitiesSorted(sources);
+        let temp = homeStackHelpers.getMovieQualitiesSorted(sources);
         setQualities(temp);
     }, []);
 

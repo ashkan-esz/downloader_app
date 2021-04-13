@@ -6,10 +6,12 @@ import {MovieScreenInfoSection} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "react-query";
-import {getEpisodeCountsDuration} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {searchByID} from "../../api";
 
 //todo : add like/dislike number and functionality to like
+//todo : enhanced trailer watching
+//todo : add cast section
 
 const MovieScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -47,7 +49,7 @@ const MovieScreen = () => {
     }
 
     const episodesOrDuration = data !== null
-        ? getEpisodeCountsDuration(data.latestData, data.episodes, data.duration, data.type)
+        ? homeStackHelpers.getEpisodeCountsDuration(data.latestData, data.episodes, data.duration, data.type)
         : '';
 
     return (

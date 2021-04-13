@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
-import {filterReleasedEpisodes} from "../../utils";
+import {homeStackHelpers} from "../../helper";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -15,7 +15,7 @@ const MovieScreenDetailsSection = ({data}) => {
         rated, boxOffice,
     } = data;
 
-    const numberOfEpisodes = filterReleasedEpisodes(episodes, latestData).length;
+    const numberOfEpisodes = homeStackHelpers.filterReleasedEpisodes(episodes, latestData).length;
 
     return (
         <View style={style.container}>

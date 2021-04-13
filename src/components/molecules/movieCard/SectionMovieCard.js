@@ -3,7 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Image, Text} from "react-native-elements";
 import {SectionMovieCardRating} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {getPartialQuality, getSerialState} from "../../../utils";
+import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -33,8 +33,8 @@ const SectionMovieCard = ({
         })
     }
 
-    const serialState = getSerialState(latestData, nextEpisode, tab);
-    const partialQuality = getPartialQuality(latestData.quality, 3);
+    const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode, tab);
+    const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
 
     const typeColor = {
         color: type === 'movie' ? 'red' : 'cyan',
