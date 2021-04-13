@@ -60,7 +60,7 @@ const SearchMovieList = ({
     };
     const listFooterComponent = () => (
         <Text style={[style.listFooter, loadingPadding]}>
-            {isFetchingNextPage ? 'Loading....' : (!isLoading && data.length > 6) ? 'End' : ''}
+            {isFetchingNextPage ? 'Loading....' : (!isLoading && data.length > 6) ? 'END' : ''}
         </Text>
     );
 
@@ -109,7 +109,7 @@ const style = StyleSheet.create({
         textAlign: 'center',
         fontSize: Typography.getFontSize(22),
         color: Colors.RED2,
-        paddingBottom: 80,
+        paddingBottom: 85,
     }
 });
 

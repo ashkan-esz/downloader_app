@@ -16,4 +16,4 @@ export {default as MoviePlotTrailer} from './MoviePlotTrailer';
 export {default as MovieScreenDetailsSection} from './MovieScreenDetailsSection';
 export {default as MovieScreenDownloadSection} from './MovieScreenDownloadSection';
 export {default as MovieScreenUpdateSection} from './MovieScreenUpdateSection';
-export {default as FilterBox} from './FilterBox';
+export {default as FilterType} from './FilterType';

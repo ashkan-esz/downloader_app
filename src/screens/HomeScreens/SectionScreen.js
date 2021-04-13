@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {LayoutAnimation, StyleSheet, View} from 'react-native';
+import {LayoutAnimation, Platform, StyleSheet, UIManager, View} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {SectionMovieList} from "../../components/organisms";
-import {SectionNavBar, FilterBox} from "../../components/molecules";
+import {SectionNavBar, FilterType} from "../../components/molecules";
 import {ScrollTop} from "../../components/atoms";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "react-query";
@@ -15,16 +15,15 @@ const SectionScreen = () => {
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
     const [expanded, setExpanded] = useState(false);
-    const [filters, setFilters] = useState({
-        types: ['movie', 'serial'],
-        imdbScore: [0, 10],
-        genres: null,
-    });
+    const [types, setTypes] = useState(['movie', 'serial']);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
 
     useEffect(() => {
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
         setTimeout(() => setChangedTab(route.params.startTab), 5)
     }, []);
 
@@ -37,21 +36,21 @@ const SectionScreen = () => {
         let result;
         if (TAB) {
             if (TAB === 'recent') {
-                result = await getNews(filters.types, 'medium', 1);
+                result = await getNews(types, 'medium', 1);
             } else if (TAB === 'updates') {
-                result = await getUpdates(filters.types, 'medium', 1);
+                result = await getUpdates(types, 'medium', 1);
             } else if (TAB === 'populars') {
-                result = await getTopLikes(filters.types, 'medium', 1);
+                result = await getTopLikes(types, 'medium', 1);
             } else if (TAB === 'todaySeries') {
                 result = await getTimeLine_day(0, 1);
             }
         } else {
             if (tab === 'recent') {
-                result = await getNews(filters.types, 'medium', pageParam);
+                result = await getNews(types, 'medium', pageParam);
             } else if (tab === 'updates') {
-                result = await getUpdates(filters.types, 'medium', pageParam);
+                result = await getUpdates(types, 'medium', pageParam);
             } else if (tab === 'populars') {
-                result = await getTopLikes(filters.types, 'medium', pageParam);
+                result = await getTopLikes(types, 'medium', pageParam);
             } else if (tab === 'todaySeries') {
                 result = await getTimeLine_day(0, pageParam);
             }
@@ -69,19 +68,19 @@ const SectionScreen = () => {
         async function prefetchData() {
             let promiseArray = [];
             let promise1 = queryClient.prefetchInfiniteQuery(
-                ['recent', 'sectionScreen', filters.types],
+                ['recent', 'sectionScreen', types],
                 () => getData({TAB: 'recent'}));
             promiseArray.push(promise1);
             let promise2 = queryClient.prefetchInfiniteQuery(
-                ['updates', 'sectionScreen', filters.types],
+                ['updates', 'sectionScreen', types],
                 () => getData({TAB: 'updates'}));
             promiseArray.push(promise2);
             let promise3 = queryClient.prefetchInfiniteQuery(
-                ['populars', 'sectionScreen', filters.types],
+                ['populars', 'sectionScreen', types],
                 () => getData({TAB: 'populars'}));
             promiseArray.push(promise3);
             let promise4 = queryClient.prefetchInfiniteQuery(
-                ['todaySeries', 'sectionScreen', filters.types],
+                ['todaySeries', 'sectionScreen', types],
                 () => getData({TAB: 'todaySeries'}));
             promiseArray.push(promise4);
             await Promise.all(promiseArray);
@@ -91,7 +90,7 @@ const SectionScreen = () => {
     }, []);
 
     const {data, fetchNextPage, isLoading, isFetchingNextPage, isError} = useInfiniteQuery(
-        [tab, 'sectionScreen', filters.types],
+        [tab, 'sectionScreen', types],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
@@ -117,7 +116,7 @@ const SectionScreen = () => {
         setRefreshing(true);
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
-            let query = queryClient.refetchQueries([sections[i], 'sectionScreen', filters.types]);
+            let query = queryClient.refetchQueries([sections[i], 'sectionScreen', types]);
             promiseArray.push(query);
         }
         await Promise.all(promiseArray);
@@ -125,7 +124,7 @@ const SectionScreen = () => {
     };
 
     const _retry = async () => {
-        await queryClient.refetchQueries([tab, 'sectionScreen', filters.types]);
+        await queryClient.refetchQueries([tab, 'sectionScreen', types]);
     };
 
     return (
@@ -141,11 +140,11 @@ const SectionScreen = () => {
                 />
 
                 {
-                    changedTab !== 'todaySeries' && <FilterBox
+                    changedTab !== 'todaySeries' && <FilterType
                         expanded={expanded}
                         setExpanded={setExpanded}
-                        filters={filters}
-                        setFilters={setFilters}
+                        types={types}
+                        setTypes={setTypes}
                     />
                 }
 
@@ -167,7 +166,7 @@ const SectionScreen = () => {
                 <ScrollTop
                     flatListRef={flatListRef}
                     show={(data.pages[0].length > 0 && !isLoading && tab === changedTab && !isError)}
-                    bottom={changedTab !== 'todaySeries' ? (expanded ? 115 : 70) : 25}
+                    bottom={changedTab !== 'todaySeries' ? (expanded ? 110 : 70) : 25}
                     right={10}
                 />
 

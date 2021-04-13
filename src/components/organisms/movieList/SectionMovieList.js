@@ -115,7 +115,7 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(22),
         color: Colors.RED2,
         paddingTop: 0,
-        paddingBottom: 30,
+        paddingBottom: 70,
     },
 });
 

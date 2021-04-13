@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, LayoutAnimation} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {TrailersMovieList} from "../../components/organisms";
-import {FilterBox} from "../../components/molecules";
+import {FilterType} from "../../components/molecules";
 import {ScrollTop} from "../../components/atoms";
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {getTrailers} from "../../api";
@@ -12,11 +12,7 @@ const TrailersScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [shouldShow, setShouldShow] = useState(false);
     const [expanded, setExpanded] = useState(false);
-    const [filters, setFilters] = useState({
-        types: ['movie', 'serial'],
-        imdbScore: [0, 10],
-        genres: null,
-    });
+    const [types, setTypes] = useState(['movie', 'serial']);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
 
@@ -30,7 +26,7 @@ const TrailersScreen = () => {
     }
 
     async function getData({pageParam = 1}) {
-        let result = await getTrailers(filters.types, pageParam);
+        let result = await getTrailers(types, pageParam);
         if (result !== 'error') {
             return result;
         } else {
@@ -39,7 +35,7 @@ const TrailersScreen = () => {
     }
 
     const {data, fetchNextPage, isLoading, isFetchingNextPage, isError} = useInfiniteQuery(
-        ['trailers', 'trailersScreen', filters.types],
+        ['trailers', 'trailersScreen', types],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => allPages.length + 1,
@@ -49,7 +45,7 @@ const TrailersScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries(['trailers', 'trailersScreen', filters.types]);
+        await queryClient.refetchQueries(['trailers', 'trailersScreen', types]);
         setRefreshing(false);
     };
 
@@ -57,11 +53,11 @@ const TrailersScreen = () => {
         <ScreenLayout paddingSides={10}>
             <View style={style.container}>
 
-                <FilterBox
+                <FilterType
                     expanded={expanded}
                     setExpanded={setExpanded}
-                    filters={filters}
-                    setFilters={setFilters}
+                    types={types}
+                    setTypes={setTypes}
                 />
 
                 <TrailersMovieList
@@ -80,7 +76,7 @@ const TrailersScreen = () => {
                 <ScrollTop
                     flatListRef={flatListRef}
                     show={(data.pages[0].length > 0 && !isLoading && shouldShow && !isError)}
-                    bottom={expanded ? 110 : 65}
+                    bottom={expanded ? 105 : 65}
                     right={10}
                 />
 
