@@ -3,7 +3,6 @@ import {View, StyleSheet, ActivityIndicator, FlatList, RefreshControl} from 'rea
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {TrailerMovieCard} from "../../molecules";
-import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -41,11 +40,11 @@ const trailersMovieList = ({
     const keyExtractor = (item) => item.title;
     const renderItem = ({item}) => (
         <TrailerMovieCard
-            poster={homeStackHelpers.getPoster(item.poster)}
-            trailer={homeStackHelpers.getTrailer(item.trailers, '720')}
+            posters={item.posters}
+            trailer={item.trailers ? item.trailers[0].link : ''}
             id={item._id}
-            title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
-            rating={homeStackHelpers.getRating(item.rating)}
+            title={item.rawTitle}
+            rating={item.rating.imdb || item.rating.myAnimeList}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}

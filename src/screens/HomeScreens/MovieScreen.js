@@ -9,8 +9,13 @@ import {useQuery, useQueryClient} from "react-query";
 import {homeStackHelpers} from "../../helper";
 import {searchByID} from "../../api";
 
+//todo : fix title show on poster
+//todo : show alternate title
 //todo : add like/dislike number and functionality to like
 //todo : enhanced trailer watching
+//todo : show more data
+//todo : add watch online section
+//todo : add subtitle section
 //todo : add cast section
 
 const MovieScreen = () => {
@@ -29,7 +34,7 @@ const MovieScreen = () => {
     }
 
     const {data, isLoading, isError} = useQuery(
-        [routeParams.title, routeParams.poster],
+        [routeParams.title, routeParams.posters[0]],
         getData,
         {
             placeholderData: null,
@@ -40,12 +45,12 @@ const MovieScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries([routeParams.title, routeParams.poster]);
+        await queryClient.refetchQueries([routeParams.title, routeParams.posters[0]]);
         setRefreshing(false);
     }
 
     const _retry = async () => {
-        await queryClient.resetQueries([routeParams.title, routeParams.poster]);
+        await queryClient.resetQueries([routeParams.title, routeParams.posters[0]]);
     }
 
     const episodesOrDuration = data !== null
@@ -68,9 +73,10 @@ const MovieScreen = () => {
                     <MovieTopPoster
                         title={routeParams.title}
                         episodesDuration={episodesOrDuration}
-                        poster={routeParams.poster}
+                        poster={routeParams.posters.length > 0 ? routeParams.posters[0] : ''}
                         rating={routeParams.rating}
                         genres={data ? data.genres : []}
+                        posters={data ? data.posters : []}
                     />
 
                     {

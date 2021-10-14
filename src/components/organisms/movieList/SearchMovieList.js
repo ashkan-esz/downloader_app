@@ -3,7 +3,6 @@ import {View, StyleSheet, Keyboard, FlatList} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieSearchNotFound, MovieError} from "../../atoms";
 import {SearchMovieCard} from "../../molecules";
-import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -41,16 +40,16 @@ const SearchMovieList = ({
     }
 
 
-    const keyExtractor = (item) => item.title + item.year;
+    const keyExtractor = (item) => item.title + item.type + item.year;
     const renderItem = ({item}) => (
         <SearchMovieCard
-            poster={homeStackHelpers.getPoster(item.poster)}
-            title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
+            posters={item.posters}
+            title={item.rawTitle}
             premiered={item.premiered}
             type={item.type}
             extraData={{
                 id: item._id,
-                rating: homeStackHelpers.getRating(item.rating),
+                rating: item.rating.imdb || item.rating.myAnimeList,
             }}
         />
     );

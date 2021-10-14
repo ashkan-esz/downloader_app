@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 const SectionMovieCard = ({
                               extraStyle,
                               tab,
-                              poster,
+                              posters,
                               id,
                               title,
                               rating,
@@ -29,7 +29,7 @@ const SectionMovieCard = ({
     const navigateToMovieScreen = () => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
-            id, title, type, poster, rating
+            id, title, type, posters, rating
         })
     }
 
@@ -56,7 +56,7 @@ const SectionMovieCard = ({
             <View style={[style.container, extraStyle]}>
                 <Image
                     containerStyle={style.image}
-                    source={poster ? {uri: poster} : null}
+                    source={posters.length > 0 ? {uri: posters[0]} : null}
                 />
                 <View style={style.infoContainer}>
                     <Text style={[style.title, titleFontSize]} numberOfLines={1}>
@@ -162,7 +162,7 @@ const style = StyleSheet.create({
 SectionMovieCard.propTypes = {
     extraStyle: PropTypes.object,
     tab: PropTypes.string.isRequired,
-    poster: PropTypes.any.isRequired,
+    posters: PropTypes.array.isRequired,
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,

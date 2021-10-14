@@ -4,14 +4,13 @@ import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
 import {getNews} from "../../../api";
-import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import {useQuery} from "react-query";
 
 
 const HomeSoonList = () => {
     async function getData() {
-        let result = await getNews(['movie', 'serial'], 'low', 1); //todo : replace with soon api
+        let result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'low', 1); //todo : replace with soon api
         if (result !== 'error') {
             return result;
         } else {
@@ -60,9 +59,9 @@ const HomeSoonList = () => {
                         return (
                             <HomeMovieCard
                                 extraStyle={style.movieCard}
-                                poster={homeStackHelpers.getPoster(item.poster)}
+                                posters={item.posters}
                                 id={item._id}
-                                title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
+                                title={item.rawTitle}
                                 type={''}
                                 rating={0}
                                 noRating={true}

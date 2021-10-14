@@ -1,20 +1,16 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Divider, Text} from "react-native-elements";
-import {MovieTrailerView} from "../atoms";
+import MovieTrailerView from "./MovieTrailerView";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MoviePlotTrailer = ({plot, trailer}) => {
+const MovieTrailer = ({trailer}) => {
     const [overlay, setOverlay] = useState(false);
 
     return (
         <View style={style.container}>
-            <Text style={style.section}>
-                PLOT
-            </Text>
-
             <TouchableOpacity
                 style={[style.trailerButtonContainer, !trailer && style.disableTrailerButton]}
                 onPress={() => setOverlay(true)}
@@ -31,10 +27,6 @@ const MoviePlotTrailer = ({plot, trailer}) => {
                 setOverlay={setOverlay}
                 overlay={overlay}
             />
-
-            <Text style={style.plotText}>
-                {plot || 'no summary available.'}
-            </Text>
         </View>
     );
 };
@@ -42,18 +34,8 @@ const MoviePlotTrailer = ({plot, trailer}) => {
 const style = StyleSheet.create({
     container: {
         width: '100%',
-        marginTop: 10,
+        marginTop: 15,
         paddingLeft: 10,
-    },
-    section: {
-        fontSize: Typography.getFontSize(24),
-        color: 'cyan',
-        marginBottom: 15,
-    },
-    plotText: {
-        fontSize: Typography.getFontSize(16),
-        width: '100%',
-        color: '#fff',
     },
     trailerButtonContainer: {
         position: 'absolute',
@@ -67,21 +49,20 @@ const style = StyleSheet.create({
         color: '#fff',
     },
     trailerButtonUnderLine: {
-        backgroundColor: 'cyan',
+        backgroundColor: 'red',
         width: '80%',
         height: 2,
-        marginTop: 3,
+        marginTop: 4,
     },
     disableTrailerButton: {
         opacity: 0.3
     }
 });
 
-MoviePlotTrailer.propTypes = {
-    plot: PropTypes.string.isRequired,
+MovieTrailer.propTypes = {
     trailer: PropTypes.string.isRequired,
 }
 
 
-export default MoviePlotTrailer;
+export default MovieTrailer;
 

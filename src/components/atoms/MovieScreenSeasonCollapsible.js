@@ -11,11 +11,17 @@ import PropTypes from 'prop-types';
 
 const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
+    const [seasonsEpisodes, setSeasonsEpisodes] = useState([]);
 
     useEffect(() => {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
+    }, []);
+
+    useEffect(() => {
+        let temp = homeStackHelpers.getSeasonsEpisodes(seasons, episodes, latestData);
+        setSeasonsEpisodes(temp);
     }, []);
 
     const toggleExpand = (index) => {
@@ -28,12 +34,13 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) 
     }
 
     const _renderHeader = (item, index) => {
-        const seasonEpisodes = homeStackHelpers.filterReleasedEpisodes(episodes, latestData)
-            .filter(value => value.season === item.season);
-        const releasedEpisodesText = seasonEpisodes.length !== item.episodes
-            ? ` | released : ${seasonEpisodes.length}`
+        const releasedEpisodesText = item.releasedEpisodesNumber !== item.episodesNumber
+            ? ` | released : ${item.releasedEpisodesNumber}`
             : '';
         const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
+        const gradientStyle = item.releasedEpisodesNumber === 0
+            ? [style.headerGradient, {opacity: 0.4}]
+            : style.headerGradient;
 
         return (
             <TouchableOpacity onPress={() => toggleExpand(index)} activeOpacity={0.7}>
@@ -42,10 +49,10 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) 
                     start={[0, 0]}
                     end={[1, 1]}
                     locations={[0, 1]}
-                    style={style.headerGradient}
+                    style={gradientStyle}
                 >
                     <Text style={style.headerText}>
-                        {'Season : ' + item.season + ' | Episodes : ' + item.episodes + releasedEpisodesText}
+                        {'Season : ' + item.seasonNumber + ' | Episodes : ' + item.episodesNumber + releasedEpisodesText}
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>
@@ -53,10 +60,11 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) 
     }
 
     const _renderContent = (item) => {
-        const filterEpisodes = episodes.filter(value => value.season === item.season);
+        const filterEpisodes = episodes.filter(value => value.season === item.seasonNumber);
         return (
             <MovieScreenEpisodeCollapsible
                 sources={sources}
+                seasonNumber={item.seasonNumber}
                 episodes={filterEpisodes}
             />
         )
@@ -64,7 +72,7 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) 
 
     return (
         <CustomAccordion
-            sections={seasons}
+            sections={seasonsEpisodes}
             expandedIndex={expandedIndex}
             renderHeader={_renderHeader}
             renderContent={_renderContent}

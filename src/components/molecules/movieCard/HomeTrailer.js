@@ -7,13 +7,13 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeTrailer = ({extraStyle, poster, trailer, title, genres, type, extraData}) => {
+const HomeTrailer = ({extraStyle, posters, trailer, title, genres, type, extraData}) => {
     const navigation = useNavigation();
 
     const navigateToMovieScreen = () => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
-            title, type, poster, ...extraData
+            title, type, posters, ...extraData
         })
     }
 
@@ -23,7 +23,7 @@ const HomeTrailer = ({extraStyle, poster, trailer, title, genres, type, extraDat
             <TrailerImageSwitch
                 videoStyle={style.video}
                 trailer={trailer}
-                poster={poster}
+                poster={posters[0]}
                 onLongPress={navigateToMovieScreen}
             />
 
@@ -96,7 +96,7 @@ const style = StyleSheet.create({
 
 HomeTrailer.propTypes = {
     extraStyle: PropTypes.object,
-    poster: PropTypes.string.isRequired,
+    posters: PropTypes.array.isRequired,
     trailer: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,

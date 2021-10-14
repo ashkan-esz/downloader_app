@@ -6,18 +6,18 @@ import {Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const SearchMovieCard = ({extraStyle, poster, title, premiered, type, extraData}) => {
+const SearchMovieCard = ({extraStyle, posters, title, premiered, type, extraData}) => {
     const navigation = useNavigation();
 
     const navigateToMovieScreen = () => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
-            title, type, poster, ...extraData
+            title, type, posters, ...extraData
         })
     }
 
     const typeColor = {
-        color: type === 'movie' ? 'red' : 'cyan',
+        color: type.includes('movie') ? 'red' : 'cyan',
     }
     const titleFontSize = {
         fontSize: ((title.length - 4) * Typography.getFontSize(16) < Mixins.getWindowWidth(28))
@@ -33,7 +33,7 @@ const SearchMovieCard = ({extraStyle, poster, title, premiered, type, extraData}
             <View style={[style.container, extraStyle]}>
                 <Image
                     style={style.image}
-                    source={poster ? {uri: poster} : null}
+                    source={posters.length > 0 ? {uri: posters[0]} : null}
                     PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
                     testID={'movie-card'}
                 />
@@ -73,7 +73,7 @@ const style = StyleSheet.create({
 
 SearchMovieCard.propTypes = {
     extraStyle: PropTypes.object,
-    poster: PropTypes.any.isRequired,
+    posters: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,

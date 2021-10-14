@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 const TrailerMovieCard = ({
                               extraStyle,
-                              poster,
+                              posters,
                               trailer,
                               id,
                               title,
@@ -29,7 +29,7 @@ const TrailerMovieCard = ({
     const navigateToMovieScreen = () => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
-            id, title, type, poster, rating
+            id, title, type, posters, rating
         })
     }
 
@@ -45,7 +45,7 @@ const TrailerMovieCard = ({
             <TrailerImageSwitch
                 videoStyle={style.video}
                 trailer={trailer}
-                poster={poster}
+                poster={posters.length > 0 ? posters[0] : ''}
                 onLongPress={navigateToMovieScreen}
             />
 
@@ -155,7 +155,7 @@ const style = StyleSheet.create({
 
 TrailerMovieCard.propTypes = {
     extraStyle: PropTypes.object,
-    poster: PropTypes.any.isRequired,
+    posters: PropTypes.array.isRequired,
     trailer: PropTypes.any.isRequired,
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

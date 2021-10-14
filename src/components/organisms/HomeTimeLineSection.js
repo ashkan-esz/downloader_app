@@ -6,7 +6,6 @@ import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from "@react-navigation/native";
 import {getTimeLine_day} from "../../api";
-import {homeStackHelpers} from "../../helper";
 import {Mixins, Typography} from "../../styles";
 
 //todo : fix wasted stale data
@@ -83,14 +82,14 @@ const HomeTimeLineSection = () => {
                                 return (
                                     <HomeMovieCard
                                         key={index}
-                                        poster={homeStackHelpers.getPoster(item.poster)}
+                                        posters={item.posters}
                                         id={item._id}
-                                        title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
+                                        title={item.rawTitle}
                                         type={item.type}
                                         tab={'todaySeries'}
                                         latestData={item.latestData}
                                         nextEpisode={item.nextEpisode}
-                                        rating={homeStackHelpers.getRating(item.rating)}
+                                        rating={item.rating.imdb || item.rating.myAnimeList}
                                     />
                                 );
                             })

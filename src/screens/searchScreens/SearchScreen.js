@@ -11,7 +11,7 @@ import {searchTitle} from "../../api";
 const SearchScreen = () => {
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial']);
+    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
     const [refreshing, setRefreshing] = useState(false);
     const searchBarRef = useRef();
     const flatListRef = useRef();

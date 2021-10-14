@@ -8,13 +8,13 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeMovieCard = ({extraStyle, poster, id, title, type, tab, latestData, nextEpisode, rating, noRating}) => {
+const HomeMovieCard = ({extraStyle, posters, id, title, type, tab, latestData, nextEpisode, rating, noRating}) => {
     const navigation = useNavigation();
 
     const navigateToMovieScreen = () => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
-            id, title, type, poster, rating
+            id, title, type, posters, rating
         })
     }
 
@@ -38,7 +38,7 @@ const HomeMovieCard = ({extraStyle, poster, id, title, type, tab, latestData, ne
             <View style={[style.container, extraStyle]}>
                 <Image
                     style={[style.image, imageBorder]}
-                    source={poster ? {uri: poster} : null}
+                    source={posters.length > 0 ? {uri: posters[0]} : null}
                     PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
                     testID={'movie-card'}
                 />
@@ -84,7 +84,7 @@ const style = StyleSheet.create({
 
 HomeMovieCard.propTypes = {
     extraStyle: PropTypes.object,
-    poster: PropTypes.any.isRequired,
+    posters: PropTypes.array.isRequired,
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     type: PropTypes.string,
@@ -95,8 +95,10 @@ HomeMovieCard.propTypes = {
     noRating: PropTypes.bool,
 }
 
+//todo :
 const areEqual = (prevProps, nextProps) => {
     return prevProps.poster === nextProps.poster;
 }
 
-export default memo(HomeMovieCard, areEqual);
+// export default memo(HomeMovieCard, areEqual);
+export default HomeMovieCard;

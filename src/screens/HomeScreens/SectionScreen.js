@@ -15,7 +15,7 @@ const SectionScreen = () => {
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial']);
+    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();

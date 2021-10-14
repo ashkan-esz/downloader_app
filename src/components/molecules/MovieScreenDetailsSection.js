@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 
 const MovieScreenDetailsSection = ({data}) => {
     const {
-        type, premiered, status,
+        type, status,
+        premiered, year, endYear,
         seasons, episodes, duration,
         latestData,
         country, movieLang,
@@ -17,26 +18,42 @@ const MovieScreenDetailsSection = ({data}) => {
 
     const numberOfEpisodes = homeStackHelpers.filterReleasedEpisodes(episodes, latestData).length;
 
+    const getType = () => {
+        return type
+            .split('_')
+            .map(value => value.charAt(0).toUpperCase() + value.slice(1))
+            .join(' ');
+    }
+
+    const getYear = () => {
+        if (year === endYear) {
+            return year;
+        }
+        let temp = endYear || 'Now';
+        return year + ' - ' + temp;
+    }
+
     return (
         <View style={style.container}>
             <Text style={style.section}>
                 INFO
             </Text>
 
-            <View style={style.row}>
-                <Text style={style.text}>
-                    <Text style={style.statement}>Type : </Text> {type}
-                </Text>
-                <Text style={style.text}>
-                    <Text style={style.statement}>Year : </Text> {premiered.split('-').slice(0, 2).join('-')}
-                </Text>
-                <Text style={style.text}>
-                    <Text style={style.statement}>Duration : </Text> {duration || 'unknown'}
-                </Text>
-            </View>
+            <Text style={style.text}>
+                <Text style={style.statement}>Type : </Text> {getType()}
+            </Text>
+            <Text style={style.text}>
+                <Text style={style.statement}>Duration : </Text> {duration || 'unknown'}
+            </Text>
+            <Text style={style.text}>
+                <Text style={style.statement}>Premiered : </Text> {premiered}
+            </Text>
+            <Text style={style.text}>
+                <Text style={style.statement}>Year : </Text> {getYear()}
+            </Text>
 
             {
-                type === 'serial' && <View style={style.row}>
+                type === 'serial' && <View>
                     <Text style={style.text}>
                         <Text style={style.statement}>Seasons : </Text> {seasons.length}
                     </Text>
@@ -63,13 +80,10 @@ const MovieScreenDetailsSection = ({data}) => {
                 <Text style={style.statement}>BoxOffice :</Text> {boxOffice || 'unknown'}
             </Text>
             <Text style={style.text}>
-                <Text style={style.statement}>Director :</Text> {data.director || 'unknown'}
+                <Text style={style.statement}>Directors :</Text> {data.directors.map(item => item.rawName).join(', ')}
             </Text>
             <Text style={style.text}>
-                <Text style={style.statement}>Writer :</Text> {data.writer.split(',').join(' , ') || 'unknown'}
-            </Text>
-            <Text style={style.text}>
-                <Text style={style.statement}>Cast :</Text> {data.cast.join(' ,  ') || 'unknown'}
+                <Text style={style.statement}>Writers :</Text> {data.writers.map(item => item.rawName).join(', ')}
             </Text>
 
         </View>
@@ -79,13 +93,13 @@ const MovieScreenDetailsSection = ({data}) => {
 const style = StyleSheet.create({
     container: {
         width: '100%',
-        marginTop: 20,
+        marginTop: 25,
         paddingLeft: 8,
         paddingRight: 8,
     },
     section: {
         fontSize: Typography.getFontSize(24),
-        color: 'cyan',
+        color: Colors.SectionHeader,
         paddingLeft: 2,
         marginBottom: 10,
     },
@@ -95,6 +109,7 @@ const style = StyleSheet.create({
     },
     text: {
         fontSize: Typography.getFontSize(16),
+        textTransform: 'capitalize',
         color: '#fff',
         marginTop: 5
     },

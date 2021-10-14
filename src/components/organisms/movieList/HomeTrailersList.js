@@ -6,7 +6,6 @@ import {HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery} from "react-query";
 import {getTrailers} from "../../../api";
-import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 
 
@@ -14,7 +13,7 @@ const HomeTrailersList = () => {
     const navigation = useNavigation();
 
     async function getData() {
-        let result = await getTrailers(['movie', 'serial'], 1);
+        let result = await getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 1);
         if (result !== 'error') {
             return result;
         } else {
@@ -58,14 +57,14 @@ const HomeTrailersList = () => {
                 keyExtractor={(item => item.title)}
                 renderItem={({item}) => (
                     <HomeTrailer
-                        poster={homeStackHelpers.getPoster(item.poster)}
-                        trailer={homeStackHelpers.getTrailer(item.trailers, '720')}
-                        title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
+                        posters={item.posters}
+                        trailer={item.trailers ? item.trailers[0].link : ''}
+                        title={item.rawTitle}
                         genres={item.genres}
                         type={item.type}
                         extraData={{
                             id: item._id,
-                            rating: homeStackHelpers.getRating(item.rating),
+                            rating: item.rating.imdb || item.rating.myAnimeList,
                         }}
                     />
                 )}

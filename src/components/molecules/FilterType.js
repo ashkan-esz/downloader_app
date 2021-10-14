@@ -19,7 +19,7 @@ const FilterType = ({expanded, setExpanded, types, setTypes}) => {
     }
 
     const buttonOpacity = {
-        opacity: expanded ? 1 : 0.5
+        opacity: expanded ? 1 : 0.7
     }
 
     return (
@@ -78,7 +78,8 @@ const style = StyleSheet.create({
         height: 35,
         marginTop: 5,
         marginBottom: 5,
-        backgroundColor: 'purple'
+        backgroundColor: 'purple',
+        borderRadius: 15,
     },
     buttonTitle: {
         fontSize: Typography.getFontSize(20),

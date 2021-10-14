@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import PropTypes from 'prop-types';
 import {Divider, Image, Text} from "react-native-elements";
-import {Mixins, Typography} from "../../styles";
-import {BlurView} from 'expo-blur';
 import {FullScreenImageView} from "../atoms";
+import MovieTopPosterCarousel from "./MovieTopPosterCarousel";
+import {BlurView} from 'expo-blur';
+import {Mixins, Typography} from "../../styles";
+import PropTypes from 'prop-types';
 
 //todo : swipe to see other posters
 
-const MovieTopPoster = ({title, episodesDuration, poster, rating, genres}) => {
+const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, posters}) => {
     const [overlay, setOverlay] = useState(false);
     const image = poster ? {uri: poster} : null;
 
@@ -27,6 +28,10 @@ const MovieTopPoster = ({title, episodesDuration, poster, rating, genres}) => {
                     PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
                     resizeMode={"stretch"}
                     resizeMethod={"resize"}
+                />
+
+                <MovieTopPosterCarousel
+                    posters={posters.length > 0 ? posters : [poster]}
                 />
 
                 <FullScreenImageView
@@ -130,7 +135,7 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        backgroundColor: 'cyan',
+        backgroundColor: 'red',
         width: '80%',
         height: 3,
         marginTop: 3,
@@ -145,7 +150,7 @@ const style = StyleSheet.create({
     },
     ratingNumber: {
         fontSize: Typography.getFontSize(48),
-        color: 'cyan',
+        color: 'red',
     },
 });
 
@@ -155,6 +160,7 @@ MovieTopPoster.propTypes = {
     poster: PropTypes.string,
     rating: PropTypes.number.isRequired,
     genres: PropTypes.array.isRequired,
+    posters: PropTypes.array.isRequired,
 }
 
 

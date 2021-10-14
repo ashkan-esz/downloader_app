@@ -1,16 +1,18 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {MovieScreenDetailsSection, MoviePlotTrailer, MovieScreenUpdateSection} from "../molecules";
-import {homeStackHelpers} from "../../helper";
+import {MoviePlot, MovieTrailer} from "../atoms";
+import {MovieScreenDetailsSection, MovieScreenUpdateSection} from "../molecules";
 import PropTypes from 'prop-types';
 
 
 const MovieScreenInfoSection = ({data}) => {
     return (
         <View>
-            <MoviePlotTrailer
-                plot={data.summary.english}
-                trailer={homeStackHelpers.getTrailer(data.trailers, '720')}
+            <MovieTrailer
+                trailer={data.trailers ? data.trailers[0].link : ''}
+            />
+            <MoviePlot
+                summary={data.summary}
             />
             <MovieScreenDetailsSection
                 data={data}

@@ -96,6 +96,7 @@ const style = StyleSheet.create({
     contentContainer: {
         marginLeft: 7,
         marginBottom: 3,
+        zIndex: -1,
     },
     contentGradient: {
         borderRadius: 7,

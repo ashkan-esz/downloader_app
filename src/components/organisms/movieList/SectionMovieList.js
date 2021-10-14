@@ -3,7 +3,6 @@ import {View, StyleSheet, FlatList, RefreshControl, ActivityIndicator} from 'rea
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {SectionMovieCard} from "../../molecules";
-import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -45,10 +44,10 @@ const SectionMovieList = ({
     const renderItem = ({item}) => (
         <SectionMovieCard
             tab={tab}
-            poster={homeStackHelpers.getPoster(item.poster)}
+            posters={item.posters}
             id={item._id}
-            title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
-            rating={homeStackHelpers.getRating(item.rating)}
+            title={item.rawTitle}
+            rating={item.rating.imdb || item.rating.myAnimeList}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}
@@ -115,7 +114,7 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(22),
         color: Colors.RED2,
         paddingTop: 0,
-        paddingBottom: 70,
+        paddingBottom: 35,
     },
 });
 

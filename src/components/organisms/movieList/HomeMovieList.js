@@ -2,7 +2,6 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
-import {homeStackHelpers} from "../../../helper";
 import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -30,13 +29,13 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
                 <HomeMovieCard
                     key={index}
                     id={item._id}
-                    title={item.rawTitle || homeStackHelpers.getTitleSnakeCase(item.title)}
-                    poster={homeStackHelpers.getPoster(item.poster)}
+                    title={item.rawTitle}
+                    posters={item.posters}
                     type={item.type}
                     tab={tab}
                     latestData={item.latestData}
                     nextEpisode={item.nextEpisode}
-                    rating={homeStackHelpers.getRating(item.rating)}
+                    rating={item.rating.imdb || item.rating.myAnimeList}
                 />
             )))}
         </View>

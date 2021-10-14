@@ -14,9 +14,10 @@ const MovieScreenUpdateSection = ({data}) => {
         episodes, totalDuration, releaseDay
     } = data;
 
-    const episodeText = type === 'serial'
-        ? ('S' + latestData.season + 'E' + latestData.episode + ' , ') +
-        episodes.find(value => value.season === latestData.season && value.episode === latestData.episode).title
+    const episodeData = episodes.find(value => value.season === latestData.season && value.episode === latestData.episode);
+    const episodeText = type.includes('serial')
+        ? ('S' + latestData.season + 'E' + latestData.episode) +
+        (episodeData ? ' , ' + episodeData.title : '')
         : '';
 
     const nextEpisodeText = (nextEpisode && nextEpisode.episode !== latestData.episode)
@@ -99,7 +100,7 @@ const style = StyleSheet.create({
     },
     section: {
         fontSize: Typography.getFontSize(24),
-        color: 'cyan',
+        color: Colors.SectionHeader,
         paddingLeft: 2,
         marginBottom: 10,
     },

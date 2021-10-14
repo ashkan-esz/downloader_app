@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Share} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
+import Clipboard from 'expo-clipboard';
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -16,12 +17,9 @@ const MovieScreenEpisode = ({extraStyle, episode}) => {
         color: '#fff',
     }
 
-    const onShare = async () => {
+    const onShare = async (link) => {
         try {
-            const result = await Share.share({
-                message: episode.link,
-                url: episode.link,
-            });
+            Clipboard.setString(link);
         } catch (error) {
             alert(error.message);
         }
@@ -39,7 +37,7 @@ const MovieScreenEpisode = ({extraStyle, episode}) => {
                 titleStyle={buttonTitleFontSize}
                 title={(episode.sourceName.charAt(0).toUpperCase() + episode.sourceName.slice(1)) + ' | ' + episode.info}
                 type={"clear"}
-                onPress={onShare}
+                onPress={() => onShare(episode.link)}
             />
         </LinearGradient>
     );

@@ -9,8 +9,9 @@ import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
+const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
+    const [episodesLinks, setEpisodesLinks] = useState([]);
 
     useEffect(() => {
         if (Platform.OS === 'android') {
@@ -18,20 +19,26 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
         }
     }, []);
 
+    useEffect(() => {
+        let temp = homeStackHelpers.getEpisodesLinks(sources, seasonNumber, episodes);
+        setEpisodesLinks(temp);
+    }, []);
+
     const toggleExpand = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        if (index === expandedIndex) {
-            setExpandedIndex(-1);
-        } else {
-            setExpandedIndex(index);
-        }
+        setTimeout(() => {
+            if (index === expandedIndex) {
+                setExpandedIndex(-1);
+            } else {
+                setExpandedIndex(index);
+            }
+        }, 100);
     }
 
     const _renderHeader = (item, index) => {
-        const episodeLinks = homeStackHelpers.getEpisodeLinks(sources, item.season, item.episode);
         const blueGradient = ['rgba(63,94,251,1)', 'rgba(252,70,107,1)'];
         const episodeTitle = !item.title.match(/Episode \d/g) ? (' | ' + item.title) : '';
-        const gradientStyle = episodeLinks.length === 0
+        const gradientStyle = item.links.length === 0
             ? [style.headerGradient, {opacity: 0.4}]
             : style.headerGradient;
 
@@ -53,12 +60,10 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
     }
 
     const _renderContent = (item) => {
-        const episodeLinks = homeStackHelpers.getEpisodeLinks(sources, item.season, item.episode);
-
         return (
             <View style={style.contentContainer}>
                 {
-                    episodeLinks.map((value, index) => {
+                    item.links.map((value, index) => {
                         return (
                             <MovieScreenEpisode
                                 key={index}
@@ -75,7 +80,7 @@ const MovieScreenEpisodeCollapsible = ({sources, episodes}) => {
     return (
         <CustomAccordion
             extraStyle={style.container}
-            sections={episodes}
+            sections={episodesLinks}
             expandedIndex={expandedIndex}
             renderHeader={_renderHeader}
             renderContent={_renderContent}
@@ -101,6 +106,7 @@ const style = StyleSheet.create({
     contentContainer: {
         marginLeft: 7,
         marginBottom: 3,
+        zIndex: -1,
     },
     contentGradient: {
         borderRadius: 7,
@@ -110,6 +116,7 @@ const style = StyleSheet.create({
 
 MovieScreenEpisodeCollapsible.propTypes = {
     sources: PropTypes.array.isRequired,
+    seasonNumber: PropTypes.number.isRequired,
     episodes: PropTypes.array.isRequired,
 }
 

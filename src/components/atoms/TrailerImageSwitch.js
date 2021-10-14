@@ -5,6 +5,7 @@ import CustomVideo from "./CustomVideo";
 import {useDebounce} from "../../hooks";
 import PropTypes from 'prop-types';
 
+//todo : fix ugly image
 
 const TrailerImageSwitch = ({videoStyle, trailer, poster, onLongPress = () => {}}) => {
     const [shouldLoad, setShouldLoad] = useState(false);
