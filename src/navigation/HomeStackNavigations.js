@@ -1,7 +1,7 @@
 import React from "react";
 import {SearchScreen, HomeScreen, SectionScreen, TrailersScreen, MovieScreen, TimeLineScreen} from '../screens';
 import {Colors} from "../styles";
-import {createNativeStackNavigator} from "react-native-screens/native-stack";
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
