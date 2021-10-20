@@ -27,7 +27,7 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
         <View style={style.container}>
             {loadedData.map(((item, index) => (
                 <HomeMovieCard
-                    key={index}
+                    key={index + item.title + item.type + tab}
                     id={item._id}
                     title={item.rawTitle}
                     posters={item.posters}

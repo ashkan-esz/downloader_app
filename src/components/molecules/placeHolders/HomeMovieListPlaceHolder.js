@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Image, Text} from "react-native-elements";
-import {CustomRating} from "../../atoms";
+import {View, StyleSheet} from 'react-native';
+import {Text} from "react-native-elements";
+import {CustomRating, CustomImage} from "../../atoms";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -12,11 +12,10 @@ const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true}) => {
         for (let i = 0; i < number; i++) {
             array.push(
                 <View style={style.cardContainer} key={i}>
-                    <Image
-                        style={style.image}
-                        source={null}
-                        PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
-                        testID={'movie-card'}
+                    <CustomImage
+                        extraStyle={style.image}
+                        url={null}
+                        showLoadingImage={true}
                     />
                     <Text style={style.title} numberOfLines={1}>
                         Loading....

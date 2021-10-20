@@ -1,4 +1,5 @@
-import { registerRootComponent } from 'expo';
+import 'expo-asset';
+import {registerRootComponent} from 'expo';
 
 // todo: remove this
 // import React from 'react';

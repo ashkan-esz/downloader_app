@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {Image, Text} from "react-native-elements";
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text} from "react-native-elements";
+import {CustomImage} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -31,11 +32,10 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, extraData
             activeOpacity={1}
         >
             <View style={[style.container, extraStyle]}>
-                <Image
-                    style={style.image}
-                    source={posters.length > 0 ? {uri: posters[0]} : null}
-                    PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
-                    testID={'movie-card'}
+                <CustomImage
+                    extraStyle={style.image}
+                    url={posters[0]}
+                    onPress={navigateToMovieScreen}
                 />
                 <Text style={[style.title, titleFontSize]} numberOfLines={1}>
                     {title}

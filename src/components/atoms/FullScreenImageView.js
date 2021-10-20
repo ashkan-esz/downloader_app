@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import PropTypes from 'prop-types';
-import {Image, Overlay} from "react-native-elements";
+import {View, StyleSheet} from 'react-native';
+import {Overlay} from "react-native-elements";
+import CustomImage from "./CustomImage";
 import {Mixins} from "../../styles";
+import PropTypes from 'prop-types';
 
 
-const FullScreenImageView = ({image, overlay, setOverlay}) => {
+const FullScreenImageView = ({poster, overlay, setOverlay}) => {
     return (
         <View>
             <Overlay
@@ -14,12 +15,10 @@ const FullScreenImageView = ({image, overlay, setOverlay}) => {
                 onBackdropPress={() => setOverlay(false)}
                 animationType={"slide"}
             >
-                <Image
-                    style={style.image}
-                    source={image}
-                    PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
-                    resizeMode={"stretch"}
-                    resizeMethod={"resize"}
+                <CustomImage
+                    extraStyle={style.image}
+                    url={poster}
+                    resizeModeStretch={true}
                     onPress={() => setOverlay(false)}
                 />
             </Overlay>
@@ -42,7 +41,7 @@ const style = StyleSheet.create({
 });
 
 FullScreenImageView.propTypes = {
-    image: PropTypes.any.isRequired,
+    poster: PropTypes.string,
     overlay: PropTypes.bool.isRequired,
     setOverlay: PropTypes.func.isRequired,
 }

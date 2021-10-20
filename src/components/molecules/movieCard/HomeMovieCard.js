@@ -1,8 +1,8 @@
-import React, {memo} from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {Image, Text} from "react-native-elements";
+import React from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text} from "react-native-elements";
 import {useNavigation} from "@react-navigation/native";
-import {CustomRating} from "../../atoms";
+import {CustomRating, CustomImage} from "../../atoms";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -36,12 +36,14 @@ const HomeMovieCard = ({extraStyle, posters, id, title, type, tab, latestData, n
             activeOpacity={1}
         >
             <View style={[style.container, extraStyle]}>
-                <Image
-                    style={[style.image, imageBorder]}
-                    source={posters.length > 0 ? {uri: posters[0]} : null}
-                    PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
-                    testID={'movie-card'}
+
+                <CustomImage
+                    extraStyle={[style.image, imageBorder]}
+                    url={posters[0]}
+                    onPress={navigateToMovieScreen}
+                    resizeModeStretch={true}
                 />
+
                 <Text style={style.title} numberOfLines={1}>
                     {title}
                 </Text>
@@ -95,10 +97,5 @@ HomeMovieCard.propTypes = {
     noRating: PropTypes.bool,
 }
 
-//todo :
-const areEqual = (prevProps, nextProps) => {
-    return prevProps.poster === nextProps.poster;
-}
 
-// export default memo(HomeMovieCard, areEqual);
 export default HomeMovieCard;

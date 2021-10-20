@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Image, Text} from "react-native-elements";
-import {SectionMovieCardRating} from "../../atoms";
+import {Text} from "react-native-elements";
+import {SectionMovieCardRating, CustomImage} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
@@ -54,10 +54,13 @@ const SectionMovieCard = ({
             activeOpacity={1}
         >
             <View style={[style.container, extraStyle]}>
-                <Image
-                    containerStyle={style.image}
-                    source={posters.length > 0 ? {uri: posters[0]} : null}
+
+                <CustomImage
+                    extraStyle={style.image}
+                    url={posters[0]}
+                    onPress={navigateToMovieScreen}
                 />
+
                 <View style={style.infoContainer}>
                     <Text style={[style.title, titleFontSize]} numberOfLines={1}>
                         {title}

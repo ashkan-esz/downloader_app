@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {Divider, Image, Text} from "react-native-elements";
-import {FullScreenImageView} from "../atoms";
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Divider, Text} from "react-native-elements";
+import {CustomImage, FullScreenImageView} from "../atoms";
 import MovieTopPosterCarousel from "./MovieTopPosterCarousel";
 import {BlurView} from 'expo-blur';
 import {Mixins, Typography} from "../../styles";
@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 
 const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, posters}) => {
     const [overlay, setOverlay] = useState(false);
-    const image = poster ? {uri: poster} : null;
 
     const titleSize = {
         fontSize: title.length < 20
@@ -22,12 +21,10 @@ const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, poster
     return (
         <View>
             <View>
-                <Image
-                    style={style.image}
-                    source={image}
-                    PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
-                    resizeMode={"stretch"}
-                    resizeMethod={"resize"}
+                <CustomImage
+                    extraStyle={style.image}
+                    url={poster}
+                    resizeModeStretch={true}
                 />
 
                 <MovieTopPosterCarousel
@@ -37,7 +34,7 @@ const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, poster
                 <FullScreenImageView
                     overlay={overlay}
                     setOverlay={setOverlay}
-                    image={image}
+                    poster={poster}
                 />
 
                 <TouchableOpacity

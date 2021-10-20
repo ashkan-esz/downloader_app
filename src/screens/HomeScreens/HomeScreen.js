@@ -14,7 +14,6 @@ import {useCheckUpdate} from "../../hooks";
 import {Mixins} from "../../styles";
 
 //todo : add a icon for downloading update
-//todo : cache images into local file
 //todo : cache videos into local file
 
 const HomeScreen = () => {
