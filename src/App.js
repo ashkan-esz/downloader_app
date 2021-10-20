@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {AppState, I18nManager, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
@@ -8,7 +8,7 @@ import {AntDesign, Entypo, MaterialIcons, FontAwesome} from '@expo/vector-icons'
 import {Asset} from 'expo-asset';
 import {enableScreens} from 'react-native-screens';
 import {AuthNavigations, HomeStackNavigations} from "./navigation";
-import {setStatusBarStyle} from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
@@ -22,7 +22,6 @@ LogBox.ignoreLogs([
 
 //todo : force to download new version from store
 //todo : bottom of page is white
-//todo : eject to bareflow
 //todo : stop rotation except trailer fullscreen
 //todo : remove unused dependencies
 //todo : handle error show in home screen
@@ -74,10 +73,6 @@ function cacheFonts(fonts) {
 export default function App() {
     const [isReady, setIsReady] = useState(false);
 
-    useEffect(() => {
-        setStatusBarStyle('light');
-    }, []);
-
     const _loadAssetsAsync = async () => {
         const imageAssets = cacheImages([]);
 
@@ -100,6 +95,7 @@ export default function App() {
 
     return (
         <View style={style.container}>
+            <StatusBar style="light"/>
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
                     {/*<AuthNavigations/>*/}
