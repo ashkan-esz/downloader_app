@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 const TrailerMovieCard = ({
                               extraStyle,
+                              isOnScreenView,
                               posters,
                               trailer,
                               id,
@@ -26,7 +27,7 @@ const TrailerMovieCard = ({
 
     const navigation = useNavigation();
 
-    const navigateToMovieScreen = () => {
+    const _navigateToMovieScreen = () => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
             id, title, type, posters, rating
@@ -44,13 +45,14 @@ const TrailerMovieCard = ({
 
             <TrailerImageSwitch
                 videoStyle={style.video}
+                isOnScreenView={isOnScreenView}
                 trailer={trailer}
                 poster={posters.length > 0 ? posters[0] : ''}
-                onLongPress={navigateToMovieScreen}
+                onLongPress={_navigateToMovieScreen}
             />
 
             <TouchableOpacity
-                onPress={navigateToMovieScreen}
+                onPress={_navigateToMovieScreen}
                 activeOpacity={1}
             >
                 <View style={style.infoContainer}>
@@ -106,17 +108,15 @@ const TrailerMovieCard = ({
 const style = StyleSheet.create({
     container: {
         width: '100%',
-        height: Mixins.WINDOW_WIDTH / 1.7 + 160,
+        height: Mixins.WINDOW_WIDTH / 1.6 + 160,
         backgroundColor: Colors.SECONDARY,
         borderRadius: 10,
         marginBottom: 30,
     },
     video: {
-        height: Mixins.WINDOW_WIDTH / 1.7,
+        height: Mixins.WINDOW_WIDTH / 1.6,
         minHeight: 200,
         borderRadius: 5,
-        paddingTop: 30,
-        resizeMode: 'stretch',
     },
     infoContainer: {
         paddingTop: 5,
@@ -155,6 +155,7 @@ const style = StyleSheet.create({
 
 TrailerMovieCard.propTypes = {
     extraStyle: PropTypes.object,
+    isOnScreenView: PropTypes.bool.isRequired,
     posters: PropTypes.array.isRequired,
     trailer: PropTypes.any.isRequired,
     id: PropTypes.string.isRequired,
@@ -170,7 +171,8 @@ TrailerMovieCard.propTypes = {
 }
 
 const areEqual = (prevProps, nextProps) => {
-    return prevProps.poster === nextProps.poster;
+    return prevProps.poster === nextProps.poster &&
+        prevProps.isOnScreenView === nextProps.isOnScreenView;
 }
 
 export default memo(TrailerMovieCard, areEqual);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
@@ -11,6 +11,12 @@ import {Colors, Mixins, Typography} from "../../../styles";
 
 const HomeTrailersList = () => {
     const navigation = useNavigation();
+
+    const [onScreenViewItems, setOnScreenViewItems] = useState([]);
+
+    const handleVieweableItemsChanged = useCallback(({viewableItems}) => {
+        setOnScreenViewItems(viewableItems.map(item => item.index));
+    }, []);
 
     async function getData() {
         let result = await getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 1);
@@ -41,6 +47,22 @@ const HomeTrailersList = () => {
         );
     }
 
+    const _keyExtractor = (item) => item.title;
+    const _renderItem = ({index, item}) => (
+        <HomeTrailer
+            isOnScreenView={onScreenViewItems.includes(index)}
+            posters={item.posters}
+            trailer={item.trailers ? item.trailers[0].link : ''}
+            title={item.rawTitle}
+            genres={item.genres}
+            type={item.type}
+            extraData={{
+                id: item._id,
+                rating: item.rating.imdb || item.rating.myAnimeList,
+            }}
+        />
+    );
+
     return (
         <View style={style.container}>
             <Text style={style.sectionTitle}>New Trailers</Text>
@@ -49,25 +71,14 @@ const HomeTrailersList = () => {
                 onPress={() => navigation.navigate('Trailers')}>
                 See All</Text>
             <FlatList
+                onViewableItemsChanged={handleVieweableItemsChanged}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 style={style.scrollView}
                 data={data}
-                keyExtractor={(item => item.title)}
-                renderItem={({item}) => (
-                    <HomeTrailer
-                        posters={item.posters}
-                        trailer={item.trailers ? item.trailers[0].link : ''}
-                        title={item.rawTitle}
-                        genres={item.genres}
-                        type={item.type}
-                        extraData={{
-                            id: item._id,
-                            rating: item.rating.imdb || item.rating.myAnimeList,
-                        }}
-                    />
-                )}
+                keyExtractor={_keyExtractor}
+                renderItem={_renderItem}
             />
         </View>
     );

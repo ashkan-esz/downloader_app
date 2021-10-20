@@ -2,10 +2,11 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
-import Clipboard from 'expo-clipboard';
+import * as Clipboard from 'expo-clipboard';
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
+//todo : show message after link copy to clipboard
 
 const MovieScreenEpisode = ({extraStyle, episode}) => {
     const gradient = ['rgba(131,58,180,1)', 'rgba(253,29,29,1)', 'rgba(252,176,69,1)'];

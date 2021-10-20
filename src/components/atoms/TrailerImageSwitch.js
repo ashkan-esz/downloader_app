@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Icon, Image} from "react-native-elements";
+import {View, StyleSheet} from 'react-native';
+import {Icon} from "react-native-elements";
 import CustomVideo from "./CustomVideo";
+import CustomImage from "./CustomImage";
 import {useDebounce} from "../../hooks";
 import PropTypes from 'prop-types';
 
-//todo : fix ugly image
 
-const TrailerImageSwitch = ({videoStyle, trailer, poster, onLongPress = () => {}}) => {
+const TrailerImageSwitch = ({videoStyle, isOnScreenView, trailer, poster, onLongPress}) => {
     const [shouldLoad, setShouldLoad] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const debouncedIsPlaying = useDebounce(isPlaying, 15000, true);
@@ -19,11 +19,10 @@ const TrailerImageSwitch = ({videoStyle, trailer, poster, onLongPress = () => {}
     if (!shouldLoad) {
         return (
             <View>
-                <Image
-                    style={videoStyle}
-                    source={poster ? {uri: poster} : null}
-                    PlaceholderContent={<ActivityIndicator size={'large'} color={'blue'}/>}
-                    onLongPress={onLongPress}
+                <CustomImage
+                    extraStyle={videoStyle}
+                    url={poster}
+                    resizeModeStretch={true}
                 />
                 <View style={style.imageTextContainer}>
                     <Icon
@@ -42,9 +41,11 @@ const TrailerImageSwitch = ({videoStyle, trailer, poster, onLongPress = () => {}
     return (
         <CustomVideo
             videoStyle={videoStyle}
+            isOnScreenView={isOnScreenView}
             trailer={trailer}
             poster={poster}
             setIsPlaying={setIsPlaying}
+            startFullscreen={true}
         />
     );
 };
@@ -63,6 +64,7 @@ const style = StyleSheet.create({
 
 TrailerImageSwitch.propTypes = {
     videoStyle: PropTypes.object,
+    isOnScreenView: PropTypes.bool.isRequired,
     trailer: PropTypes.string.isRequired,
     poster: PropTypes.string,
     onLongPress: PropTypes.func,

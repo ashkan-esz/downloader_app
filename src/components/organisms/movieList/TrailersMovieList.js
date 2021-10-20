@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
@@ -19,6 +19,13 @@ const trailersMovieList = ({
                                retry,
                                onScroll
                            }) => {
+
+    const [onScreenViewItems, setOnScreenViewItems] = useState([]);
+
+    const handleVieweableItemsChanged = useCallback(({viewableItems}) => {
+        setOnScreenViewItems(viewableItems.map(item => item.index));
+    }, []);
+
     if (isError) {
         return (
             <MovieError retry={retry}/>
@@ -36,10 +43,10 @@ const trailersMovieList = ({
         );
     }
 
-
-    const keyExtractor = (item) => item.title;
-    const renderItem = ({item}) => (
+    const _keyExtractor = (item) => item.title;
+    const _renderItem = ({index, item}) => (
         <TrailerMovieCard
+            isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
             trailer={item.trailers ? item.trailers[0].link : ''}
             id={item._id}
@@ -69,6 +76,7 @@ const trailersMovieList = ({
     return (
         <View style={style.container}>
             <FlatList
+                onViewableItemsChanged={handleVieweableItemsChanged}
                 ref={flatListRef}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
@@ -76,8 +84,8 @@ const trailersMovieList = ({
                 maxToRenderPerBatch={6}
                 windowSize={51}
                 data={data}
-                keyExtractor={keyExtractor}
-                renderItem={renderItem}
+                keyExtractor={_keyExtractor}
+                renderItem={_renderItem}
                 initialNumToRender={3}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={2}

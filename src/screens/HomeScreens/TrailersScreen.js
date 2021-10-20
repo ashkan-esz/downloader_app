@@ -89,7 +89,7 @@ const style = StyleSheet.create({
     container: {
         position: 'absolute',
         width: '100%',
-        top: 75,
+        top: 85,
     }
 });
 

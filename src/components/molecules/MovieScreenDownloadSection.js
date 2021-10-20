@@ -6,6 +6,7 @@ import {Typography, Colors} from "../../styles";
 import {LinearGradient} from "expo-linear-gradient";
 import PropTypes from 'prop-types';
 
+//todo : check section list
 
 const MovieScreenDownloadSection = ({data}) => {
     const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];

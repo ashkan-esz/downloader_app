@@ -116,7 +116,7 @@ const style = StyleSheet.create({
     container: {
         position: 'absolute',
         width: '100%',
-        top: 80,
+        top: 95,
     }
 });
 

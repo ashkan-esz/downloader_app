@@ -132,7 +132,7 @@ const style = StyleSheet.create({
     container: {
         position: 'absolute',
         width: '100%',
-        top: 70,
+        top: 80,
     },
     topPaging: {
         marginTop: 5,
