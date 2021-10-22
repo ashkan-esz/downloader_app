@@ -4,7 +4,7 @@ import {AppState, I18nManager, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
-import {AntDesign, Entypo, MaterialIcons, FontAwesome} from '@expo/vector-icons';
+import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
 import {enableScreens} from 'react-native-screens';
 import {AuthNavigations, HomeStackNavigations} from "./navigation";
@@ -29,6 +29,7 @@ LogBox.ignoreLogs([
 //todo : load prev data while loading app
 //todo : sort components
 
+//todo : faster rating library
 
 enableScreens();
 
@@ -78,7 +79,7 @@ export default function App() {
 
         //todo : replace icons with expo/vector-icons
         //todo : use less font family
-        const fontAssets = cacheFonts([FontAwesome.font, Entypo.font, MaterialIcons.font, AntDesign.font]);
+        const fontAssets = cacheFonts([FontAwesome.font, AntDesign.font]);
 
         await Promise.all([...imageAssets, ...fontAssets]);
     }
