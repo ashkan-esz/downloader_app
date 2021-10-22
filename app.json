@@ -9,6 +9,11 @@
     "assetBundlePatterns": [
       "assets/images/*"
     ],
+    "splash": {
+      "image": "./src/assets/images/splashScreen.png",
+      "backgroundColor": "#1C1C27",
+      "resizeMode": "contain"
+    },
     "ios": {
       "bundleIdentifier": "com.ashkanaz2828.downloader-app",
       "buildNumber": "1.0.0"
