@@ -66,20 +66,16 @@ function cacheImages(images) {
     });
 }
 
-function cacheFonts(fonts) {
-    return fonts.map(font => Font.loadAsync(font));
-}
-
-
 export default function App() {
     const [isReady, setIsReady] = useState(false);
 
     const _loadAssetsAsync = async () => {
-        const imageAssets = cacheImages([]);
+        const imageAssets = cacheImages([
+            require('./assets/images/loadingImage.png'),
+            require('./assets/images/noImage.png'),
+        ]);
 
-        //todo : replace icons with expo/vector-icons
-        //todo : use less font family
-        const fontAssets = cacheFonts([FontAwesome.font, AntDesign.font]);
+        const fontAssets = [FontAwesome.font, AntDesign.font].map(font => Font.loadAsync(font));
 
         await Promise.all([...imageAssets, ...fontAssets]);
     }

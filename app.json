@@ -6,6 +6,9 @@
     "version": "0.0.1",
     "slug": "downloader_app",
     "updates.checkAutomatically": "ON_ERROR_RECOVERY",
+    "assetBundlePatterns": [
+      "assets/images/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.ashkanaz2828.downloader-app",
       "buildNumber": "1.0.0"
