@@ -2,7 +2,6 @@
   "expo": {
     "jsEngine": "hermes",
     "name": "downloader_app",
-    "icon": "./src/assets/icons/downloader_app_icon.png",
     "version": "0.0.1",
     "slug": "downloader_app",
     "updates.checkAutomatically": "ON_ERROR_RECOVERY",
@@ -14,6 +13,7 @@
       "backgroundColor": "#1C1C27",
       "resizeMode": "contain"
     },
+    "icon": "./assets/icons/logo.png",
     "ios": {
       "bundleIdentifier": "com.ashkanaz2828.downloader-app",
       "buildNumber": "1.0.0"
