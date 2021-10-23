@@ -31,6 +31,9 @@ LogBox.ignoreLogs([
 
 //todo : faster rating library
 
+//todo : fix: statusBar get white while loading splash screen
+
+
 enableScreens();
 
 try {
