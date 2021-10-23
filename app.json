@@ -10,7 +10,7 @@
     ],
     "splash": {
       "image": "./src/assets/images/splashScreen.png",
-      "backgroundColor": "#1C1C27",
+      "backgroundColor": "#22222B",
       "resizeMode": "contain"
     },
     "icon": "./assets/icons/logo.png",
