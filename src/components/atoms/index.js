@@ -21,3 +21,4 @@ export {default as SeeAllButton} from './SeeAllButton';
 export {default as MovieTrailer} from './MovieTrailer';
 export {default as MoviePlot} from './MoviePlot';
 export {default as CustomImage} from './CustomImage';
+export {default as RootToast} from './RootToast';

@@ -3,10 +3,10 @@ import {StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import * as Clipboard from 'expo-clipboard';
+import Toast from 'react-native-toast-message';
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
-//todo : show message after link copy to clipboard
 
 const MovieScreenEpisode = ({extraStyle, episode}) => {
     const gradient = ['rgba(131,58,180,1)', 'rgba(253,29,29,1)', 'rgba(252,176,69,1)'];
@@ -18,9 +18,18 @@ const MovieScreenEpisode = ({extraStyle, episode}) => {
         color: '#fff',
     }
 
-    const onShare = async (link) => {
+    const _onPress = async (link) => {
         try {
             Clipboard.setString(link);
+            Toast.show({
+                type: 'linkToClipboard',
+                text1: 'Link copied to clipboard',
+                position: 'bottom',
+                onPress: () => {
+                    Toast.hide()
+                },
+                visibilityTime: 1000
+            });
         } catch (error) {
             alert(error.message);
         }
@@ -38,7 +47,7 @@ const MovieScreenEpisode = ({extraStyle, episode}) => {
                 titleStyle={buttonTitleFontSize}
                 title={(episode.sourceName.charAt(0).toUpperCase() + episode.sourceName.slice(1)) + ' | ' + episode.info}
                 type={"clear"}
-                onPress={() => onShare(episode.link)}
+                onPress={() => _onPress(episode.link)}
             />
         </LinearGradient>
     );

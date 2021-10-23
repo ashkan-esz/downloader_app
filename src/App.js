@@ -9,6 +9,7 @@ import {Asset} from 'expo-asset';
 import {enableScreens} from 'react-native-screens';
 import {AuthNavigations, HomeStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
+import {RootToast} from './components/atoms';
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
@@ -30,8 +31,6 @@ LogBox.ignoreLogs([
 //todo : sort components
 
 //todo : faster rating library
-
-//todo : fix: statusBar get white while loading splash screen
 
 
 enableScreens();
@@ -101,6 +100,7 @@ export default function App() {
                     {/*<AuthNavigations/>*/}
                     <HomeStackNavigations/>
                 </QueryClientProvider>
+                <RootToast/>
             </NavigationContainer>
         </View>
     );
