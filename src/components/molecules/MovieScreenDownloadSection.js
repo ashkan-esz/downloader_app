@@ -16,6 +16,16 @@ const MovieScreenDownloadSection = ({data}) => {
             <Text style={style.section}>
                 DOWNLOAD
             </Text>
+
+            <View style={style.infoContainer}>
+                <Text style={style.infoText}>{'\u2022'}
+                    <Text style={style.infoText}> No VPN </Text>
+                </Text>
+                <Text style={style.infoText}>{'\u2022'}
+                    <Text style={style.infoText}> Long press to share </Text>
+                </Text>
+            </View>
+
             {
                 data.sources.length === 0
                     ? <TouchableOpacity activeOpacity={0.7}>
@@ -59,7 +69,21 @@ const style = StyleSheet.create({
     section: {
         fontSize: Typography.getFontSize(24),
         color: Colors.SectionHeader,
+        marginBottom: 10,
+    },
+    infoContainer: {
+        backgroundColor: Colors.SECONDARY,
+        height: 70,
+        justifyContent: 'center',
         marginBottom: 20,
+        borderRadius: 5,
+    },
+    infoText: {
+        fontSize: Typography.getFontSize(16),
+        color: Colors.WARNING,
+        marginLeft: 5,
+        marginTop: 2,
+        marginBottom: 2,
     },
     headerGradient: {
         height: 45,
