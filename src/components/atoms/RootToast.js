@@ -17,7 +17,7 @@ const RootToast = () => {
                     height: 30,
                 }}
                 text1Style={{
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: 'normal',
                 }}
                 text1={text1}

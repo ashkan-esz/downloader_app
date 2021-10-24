@@ -9,7 +9,7 @@ import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes}) => {
+const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes, rawTitle}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
     const [episodesLinks, setEpisodesLinks] = useState([]);
 
@@ -68,7 +68,8 @@ const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes}) => {
                             <MovieScreenEpisode
                                 key={index}
                                 extraStyle={style.contentGradient}
-                                episode={value}
+                                linkData={value}
+                                rawTitle={rawTitle}
                             />
                         )
                     })
@@ -118,6 +119,7 @@ MovieScreenEpisodeCollapsible.propTypes = {
     sources: PropTypes.array.isRequired,
     seasonNumber: PropTypes.number.isRequired,
     episodes: PropTypes.array.isRequired,
+    rawTitle: PropTypes.string.isRequired,
 }
 
 

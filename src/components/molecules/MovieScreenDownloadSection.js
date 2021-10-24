@@ -37,9 +37,11 @@ const MovieScreenDownloadSection = ({data}) => {
                             sources={data.sources}
                             seasons={data.seasons}
                             episodes={data.episodes}
+                            rawTitle={data.rawTitle}
                         />
                         : <MovieScreenQualityCollapsible
                             sources={data.sources}
+                            rawTitle={data.rawTitle}
                         />
             }
 

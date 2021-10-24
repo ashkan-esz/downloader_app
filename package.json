@@ -76,6 +76,7 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
+    "react-native-share": "^7.2.0",
     "react-native-toast-message": "^1.6.0",
     "react-native-unimodules": "0.14.10",
     "react-native-web": "~0.13.12",

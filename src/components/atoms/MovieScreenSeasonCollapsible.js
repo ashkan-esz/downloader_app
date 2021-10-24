@@ -9,7 +9,7 @@ import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) => {
+const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, rawTitle}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
     const [seasonsEpisodes, setSeasonsEpisodes] = useState([]);
 
@@ -66,6 +66,7 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes}) 
                 sources={sources}
                 seasonNumber={item.seasonNumber}
                 episodes={filterEpisodes}
+                rawTitle={rawTitle}
             />
         )
     }
@@ -99,6 +100,7 @@ MovieScreenSeasonCollapsible.propTypes = {
     sources: PropTypes.array.isRequired,
     seasons: PropTypes.array.isRequired,
     episodes: PropTypes.array.isRequired,
+    rawTitle: PropTypes.string.isRequired,
 }
 
 
