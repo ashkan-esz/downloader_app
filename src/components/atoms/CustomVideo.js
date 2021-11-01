@@ -34,7 +34,7 @@ const CustomVideo = ({
             videoRef.current.pauseAsync();
         }
     }, [isOnScreenView]);
-    
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
             if (videoRef.current) {
@@ -56,7 +56,7 @@ const CustomVideo = ({
             style={videoStyle}
             source={{uri: trailer}}
             usePoster={true}
-            posterSource={{uri: poster}}
+            posterSource={poster ? {uri: poster} : null}
             posterStyle={[style.video, {resizeMode: 'stretch'}]}
             ref={videoRef}
             rate={1.0}
@@ -74,10 +74,14 @@ const CustomVideo = ({
 const style = StyleSheet.create({});
 
 CustomVideo.propTypes = {
+    poster: null,
+};
+
+CustomVideo.propTypes = {
     videoStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool,
     trailer: PropTypes.string.isRequired,
-    poster: PropTypes.string.isRequired,
+    poster: PropTypes.string,
     setIsPlaying: PropTypes.func.isRequired,
     startFullscreen: PropTypes.bool,
 }

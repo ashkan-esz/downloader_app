@@ -47,7 +47,7 @@ const TrailerMovieCard = ({
                 videoStyle={style.video}
                 isOnScreenView={isOnScreenView}
                 trailer={trailer}
-                poster={posters.length > 0 ? posters[0] : ''}
+                poster={posters[0]}
                 onLongPress={_navigateToMovieScreen}
             />
 
@@ -114,6 +114,7 @@ const style = StyleSheet.create({
         marginBottom: 30,
     },
     video: {
+        width: '100%',
         height: Mixins.WINDOW_WIDTH / 1.6,
         minHeight: 200,
         borderRadius: 5,

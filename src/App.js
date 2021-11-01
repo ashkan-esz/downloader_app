@@ -30,6 +30,9 @@ LogBox.ignoreLogs([
 //todo : load prev data while loading app
 //todo : sort components
 
+//todo : add proguard
+//todo : fix splash screen jump up before end
+
 //todo : faster rating library
 
 

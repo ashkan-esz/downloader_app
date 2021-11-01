@@ -23,6 +23,8 @@ const TrailerImageSwitch = ({videoStyle, isOnScreenView, trailer, poster, onLong
                     extraStyle={videoStyle}
                     url={poster}
                     resizeModeStretch={true}
+                    progressSize={60}
+                    progressThickness={4}
                 />
                 <View style={style.imageTextContainer}>
                     <Icon
