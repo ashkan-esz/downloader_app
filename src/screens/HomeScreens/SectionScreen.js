@@ -6,7 +6,7 @@ import {SectionNavBar, FilterType} from "../../components/molecules";
 import {ScrollTop} from "../../components/atoms";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "react-query";
-import {getNews, getTimeLine_day, getTopLikes, getUpdates} from "../../api";
+import {getNews, getSeriesOfDay, getTopLikes, getUpdates} from "../../api";
 
 
 const SectionScreen = () => {
@@ -42,7 +42,7 @@ const SectionScreen = () => {
             } else if (TAB === 'populars') {
                 result = await getTopLikes(types, 'medium', 1);
             } else if (TAB === 'todaySeries') {
-                result = await getTimeLine_day(0, 1);
+                result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
             }
         } else {
             if (tab === 'recent') {
@@ -52,7 +52,7 @@ const SectionScreen = () => {
             } else if (tab === 'populars') {
                 result = await getTopLikes(types, 'medium', pageParam);
             } else if (tab === 'todaySeries') {
-                result = await getTimeLine_day(0, pageParam);
+                result = await getSeriesOfDay(0, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
             }
         }
 

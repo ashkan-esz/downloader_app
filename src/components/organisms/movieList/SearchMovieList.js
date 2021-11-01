@@ -40,7 +40,9 @@ const SearchMovieList = ({
     }
 
 
-    const keyExtractor = (item) => item.title + item.type + item.year;
+    const keyExtractor = (item) => item.modelName === 'movie'
+        ? item.title + item.type + item.year
+        : item.name + item.gender;
     const renderItem = ({item}) => (
         <SearchMovieCard
             posters={item.posters}

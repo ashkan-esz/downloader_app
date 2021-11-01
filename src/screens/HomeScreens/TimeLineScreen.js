@@ -5,7 +5,7 @@ import {TimeLineMovieList} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {useRoute} from "@react-navigation/native";
-import {getTimeLine_day} from "../../api";
+import {getSeriesOfDay} from "../../api";
 
 
 const TimeLineScreen = () => {
@@ -22,8 +22,8 @@ const TimeLineScreen = () => {
 
     async function getData({pageParam = 1, SPACING = null}) {
         let result = (SPACING !== null)
-            ? await getTimeLine_day(SPACING, pageParam, 3)
-            : await getTimeLine_day(spacing, pageParam, 3);
+            ? await getSeriesOfDay(SPACING, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial'])
+            : await getSeriesOfDay(spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {

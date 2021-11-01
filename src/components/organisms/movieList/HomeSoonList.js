@@ -55,7 +55,7 @@ const HomeSoonList = () => {
                 contentContainerStyle={style.scrollView}
             >
                 {
-                    data.map((item) => {
+                    data.slice(0, 3).map((item) => {
                         return (
                             <HomeMovieCard
                                 extraStyle={style.movieCard}

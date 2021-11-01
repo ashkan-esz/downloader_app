@@ -19,7 +19,7 @@ const HomeTrailersList = () => {
     }, []);
 
     async function getData() {
-        let result = await getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 1);
+        let result = await getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
         if (result !== 'error') {
             return result;
         } else {
@@ -76,7 +76,7 @@ const HomeTrailersList = () => {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 style={style.scrollView}
-                data={data}
+                data={data.slice(0, 3)}
                 keyExtractor={_keyExtractor}
                 renderItem={_renderItem}
             />

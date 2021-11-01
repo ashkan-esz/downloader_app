@@ -26,13 +26,11 @@ const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes, rawTitl
 
     const toggleExpand = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setTimeout(() => {
-            if (index === expandedIndex) {
-                setExpandedIndex(-1);
-            } else {
-                setExpandedIndex(index);
-            }
-        }, 100);
+        if (index === expandedIndex) {
+            setExpandedIndex(-1);
+        } else {
+            setExpandedIndex(index);
+        }
     }
 
     const _renderHeader = (item, index) => {

@@ -5,7 +5,7 @@ import {MovieError, SeeAllButton, TimeLinePaging} from "../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from "@react-navigation/native";
-import {getTimeLine_day} from "../../api";
+import {getSeriesOfDay} from "../../api";
 import {Mixins, Typography} from "../../styles";
 
 //todo : fix wasted stale data
@@ -18,8 +18,8 @@ const HomeTimeLineSection = () => {
 
     async function getData({SPACING = null}) {
         let result = (SPACING !== null)
-            ? await getTimeLine_day(SPACING, 0, 3)
-            : await getTimeLine_day(spacing, 0, 3);
+            ? await getSeriesOfDay(SPACING, 1, ['movie', 'serial', 'anime_movie', 'anime_serial'])
+            : await getSeriesOfDay(spacing, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {
@@ -78,7 +78,7 @@ const HomeTimeLineSection = () => {
                     ? <HomeMovieListPlaceHolder extraStyle={{marginTop: 0}} number={3}/>
                     : <View style={style.movieListContainer}>
                         {
-                            data.map((item, index) => {
+                            data.slice(0, 3).map((item, index) => {
                                 return (
                                     <HomeMovieCard
                                         key={index}

@@ -4,7 +4,7 @@ import {SectionNavBar} from "../molecules";
 import HomeMovieList from "./movieList/HomeMovieList";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from '@react-navigation/native';
-import {getTopLikes, getNews, getUpdates, getTimeLine_day} from "../../api";
+import {getTopLikes, getNews, getUpdates, getSeriesOfDay} from "../../api";
 import {SeeAllButton} from "../atoms";
 
 
@@ -21,23 +21,23 @@ const HomeTopSection = () => {
         let result;
         if (TAB) {
             if (TAB === 'recent') {
-                result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 0, 3);
+                result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
             } else if (TAB === 'updates') {
-                result = await getUpdates(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 0, 3);
+                result = await getUpdates(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
             } else if (TAB === 'populars') {
-                result = await getTopLikes(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 0, 3);
+                result = await getTopLikes(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
             } else if (TAB === 'todaySeries') {
-                result = await getTimeLine_day(0, 0, 3);
+                result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
             }
         } else {
             if (tab === 'recent') {
-                result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 0, 3);
+                result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
             } else if (tab === 'updates') {
-                result = await getUpdates(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 0, 3);
+                result = await getUpdates(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
             } else if (tab === 'populars') {
-                result = await getTopLikes(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 0, 3);
+                result = await getTopLikes(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
             } else if (tab === 'todaySeries') {
-                result = await getTimeLine_day(0, 0, 3);
+                result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
             }
         }
 

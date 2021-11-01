@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, StyleSheet, LayoutAnimation} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {TrailersMovieList} from "../../components/organisms";
@@ -10,15 +10,11 @@ import {getTrailers} from "../../api";
 
 const TrailersScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
-    const [shouldShow, setShouldShow] = useState(false);
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial']);
+    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
 
-    useEffect(() => {
-        setTimeout(() => setShouldShow(true), 5);
-    }, []);
 
     const _onScroll = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -26,7 +22,7 @@ const TrailersScreen = () => {
     }
 
     async function getData({pageParam = 1}) {
-        let result = await getTrailers(types, pageParam);
+        let result = await getTrailers(types, 'medium', pageParam);
         if (result !== 'error') {
             return result;
         } else {
@@ -63,7 +59,7 @@ const TrailersScreen = () => {
                 <TrailersMovieList
                     flatListRef={flatListRef}
                     data={data.pages.flat(1)}
-                    isLoading={isLoading || !shouldShow}
+                    isLoading={isLoading}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}
                     refreshing={refreshing}
@@ -75,7 +71,7 @@ const TrailersScreen = () => {
 
                 <ScrollTop
                     flatListRef={flatListRef}
-                    show={(data.pages[0].length > 0 && !isLoading && shouldShow && !isError)}
+                    show={(data.pages[0].length > 0 && !isLoading && !isError)}
                     bottom={expanded ? 105 : 65}
                     right={10}
                 />
