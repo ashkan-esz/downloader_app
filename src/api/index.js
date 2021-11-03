@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {BASE_URL} from '@env';
 
 const api_withoutCache = axios.create({
-    baseURL: 'https://downloader-node-api.herokuapp.com',
+    baseURL: BASE_URL,
 });
 
 export const searchTitle = async (title, types, dataLevel, page, years = '1900-2025', imdbScores = '0-10', malScores = '0-10') => {
