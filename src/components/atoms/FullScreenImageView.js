@@ -41,7 +41,7 @@ const style = StyleSheet.create({
 });
 
 FullScreenImageView.propTypes = {
-    poster: PropTypes.string,
+    poster: PropTypes.object,
     overlay: PropTypes.bool.isRequired,
     setOverlay: PropTypes.func.isRequired,
 }

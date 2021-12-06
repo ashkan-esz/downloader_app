@@ -28,7 +28,7 @@ const SearchScreen = () => {
 
     const getData = async ({pageParam = 1}) => {
         if (!debouncedSearchValue) {
-            return [];
+            return {movies: [], staff: [], characters: []};
         }
         let result = await searchTitle(debouncedSearchValue, types, 'low', pageParam);
         if (result !== 'error') {
@@ -43,12 +43,16 @@ const SearchScreen = () => {
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0) {
+                if (
+                    lastPage.movies.length % 12 === 0 ||
+                    lastPage.staff.length % 12 === 0 ||
+                    lastPage.characters.length % 12 === 0
+                ) {
                     return allPages.length + 1
                 }
                 return undefined;
             },
-            placeholderData: {pages: [[]]},
+            placeholderData: {pages: [{movies: [], staff: [], characters: []}]},
             keepPreviousData: true
         });
 
@@ -88,7 +92,7 @@ const SearchScreen = () => {
                 <SearchMovieList
                     flatListRef={flatListRef}
                     searchValue={debouncedSearchValue}
-                    data={data.pages.flat(1)}
+                    data={data.pages}
                     isLoading={isLoading}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
@@ -102,7 +106,7 @@ const SearchScreen = () => {
 
                 <ScrollTop
                     flatListRef={flatListRef}
-                    show={(data.pages[0].length > 0 && !isLoading && !isError)}
+                    show={(data.pages[0].movies.length > 0 && !isLoading && !isError)}
                     bottom={expanded ? 105 : 65}
                     right={3}
                 />

@@ -68,7 +68,7 @@ TrailerImageSwitch.propTypes = {
     videoStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool.isRequired,
     trailer: PropTypes.string.isRequired,
-    poster: PropTypes.string,
+    poster: PropTypes.object,
     onLongPress: PropTypes.func,
 }
 

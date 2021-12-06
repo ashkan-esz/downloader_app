@@ -80,10 +80,11 @@ const MovieScreenDetailsSection = ({data}) => {
                 <Text style={style.statement}>BoxOffice :</Text> {boxOffice || 'unknown'}
             </Text>
             <Text style={style.text}>
-                <Text style={style.statement}>Directors :</Text> {data.directors.map(item => item.rawName).join(', ')}
+                <Text style={style.statement}>Directors
+                    :</Text> {data.staff.directors.map(item => item.rawName).join(', ')}
             </Text>
             <Text style={style.text}>
-                <Text style={style.statement}>Writers :</Text> {data.writers.map(item => item.rawName).join(', ')}
+                <Text style={style.statement}>Writers :</Text> {data.staff.writers.map(item => item.rawName).join(', ')}
             </Text>
 
         </View>

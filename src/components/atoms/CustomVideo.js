@@ -81,7 +81,7 @@ CustomVideo.propTypes = {
     videoStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool,
     trailer: PropTypes.string.isRequired,
-    poster: PropTypes.string,
+    poster: PropTypes.object,
     setIsPlaying: PropTypes.func.isRequired,
     startFullscreen: PropTypes.bool,
 }

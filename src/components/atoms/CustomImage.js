@@ -47,7 +47,7 @@ const CustomImage = ({
             <FastImage
                 style={extraStyle}
                 source={(!isError && url) ? {
-                    uri: url,
+                    uri: url.link,
                     priority: FastImage.priority.normal,
                 } : require('../../assets/images/noImage.png')}
                 onError={() => setIsError(true)}
@@ -74,7 +74,7 @@ CustomImage.propTypes = {
 
 CustomImage.propTypes = {
     extraStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
-    url: PropTypes.string,
+    url: PropTypes.object,
     showLoadingImage: PropTypes.bool,
     resizeModeStretch: PropTypes.bool,
     onPress: PropTypes.func,

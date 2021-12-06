@@ -154,7 +154,7 @@ const style = StyleSheet.create({
 MovieTopPoster.propTypes = {
     title: PropTypes.string.isRequired,
     episodesDuration: PropTypes.string.isRequired,
-    poster: PropTypes.string,
+    poster: PropTypes.object,
     rating: PropTypes.number.isRequired,
     genres: PropTypes.array.isRequired,
     posters: PropTypes.array.isRequired,

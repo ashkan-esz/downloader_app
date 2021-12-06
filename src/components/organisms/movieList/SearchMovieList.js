@@ -22,6 +22,7 @@ const SearchMovieList = ({
                              onScroll
                          }) => {
 
+    const moviesData = data.map(item => item.movies).flat(1);
 
     if (!searchValue) {
         return null;
@@ -33,16 +34,15 @@ const SearchMovieList = ({
         );
     }
 
-    if (data.length === 0 && !isLoading && !isFetching) {
+    if (moviesData.length === 0 && !isLoading && !isFetching) {
         return (
             <MovieSearchNotFound/>
         );
     }
 
 
-    const keyExtractor = (item) => item.modelName === 'movie'
-        ? item.title + item.type + item.year
-        : item.name + item.gender;
+    const keyExtractor = (item) => item.title + item.type + item.year;
+
     const renderItem = ({item}) => (
         <SearchMovieCard
             posters={item.posters}
@@ -61,7 +61,7 @@ const SearchMovieList = ({
     };
     const listFooterComponent = () => (
         <Text style={[style.listFooter, loadingPadding]}>
-            {isFetchingNextPage ? 'Loading....' : (!isLoading && data.length > 6) ? 'END' : ''}
+            {isFetchingNextPage ? 'Loading....' : (!isLoading && moviesData.length > 6) ? 'END' : ''}
         </Text>
     );
 
@@ -77,7 +77,7 @@ const SearchMovieList = ({
                 onScroll={onScroll}
                 maxToRenderPerBatch={9}
                 windowSize={51}
-                data={data}
+                data={moviesData}
                 keyExtractor={keyExtractor}
                 renderItem={renderItem}
                 initialNumToRender={12}

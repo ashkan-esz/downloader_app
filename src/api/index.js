@@ -12,10 +12,14 @@ export const searchTitle = async (title, types, dataLevel, page, years = '1900-2
         let response = await api_withoutCache.get(
             `/movies/searchByTitle/${title}/${types}/${dataLevel}/${years}/${imdbScores}/${malScores}/${page}`
         );
-        return response.data || [];
+        return response.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
-            return [];
+            return {
+                movies: [],
+                staff: [],
+                characters: [],
+            };
         }
         return 'error';
     }
