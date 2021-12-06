@@ -13,10 +13,10 @@ const HomeStackNavigations = () => {
                 headerStyle: {
                     backgroundColor: Colors.PRIMARY,
                 },
-                headerHideShadow: true,
                 headerTintColor: '#fff',
-                headerTranslucent: true,
-                stackAnimation: "fade",
+                headerHideShadow: true,
+                headerTransparent: true,
+                animation: "fade",
             }}
         >
             <Stack.Screen

@@ -28,8 +28,8 @@ const LogInScreen = ({navigation}) => {
                     <LogInForm
                         extraStyle={style.loginForm}
                         onSubmit={(data) => {
-                            // console.log(data) //todo : do something with form data
-                            navigation.navigate('Home');
+                            console.log(data) //todo : do something with form data
+                            // navigation.navigate('Home');
                         }}
                     />
 

@@ -3,11 +3,11 @@ import {View, StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
-const passwordStrength = require('check-password-strength');
-import {homeStackHelpers} from "../../helper";
+import {passwordStrength} from 'check-password-strength'
 import {Colors, Typography} from '../../styles';
 import PropsTypes from "prop-types";
 
+const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)])/;
 
 const SignUpForm = ({extraStyle, onSubmit}) => {
     const style = StyleSheet.create({
@@ -30,7 +30,7 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
         }
     });
 
-    const {control, handleSubmit, watch, errors} = useForm();
+    const {control, handleSubmit, watch, formState: {errors}} = useForm();
     const userNameInputRef = useRef();
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
@@ -43,14 +43,14 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
                 onFocus={() => {
                     userNameInputRef.current.focus()
                 }}
-                name="userName"
+                name="username"
                 defaultValue=""
                 rules={{
                     required: {value: true, message: 'This is required'},
-                    minLength: {value: 7, message: 'Too Short'},
-                    maxLength: {value: 50, message: 'Too Long'},
+                    minLength: {value: 6, message: 'Too short'},
+                    maxLength: {value: 50, message: 'Too long'},
                 }}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                     <CustomTextInput
                         extraStyle={style.textInput}
                         value={value}
@@ -59,7 +59,7 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
                         inputRef={userNameInputRef}
                         leftIconName={'user'}
                         iconType={'entypo'}
-                        error={errors.userName}
+                        error={errors.username}
                     />
                 )}
             />
@@ -74,10 +74,10 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
                 defaultValue=""
                 rules={{
                     required: {value: true, message: 'This is required'},
-                    maxLength: {value: 50, message: 'Too Long'},
-                    pattern: {value: homeStackHelpers.emailRegex, message: 'Invalid Email'}
+                    maxLength: {value: 50, message: 'Too long'},
+                    pattern: {value: emailRegex, message: 'Invalid Email'}
                 }}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                     <CustomTextInput
                         extraStyle={style.textInput}
                         value={value}
@@ -100,14 +100,14 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
                 defaultValue=""
                 rules={{
                     required: {value: true, message: 'This is required'},
-                    minLength: {value: 7, message: 'Too Short'},
-                    maxLength: {value: 50, message: 'Too Long'},
-                    validate: (value) => (
-                        passwordStrength(value).value === 'Medium' ||
-                        passwordStrength(value).value === 'Strong') ||
-                        'Weak'
+                    minLength: {value: 8, message: 'Too short'},
+                    maxLength: {value: 50, message: 'Too long'},
+                    validate: {
+                        v1: (value) => value !== watch("username") || 'Password cannot be equal with username',
+                        v2: (value) => passwordStrength(value).value !== 'Weak' || 'Weak',
+                    }
                 }}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                     <CustomTextInput
                         extraStyle={style.textInput}
                         value={value}
@@ -131,9 +131,9 @@ const SignUpForm = ({extraStyle, onSubmit}) => {
                 defaultValue=""
                 rules={{
                     required: {value: true, message: 'This is required'},
-                    validate: value => value === watch("password") || 'password dont match'
+                    validate: value => value === watch("password") || 'Password dont match',
                 }}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                     <CustomTextInput
                         extraStyle={style.textInput}
                         value={value}

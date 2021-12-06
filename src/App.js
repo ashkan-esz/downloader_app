@@ -6,7 +6,6 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
-import {enableScreens} from 'react-native-screens';
 import {AuthNavigations, HomeStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
 import {RootToast} from './components/atoms';
@@ -30,13 +29,13 @@ LogBox.ignoreLogs([
 //todo : load prev data while loading app
 //todo : sort components
 
+
+//todo : add gesture
 //todo : add proguard
 //todo : fix splash screen jump up before end
 
 //todo : faster rating library
 
-
-enableScreens();
 
 try {
     I18nManager.allowRTL(false);

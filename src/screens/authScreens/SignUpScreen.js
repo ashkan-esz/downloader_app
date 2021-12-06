@@ -29,7 +29,7 @@ const SignUpScreen = ({navigation}) => {
                         extraStyle={style.signUpForm}
                         onSubmit={(data) => {
                             console.log(data);//todo : do something with form data
-                            navigation.navigate('Home');
+                            // navigation.navigate('Home');
                         }}
                     />
 

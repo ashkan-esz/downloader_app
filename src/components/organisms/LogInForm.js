@@ -3,13 +3,12 @@ import {View, StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
-import {homeStackHelpers} from "../../helper";
 import {Colors, Typography} from "../../styles";
 import PropsTypes from 'prop-types';
 
 
 const LogInForm = ({extraStyle, onSubmit}) => {
-    const {control, handleSubmit, errors} = useForm();
+    const {control, handleSubmit, watch, formState: {errors}} = useForm();
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
 
@@ -20,22 +19,22 @@ const LogInForm = ({extraStyle, onSubmit}) => {
                 onFocus={() => {
                     emailInputRef.current.focus()
                 }}
-                name="email"
+                name="username_email"
                 defaultValue=""
                 rules={{
                     required: {value: true, message: 'This is required'},
-                    maxLength: {value: 50, message: 'Too Long'},
-                    pattern: {value: homeStackHelpers.emailRegex, message: 'Invalid Email'}
+                    minLength: {value: 6, message: 'Too short'},
+                    maxLength: {value: 50, message: 'Too long'},
                 }}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                     <CustomTextInput
                         extraStyle={style.textInput}
                         value={value}
-                        placeholder={'Email'}
+                        placeholder={'Username or Email'}
                         onChangeText={value => onChange(value)}
                         leftIconName={'email'}
                         inputRef={emailInputRef}
-                        error={errors.email}
+                        error={errors.username_email}
                     />
                 )}
             />
@@ -49,10 +48,11 @@ const LogInForm = ({extraStyle, onSubmit}) => {
                 defaultValue=""
                 rules={{
                     required: {value: true, message: 'This is required'},
-                    minLength: {value: 7, message: 'Too Short'},
-                    maxLength: {value: 50, message: 'Too Long'},
+                    minLength: {value: 8, message: 'Too short'},
+                    maxLength: {value: 50, message: 'Too long'},
+                    validate: value => value !== watch("username_email") || 'Password cannot be equal with username',
                 }}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                     <CustomTextInput
                         extraStyle={style.textInput}
                         value={value}
