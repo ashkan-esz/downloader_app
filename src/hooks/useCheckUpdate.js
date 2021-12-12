@@ -16,9 +16,7 @@ const useCheckUpdate = () => {
                 } catch (e) {
                 }
             }
-            setTimeout(() => {
-                checkUpdate();
-            }, 500);
+            checkUpdate();
         }
     }, []);
 

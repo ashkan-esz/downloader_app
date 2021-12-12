@@ -6,7 +6,7 @@ import {Overlay} from "react-native-elements";
 import {Mixins} from "../../styles";
 
 
-const MovieTrailerView = ({trailer,overlay, setOverlay}) => {
+const MovieTrailerView = ({poster, trailer, overlay, setOverlay}) => {
     const [isFullScreen, setIsFullScreen] = useState(false);
     const videoRef = useRef(null);
 
@@ -21,6 +21,9 @@ const MovieTrailerView = ({trailer,overlay, setOverlay}) => {
                 style={style.video}
                 ref={videoRef}
                 source={{uri: trailer}}
+                usePoster={true}
+                posterSource={poster ? {uri: poster.url} : null}
+                posterStyle={[style.video, {resizeMode: 'stretch'}]}
                 rate={1.0}
                 volume={1.0}
                 isMuted={false}
@@ -56,6 +59,7 @@ MovieTrailerView.propTypes = {
     trailer: PropTypes.string.isRequired,
     overlay: PropTypes.bool.isRequired,
     setOverlay: PropTypes.func.isRequired,
+    poster: PropTypes.object,
 }
 
 

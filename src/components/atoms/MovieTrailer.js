@@ -6,7 +6,7 @@ import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieTrailer = ({trailer}) => {
+const MovieTrailer = ({trailer, poster}) => {
     const [overlay, setOverlay] = useState(false);
 
     return (
@@ -23,6 +23,7 @@ const MovieTrailer = ({trailer}) => {
             </TouchableOpacity>
 
             <MovieTrailerView
+                poster={poster}
                 trailer={trailer}
                 setOverlay={setOverlay}
                 overlay={overlay}
@@ -61,6 +62,7 @@ const style = StyleSheet.create({
 
 MovieTrailer.propTypes = {
     trailer: PropTypes.string.isRequired,
+    poster: PropTypes.object,
 }
 
 

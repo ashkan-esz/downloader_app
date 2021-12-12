@@ -9,6 +9,7 @@ const MovieScreenInfoSection = ({data}) => {
     return (
         <View>
             <MovieTrailer
+                poster={data.posters[0]}
                 trailer={data.trailers ? data.trailers[0].link : ''}
             />
             <MoviePlot
