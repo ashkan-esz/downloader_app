@@ -6,9 +6,11 @@ import {SignUpForm} from "../../components/organisms";
 import {GoogleButton} from "../../components/atoms";
 import {ScreenLayout} from "../../components/layouts";
 
+//todo : google sign up
+
 const SignUpScreen = ({navigation}) => {
     const googleSignUp = () => {
-
+        //todo : add google signup
     };
 
     return (
@@ -27,19 +29,12 @@ const SignUpScreen = ({navigation}) => {
 
                     <SignUpForm
                         extraStyle={style.signUpForm}
-                        onSubmit={(data) => {
-                            console.log(data);//todo : do something with form data
-                            // navigation.navigate('Home');
-                        }}
                     />
 
                     <GoogleButton
                         extraStyle={style.googleButton}
                         text={"Or Create Account With"}
-                        onPress={() => {
-                            //todo : add google signup
-                            googleSignUp();
-                        }}
+                        onPress={googleSignUp}
                     />
 
                     <View style={style.divider}/>

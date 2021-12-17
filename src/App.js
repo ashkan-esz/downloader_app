@@ -1,17 +1,20 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AppState, I18nManager, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
-import {AuthNavigations, HomeStackNavigations} from "./navigation";
+import {AuthNavigations, AppStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
 import {RootToast} from './components/atoms';
+import {useDispatch, useSelector} from "react-redux";
+import {profile_api} from "./redux/slices/user.slice";
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
+import {LoggedOutModal} from "./components/atoms";
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -29,6 +32,7 @@ LogBox.ignoreLogs([
 //todo : load prev data while loading app
 //todo : sort components
 
+//todo : add offline usage
 
 //todo : add gesture
 //todo : add proguard
@@ -71,7 +75,21 @@ function cacheImages(images) {
 }
 
 export default function App() {
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const [isReady, setIsReady] = useState(false);
+    
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(profile_api());
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(profile_api());
+        }
+    }, [isLoggedIn]);
 
     const _loadAssetsAsync = async () => {
         const imageAssets = cacheImages([
@@ -99,8 +117,10 @@ export default function App() {
             <StatusBar style="light"/>
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
-                    {/*<AuthNavigations/>*/}
-                    <HomeStackNavigations/>
+                    <LoggedOutModal/>
+                    {
+                        isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>
+                    }
                 </QueryClientProvider>
                 <RootToast/>
             </NavigationContainer>

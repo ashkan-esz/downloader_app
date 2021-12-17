@@ -73,7 +73,7 @@ const MovieScreen = () => {
                     <MovieTopPoster
                         title={routeParams.title}
                         episodesDuration={episodesOrDuration}
-                        poster={routeParams.posters.length > 0 ? routeParams.posters[0] : ''}
+                        poster={routeParams.posters[0]}
                         rating={routeParams.rating}
                         genres={data ? data.genres : []}
                         posters={data ? data.posters : []}

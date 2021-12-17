@@ -12,7 +12,8 @@ const HomeAvatarAndSearch = ({extraStyle}) => {
         <View style={[style.container, extraStyle]}>
             <HomeProfileAvatar
                 onPress={() => {
-                }} //todo : navigate to profile screen
+                    navigation.navigate('Profile');
+                }}
             />
             <HomeSearchBar
                 onPress={() => {

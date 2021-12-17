@@ -13,7 +13,8 @@ const CustomImage = ({
                          resizeModeStretch,
                          onPress,
                          progressSize,
-                         progressThickness
+                         progressThickness,
+                         noProgress,
                      }) => {
     const [isError, setIsError] = useState(false);
     const [loadPercent, setLoadPercent] = useState(-1);
@@ -35,7 +36,7 @@ const CustomImage = ({
             onPress={onPress}
         >
             {
-                (!isError && loadPercent !== 1 && loadPercent !== -1) && <Progress.Circle
+                (!isError && loadPercent !== 1 && loadPercent !== -1 && !noProgress) && <Progress.Circle
                     style={[extraStyle, style.progressCircle]}
                     size={progressSize || 50}
                     progress={loadPercent}
@@ -47,7 +48,7 @@ const CustomImage = ({
             <FastImage
                 style={extraStyle}
                 source={(!isError && url) ? {
-                    uri: url.link,
+                    uri: (url.link || url.url),
                     priority: FastImage.priority.normal,
                 } : require('../../assets/images/noImage.png')}
                 onError={() => setIsError(true)}
@@ -80,6 +81,7 @@ CustomImage.propTypes = {
     onPress: PropTypes.func,
     progressSize: PropTypes.number,
     progressThickness: PropTypes.number,
+    noProgress: PropTypes.bool,
 }
 
 

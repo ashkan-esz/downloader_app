@@ -1,16 +1,34 @@
 import React, {useRef} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button} from "react-native-elements";
+import {Button, Text} from "react-native-elements";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
 import {Colors, Typography} from "../../styles";
+import {useDispatch, useSelector} from "react-redux";
+import {userLogin_api, resetServerError} from "../../redux/slices/user.slice";
 import PropsTypes from 'prop-types';
 
-
-const LogInForm = ({extraStyle, onSubmit}) => {
+const LogInForm = ({extraStyle}) => {
+    const dispatch = useDispatch();
+    const serverError = useSelector(state => state.user.serverError);
+    const isLoading = useSelector(state => state.user.isLoading);
     const {control, handleSubmit, watch, formState: {errors}} = useForm();
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
+
+    const _onPress = () => {
+        handleSubmit((data) => {
+                dispatch(userLogin_api(data));
+            }
+        )();
+    }
+
+    React.useEffect(() => {
+        const subscription = watch((value, {name, type}) => {
+            dispatch(resetServerError());
+        });
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     return (
         <View style={extraStyle}>
@@ -66,13 +84,23 @@ const LogInForm = ({extraStyle, onSubmit}) => {
                 )}
             />
 
+            {
+                !!serverError && <Text style={style.error}>
+                    *{serverError}.
+                </Text>
+            }
+
             <Button
                 containerStyle={style.createAccountContainer}
                 titleStyle={style.titleStyle}
                 buttonStyle={style.createAccount}
                 title={'Login'}
-                // disabled={} //todo : should be disable while validation and api call
-                onPress={handleSubmit(onSubmit)} //todo : async
+                loading={isLoading}
+                loadingProps={{
+                    size: "large",
+                    animating: true,
+                }}
+                onPress={_onPress}
             />
         </View>
     );
@@ -92,12 +120,16 @@ const style = StyleSheet.create({
     },
     titleStyle: {
         fontSize: Typography.getFontSize(20)
+    },
+    error: {
+        color: 'red',
+        marginTop: 10,
+        paddingLeft: 20
     }
 });
 
 LogInForm.propTypes = {
     extraStyle: PropsTypes.object,
-    onSubmit: PropsTypes.func.isRequired
 }
 
 export default LogInForm;

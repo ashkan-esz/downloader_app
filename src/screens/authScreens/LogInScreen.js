@@ -6,9 +6,13 @@ import {LogInForm} from "../../components/organisms";
 import {GoogleButton} from "../../components/atoms";
 import {ScreenLayout} from "../../components/layouts";
 
-const LogInScreen = ({navigation}) => {
-    const googleSignIn = () => {
+//todo : forget password
+//todo : google sign in
 
+const LogInScreen = ({navigation}) => {
+
+    const googleSignIn = () => {
+        //todo : add google login
     };
 
     return (
@@ -27,19 +31,12 @@ const LogInScreen = ({navigation}) => {
 
                     <LogInForm
                         extraStyle={style.loginForm}
-                        onSubmit={(data) => {
-                            console.log(data) //todo : do something with form data
-                            // navigation.navigate('Home');
-                        }}
                     />
 
                     <GoogleButton
                         extraStyle={style.googleButton}
                         text={"Or Login With"}
-                        onPress={() => {
-                            //todo : add google login
-                            googleSignIn();
-                        }}
+                        onPress={googleSignIn}
                     />
 
                     <View style={style.divider}/>

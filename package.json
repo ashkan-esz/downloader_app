@@ -47,6 +47,7 @@
     "@react-native-community/netinfo": "6.0.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "@reduxjs/toolkit": "^1.6.0",
     "axios": "^0.23.0",
     "check-password-strength": "^2.0.3",
     "expo": "^42.0.0",
@@ -81,7 +82,10 @@
     "react-native-toast-message": "^1.6.0",
     "react-native-unimodules": "0.14.10",
     "react-native-web": "~0.13.12",
-    "react-query": "^3.12.0"
+    "react-query": "^3.12.0",
+    "react-redux": "^7.2.6",
+    "redux-persist": "^6.0.0",
+    "redux-persist-expo-securestore": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

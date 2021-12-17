@@ -103,14 +103,13 @@ export function getSeasonsEpisodes(seasons, episodes, latestData) {
 export function getEpisodesLinks(sources, searchingSeason, episodes) {
     let thisSeasonLinks = [];
     for (let i = 0; i < sources.length; i++) {
-        let sourceName = sources[i].url.replace(/https:\/\/|http:\/\/|www./g, '').split('.')[0];
         for (let j = 0; j < sources[i].links.length; j++) {
             let {season, episode} = getSeasonEpisodeFromLink(sources[i].links[j].link);
             if (season === 0) {
                 ({season, episode} = getSeasonEpisodeFromLink(sources[i].links[j].info));
             }
             if (season === searchingSeason) {
-                sources[i].links[j].sourceName = sourceName;
+                sources[i].links[j].sourceName = sources[i].sourceName;
                 sources[i].links[j].season = season;
                 sources[i].links[j].episode = episode;
                 thisSeasonLinks.push(sources[i].links[j]);
@@ -159,18 +158,23 @@ export function getMovieQualitiesSorted(sources) {
         {quality: 'others', links: []}
     ];
     for (let i = 0; i < sources.length; i++) {
-        let sourceName = sources[i].url.replace(/https:\/\/|http:\/\/|www./g, '').split('.')[0];
         for (let j = 0; j < sources[i].links.length; j++) {
             let matchQuality = false;
             for (let k = 0; k < qualities.length; k++) {
                 if (sources[i].links[j].info.includes(qualities[k].quality)) {
-                    qualities[k].links.push({sourceName, ...sources[i].links[j]});
+                    qualities[k].links.push({
+                        sourceName: sources[i].sourceName,
+                        ...sources[i].links[j],
+                    });
                     matchQuality = true;
                     break;
                 }
             }
             if (!matchQuality) {
-                qualities[5].links.push({sourceName, ...sources[i].links[j]});
+                qualities[5].links.push({
+                    sourceName: sources[i].sourceName,
+                    ...sources[i].links[j],
+                });
             }
         }
     }

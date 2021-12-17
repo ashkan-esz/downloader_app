@@ -1,11 +1,19 @@
 import React from "react";
-import {SearchScreen, HomeScreen, SectionScreen, TrailersScreen, MovieScreen, TimeLineScreen} from '../screens';
+import {
+    SearchScreen,
+    HomeScreen,
+    SectionScreen,
+    TrailersScreen,
+    MovieScreen,
+    TimeLineScreen,
+    ProfileScreen
+} from '../screens';
 import {Colors} from "../styles";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-const HomeStackNavigations = () => {
+const AppStackNavigations = () => {
     return (
         <Stack.Navigator
             initialRouteName={'Home'}
@@ -24,6 +32,13 @@ const HomeStackNavigations = () => {
                 component={HomeScreen}
                 options={{
                     headerShown: false
+                }}
+            />
+            <Stack.Screen
+                name={'Profile'}
+                component={ProfileScreen}
+                options={{
+                    title: 'Profile',
                 }}
             />
             <Stack.Screen
@@ -67,4 +82,4 @@ const HomeStackNavigations = () => {
 };
 
 
-export default HomeStackNavigations;
+export default AppStackNavigations;
