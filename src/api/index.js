@@ -55,7 +55,25 @@ export const getProfileDataApi = async () => {
         const response = await API.get('/users/profile');
         return response.data;
     } catch (error) {
-        if (!error.response.data.errorMessage || error.response && (error.response.status === 403 || error.response.status === 401)) {
+        if (error.response.data.errorMessage) {
+            return error.response.data.errorMessage;
+        }
+        if (error.response && (error.response.status === 403 || error.response.status === 401)) {
+            return 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
+export const sendVerifyEmailApi = async () => {
+    try {
+        const response = await API.get('/users/sendVerifyEmail');
+        return response.data;
+    } catch (error) {
+        if (error.response.data.errorMessage) {
+            return error.response.data.errorMessage;
+        }
+        if (error.response && (error.response.status === 403 || error.response.status === 401)) {
             return 'unknown error';
         }
         return error.response.data;

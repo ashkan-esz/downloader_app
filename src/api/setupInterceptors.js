@@ -27,6 +27,8 @@ const enableForceLogoutIfNeeded = (error) => {
     }
 }
 
+//todo : fix : false forceLogout when internet reconnect
+
 API.interceptors.request.use(async (config) => {
     if (!authEndpoints.includes(config.url)) {
         if (!store.getState().user.refreshToken) {

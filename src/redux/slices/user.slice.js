@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {loginApi, signupApi, logoutApi, getProfileDataApi} from "../../api";
+import {loginApi, signupApi, logoutApi, getProfileDataApi, sendVerifyEmailApi} from "../../api";
 import {purgeStoredState} from "redux-persist";
 
 const userLogin_api = createAsyncThunk(
@@ -40,7 +40,16 @@ const logout_api = createAsyncThunk(
 const profile_api = createAsyncThunk(
     'user/profile_api',
     async (thunkAPI) => {
+        //todo : why get called twice
+        console.log('-------------------------- hi');
         return await getProfileDataApi();
+    }
+);
+
+const sendVerifyEmail_api = createAsyncThunk(
+    'user/sendVerifyEmail_api',
+    async (thunkAPI) => {
+        return await sendVerifyEmailApi();
     }
 );
 
@@ -61,6 +70,7 @@ const userSlice = createSlice({
         isLoading: false,
         isLoggingOut: false,
         serverError: '',
+        message: '',
     },
     reducers: {
         setForceLogoutFlag: (state, action) => {
@@ -75,6 +85,9 @@ const userSlice = createSlice({
         resetServerError: (state, action) => {
             state.serverError = '';
         },
+        resetMessage: (state, action) => {
+            state.message = '';
+        },
         updateTokens: (state, action) => {
             updateTokensState(state, action);
         },
@@ -82,9 +95,15 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(userLogin_api.pending, (state, action) => {
             state.isLoading = true;
+            state.serverError = '';
         });
         builder.addCase(userSignup_api.pending, (state, action) => {
             state.isLoading = true;
+            state.serverError = '';
+        });
+        builder.addCase(sendVerifyEmail_api.pending, (state, action) => {
+            state.isLoading = true;
+            state.serverError = '';
         });
         builder.addCase(userLogin_api.fulfilled, (state, action) => {
             addUserData(state, action);
@@ -94,6 +113,15 @@ const userSlice = createSlice({
         });
         builder.addCase(profile_api.fulfilled, (state, action) => {
             setProfileData(state, action);
+        });
+        builder.addCase(sendVerifyEmail_api.fulfilled, (state, action) => {
+            if (typeof action.payload === 'string') {
+                state.serverError = action.payload;
+            } else {
+                state.serverError = '';
+                state.message = 'verification email sent';
+            }
+            state.isLoading = false;
         });
     },
 });
@@ -154,7 +182,8 @@ export const {
     setLoggingOutFlag,
     setIsFetchingToken,
     resetServerError,
+    resetMessage,
     updateTokens
 } = userSlice.actions;
-export {userLogin_api, userSignup_api, logout_api, profile_api};
+export {userLogin_api, userSignup_api, logout_api, profile_api, sendVerifyEmail_api};
 export default userSlice.reducer;
