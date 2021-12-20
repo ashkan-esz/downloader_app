@@ -18,18 +18,6 @@ const HomeMovieCard = ({extraStyle, posters, id, title, type, tab, latestData, n
         })
     }
 
-    const imageBorder = {
-        borderWidth: type === 'serial' ? 0.5 : null,
-        borderColor: type === 'serial' ? 'cyan' : null,
-    }
-    const latestDataFontSize = {
-        fontSize: tab !== 'todaySeries'
-            ? Typography.getFontSize(16)
-            : Typography.getFontSize(14),
-        marginTop: tab !== 'todaySeries' ? -2 : -1,
-        marginBottom: tab !== 'todaySeries' ? 0 : 2
-    }
-
     return (
         <TouchableOpacity
             onPress={navigateToMovieScreen}
@@ -38,7 +26,7 @@ const HomeMovieCard = ({extraStyle, posters, id, title, type, tab, latestData, n
             <View style={[style.container, extraStyle]}>
 
                 <CustomImage
-                    extraStyle={[style.image, imageBorder]}
+                    extraStyle={style.image}
                     url={posters[0]}
                     onPress={navigateToMovieScreen}
                     resizeModeStretch={true}
@@ -47,7 +35,7 @@ const HomeMovieCard = ({extraStyle, posters, id, title, type, tab, latestData, n
                 <Text style={style.title} numberOfLines={1}>
                     {title}
                 </Text>
-                {latestData && <Text style={[style.latestData, latestDataFontSize]} numberOfLines={1}>
+                {latestData && <Text style={style.latestData} numberOfLines={1}>
                     {type === 'serial'
                         ? homeStackHelpers.getSerialState(latestData, nextEpisode, tab)
                         : homeStackHelpers.getPartialQuality(latestData.quality, 2)}
@@ -81,6 +69,9 @@ const style = StyleSheet.create({
     latestData: {
         color: Colors.TextColor,
         textAlign: 'center',
+        fontSize: Typography.getFontSize(16),
+        marginTop: -2,
+        marginBottom: 0,
     }
 });
 

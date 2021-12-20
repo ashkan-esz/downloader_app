@@ -141,6 +141,19 @@ export const getUpdates = async (types, dataLevel, page, imdbScores = '0-10', ma
     }
 }
 
+export const getSortedMovies = async (sortBy, types, dataLevel, page, imdbScores = '0-10', malScores = '0-10') => {
+    try {
+        types = types.join('-');
+        let response = await API.get(`/movies/sortedMovies/${sortBy}/${types}/${dataLevel}/${imdbScores}/${malScores}/${page}`);
+        return response.data || [];
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
 export const getTopLikes = async (types, dataLevel, page, imdbScores = '0-10', malScores = '0-10') => {
     try {
         types = types.join('-');

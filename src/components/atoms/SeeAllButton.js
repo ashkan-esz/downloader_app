@@ -5,13 +5,14 @@ import {Colors, Typography} from "../../styles";
 import {Button} from "react-native-elements";
 
 
-const SeeAllButton = ({onPress}) => {
+const SeeAllButton = ({onPress, disabled}) => {
     return (
         <Button
             containerStyle={style.buttonContainer}
             titleStyle={style.buttonTitle}
             title={'See All'}
             type={"clear"}
+            disabled={disabled}
             onPress={onPress}
         />
     );
@@ -29,12 +30,13 @@ const style = StyleSheet.create({
     },
     buttonTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(20)
+        fontSize: Typography.getFontSize(19)
     }
 });
 
 SeeAllButton.propTypes = {
     onPress: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
 }
 
 

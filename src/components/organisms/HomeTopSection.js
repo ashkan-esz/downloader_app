@@ -4,13 +4,13 @@ import {SectionNavBar} from "../molecules";
 import HomeMovieList from "./movieList/HomeMovieList";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from '@react-navigation/native';
-import {getTopLikes, getNews, getUpdates, getSeriesOfDay} from "../../api";
+import {getSortedMovies, getNews, getUpdates} from "../../api";
 import {SeeAllButton} from "../atoms";
 
 
 const HomeTopSection = () => {
-    const sections = ['recent', 'updates', 'populars', 'todaySeries'];
-    const [tab, setTab] = useState('recent');
+    const sections = ['inTheaters', 'comingSoon', 'recent', 'updates'];
+    const [tab, setTab] = useState('inTheaters');
     const queryClient = useQueryClient();
     const navigation = useNavigation();
 
@@ -18,26 +18,27 @@ const HomeTopSection = () => {
     //todo : also fix for section screen
 
     async function getData({TAB}) {
+        const types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
         let result;
         if (TAB) {
-            if (TAB === 'recent') {
-                result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
+            if (TAB === 'inTheaters') {
+                result = await getSortedMovies('inTheaters', types, 'medium', 1);
+            } else if (TAB === 'comingSoon') {
+                result = await getSortedMovies('comingSoon', types, 'medium', 1);
+            } else if (TAB === 'recent') {
+                result = await getNews(types, 'medium', 1);
             } else if (TAB === 'updates') {
-                result = await getUpdates(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
-            } else if (TAB === 'populars') {
-                result = await getTopLikes(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
-            } else if (TAB === 'todaySeries') {
-                result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+                result = await getUpdates(types, 'medium', 1);
             }
         } else {
-            if (tab === 'recent') {
-                result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
+            if (tab === 'inTheaters') {
+                result = await getSortedMovies('inTheaters', types, 'medium', 1);
+            } else if (tab === 'comingSoon') {
+                result = await getSortedMovies('comingSoon', types, 'medium', 1);
+            } else if (tab === 'recent') {
+                result = await getNews(types, 'medium', 1);
             } else if (tab === 'updates') {
-                result = await getUpdates(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
-            } else if (tab === 'populars') {
-                result = await getTopLikes(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
-            } else if (tab === 'todaySeries') {
-                result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+                result = await getUpdates(types, 'medium', 1);
             }
         }
 
@@ -53,13 +54,13 @@ const HomeTopSection = () => {
     useEffect(() => {
         async function prefetchData() {
             let promiseArray = [];
-            let promise1 = queryClient.prefetchQuery(['recent'], () => getData({TAB: 'recent'}));
+            let promise1 = queryClient.prefetchQuery(['inTheaters'], () => getData({TAB: 'inTheaters'}));
             promiseArray.push(promise1);
-            let promise2 = queryClient.prefetchQuery(['updates'], () => getData({TAB: 'updates'}));
+            let promise2 = queryClient.prefetchQuery(['comingSoon'], () => getData({TAB: 'comingSoon'}));
             promiseArray.push(promise2);
-            let promise3 = queryClient.prefetchQuery(['populars'], () => getData({TAB: 'populars'}));
+            let promise3 = queryClient.prefetchQuery(['recent'], () => getData({TAB: 'recent'}));
             promiseArray.push(promise3);
-            let promise4 = queryClient.prefetchQuery(['todaySeries'], () => getData({TAB: 'todaySeries'}));
+            let promise4 = queryClient.prefetchQuery(['updates'], () => getData({TAB: 'updates'}));
             promiseArray.push(promise4);
             await Promise.all(promiseArray);
         }
@@ -95,6 +96,7 @@ const HomeTopSection = () => {
                 retry={_retry}
             />
             <SeeAllButton
+                disabled={data.length < 4}
                 onPress={() => {
                     navigation.navigate('Section', {startTab: tab});
                 }}

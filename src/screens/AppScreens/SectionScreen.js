@@ -6,11 +6,11 @@ import {SectionNavBar, FilterType} from "../../components/molecules";
 import {ScrollTop} from "../../components/atoms";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "react-query";
-import {getNews, getSeriesOfDay, getTopLikes, getUpdates} from "../../api";
+import {getNews, getSortedMovies, getUpdates} from "../../api";
 
 
 const SectionScreen = () => {
-    const sections = ['recent', 'updates', 'populars', 'todaySeries'];
+    const sections = ['inTheaters', 'comingSoon', 'recent', 'updates'];
     const route = useRoute();
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
@@ -35,24 +35,24 @@ const SectionScreen = () => {
     async function getData({pageParam = 1, TAB}) {
         let result;
         if (TAB) {
-            if (TAB === 'recent') {
+            if (TAB === 'inTheaters') {
+                result = await getSortedMovies('inTheaters', types, 'medium', 1);
+            } else if (TAB === 'comingSoon') {
+                result = await getSortedMovies('comingSoon', types, 'medium', 1);
+            } else if (TAB === 'recent') {
                 result = await getNews(types, 'medium', 1);
             } else if (TAB === 'updates') {
                 result = await getUpdates(types, 'medium', 1);
-            } else if (TAB === 'populars') {
-                result = await getTopLikes(types, 'medium', 1);
-            } else if (TAB === 'todaySeries') {
-                result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
             }
         } else {
-            if (tab === 'recent') {
+            if (tab === 'inTheaters') {
+                result = await getSortedMovies('inTheaters', types, 'medium', 1);
+            } else if (tab === 'comingSoon') {
+                result = await getSortedMovies('comingSoon', types, 'medium', 1);
+            } else if (tab === 'recent') {
                 result = await getNews(types, 'medium', pageParam);
             } else if (tab === 'updates') {
                 result = await getUpdates(types, 'medium', pageParam);
-            } else if (tab === 'populars') {
-                result = await getTopLikes(types, 'medium', pageParam);
-            } else if (tab === 'todaySeries') {
-                result = await getSeriesOfDay(0, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
             }
         }
 
@@ -68,20 +68,20 @@ const SectionScreen = () => {
         async function prefetchData() {
             let promiseArray = [];
             let promise1 = queryClient.prefetchInfiniteQuery(
-                ['recent', 'sectionScreen', types],
-                () => getData({TAB: 'recent'}));
+                ['inTheaters', 'sectionScreen', types],
+                () => getData({TAB: 'inTheaters'}));
             promiseArray.push(promise1);
             let promise2 = queryClient.prefetchInfiniteQuery(
-                ['updates', 'sectionScreen', types],
-                () => getData({TAB: 'updates'}));
+                ['comingSoon', 'sectionScreen', types],
+                () => getData({TAB: 'comingSoon'}));
             promiseArray.push(promise2);
             let promise3 = queryClient.prefetchInfiniteQuery(
-                ['populars', 'sectionScreen', types],
-                () => getData({TAB: 'populars'}));
+                ['recent', 'sectionScreen', types],
+                () => getData({TAB: 'recent'}));
             promiseArray.push(promise3);
             let promise4 = queryClient.prefetchInfiniteQuery(
-                ['todaySeries', 'sectionScreen', types],
-                () => getData({TAB: 'todaySeries'}));
+                ['updates', 'sectionScreen', types],
+                () => getData({TAB: 'updates'}));
             promiseArray.push(promise4);
             await Promise.all(promiseArray);
         }
