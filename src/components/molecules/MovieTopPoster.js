@@ -20,64 +20,62 @@ const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, poster
 
     return (
         <View>
-            <View>
-                <CustomImage
-                    extraStyle={style.image}
-                    url={poster}
-                    resizeModeStretch={true}
-                />
+            <CustomImage
+                extraStyle={style.image}
+                url={poster}
+                resizeModeStretch={true}
+            />
 
-                <MovieTopPosterCarousel
-                    posters={posters.length > 0 ? posters : [poster]}
-                />
+            <MovieTopPosterCarousel
+                posters={posters.length > 0 ? posters : [poster]}
+            />
 
-                <FullScreenImageView
-                    overlay={overlay}
-                    setOverlay={setOverlay}
-                    poster={poster}
-                />
+            <FullScreenImageView
+                overlay={overlay}
+                setOverlay={setOverlay}
+                poster={poster}
+            />
 
-                <TouchableOpacity
+            <TouchableOpacity
+                style={style.blurView}
+                activeOpacity={1}
+                onPress={() => setOverlay(true)}
+            >
+                <BlurView
                     style={style.blurView}
-                    activeOpacity={1}
-                    onPress={() => setOverlay(true)}
-                >
-                    <BlurView
-                        style={style.blurView}
-                        tint={'dark'}
-                        intensity={45}
-                    />
+                    tint={'dark'}
+                    intensity={45}
+                />
 
 
-                    <View style={style.leftSideContainer}>
+                <View style={style.leftSideContainer}>
 
-                        <Text style={[style.title, titleSize]}>
-                            {title}
-                        </Text>
-                        <Text style={style.episodesDuration}>
-                            {episodesDuration}
-                        </Text>
+                    <Text style={[style.title, titleSize]}>
+                        {title}
+                    </Text>
+                    <Text style={style.episodesDuration}>
+                        {episodesDuration}
+                    </Text>
 
-                        <View style={style.genresRowContainer}>
-                            {
-                                (genres.length > 0 ? genres : ['unknown']).map(item => (
-                                    <View style={style.genreContainer} key={item}>
-                                        <Text style={style.genre}>
-                                            {item.trim()}
-                                        </Text>
-                                        <Divider style={style.genresUnderLine}/>
-                                    </View>
-                                ))
-                            }
-                        </View>
+                    <View style={style.genresRowContainer}>
+                        {
+                            (genres.length > 0 ? genres : ['unknown']).map(item => (
+                                <View style={style.genreContainer} key={item}>
+                                    <Text style={style.genre}>
+                                        {item.trim()}
+                                    </Text>
+                                    <Divider style={style.genresUnderLine}/>
+                                </View>
+                            ))
+                        }
                     </View>
+                </View>
 
-                </TouchableOpacity>
+            </TouchableOpacity>
 
-                <Text style={style.rating}>
-                    <Text style={style.ratingNumber}>{rating}</Text> /10
-                </Text>
-            </View>
+            <Text style={style.rating}>
+                <Text style={style.ratingNumber}>{rating}</Text> /10
+            </Text>
         </View>
     );
 };

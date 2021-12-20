@@ -47,7 +47,7 @@ const HomeTrailersList = () => {
         );
     }
 
-    const _keyExtractor = (item) => item.title;
+    const _keyExtractor = (item) => item._id.toString();
     const _renderItem = ({index, item}) => (
         <HomeTrailer
             isOnScreenView={onScreenViewItems.includes(index)}

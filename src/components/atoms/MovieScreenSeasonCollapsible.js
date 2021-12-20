@@ -9,7 +9,7 @@ import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, rawTitle}) => {
+const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, rawTitle, scrollToDownload}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
     const [seasonsEpisodes, setSeasonsEpisodes] = useState([]);
 
@@ -25,10 +25,11 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, r
     }, []);
 
     const toggleExpand = (index) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         if (index === expandedIndex) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
             setExpandedIndex(-1);
         } else {
+            scrollToDownload();
             setExpandedIndex(index);
         }
     }
@@ -96,6 +97,7 @@ const style = StyleSheet.create({
 });
 
 MovieScreenSeasonCollapsible.propTypes = {
+    scrollToDownload: PropTypes.func.isRequired,
     latestData: PropTypes.object.isRequired,
     sources: PropTypes.array.isRequired,
     seasons: PropTypes.array.isRequired,

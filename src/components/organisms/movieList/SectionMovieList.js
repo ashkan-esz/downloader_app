@@ -40,7 +40,7 @@ const SectionMovieList = ({
     }
 
 
-    const keyExtractor = (item) => item.title + item.year;
+    const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <SectionMovieCard
             tab={tab}

@@ -9,7 +9,7 @@ import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenQualityCollapsible = ({rawTitle, sources}) => {
+const MovieScreenQualityCollapsible = ({rawTitle, sources, scrollToDownload}) => {
     const [qualities, setQualities] = useState([]);
     const [expandedIndex, setExpandedIndex] = useState(-1);
 
@@ -25,10 +25,11 @@ const MovieScreenQualityCollapsible = ({rawTitle, sources}) => {
     }, []);
 
     const toggleExpand = (index) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         if (index === expandedIndex) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
             setExpandedIndex(-1);
         } else {
+            scrollToDownload();
             setExpandedIndex(index);
         }
     }
@@ -106,6 +107,7 @@ const style = StyleSheet.create({
 });
 
 MovieScreenQualityCollapsible.propTypes = {
+    scrollToDownload: PropTypes.func.isRequired,
     sources: PropTypes.array.isRequired,
     rawTitle: PropTypes.string.isRequired,
 }

@@ -41,7 +41,7 @@ const SearchMovieList = ({
     }
 
 
-    const keyExtractor = (item) => item.title + item.type + item.year;
+    const keyExtractor = (item) => item._id.toString();
 
     const renderItem = ({item}) => (
         <SearchMovieCard

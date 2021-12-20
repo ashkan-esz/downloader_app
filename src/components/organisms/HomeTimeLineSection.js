@@ -1,25 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
-import {MovieError, SeeAllButton, TimeLinePaging} from "../atoms";
+import {MovieError} from "../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery} from "react-query";
 import {useNavigation} from "@react-navigation/native";
 import {getSeriesOfDay} from "../../api";
-import {Mixins, Typography} from "../../styles";
+import {Colors, Mixins, Typography} from "../../styles";
 
 //todo : fix wasted stale data
 //todo : also fix for timeLine screen
 
 const HomeTimeLineSection = () => {
-    const [spacing, setSpacing] = useState(1);
-    const queryClient = useQueryClient();
     const navigation = useNavigation();
 
-    async function getData({SPACING = null}) {
-        let result = (SPACING !== null)
-            ? await getSeriesOfDay(SPACING, 1, ['movie', 'serial', 'anime_movie', 'anime_serial'])
-            : await getSeriesOfDay(spacing, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+    async function getData() {
+        let result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {
@@ -28,32 +24,13 @@ const HomeTimeLineSection = () => {
     }
 
     const {data, isLoading, isError} = useQuery(
-        ['timeLine', spacing],
+        ['timeLine', 0],
         getData,
         {
             placeholderData: [],
             refetchInterval: 3 * 60 * 1000,
             refetchIntervalInBackground: true,
         });
-
-    //prefetch data
-    useEffect(() => {
-        async function prefetchData() {
-            let promiseArray = [];
-            let promise1 = queryClient.prefetchQuery(['timeLine', -1],
-                () => getData({SPACING: -1}));
-            promiseArray.push(promise1);
-            let promise2 = queryClient.prefetchQuery(['timeLine', 0],
-                () => getData({SPACING: 0}));
-            promiseArray.push(promise2);
-            let promise3 = queryClient.prefetchQuery(['timeLine', 1],
-                () => getData({SPACING: 1}));
-            promiseArray.push(promise3);
-            await Promise.all(promiseArray);
-        }
-
-        prefetchData();
-    }, []);
 
     if (isError) {
         return (
@@ -66,16 +43,16 @@ const HomeTimeLineSection = () => {
 
     return (
         <View style={style.container}>
-            <Text style={style.sectionTitle}>TimeLine</Text>
-
-            <TimeLinePaging
-                spacing={spacing}
-                setSpacing={setSpacing}
-            />
+            <Text style={style.sectionTitle}>Today Series</Text>
+            <Text
+                style={style.seeAll}
+                onPress={() => navigation.navigate('TimeLine')}>
+                See All
+            </Text>
 
             {
                 (data.length === 0 || isLoading)
-                    ? <HomeMovieListPlaceHolder extraStyle={{marginTop: 0}} number={3}/>
+                    ? <HomeMovieListPlaceHolder extraStyle={{marginTop: 20}} number={3}/>
                     : <View style={style.movieListContainer}>
                         {
                             data.slice(0, 3).map((item, index) => {
@@ -96,9 +73,6 @@ const HomeTimeLineSection = () => {
                         }
                     </View>
             }
-            <SeeAllButton
-                onPress={() => navigation.navigate('TimeLine', {startSpacing: spacing})}
-            />
 
         </View>
     );
@@ -107,16 +81,24 @@ const HomeTimeLineSection = () => {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 21,
+        marginTop: 25,
         paddingBottom: 10,
     },
     sectionTitle: {
         color: '#ffffff',
         fontSize: Typography.getFontSize(24),
     },
+    seeAll: {
+        position: 'absolute',
+        right: 5,
+        marginTop: 5,
+        color: Colors.NAVBAR,
+        fontSize: Typography.getFontSize(18)
+    },
     movieListContainer: {
         flexDirection: 'row',
         justifyContent: "space-between",
+        marginTop: 20,
     },
     error: {
         marginTop: -10,

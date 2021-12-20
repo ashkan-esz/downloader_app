@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {MovieLoadingAndError} from "../../components/atoms";
 import {MovieTopPoster, MovieScreenDownloadSection} from "../../components/molecules";
@@ -23,6 +23,7 @@ const MovieScreen = () => {
     const route = useRoute();
     const routeParams = route.params;
     const queryClient = useQueryClient();
+    const flatListRef = useRef(null);
 
     const getData = async () => {
         let result = await searchByID(routeParams.id, 'high');
@@ -61,6 +62,7 @@ const MovieScreen = () => {
         <ScreenLayout paddingSides={5}>
             <View style={style.container}>
                 <ScrollView
+                    ref={flatListRef}
                     refreshControl={
                         <RefreshControl
                             onRefresh={_onRefresh}
@@ -91,6 +93,7 @@ const MovieScreen = () => {
                                 />
                                 <MovieScreenDownloadSection
                                     data={data}
+                                    flatListRef={flatListRef}
                                 />
                                 <View style={{paddingBottom: 100}}/>
                             </View>

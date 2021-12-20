@@ -15,7 +15,7 @@ const MovieScreenEpisode = ({extraStyle, rawTitle, linkData}) => {
     const infoText = linkData.sourceName.charAt(0).toUpperCase() + linkData.sourceName.slice(1) + ' | ' + linkData.info;
 
     const buttonTitleFontSize = {
-        fontSize: (linkData.sourceName + ' | ' + linkData.info).length < 40
+        fontSize: (linkData.sourceName + ' | ' + linkData.info).length < 38
             ? Typography.getFontSize(16)
             : Typography.getFontSize(14),
         color: '#fff',
@@ -52,7 +52,6 @@ const MovieScreenEpisode = ({extraStyle, rawTitle, linkData}) => {
                 message: messageText,
                 url: linkData.link,
             });
-            console.log(shareResponse);
         } catch (error) {
         }
     }

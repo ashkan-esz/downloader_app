@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieScreenQualityCollapsible, MovieScreenSeasonCollapsible} from "../atoms";
@@ -8,14 +8,41 @@ import PropTypes from 'prop-types';
 
 //todo : check section list
 
-const MovieScreenDownloadSection = ({data}) => {
+const MovieScreenDownloadSection = ({data, flatListRef}) => {
+    const sectionRef = useRef(null);
     const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
+    const [downloadPosition, setDownloadPosition] = useState(0);
+
+    const _scrollToDownload = () => {
+        if (flatListRef && flatListRef.current) {
+            if (downloadPosition > 0) {
+                setTimeout(() => {
+                    flatListRef.current.scrollTo({
+                        y: downloadPosition,
+                        animated: true,
+                    });
+                }, 10);
+            }
+        }
+    }
+
     return (
         <View style={style.container}>
 
-            <Text style={style.section}>
-                DOWNLOAD
-            </Text>
+            <View
+                ref={sectionRef}
+                onLayout={({nativeEvent}) => {
+                    setTimeout(() => {
+                        sectionRef.current.measure((x, y, width, height, pageX, pageY) => {
+                            setDownloadPosition(pageY - height - 40);
+                        });
+                    }, 5);
+                }}
+            >
+                <Text style={style.section}>
+                    DOWNLOAD
+                </Text>
+            </View>
 
             <View style={style.infoContainer}>
                 <Text style={style.infoText}>{'\u2022'}
@@ -43,6 +70,7 @@ const MovieScreenDownloadSection = ({data}) => {
                     </TouchableOpacity>
                     : data.type.includes('serial')
                         ? <MovieScreenSeasonCollapsible
+                            scrollToDownload={_scrollToDownload}
                             latestData={data.latestData}
                             sources={data.sources}
                             seasons={data.seasons}
@@ -50,6 +78,7 @@ const MovieScreenDownloadSection = ({data}) => {
                             rawTitle={data.rawTitle}
                         />
                         : <MovieScreenQualityCollapsible
+                            scrollToDownload={_scrollToDownload}
                             sources={data.sources}
                             rawTitle={data.rawTitle}
                         />
@@ -100,6 +129,7 @@ const style = StyleSheet.create({
 
 MovieScreenDownloadSection.propTypes = {
     data: PropTypes.object.isRequired,
+    flatListRef: PropTypes.object,
 }
 
 

@@ -41,7 +41,7 @@ const style = StyleSheet.create({
     },
     activeButtonTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(22),
+        fontSize: Typography.getFontSize(20),
         marginLeft: -2,
     }
 });

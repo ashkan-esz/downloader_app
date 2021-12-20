@@ -43,7 +43,7 @@ const trailersMovieList = ({
         );
     }
 
-    const _keyExtractor = (item) => item.title;
+    const _keyExtractor = (item) => item._id.toString();
     const _renderItem = ({index, item}) => (
         <TrailerMovieCard
             isOnScreenView={onScreenViewItems.includes(index)}

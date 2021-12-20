@@ -4,20 +4,18 @@ import {ScrollTop, TimeLinePaging} from "../../components/atoms";
 import {TimeLineMovieList} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useInfiniteQuery, useQueryClient} from "react-query";
-import {useRoute} from "@react-navigation/native";
 import {getSeriesOfDay} from "../../api";
 
 
 const TimeLineScreen = () => {
-    const route = useRoute();
-    const [spacing, setSpacing] = useState(route.params.startSpacing);
+    const [spacing, setSpacing] = useState(0);
     const [changedSpacing, setChangedSpacing] = useState(-10);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        setTimeout(() => setChangedSpacing(route.params.startSpacing), 5)
+        setChangedSpacing(0);
     }, []);
 
     async function getData({pageParam = 1, SPACING = null}) {
@@ -38,12 +36,9 @@ const TimeLineScreen = () => {
             let promise1 = queryClient.prefetchInfiniteQuery(['timeLineScreen', -1],
                 () => getData({SPACING: -1}));
             promiseArray.push(promise1);
-            let promise2 = queryClient.prefetchInfiniteQuery(['timeLineScreen', 0],
-                () => getData({SPACING: 0}));
-            promiseArray.push(promise2);
-            let promise3 = queryClient.prefetchInfiniteQuery(['timeLineScreen', 1],
+            let promise2 = queryClient.prefetchInfiniteQuery(['timeLineScreen', 1],
                 () => getData({SPACING: 1}));
-            promiseArray.push(promise3);
+            promiseArray.push(promise2);
             await Promise.all(promiseArray);
         }
 

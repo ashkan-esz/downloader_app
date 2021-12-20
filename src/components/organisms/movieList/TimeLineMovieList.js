@@ -37,7 +37,7 @@ const TimeLineMovieList = ({
         );
     }
 
-    const keyExtractor = (item) => item.title;
+    const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <SectionMovieCard
             tab={'todaySeries'}

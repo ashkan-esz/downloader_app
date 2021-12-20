@@ -93,6 +93,7 @@ export function getSeasonsEpisodes(seasons, episodes, latestData) {
     return seasons.map(item => {
         let releasedEpisodesNumber = releasedEpisodes.filter(value => value.season === item.season).length;
         return {
+            totalSeasons: seasons.length,
             seasonNumber: item.season,
             episodesNumber: item.episodes,
             releasedEpisodesNumber,
