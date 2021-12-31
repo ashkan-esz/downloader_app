@@ -3,12 +3,22 @@ import {BASE_URL, BASE_URL_DEV} from '@env';
 
 const API = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? BASE_URL : BASE_URL_DEV,
+    withCredentials: true,
 });
 
 export default API;
 
-//except logout route
-export const authEndpoints = ['/users/login?noCookie=true', '/users/signup?noCookie=true', '/users/getToken?noCookie=true'];
+export const authEndpoints_all = [
+    '/users/login?noCookie=true',
+    '/users/signup?noCookie=true',
+    '/users/getToken?noCookie=true',
+    '/users/logout?noCookie=true'
+];
+export const authEndpoints = [
+    '/users/login?noCookie=true',
+    '/users/signup?noCookie=true',
+    '/users/getToken?noCookie=true',
+];
 export const tokenEndPoint = '/users/getToken?noCookie=true';
 
 //todo : do not print error on (401 | network) error and keep state as loading
@@ -50,9 +60,54 @@ export const logoutApi = async () => {
     }
 }
 
+export const forceLogoutApi = async (deviceId) => {
+    try {
+        const response = await API.post(`/users/forceLogout/${deviceId}`);
+        return response.data;
+    } catch (error) {
+        if (!error.response.data.errorMessage || error.response && (error.response.status === 401 || error.response.status === 403)) {
+            if (!error.response.data || !error.response.data.errorMessage) {
+                error.response.data = {errorMessage: 'unknown error'};
+            }
+            error.response.data.errorMessage = 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
+export const forceLogoutAllApi = async () => {
+    try {
+        const response = await API.post('/users/forceLogoutAll');
+        return response.data;
+    } catch (error) {
+        if (!error.response.data.errorMessage || error.response && (error.response.status === 401 || error.response.status === 403)) {
+            if (!error.response.data || !error.response.data.errorMessage) {
+                error.response.data = {errorMessage: 'unknown error'};
+            }
+            error.response.data.errorMessage = 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
 export const getProfileDataApi = async () => {
     try {
-        const response = await API.get('/users/profile');
+        const response = await API.get('/users/myProfile');
+        return response.data;
+    } catch (error) {
+        if (error.response.data.errorMessage) {
+            return error.response.data.errorMessage;
+        }
+        if (error.response && (error.response.status === 403 || error.response.status === 401)) {
+            return 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
+export const getActiveSessionsApi = async () => {
+    try {
+        const response = await API.get('/users/activeSessions');
         return response.data;
     } catch (error) {
         if (error.response.data.errorMessage) {

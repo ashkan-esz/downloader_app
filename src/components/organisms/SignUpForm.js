@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import {Button, Text} from "react-native-elements";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
-import {passwordStrength} from 'check-password-strength'
 import {Colors, Typography} from '../../styles';
 import {useDispatch, useSelector} from "react-redux";
 import {userSignup_api, resetServerError} from "../../redux/slices/user.slice";
@@ -48,6 +47,7 @@ const SignUpForm = ({extraStyle}) => {
                     required: {value: true, message: 'This is required'},
                     minLength: {value: 6, message: 'Too short'},
                     maxLength: {value: 50, message: 'Too long'},
+                    validate: (value) => value.toString().match(/^[a-z|0-9_]+$/g) || 'Only a-z, 0-9, and underscores are allowed',
                 }}
                 render={({field: {onChange, value}}) => (
                     <CustomTextInput
@@ -105,7 +105,6 @@ const SignUpForm = ({extraStyle}) => {
                         v1: (value) => value !== watch("username") || 'Password cannot be equal with username',
                         v2: (value) => value.toString().match(/[0-9]/) !== null || 'Password must contain a number',
                         v3: (value) => value.toString().match(/[A-Z]/) !== null || 'Password must contain an uppercase',
-                        v4: (value) => passwordStrength(value).value !== 'Weak' || 'Weak',
                     }
                 }}
                 render={({field: {onChange, value}}) => (

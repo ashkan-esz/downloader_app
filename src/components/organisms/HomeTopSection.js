@@ -96,7 +96,7 @@ const HomeTopSection = () => {
                 retry={_retry}
             />
             <SeeAllButton
-                disabled={data.length < 4}
+                disabled={data && data.length < 4}
                 onPress={() => {
                     navigation.navigate('Section', {startTab: tab});
                 }}

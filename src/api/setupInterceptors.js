@@ -1,4 +1,5 @@
 import API, {authEndpoints, tokenEndPoint} from "./index";
+import DeviceInfo from 'react-native-device-info';
 
 let store;
 
@@ -54,6 +55,25 @@ API.interceptors.request.use(async (config) => {
 
         while (store.getState().user.isFetchingToken) {
             await new Promise(resolve => setTimeout(resolve, 50));
+        }
+    }
+
+    if (authEndpoints.includes(config.url)) {
+        try {
+            if (!config.data) {
+                config.data = {};
+            }
+            config.data.deviceInfo = {
+                appName: DeviceInfo.getApplicationName(),
+                appVersion: DeviceInfo.getVersion(),
+                os: DeviceInfo.getSystemName().replace('iPhone OS', 'iOS'),
+                deviceModel: DeviceInfo.getModel(),
+            };
+        } catch (error) {
+            if (!config.data) {
+                config.data = {};
+            }
+            config.data.deviceInfo = null;
         }
     }
 

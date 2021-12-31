@@ -12,6 +12,7 @@ import {RootToast} from './components/atoms';
 import {useDispatch, useSelector} from "react-redux";
 import {profile_api} from "./redux/slices/user.slice";
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
+import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
 import {LoggedOutModal} from "./components/atoms";
@@ -35,7 +36,6 @@ LogBox.ignoreLogs([
 //todo : add offline usage
 
 //todo : add gesture
-//todo : add proguard
 //todo : fix splash screen jump up before end
 
 //todo : faster rating library
@@ -75,6 +75,7 @@ function cacheImages(images) {
 }
 
 export default function App() {
+    useKeepAwake();
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const [isReady, setIsReady] = useState(false);
@@ -86,7 +87,7 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isLoggedIn && isReady) {
             dispatch(profile_api());
         }
     }, [isLoggedIn]);

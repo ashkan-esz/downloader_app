@@ -15,7 +15,7 @@ const HomeMovieCard = ({extraStyle, posters, id, title, type, tab, latestData, n
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
             id, title, type, posters, rating
-        })
+        });
     }
 
     return (

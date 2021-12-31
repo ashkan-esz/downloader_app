@@ -1,5 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {loginApi, signupApi, logoutApi, getProfileDataApi, sendVerifyEmailApi} from "../../api";
+import {
+    getProfileDataApi,
+    loginApi,
+    logoutApi,
+    sendVerifyEmailApi,
+    signupApi,
+} from "../../api";
 import {purgeStoredState} from "redux-persist";
 
 const userLogin_api = createAsyncThunk(
@@ -40,8 +46,6 @@ const logout_api = createAsyncThunk(
 const profile_api = createAsyncThunk(
     'user/profile_api',
     async (thunkAPI) => {
-        //todo : why get called twice
-        console.log('-------------------------- hi');
         return await getProfileDataApi();
     }
 );
@@ -101,6 +105,10 @@ const userSlice = createSlice({
             state.isLoading = true;
             state.serverError = '';
         });
+        builder.addCase(profile_api.pending, (state, action) => {
+            state.isLoading = true;
+            state.serverError = '';
+        });
         builder.addCase(sendVerifyEmail_api.pending, (state, action) => {
             state.isLoading = true;
             state.serverError = '';
@@ -148,8 +156,9 @@ const updateTokensState = (state, action) => {
     const {
         username, refreshToken,
         accessToken, accessToken_expire,
+        profileImages,
     } = action.payload;
-
+    state.profileImages = profileImages;
     state.username = username;
     state.accessToken = accessToken;
     state.accessToken_expire = accessToken_expire;
@@ -177,6 +186,7 @@ const setProfileData = (state, action) => {
 }
 
 export const persistStates = ['username', 'userId', 'profileImage', 'isLoggedIn', 'refreshToken'];
+
 export const {
     setForceLogoutFlag,
     setLoggingOutFlag,
@@ -185,5 +195,13 @@ export const {
     resetMessage,
     updateTokens
 } = userSlice.actions;
-export {userLogin_api, userSignup_api, logout_api, profile_api, sendVerifyEmail_api};
+
+export {
+    userLogin_api,
+    userSignup_api,
+    logout_api,
+    profile_api,
+    sendVerifyEmail_api,
+};
+
 export default userSlice.reducer;
