@@ -65,7 +65,7 @@ const HomeSoonList = () => {
                                 type={''}
                                 rating={0}
                                 noRating={true}
-                                key={item.title}
+                                key={item._id.toString()}
                             />
                         );
                     })

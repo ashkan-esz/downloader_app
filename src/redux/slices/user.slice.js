@@ -61,6 +61,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         profileData: {},
+        thisDevice: null,
         username: '',
         userId: '',
         profileImages: [],
@@ -171,11 +172,12 @@ const setProfileData = (state, action) => {
         state.serverError = action.payload;
     } else {
         const {
-            username, userId,
+            username, userId, thisDevice,
             profileImages, defaultProfile,
         } = action.payload;
         //todo :
         state.profileData = action.payload;
+        state.thisDevice = thisDevice;
         state.username = username;
         state.userId = userId;
         state.profileImages = profileImages;

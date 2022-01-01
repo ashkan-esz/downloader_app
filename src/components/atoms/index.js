@@ -23,3 +23,4 @@ export {default as MoviePlot} from './MoviePlot';
 export {default as CustomImage} from './CustomImage';
 export {default as RootToast} from './RootToast';
 export {default as LoggedOutModal} from './LoggedOutModal';
+export {default as MyOverlay} from './MyOverlay';

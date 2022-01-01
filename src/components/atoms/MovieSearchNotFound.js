@@ -1,15 +1,16 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Icon, Text} from "react-native-elements";
+import {StyleSheet} from 'react-native';
+import {Text} from "react-native-elements";
 import {Colors, Typography} from "../../styles";
+import {MaterialIcons} from "@expo/vector-icons";
 
 
 const MovieSearchNotFound = () => {
     return (
-        <View>
-            <Icon
-                containerStyle={style.IconContainer}
-                name={'search'}
+        <>
+            <MaterialIcons
+                style={style.icon}
+                name="search"
                 size={100}
                 color={Colors.RED2}
             />
@@ -18,18 +19,19 @@ const MovieSearchNotFound = () => {
             >
                 Not Found.
             </Text>
-        </View>
+        </>
     );
 }
 
 const style = StyleSheet.create({
-    IconContainer: {
-        marginTop: 20
+    icon: {
+        alignSelf: 'center',
+        marginTop: 20,
     },
     title: {
         alignSelf: 'center',
         fontSize: Typography.getFontSize(20),
-        color: Colors.RED2
+        color: Colors.RED2,
     }
 });
 

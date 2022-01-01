@@ -17,3 +17,5 @@ export {default as MovieScreenDownloadSection} from './MovieScreenDownloadSectio
 export {default as MovieScreenUpdateSection} from './MovieScreenUpdateSection';
 export {default as FilterType} from './FilterType';
 export {default as MovieTopPosterCarousel} from './MovieTopPosterCarousel';
+export {default as ProfileImage} from './ProfileImage';
+export {default as DeviceSession} from './DeviceSession';

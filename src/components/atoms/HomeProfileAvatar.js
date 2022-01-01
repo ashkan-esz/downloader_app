@@ -6,13 +6,15 @@ import CustomImage from "./CustomImage";
 import PropTypes from 'prop-types';
 
 
-const HomeProfileAvatar = ({onPress}) => {
+const HomeProfileAvatar = ({size, onPress}) => {
     const profileImages = useSelector(state => state.user.profileImages);
     const profileImage = useSelector(state => state.user.profileImage);
 
     return (
         <Avatar
-            size={"medium"}
+            containerStyle={style.container}
+            activeOpacity={1}
+            size={size || "medium"}
             ImageComponent={CustomImage}
             imageProps={{
                 extraStyle: style.image,
@@ -30,6 +32,9 @@ const HomeProfileAvatar = ({onPress}) => {
 }
 
 const style = StyleSheet.create({
+    container: {
+        alignSelf: 'center',
+    },
     image: {
         width: '100%',
         height: '100%',
@@ -38,6 +43,7 @@ const style = StyleSheet.create({
 
 HomeProfileAvatar.propTypes = {
     onPress: PropTypes.func.isRequired,
+    size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
 }
 
 export default HomeProfileAvatar;

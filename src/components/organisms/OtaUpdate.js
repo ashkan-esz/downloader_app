@@ -7,35 +7,34 @@ import PropTypes from 'prop-types';
 
 const OtaUpdate = ({update, downloadUpdate, isDownloading}) => {
     const [overlay, setOverlay] = useState(true);
+
     return (
-        <View>
-            <Overlay
-                overlayStyle={style.overlay}
-                isVisible={update && overlay}
-                onBackdropPress={() => setOverlay(false)}
-                animationType={"slide"}
-            >
-                <View style={style.container}>
+        <Overlay
+            overlayStyle={style.overlay}
+            isVisible={update && overlay}
+            onBackdropPress={() => setOverlay(false)}
+            animationType={"slide"}
+        >
+            <View style={style.container}>
 
-                    <Text style={style.text}> There is a minor update (1mb) </Text>
+                <Text style={style.text}> There is a minor update (1mb) </Text>
 
-                    <View style={style.buttonsContainer}>
-                        <Button
-                            buttonStyle={style.rightButton}
-                            title={'Cancel'}
-                            onPress={() => setOverlay(false)}
-                        />
-                        <Button
-                            buttonStyle={[style.leftButton]}
-                            title={'Download'}
-                            loading={isDownloading}
-                            onPress={() => downloadUpdate()}
-                        />
-                    </View>
-
+                <View style={style.buttonsContainer}>
+                    <Button
+                        buttonStyle={style.rightButton}
+                        title={'Cancel'}
+                        onPress={() => setOverlay(false)}
+                    />
+                    <Button
+                        buttonStyle={style.leftButton}
+                        title={'Download'}
+                        loading={isDownloading}
+                        onPress={() => downloadUpdate()}
+                    />
                 </View>
-            </Overlay>
-        </View>
+
+            </View>
+        </Overlay>
     );
 };
 

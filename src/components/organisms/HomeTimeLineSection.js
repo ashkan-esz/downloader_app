@@ -55,10 +55,10 @@ const HomeTimeLineSection = () => {
                     ? <HomeMovieListPlaceHolder extraStyle={{marginTop: 20}} number={3}/>
                     : <View style={style.movieListContainer}>
                         {
-                            data.slice(0, 3).map((item, index) => {
+                            data.slice(0, 3).map((item) => {
                                 return (
                                     <HomeMovieCard
-                                        key={index}
+                                        key={item._id.toString()}
                                         posters={item.posters}
                                         id={item._id}
                                         title={item.rawTitle}

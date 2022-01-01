@@ -9,34 +9,35 @@ const LoggedOutModal = () => {
     const dispatch = useDispatch();
     const forceLogout = useSelector(state => state.user.forceLogout);
     const [overlay, setOverlay] = useState(true);
+
+    //todo : reset flags on mount
+
     return (
-        <View>
-            <Overlay
-                overlayStyle={style.overlay}
-                isVisible={forceLogout && overlay}
-                onBackdropPress={() => {
-                    setOverlay(false);
-                    dispatch(logout_api(false));
-                }}
-                animationType={"slide"}
-            >
-                <View style={style.container}>
+        <Overlay
+            overlayStyle={style.overlay}
+            isVisible={forceLogout && overlay}
+            onBackdropPress={() => {
+                setOverlay(false);
+                dispatch(logout_api(false));
+            }}
+            animationType={"slide"}
+        >
+            <View style={style.container}>
 
-                    <Text style={style.text}> You have been logged out </Text>
+                <Text style={style.text}> You have been logged out </Text>
 
-                    <Button
-                        containerStyle={style.buttonContainer}
-                        buttonStyle={style.button}
-                        title={'OK'}
-                        onPress={() => {
-                            setOverlay(false);
-                            dispatch(logout_api(false));
-                        }}
-                    />
+                <Button
+                    containerStyle={style.buttonContainer}
+                    buttonStyle={style.button}
+                    title={'OK'}
+                    onPress={() => {
+                        setOverlay(false);
+                        dispatch(logout_api(false));
+                    }}
+                />
 
-                </View>
-            </Overlay>
-        </View>
+            </View>
+        </Overlay>
     );
 };
 

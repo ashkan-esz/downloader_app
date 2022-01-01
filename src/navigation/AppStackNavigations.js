@@ -6,7 +6,8 @@ import {
     TrailersScreen,
     MovieScreen,
     TimeLineScreen,
-    ProfileScreen
+    ProfileScreen,
+    ActiveSessionsScreen
 } from '../screens';
 import {Colors} from "../styles";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -39,6 +40,13 @@ const AppStackNavigations = () => {
                 component={ProfileScreen}
                 options={{
                     title: 'Profile',
+                }}
+            />
+            <Stack.Screen
+                name={'ActiveSessions'}
+                component={ActiveSessionsScreen}
+                options={{
+                    title: 'ActiveSessions',
                 }}
             />
             <Stack.Screen
