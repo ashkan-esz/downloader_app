@@ -3,11 +3,11 @@ import {View, StyleSheet} from 'react-native';
 import {Button, Overlay, Text} from "react-native-elements";
 import {useDispatch, useSelector} from "react-redux";
 import {Colors, Typography} from "../../styles";
-import {logout_api} from "../../redux/slices/user.slice";
+import {logout_api} from "../../redux/slices/auth.slice";
 
 const LoggedOutModal = () => {
     const dispatch = useDispatch();
-    const forceLogout = useSelector(state => state.user.forceLogout);
+    const forceLoggedOut = useSelector(state => state.auth.forceLoggedOut);
     const [overlay, setOverlay] = useState(true);
 
     //todo : reset flags on mount
@@ -15,7 +15,7 @@ const LoggedOutModal = () => {
     return (
         <Overlay
             overlayStyle={style.overlay}
-            isVisible={forceLogout && overlay}
+            isVisible={forceLoggedOut && overlay}
             onBackdropPress={() => {
                 setOverlay(false);
                 dispatch(logout_api(false));

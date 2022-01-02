@@ -11,7 +11,7 @@ import {forceLogoutAllApi, forceLogoutApi, getActiveSessionsApi} from "../../api
 //just like telegram :)
 
 const ActiveSessionsScreen = () => {
-    const savedThisDevice = useSelector(state => state.user.thisDevice);
+    const savedThisDevice = useSelector(state => state.auth.thisDevice);
     const [isMount, setIsMount] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -38,6 +38,7 @@ const ActiveSessionsScreen = () => {
 
     useEffect(() => {
         if (error) {
+            let temp = true;
             Toast.show({
                 type: 'error',
                 text1: error,
@@ -46,7 +47,12 @@ const ActiveSessionsScreen = () => {
                     Toast.hide();
                     setError('');
                 },
-                onHide: () => setError(''),
+                onHide: () => {
+                    if (temp) {
+                        setError('');
+                    }
+                    temp = false;
+                },
                 visibilityTime: 2000,
             });
         }

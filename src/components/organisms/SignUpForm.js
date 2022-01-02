@@ -5,15 +5,15 @@ import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
 import {Colors, Typography} from '../../styles';
 import {useDispatch, useSelector} from "react-redux";
-import {userSignup_api, resetServerError} from "../../redux/slices/user.slice";
+import {userSignup_api, resetAuthError} from "../../redux/slices/auth.slice";
 import PropsTypes from "prop-types";
 
 const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)])/;
 
 const SignUpForm = ({extraStyle}) => {
     const dispatch = useDispatch();
-    const serverError = useSelector(state => state.user.serverError);
-    const isLoading = useSelector(state => state.user.isLoading);
+    const isLoading = useSelector(state => state.auth.isLoading);
+    const error = useSelector(state => state.auth.authError);
     const {control, handleSubmit, watch, formState: {errors}} = useForm();
     const userNameInputRef = useRef();
     const emailInputRef = useRef();
@@ -29,7 +29,7 @@ const SignUpForm = ({extraStyle}) => {
 
     React.useEffect(() => {
         const subscription = watch((value, {name, type}) => {
-            dispatch(resetServerError());
+            dispatch(resetAuthError());
         });
         return () => subscription.unsubscribe();
     }, [watch]);
@@ -47,7 +47,7 @@ const SignUpForm = ({extraStyle}) => {
                     required: {value: true, message: 'This is required'},
                     minLength: {value: 6, message: 'Too short'},
                     maxLength: {value: 50, message: 'Too long'},
-                    validate: (value) => value.toString().match(/^[a-z|0-9_]+$/g) || 'Only a-z, 0-9, and underscores are allowed',
+                    validate: (value) => !!value.toString().match(/^[a-z|0-9_]+$/g) || 'Only a-z, 0-9, and underscores are allowed',
                 }}
                 render={({field: {onChange, value}}) => (
                     <CustomTextInput
@@ -148,8 +148,8 @@ const SignUpForm = ({extraStyle}) => {
             />
 
             {
-                !!serverError && <Text style={style.error}>
-                    *{serverError}.
+                !!error && <Text style={style.error}>
+                    *{error}.
                 </Text>
             }
 

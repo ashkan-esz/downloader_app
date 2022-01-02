@@ -3,12 +3,8 @@ import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {Button, Text} from "react-native-elements";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    logout_api,
-    resetMessage,
-    sendVerifyEmail_api,
-    profile_api, resetServerError,
-} from "../../redux/slices/user.slice";
+import {sendVerifyEmail_api, logout_api, resetMessage, resetAuthError} from "../../redux/slices/auth.slice";
+import {profile_api, resetUserError} from "../../redux/slices/user.slice";
 import Toast from 'react-native-toast-message';
 import {ProfileImage} from "../../components/molecules";
 import {useNavigation} from "@react-navigation/native";
@@ -20,11 +16,13 @@ import {MyOverlay} from "../../components/atoms";
 const ProfileScreen = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const isLoading = useSelector(state => state.user.isLoading);
-    const serverError = useSelector(state => state.user.serverError);
-    const message = useSelector(state => state.user.message);
-    const isLoggingOut = useSelector(state => state.user.isLoggingOut);
-    const emailVerified = useSelector(state => state.user.profileData.emailVerified);
+    const authIsLoading = useSelector(state => state.auth.isLoading);
+    const userIsLoading = useSelector(state => state.user.isLoading);
+    const authError = useSelector(state => state.auth.authError);
+    const userError = useSelector(state => state.user.userError);
+    const message = useSelector(state => state.auth.message);
+    const isLoggingOut = useSelector(state => state.auth.isLoggingOut);
+    const emailVerified = useSelector(state => state.user.emailVerified);
     const [logoutOverlay, setLogoutOverlay] = useState(false);
 
     const _navigateToActiveSession = () => {
@@ -32,24 +30,54 @@ const ProfileScreen = () => {
     }
 
     useEffect(() => {
-        if (serverError) {
+        if (authError) {
+            let temp = true;
             Toast.show({
                 type: 'error',
-                text1: serverError,
+                text1: authError,
                 position: 'bottom',
                 onPress: () => {
                     Toast.hide();
-                    dispatch(resetServerError());
+                    dispatch(resetAuthError());
                 },
-                onHide: () => dispatch(resetServerError()),
+                onHide: () => {
+                    if (temp) {
+                        dispatch(resetAuthError());
+                    }
+                    temp = false;
+                },
                 visibilityTime: 2000,
             });
         }
         return () => Toast.hide();
-    }, [serverError]);
+    }, [authError]);
+
+    useEffect(() => {
+        if (userError) {
+            let temp = true;
+            Toast.show({
+                type: 'error',
+                text1: userError,
+                position: 'bottom',
+                onPress: () => {
+                    Toast.hide();
+                    dispatch(resetUserError());
+                },
+                onHide: () => {
+                    if (temp) {
+                        dispatch(resetUserError());
+                    }
+                    temp = false;
+                },
+                visibilityTime: 2000,
+            });
+        }
+        return () => Toast.hide();
+    }, [userError]);
 
     useEffect(() => {
         if (message) {
+            let temp = true;
             Toast.show({
                 type: 'error',
                 text1: message,
@@ -58,8 +86,13 @@ const ProfileScreen = () => {
                     Toast.hide();
                     dispatch(resetMessage());
                 },
-                onHide: () => dispatch(resetMessage()),
-                visibilityTime: 1000
+                onHide: () => {
+                    if (temp) {
+                        dispatch(resetMessage());
+                    }
+                    temp = false;
+                },
+                visibilityTime: 1000,
             });
         }
         return () => Toast.hide();
@@ -76,7 +109,7 @@ const ProfileScreen = () => {
                     refreshControl={
                         <RefreshControl
                             onRefresh={_onRefresh}
-                            refreshing={isLoading}
+                            refreshing={userIsLoading}
                             colors={['blue', 'red']}
                         />
                     }
@@ -98,7 +131,7 @@ const ProfileScreen = () => {
                             containerStyle={style.buttonContainer}
                             buttonStyle={style.button}
                             title={'verify email'}
-                            loading={isLoading}
+                            loading={authIsLoading}
                             loadingProps={{
                                 animating: true,
                             }}
@@ -119,10 +152,6 @@ const ProfileScreen = () => {
                         }}
                         onPress={() => setLogoutOverlay(true)}
                     />
-
-                    <Text style={style.text}>
-                        <Text style={style.statement}>serverError :</Text> {serverError}
-                    </Text>
 
                     <Button
                         containerStyle={style.buttonContainer}

@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit'
-import rootReducer, {userPersistConfig} from "../reducers/rootReducer";
+import rootReducer, {authPersistConfig, userPersistConfig} from "../reducers/rootReducer";
 import {
     persistStore,
     FLUSH,
@@ -18,7 +18,7 @@ const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-            thunk: {extraArgument: {userPersistConfig}}
+            thunk: {extraArgument: {authPersistConfig, userPersistConfig}}
         }),
 });
 

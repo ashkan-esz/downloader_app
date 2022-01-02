@@ -8,14 +8,14 @@ export const injectStore = _store => {
 }
 
 const accessTokenShouldBeRefreshed = () => (
-    !store.getState().user.accessToken ||
-    store.getState().user.accessToken_expire - Date.now() < 15000
+    !store.getState().auth.accessToken ||
+    store.getState().auth.accessToken_expire - Date.now() < 15000
 );
 
 const getNewToken = async () => {
     return await API.post(tokenEndPoint, {}, {
         headers: {
-            refreshToken: store.getState().user.refreshToken,
+            refreshToken: store.getState().auth.refreshToken,
         }
     });
 }
@@ -24,7 +24,7 @@ const enableForceLogoutIfNeeded = (error) => {
     if (
         error.response && error.response.status === 401 ||
         error.toString() === 'Error: Request failed with status code 401') {
-        store.dispatch({type: "user/setForceLogoutFlag", payload: true});
+        store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
     }
 }
 
@@ -32,28 +32,29 @@ const enableForceLogoutIfNeeded = (error) => {
 
 API.interceptors.request.use(async (config) => {
     if (!authEndpoints.includes(config.url)) {
-        if (!store.getState().user.refreshToken) {
+        if (!store.getState().auth.refreshToken) {
             //no refreshToken is available, logout
             store.dispatch({type: "USER_LOGOUT"});
             return config;
         }
-        if (!store.getState().user.isFetchingToken && accessTokenShouldBeRefreshed()) {
-            store.dispatch({type: "user/setIsFetchingToken", payload: true});
+        if (!store.getState().auth.isFetchingToken && accessTokenShouldBeRefreshed()) {
+            store.dispatch({type: "auth/setIsFetchingToken", payload: true});
             try {
                 const rs = await getNewToken();
                 //stale refreshToken or refreshToken doesn't match (force logout)
                 if (rs.toString() === 'Error: Request failed with status code 401') {
-                    store.dispatch({type: "user/setForceLogoutFlag", payload: true});
+                    store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                 } else {
-                    store.dispatch({type: "user/updateTokens", payload: rs.data});
+                    store.dispatch({type: "auth/updateTokens", payload: rs.data});
+                    store.dispatch({type: "user/setProfileImages", payload: rs.data.profileImages});
                 }
             } catch (_error) {
-                store.dispatch({type: "user/setIsFetchingToken", payload: false});
+                store.dispatch({type: "auth/setIsFetchingToken", payload: false});
                 enableForceLogoutIfNeeded(_error);
             }
         }
 
-        while (store.getState().user.isFetchingToken) {
+        while (store.getState().auth.isFetchingToken) {
             await new Promise(resolve => setTimeout(resolve, 50));
         }
     }
@@ -77,8 +78,8 @@ API.interceptors.request.use(async (config) => {
         }
     }
 
-    config.headers.authorization = `Bearer ${store.getState().user.accessToken}`;
-    config.headers.refreshToken = store.getState().user.refreshToken;
+    config.headers.authorization = `Bearer ${store.getState().auth.accessToken}`;
+    config.headers.refreshToken = store.getState().auth.refreshToken;
     return config;
 });
 
@@ -90,31 +91,32 @@ API.interceptors.response.use(
         const originalConfig = err.config;
         if (!authEndpoints.includes(originalConfig.url)) {
             if (
-                !store.getState().user.refreshToken ||
+                !store.getState().auth.refreshToken ||
                 err.response && err.response.status === 401 ||
                 err.toString() === 'Error: Request failed with status code 401') {
                 //stale refreshToken or refreshToken doesn't match (force logout)
-                store.dispatch({type: "user/setForceLogoutFlag", payload: true});
+                store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                 return Promise.reject(err);
             }
-            if (!store.getState().user.isFetchingToken && err.response.status === 403 && !originalConfig._retry) {
+            if (!store.getState().auth.isFetchingToken && err.response.status === 403 && !originalConfig._retry) {
                 originalConfig._retry = true;
-                store.dispatch({type: "user/setIsFetchingToken", payload: true});
+                store.dispatch({type: "auth/setIsFetchingToken", payload: true});
                 try {
                     const rs = await getNewToken();
                     //stale refreshToken or refreshToken doesn't match (force logout)
                     if (rs.toString() === 'Error: Request failed with status code 401') {
-                        store.dispatch({type: "user/setForceLogoutFlag", payload: true});
+                        store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                     } else {
-                        store.dispatch({type: "user/updateTokens", payload: rs.data});
+                        store.dispatch({type: "auth/updateTokens", payload: rs.data});
+                        store.dispatch({type: "user/setProfileImages", payload: rs.data.profileImages});
                         return API(originalConfig);
                     }
                 } catch (_error) {
-                    store.dispatch({type: "user/setIsFetchingToken", payload: false});
+                    store.dispatch({type: "auth/setIsFetchingToken", payload: false});
                     enableForceLogoutIfNeeded(_error);
                     return Promise.reject(_error);
                 }
-                while (store.getState().user.isFetchingToken) {
+                while (store.getState().auth.isFetchingToken) {
                     await new Promise(resolve => setTimeout(resolve, 50));
                 }
             }

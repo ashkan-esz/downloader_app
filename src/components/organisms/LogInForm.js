@@ -5,13 +5,13 @@ import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
 import {Colors, Typography} from "../../styles";
 import {useDispatch, useSelector} from "react-redux";
-import {userLogin_api, resetServerError} from "../../redux/slices/user.slice";
+import {userLogin_api, resetAuthError} from "../../redux/slices/auth.slice";
 import PropsTypes from 'prop-types';
 
 const LogInForm = ({extraStyle}) => {
     const dispatch = useDispatch();
-    const serverError = useSelector(state => state.user.serverError);
-    const isLoading = useSelector(state => state.user.isLoading);
+    const isLoading = useSelector(state => state.auth.isLoading);
+    const error = useSelector(state => state.auth.authError);
     const {control, handleSubmit, watch, formState: {errors}} = useForm();
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
@@ -25,7 +25,7 @@ const LogInForm = ({extraStyle}) => {
 
     React.useEffect(() => {
         const subscription = watch((value, {name, type}) => {
-            dispatch(resetServerError());
+            dispatch(resetAuthError());
         });
         return () => subscription.unsubscribe();
     }, [watch]);
@@ -85,8 +85,8 @@ const LogInForm = ({extraStyle}) => {
             />
 
             {
-                !!serverError && <Text style={style.error}>
-                    *{serverError}.
+                !!error && <Text style={style.error}>
+                    *{error}.
                 </Text>
             }
 

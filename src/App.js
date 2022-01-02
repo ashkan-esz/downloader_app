@@ -23,7 +23,7 @@ LogBox.ignoreLogs([
     'VirtualizedLists should never be nested inside plain ScrollViews',
 ]);
 
-
+//todo : check build commands
 //todo : force to download new version from store
 //todo : bottom of page is white
 //todo : stop rotation except trailer fullscreen
@@ -77,9 +77,9 @@ function cacheImages(images) {
 export default function App() {
     useKeepAwake();
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const [isReady, setIsReady] = useState(false);
-    
+
     useEffect(() => {
         if (isLoggedIn) {
             dispatch(profile_api());

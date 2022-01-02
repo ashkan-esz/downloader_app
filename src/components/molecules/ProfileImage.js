@@ -10,8 +10,8 @@ import {Typography} from "../../styles";
 const ProfileImage = () => {
     const profileImages = useSelector(state => state.user.profileImages);
     const profileImage = useSelector(state => state.user.profileImage);
-    const username = useSelector(state => state.user.username);
-    
+    const username = useSelector(state => state.auth.username);
+
     return (
         <View>
             <HomeProfileAvatar
