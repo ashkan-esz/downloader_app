@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "react-native-elements";
 import {TrailerImageSwitch, SectionMovieCardRating} from "../../atoms";
@@ -27,12 +27,12 @@ const TrailerMovieCard = ({
 
     const navigation = useNavigation();
 
-    const _navigateToMovieScreen = () => {
+    const memorizedNavigation = useCallback(() => {
         navigation.navigate('Movie', {
             name: title.slice(0, 25),
             id, title, type, posters, rating
-        })
-    }
+        });
+    }, [id, title, type, posters, rating]);
 
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 4);
 
@@ -48,11 +48,11 @@ const TrailerMovieCard = ({
                 isOnScreenView={isOnScreenView}
                 trailer={trailer}
                 poster={posters[0]}
-                onLongPress={_navigateToMovieScreen}
+                onLongPress={memorizedNavigation}
             />
 
             <TouchableOpacity
-                onPress={_navigateToMovieScreen}
+                onPress={memorizedNavigation}
                 activeOpacity={1}
             >
                 <View style={style.infoContainer}>

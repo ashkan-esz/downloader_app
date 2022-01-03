@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Video} from "expo-av";
 import {useNavigation} from "@react-navigation/native";
@@ -15,19 +15,19 @@ const CustomVideo = ({
                      }) => {
     const navigation = useNavigation();
 
-    const [isFullScreen, setIsFullScreen] = useState(false);
+    const [isFullScreen, setIsFullScreen] = useState(true);
     const videoRef = useRef(null);
 
     useEffect(() => {
         if (videoRef.current) {
-            if (startFullscreen) {
+            if (startFullscreen && isFullScreen) {
                 videoRef.current.presentFullscreenPlayer();
             }
             videoRef.current.setOnPlaybackStatusUpdate(status => {
                 setIsPlaying(status.isPlaying || isFullScreen);
             });
         }
-    }, []);
+    }, [isFullScreen]);
 
     useEffect(() => {
         if (!isOnScreenView && videoRef.current) {
@@ -87,5 +87,4 @@ CustomVideo.propTypes = {
 }
 
 
-export default CustomVideo;
-
+export default memo(CustomVideo);

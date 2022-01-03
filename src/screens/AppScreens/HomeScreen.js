@@ -11,8 +11,6 @@ import {ScreenLayout} from "../../components/layouts";
 import {useQueryClient} from "react-query";
 import {Mixins} from "../../styles";
 
-//todo : add a icon for downloading update
-//todo : cache videos into local file
 
 const HomeScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
