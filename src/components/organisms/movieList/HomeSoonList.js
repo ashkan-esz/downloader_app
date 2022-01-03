@@ -5,10 +5,12 @@ import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
 import {getNews} from "../../../api";
 import {Colors, Mixins, Typography} from "../../../styles";
-import {useQuery} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 
 
 const HomeSoonList = () => {
+    const queryClient = useQueryClient();
+
     async function getData() {
         let result = await getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], 'low', 1); //todo : replace with soon api
         if (result !== 'error') {
@@ -23,11 +25,19 @@ const HomeSoonList = () => {
         getData,
         {placeholderData: []});
 
+    const _retry = async () => {
+        await queryClient.refetchQueries(["soon"]);
+    }
+
     if (isError) {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>Soon</Text>
-                <MovieError containerStyle={style.error}/>
+                <MovieError
+                    containerStyle={style.error}
+                    retry={_retry}
+                    hideRetry={true}
+                />
             </View>
         );
     }
@@ -100,7 +110,7 @@ const style = StyleSheet.create({
         marginRight: 6
     },
     error: {
-        marginTop: -10,
+        marginTop: 20,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',

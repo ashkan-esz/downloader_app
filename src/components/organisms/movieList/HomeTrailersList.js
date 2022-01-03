@@ -4,13 +4,14 @@ import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
-import {useQuery} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 import {getTrailers} from "../../../api";
 import {Colors, Mixins, Typography} from "../../../styles";
 
 
 const HomeTrailersList = () => {
     const navigation = useNavigation();
+    const queryClient = useQueryClient();
 
     const [onScreenViewItems, setOnScreenViewItems] = useState([]);
 
@@ -32,11 +33,19 @@ const HomeTrailersList = () => {
         getData,
         {placeholderData: []});
 
+    const _retry = async () => {
+        await queryClient.refetchQueries(["trailers"]);
+    }
+
     if (isError) {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>New Trailer</Text>
-                <MovieError containerStyle={style.error}/>
+                <MovieError
+                    containerStyle={style.error}
+                    retry={_retry}
+                    hideRetry={true}
+                />
             </View>
         );
     }
@@ -104,8 +113,8 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(18)
     },
     error: {
-        marginTop: 0,
-        height: Mixins.getWindowHeight(20),
+        marginTop: 20,
+        height: Mixins.getWindowHeight(18),
         alignItems: 'center',
         justifyContent: 'center',
     }

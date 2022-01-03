@@ -134,9 +134,7 @@ const ActiveSessionsScreen = () => {
 
                     {
                         !isFetching && activeSessions.length === 0 && <View style={style.notFoundContainer}>
-                            <Text
-                                style={style.text}
-                            >
+                            <Text style={style.text}>
                                 There is no active session!
                             </Text>
                         </View>

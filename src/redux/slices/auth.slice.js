@@ -147,7 +147,7 @@ const updateTokensState = (state, action) => {
     state.isFetchingToken = false;
 }
 
-export const authPersistStates = ['username', 'userId', 'profileImage', 'isLoggedIn', 'refreshToken'];
+export const authPersistStates = ['username', 'userId', 'isLoggedIn', 'refreshToken'];
 
 export const {
     updateTokens,

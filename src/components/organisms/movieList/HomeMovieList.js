@@ -51,7 +51,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     error: {
-        marginTop: 0,
+        marginTop: 11,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',

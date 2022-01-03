@@ -8,14 +8,14 @@ import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
 import {AuthNavigations, AppStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
-import {RootToast} from './components/atoms';
+import {RootToast, LoggedOutModal} from './components/atoms';
+import {OfflineStatusBar} from "./components/molecules";
 import {useDispatch, useSelector} from "react-redux";
 import {profile_api} from "./redux/slices/user.slice";
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
-import {LoggedOutModal} from "./components/atoms";
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -118,6 +118,7 @@ export default function App() {
             <StatusBar style="light"/>
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
+                    <OfflineStatusBar/>
                     <LoggedOutModal/>
                     {
                         isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>

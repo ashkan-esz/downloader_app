@@ -1,27 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
-import {useRoute} from "@react-navigation/native";
 import {Mixins} from "../../styles";
+import {useDispatch, useSelector} from "react-redux";
+import {setInternet} from '../../redux/slices/user.slice';
+
 
 const OfflineStatusBar = () => {
-    const route = useRoute();
-    const topPosition = {
-        top: route.name === 'Home' ? 25 : 16
-    }
+    const dispatch = useDispatch();
+    const internet = useSelector(state => state.user.internet);
 
-    const [isConnected, setISConnected] = useState(true);
     useEffect(() => {
-        NetInfo.addEventListener((state) => {
-            setISConnected(state.isConnected);
+        let unsubscribe = NetInfo.addEventListener((netState) => {
+            dispatch(setInternet({
+                internet: netState.isConnected && netState.isInternetReachable,
+                connectionType: netState.type,
+            }));
         });
+        return () => unsubscribe();
     }, []);
 
-    if (isConnected) {
+    if (internet) {
         return null;
     }
+
     return (
-        <View style={[style.container, topPosition]}>
+        <View style={style.container}>
             <Text style={style.text}>No Internet Connection</Text>
         </View>
     );
@@ -29,6 +33,8 @@ const OfflineStatusBar = () => {
 
 const style = StyleSheet.create({
     container: {
+        top: 25,
+        zIndex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -41,5 +47,6 @@ const style = StyleSheet.create({
         color: '#fff'
     }
 });
+
 
 export default OfflineStatusBar;

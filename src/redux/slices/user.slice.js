@@ -23,6 +23,8 @@ const profile_api = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState: {
+        internet: true,
+        connectionType: '',
         profileImages: [],
         profileImage: '',
         emailVerified: false,
@@ -30,6 +32,10 @@ const userSlice = createSlice({
         userError: '',
     },
     reducers: {
+        setInternet: (state, action) => {
+            state.internet = action.payload.internet;
+            state.connectionType = action.payload.connectionType;
+        },
         setProfileImages: (state, action) => {
             state.profileImages = action.payload;
         },
@@ -67,7 +73,10 @@ const setProfileData = (state, action) => {
     state.isLoading = false;
 }
 
+export const userPersistStates = ['profileImages', 'profileImage', 'emailVerified'];
+
 export const {
+    setInternet,
     setProfileImages,
     setEmailVerifiedFlag,
     resetUserError,

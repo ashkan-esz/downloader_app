@@ -1,44 +1,51 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text} from "react-native-elements";
-import NetInfo from "@react-native-community/netinfo";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
+import {useSelector} from "react-redux";
 
 
-const MovieError = ({containerStyle, buttonStyle, retry}) => {
-    const [network, setNetwork] = useState(true);
+const MovieError = ({containerStyle, buttonStyle, retry, hideRetry}) => {
+    const internet = useSelector(state => state.user.internet);
 
     useEffect(() => {
-        NetInfo.addEventListener(state => {
-            if (retry && !network && state.isConnected) {
-                retry();
-            }
-            setNetwork(state.isConnected);
-        });
-    }, []);
+        if (internet && retry) {
+            retry();
+        }
+    }, [internet]);
 
+    const message = internet ? 'There is a problem!' : 'no internet connection!';
+
+    const textMargin = {
+        marginTop: (retry && !hideRetry) ? 15 : 0,
+    }
 
     return (
         <View style={[style.container, containerStyle]}>
-            <Text h4 style={style.title}>{
-                network ? 'There is a problem' : 'no internet connection'
-            }</Text>
-            {retry && <Button
-                containerStyle={[style.buttonContainer, buttonStyle]}
-                titleStyle={style.buttonTitle}
-                title={'retry'}
-                type={"outline"}
-                buttonStyle={style.button}
-                onPress={retry}
-            />}
+            <Text h4 style={[style.title, textMargin]}>{message}</Text>
+            {
+                retry && !hideRetry && <Button
+                    containerStyle={[style.buttonContainer, buttonStyle]}
+                    titleStyle={style.buttonTitle}
+                    title={'Retry'}
+                    type={"outline"}
+                    buttonStyle={style.button}
+                    onPress={retry}
+                />
+            }
         </View>
     );
 };
 
 const style = StyleSheet.create({
     container: {
-        marginTop: 20
+        backgroundColor: Colors.SECONDARY,
+        height: 130,
+        borderRadius: 15,
+        marginTop: 20,
+        paddingTop: 0,
+        paddingBottom: 0,
     },
     buttonContainer: {
         marginTop: 20,
@@ -46,15 +53,17 @@ const style = StyleSheet.create({
     },
     button: {
         borderColor: Colors.RED2,
-        borderWidth: 1
+        borderWidth: 1,
     },
     buttonTitle: {
         color: Colors.RED2,
-        fontSize: Typography.getFontSize(20)
+        fontSize: Typography.getFontSize(18),
     },
     title: {
         alignSelf: 'center',
-        color: Colors.RED2
+        fontSize: Typography.getFontSize(16),
+        color: '#ffffff',
+        opacity: 0.9,
     }
 });
 
@@ -62,6 +71,7 @@ MovieError.propTypes = {
     containerStyle: PropTypes.object,
     buttonStyle: PropTypes.object,
     retry: PropTypes.func,
+    showRetry: PropTypes.bool,
 };
 
 

@@ -2,7 +2,7 @@ import {combineReducers} from "@reduxjs/toolkit";
 import {persistReducer} from 'redux-persist';
 import createSecureStore from "redux-persist-expo-securestore";
 import FilesystemStorage from 'redux-persist-filesystem-storage'
-import userReducer from '../slices/user.slice';
+import userReducer, {userPersistStates} from '../slices/user.slice';
 import authReducer, {authPersistStates} from '../slices/auth.slice';
 
 const secureStorage = createSecureStore();
@@ -18,6 +18,7 @@ export const userPersistConfig = {
     timeout: 3000,
     key: 'user',
     storage: FilesystemStorage,
+    whitelist: userPersistStates,
 }
 
 const appReducer = combineReducers({

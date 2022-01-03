@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
 import {MovieError} from "../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
-import {useQuery} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from "@react-navigation/native";
 import {getSeriesOfDay} from "../../api";
 import {Colors, Mixins, Typography} from "../../styles";
@@ -13,6 +13,7 @@ import {Colors, Mixins, Typography} from "../../styles";
 
 const HomeTimeLineSection = () => {
     const navigation = useNavigation();
+    const queryClient = useQueryClient();
 
     async function getData() {
         let result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
@@ -32,11 +33,19 @@ const HomeTimeLineSection = () => {
             refetchIntervalInBackground: true,
         });
 
+    const _retry = async () => {
+        await queryClient.refetchQueries(['timeLine', 0]);
+    }
+
     if (isError) {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>TimeLine</Text>
-                <MovieError containerStyle={style.error}/>
+                <MovieError
+                    containerStyle={style.error}
+                    retry={_retry}
+                    hideRetry={true}
+                />
             </View>
         );
     }
@@ -101,7 +110,7 @@ const style = StyleSheet.create({
         marginTop: 20,
     },
     error: {
-        marginTop: -10,
+        marginTop: 20,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',
