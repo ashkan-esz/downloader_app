@@ -1,6 +1,5 @@
 export {default as SignUpForm} from './SignUpForm';
 export {default as LogInForm} from './LogInForm';
-export {default as OtaUpdate} from './OtaUpdate';
 export {default as HomeTopSection} from './HomeTopSection';
 export {default as SearchMovieList} from './movieList/SearchMovieList';
 export {default as SectionMovieList} from './movieList/SectionMovieList';

@@ -5,7 +5,26 @@ import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MyOverlay = ({message, overlay, setOverlay, leftOption, rightOption, onLeftClick, onRightClick, isLoading}) => {
+const MyOverlay = ({
+                       message,
+                       overlay,
+                       setOverlay,
+                       leftOption,
+                       rightOption,
+                       onLeftClick,
+                       onRightClick,
+                       isLoading,
+                       leftColor,
+                       rightColor
+                   }) => {
+
+    const leftButtonTitle = {
+        color: leftColor || 'blue',
+    };
+
+    const rightButtonTitle = {
+        color: rightColor || 'red',
+    };
 
     return (
         <Overlay
@@ -24,7 +43,7 @@ const MyOverlay = ({message, overlay, setOverlay, leftOption, rightOption, onLef
                 <View style={style.buttonsContainer}>
                     <Button
                         buttonStyle={style.button}
-                        titleStyle={style.leftButtonTitle}
+                        titleStyle={leftButtonTitle}
                         type={"clear"}
                         title={leftOption}
                         onPress={() => {
@@ -35,7 +54,7 @@ const MyOverlay = ({message, overlay, setOverlay, leftOption, rightOption, onLef
 
                     <Button
                         buttonStyle={style.button}
-                        titleStyle={style.rightButtonTitle}
+                        titleStyle={rightButtonTitle}
                         type={"clear"}
                         title={rightOption}
                         loading={isLoading}
@@ -83,12 +102,6 @@ const style = StyleSheet.create({
         minWidth: 110,
         maxWidth: 140,
     },
-    leftButtonTitle: {
-        color: 'blue',
-    },
-    rightButtonTitle: {
-        color: 'red',
-    }
 });
 
 MyOverlay.propTypes = {
@@ -99,6 +112,8 @@ MyOverlay.propTypes = {
     rightOption: PropTypes.string.isRequired,
     onLeftClick: PropTypes.func,
     onRightClick: PropTypes.func,
+    leftColor: PropTypes.string,
+    rightColor: PropTypes.string,
 }
 
 

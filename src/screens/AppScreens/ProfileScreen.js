@@ -4,7 +4,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {Button, Text} from "react-native-elements";
 import {useDispatch, useSelector} from "react-redux";
 import {sendVerifyEmail_api, logout_api, resetMessage, resetAuthError} from "../../redux/slices/auth.slice";
-import {profile_api, resetUserError} from "../../redux/slices/user.slice";
+import {profile_api, resetUserError, setShowUpdateOverlayFlag} from "../../redux/slices/user.slice";
 import Toast from 'react-native-toast-message';
 import {ProfileImage} from "../../components/molecules";
 import {useNavigation} from "@react-navigation/native";
@@ -16,6 +16,8 @@ import {MyOverlay} from "../../components/atoms";
 const ProfileScreen = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const updateExist = useSelector(state => state.user.updateExist);
+    const isDownloadingUpdate = useSelector(state => state.user.isDownloadingUpdate);
     const authIsLoading = useSelector(state => state.auth.isLoading);
     const userIsLoading = useSelector(state => state.user.isLoading);
     const authError = useSelector(state => state.auth.authError);
@@ -141,6 +143,17 @@ const ProfileScreen = () => {
                         />
                     }
 
+                    <Button
+                        containerStyle={style.buttonContainer}
+                        buttonStyle={style.button}
+                        title={'UPDATE'}
+                        disabled={!updateExist}
+                        loading={isDownloadingUpdate}
+                        loadingProps={{
+                            animating: true,
+                        }}
+                        onPress={() => dispatch(setShowUpdateOverlayFlag(true))}
+                    />
 
                     <Button
                         containerStyle={style.buttonContainer}

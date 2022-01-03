@@ -3,21 +3,18 @@ import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {HomeAvatarAndSearch} from "../../components/molecules";
 import {
     HomeTopSection,
-    OtaUpdate,
     HomeTrailersList,
     HomeSoonList,
     HomeTimeLineSection
 } from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useQueryClient} from "react-query";
-import {useCheckUpdate} from "../../hooks";
 import {Mixins} from "../../styles";
 
 //todo : add a icon for downloading update
 //todo : cache videos into local file
 
 const HomeScreen = () => {
-    const {update, isDownloading, downloadUpdate} = useCheckUpdate();
     const [refreshing, setRefreshing] = useState(false);
     const queryClient = useQueryClient();
 
@@ -46,12 +43,6 @@ const HomeScreen = () => {
                         />
                     }
                 >
-
-                    <OtaUpdate
-                        update={update}
-                        isDownloading={isDownloading}
-                        downloadUpdate={downloadUpdate}
-                    />
 
                     <HomeAvatarAndSearch
                         extraStyle={style.avatar_searchBar}

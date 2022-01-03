@@ -29,7 +29,7 @@ const style = StyleSheet.create({
         borderRadius: 25,
         ...Mixins.padding(0),
         marginLeft: 10,
-        width: Mixins.getWindowWidth(78),
+        width: Mixins.getWindowWidth(78) - 35,
     },
     searchBar: {
         borderRadius: 25,

@@ -30,6 +30,10 @@ const userSlice = createSlice({
         emailVerified: false,
         isLoading: false,
         userError: '',
+        //----ota update
+        updateExist: false,
+        isDownloadingUpdate: false,
+        showUpdateOverlay: true,
     },
     reducers: {
         setInternet: (state, action) => {
@@ -44,6 +48,15 @@ const userSlice = createSlice({
         },
         resetUserError: (state, action) => {
             state.userError = '';
+        },
+        setUpdateFlag: (state, action) => {
+            state.updateExist = action.payload;
+        },
+        setDownloadingUpdateFlag: (state, action) => {
+            state.isDownloadingUpdate = action.payload;
+        },
+        setShowUpdateOverlayFlag: (state, action) => {
+            state.showUpdateOverlay = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -80,6 +93,9 @@ export const {
     setProfileImages,
     setEmailVerifiedFlag,
     resetUserError,
+    setUpdateFlag,
+    setDownloadingUpdateFlag,
+    setShowUpdateOverlayFlag,
 } = userSlice.actions;
 
 export {

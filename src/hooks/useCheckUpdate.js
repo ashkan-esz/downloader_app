@@ -1,9 +1,12 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import * as Updates from "expo-updates";
+import {useDispatch} from "react-redux";
+import FastImage from "react-native-fast-image";
+import {setDownloadingUpdateFlag, setUpdateFlag} from "../redux/slices/user.slice";
+
 
 const useCheckUpdate = () => {
-    const [update, setUpdate] = useState(false);
-    const [isDownloading, setIsDownloading] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (process.env.NODE_ENV === 'production') {
@@ -11,7 +14,7 @@ const useCheckUpdate = () => {
                 try {
                     const updateResult = await Updates.checkForUpdateAsync();
                     if (updateResult.isAvailable) {
-                        setUpdate(true);
+                        dispatch(setUpdateFlag(true));
                     }
                 } catch (e) {
                 }
@@ -22,18 +25,21 @@ const useCheckUpdate = () => {
 
     async function downloadUpdate() {
         try {
-            setIsDownloading(true);
+            dispatch(setDownloadingUpdateFlag(true));
             await Updates.fetchUpdateAsync();
-            setIsDownloading(false);
-            await Updates.reloadAsync();
+            dispatch(setDownloadingUpdateFlag(false));
             await Updates.clearUpdateCacheExperimentalAsync();
+            await FastImage.clearMemoryCache();
+            await FastImage.clearDiskCache();
+            await Updates.reloadAsync();
         } catch (e) {
-            setIsDownloading(false);
-            setUpdate(false);
+            dispatch(setUpdateFlag(false));
+            dispatch(setDownloadingUpdateFlag(false));
         }
     }
 
-    return {update, isDownloading, downloadUpdate};
+    return {downloadUpdate};
 }
+
 
 export default useCheckUpdate;

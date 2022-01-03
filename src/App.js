@@ -8,14 +8,15 @@ import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
 import {AuthNavigations, AppStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
-import {RootToast, LoggedOutModal} from './components/atoms';
+import {RootToast, LoggedOutModal, MyOverlay} from './components/atoms';
 import {OfflineStatusBar} from "./components/molecules";
 import {useDispatch, useSelector} from "react-redux";
-import {profile_api} from "./redux/slices/user.slice";
+import {profile_api, setShowUpdateOverlayFlag} from "./redux/slices/user.slice";
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
+import {useCheckUpdate} from "./hooks";
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -78,7 +79,11 @@ export default function App() {
     useKeepAwake();
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+    const updateExist = useSelector(state => state.user.updateExist);
+    const isDownloadingUpdate = useSelector(state => state.user.isDownloadingUpdate);
+    const showUpdateOverlay = useSelector(state => state.user.showUpdateOverlay);
     const [isReady, setIsReady] = useState(false);
+    const {downloadUpdate} = useCheckUpdate();
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -93,14 +98,18 @@ export default function App() {
     }, [isLoggedIn]);
 
     const _loadAssetsAsync = async () => {
-        const imageAssets = cacheImages([
-            require('./assets/images/loadingImage.png'),
-            require('./assets/images/noImage.png'),
-        ]);
+        try {
+            const imageAssets = cacheImages([
+                require('./assets/images/loadingImage.png'),
+                require('./assets/images/noImage.png'),
+            ]);
 
-        const fontAssets = [FontAwesome.font, AntDesign.font].map(font => Font.loadAsync(font));
+            const fontAssets = [FontAwesome.font, AntDesign.font].map(font => Font.loadAsync(font));
 
-        await Promise.all([...imageAssets, ...fontAssets]);
+            await Promise.all([...imageAssets, ...fontAssets]);
+        } catch (error) {
+
+        }
     }
 
     if (!isReady) {
@@ -119,6 +128,16 @@ export default function App() {
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
                     <OfflineStatusBar/>
+                    <MyOverlay
+                        overlay={(showUpdateOverlay && updateExist) || isDownloadingUpdate}
+                        setOverlay={(value) => dispatch(setShowUpdateOverlayFlag(value))}
+                        message={'There is a minor update (1mb)'}
+                        leftOption={'CANCEL'}
+                        rightOption={'UPDATE'}
+                        rightColor={"green"}
+                        isLoading={isDownloadingUpdate}
+                        onRightClick={downloadUpdate}
+                    />
                     <LoggedOutModal/>
                     {
                         isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>
