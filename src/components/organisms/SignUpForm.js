@@ -175,6 +175,7 @@ const style = StyleSheet.create({
     },
     createAccountContainer: {
         marginTop: 15,
+        borderRadius: 25,
     },
     createAccount: {
         backgroundColor: Colors.RED,

@@ -5,11 +5,18 @@ import {Colors} from "../../styles";
 import {LogInForm} from "../../components/organisms";
 import {GoogleButton} from "../../components/atoms";
 import {ScreenLayout} from "../../components/layouts";
+import {useSelector} from "react-redux";
 
 //todo : forget password
 //todo : google sign in
 
 const LogInScreen = ({navigation}) => {
+
+    const internet = useSelector(state => state.user.internet);
+
+    const paddingBottom = {
+        paddingBottom: internet ? 0 : 38,
+    }
 
     const googleSignIn = () => {
         //todo : add google login
@@ -18,7 +25,7 @@ const LogInScreen = ({navigation}) => {
     return (
         <ScreenLayout>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={style.container}>
+                <View style={[style.container, paddingBottom]}>
 
                     {/*//todo : add logo*/}
                     <Text h3 style={style.header}>

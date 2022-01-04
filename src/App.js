@@ -39,8 +39,6 @@ LogBox.ignoreLogs([
 //todo : add gesture
 //todo : fix splash screen jump up before end
 
-//todo : faster rating library
-
 
 try {
     I18nManager.allowRTL(false);

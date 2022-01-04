@@ -5,10 +5,17 @@ import {Colors} from "../../styles";
 import {SignUpForm} from "../../components/organisms";
 import {GoogleButton} from "../../components/atoms";
 import {ScreenLayout} from "../../components/layouts";
+import {useSelector} from "react-redux";
 
 //todo : google sign up
 
 const SignUpScreen = ({navigation}) => {
+    const internet = useSelector(state => state.user.internet);
+
+    const paddingBottom = {
+        paddingBottom: internet ? 0 : 38,
+    }
+
     const googleSignUp = () => {
         //todo : add google signup
     };
@@ -16,7 +23,7 @@ const SignUpScreen = ({navigation}) => {
     return (
         <ScreenLayout>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={style.container}>
+                <View style={[style.container, paddingBottom]}>
 
                     {/*//todo : add logo*/}
                     <Text h3 style={style.header}>

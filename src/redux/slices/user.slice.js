@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {getProfileDataApi} from "../../api";
 
-//todo : refactor ota update
 
 const profile_api = createAsyncThunk(
     'user/profile_api',

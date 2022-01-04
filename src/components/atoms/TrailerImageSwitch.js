@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Icon} from "react-native-elements";
+import {AntDesign} from "@expo/vector-icons";
 import CustomVideo from "./CustomVideo";
 import CustomImage from "./CustomImage";
 import {useDebounce} from "../../hooks";
@@ -27,9 +27,8 @@ const TrailerImageSwitch = ({videoStyle, isOnScreenView, trailer, poster, onLong
                     progressThickness={4}
                 />
                 <View style={style.imageTextContainer}>
-                    <Icon
+                    <AntDesign
                         name={'play'}
-                        type={"antdesign"}
                         size={50}
                         color={'white'}
                         onPress={() => setShouldLoad(true)}

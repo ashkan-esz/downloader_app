@@ -1,16 +1,24 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button} from "react-native-elements";
+import {useSelector} from "react-redux";
 import {Colors, Typography} from '../../styles';
 import PropsTypes from 'prop-types';
 
 
 const SignCreateAcc = ({onSignIn, onCreatAcc}) => {
+    const internet = useSelector(state => state.user.internet);
+
+    const paddingBottom = {
+        paddingBottom: internet ? 0 : 38,
+    }
+
     return (
-        <View>
+        <View style={paddingBottom}>
             <Button
+                containerStyle={style.signInContainer}
                 titleStyle={style.titleStyle}
-                buttonStyle={style.signup}
+                buttonStyle={style.signIn}
                 title={'Sign In'}
                 onPress={onSignIn}
             />
@@ -27,13 +35,17 @@ const SignCreateAcc = ({onSignIn, onCreatAcc}) => {
 };
 
 const style = StyleSheet.create({
-    signup: {
+    signInContainer: {
+        borderRadius: 25,
+    },
+    signIn: {
         backgroundColor: Colors.RED,
         borderRadius: 25,
-        height: 50
+        height: 50,
     },
     createAccountContainer: {
         marginTop: 15,
+        borderRadius: 25,
     },
     createAccount: {
         backgroundColor: Colors.SECONDARY,
@@ -41,7 +53,7 @@ const style = StyleSheet.create({
         height: 50,
     },
     titleStyle: {
-        fontSize: Typography.getFontSize(20)
+        fontSize: Typography.getFontSize(20),
     }
 })
 
