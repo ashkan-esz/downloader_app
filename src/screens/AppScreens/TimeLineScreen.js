@@ -15,7 +15,9 @@ const TimeLineScreen = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        setChangedSpacing(0);
+        const todayNumber = new Date().getDay();
+        setSpacing(todayNumber);
+        setChangedSpacing(todayNumber);
     }, []);
 
     async function getData({pageParam = 1, SPACING = null}) {

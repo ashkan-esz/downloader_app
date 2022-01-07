@@ -8,15 +8,14 @@ import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
 import {AuthNavigations, AppStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
-import {RootToast, LoggedOutModal, MyOverlay} from './components/atoms';
-import {OfflineStatusBar} from "./components/molecules";
+import {RootToast} from './components/atoms';
+import {GlobalOverlays, OfflineStatusBar} from "./components/molecules";
 import {useDispatch, useSelector} from "react-redux";
-import {profile_api, setShowUpdateOverlayFlag} from "./redux/slices/user.slice";
+import {profile_api} from "./redux/slices/user.slice";
 import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
-import {useCheckUpdate} from "./hooks";
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -77,11 +76,7 @@ export default function App() {
     useKeepAwake();
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-    const updateExist = useSelector(state => state.user.updateExist);
-    const isDownloadingUpdate = useSelector(state => state.user.isDownloadingUpdate);
-    const showUpdateOverlay = useSelector(state => state.user.showUpdateOverlay);
     const [isReady, setIsReady] = useState(false);
-    const {downloadUpdate} = useCheckUpdate();
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -126,17 +121,7 @@ export default function App() {
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
                     <OfflineStatusBar/>
-                    <MyOverlay
-                        overlay={(showUpdateOverlay && updateExist) || isDownloadingUpdate}
-                        setOverlay={(value) => dispatch(setShowUpdateOverlayFlag(value))}
-                        message={'There is a minor update (1mb)'}
-                        leftOption={'CANCEL'}
-                        rightOption={'UPDATE'}
-                        rightColor={"green"}
-                        isLoading={isDownloadingUpdate}
-                        onRightClick={downloadUpdate}
-                    />
-                    <LoggedOutModal/>
+                    <GlobalOverlays/>
                     {
                         isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>
                     }

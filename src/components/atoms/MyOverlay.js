@@ -15,15 +15,25 @@ const MyOverlay = ({
                        onRightClick,
                        isLoading,
                        leftColor,
-                       rightColor
+                       rightColor,
+                       buttonType,
+                       titleColor,
+                       titleFontSize,
                    }) => {
+
+    const titleStyle = {
+        color: titleColor || Colors.GRAY_LIGHT,
+        fontSize: Typography.getFontSize(titleFontSize || 20),
+    };
 
     const leftButtonTitle = {
         color: leftColor || 'blue',
+        fontSize: Typography.getFontSize(rightOption ? 16 : 18),
     };
 
     const rightButtonTitle = {
         color: rightColor || 'red',
+        fontSize: Typography.getFontSize(16),
     };
 
     return (
@@ -38,13 +48,13 @@ const MyOverlay = ({
         >
             <View style={style.container}>
 
-                <Text style={style.text}> {message} </Text>
+                <Text style={[style.text, titleStyle]}> {message} </Text>
 
                 <View style={style.buttonsContainer}>
                     <Button
                         buttonStyle={style.button}
                         titleStyle={leftButtonTitle}
-                        type={"clear"}
+                        type={buttonType || "clear"}
                         title={leftOption}
                         onPress={() => {
                             setOverlay(false);
@@ -52,17 +62,20 @@ const MyOverlay = ({
                         }}
                     />
 
-                    <Button
-                        buttonStyle={style.button}
-                        titleStyle={rightButtonTitle}
-                        type={"clear"}
-                        title={rightOption}
-                        loading={isLoading}
-                        onPress={() => {
-                            setOverlay(false);
-                            onRightClick && onRightClick();
-                        }}
-                    />
+                    {
+                        rightOption && <Button
+                            buttonStyle={style.button}
+                            titleStyle={rightButtonTitle}
+                            type={buttonType || "clear"}
+                            title={rightOption}
+                            loading={isLoading}
+                            onPress={() => {
+                                setOverlay(false);
+                                onRightClick && onRightClick();
+                            }}
+                        />
+                    }
+
                 </View>
 
             </View>
@@ -87,8 +100,6 @@ const style = StyleSheet.create({
         top: '12%',
     },
     text: {
-        color: Colors.GRAY_LIGHT,
-        fontSize: Typography.getFontSize(20),
         textAlign: 'center',
         opacity: 0.9,
     },
@@ -109,11 +120,15 @@ MyOverlay.propTypes = {
     setOverlay: PropTypes.func.isRequired,
     message: PropTypes.string,
     leftOption: PropTypes.string.isRequired,
-    rightOption: PropTypes.string.isRequired,
+    rightOption: PropTypes.string,
     onLeftClick: PropTypes.func,
     onRightClick: PropTypes.func,
+    isLoading: PropTypes.bool,
     leftColor: PropTypes.string,
     rightColor: PropTypes.string,
+    buttonType: PropTypes.string,
+    titleColor: PropTypes.string,
+    titleFontSize: PropTypes.number,
 }
 
 

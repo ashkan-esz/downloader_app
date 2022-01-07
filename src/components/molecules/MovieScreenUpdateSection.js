@@ -24,8 +24,8 @@ const MovieScreenUpdateSection = ({data}) => {
         ? ('S' + nextEpisode.season + 'E' + nextEpisode.episode + ' , ' + nextEpisode.title)
         : 'unknown';
 
-    const makeTotalDuration = totalDuration.split(':')[0] + ' hour , ' +
-        totalDuration.split(':')[1] + ' min';
+    const makeTotalDuration = totalDuration ? totalDuration.split(':')[0] + ' hour , ' +
+        totalDuration.split(':')[1] + ' min' : '-';
 
     const {hardSubText, dubbedText} = homeStackHelpers.get_hardSub_dubbed_text(latestData, type);
 
@@ -36,7 +36,10 @@ const MovieScreenUpdateSection = ({data}) => {
             </Text>
 
             {
-                type === 'serial' && <View>
+                type.includes('serial') && <View>
+                    <Text style={style.text}>
+                        <Text style={style.statement}>Status :</Text> {status}
+                    </Text>
                     <Text style={style.text}>
                         <Text style={style.statement}>Day :</Text> {releaseDay || 'unknown'}
                     </Text>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
-import {HomeProfileAvatar} from "../atoms";
+import {ProfileAvatar} from "../atoms";
 import {useSelector} from "react-redux";
 import {Typography} from "../../styles";
 
@@ -14,7 +14,7 @@ const ProfileImage = () => {
 
     return (
         <View>
-            <HomeProfileAvatar
+            <ProfileAvatar
                 size={'xlarge'}
                 onPress={() => {
                 }}

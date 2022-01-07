@@ -19,3 +19,4 @@ export {default as FilterType} from './FilterType';
 export {default as MovieTopPosterCarousel} from './MovieTopPosterCarousel';
 export {default as ProfileImage} from './ProfileImage';
 export {default as DeviceSession} from './DeviceSession';
+export {default as GlobalOverlays} from './GlobalOverlays';

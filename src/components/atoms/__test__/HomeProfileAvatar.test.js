@@ -1,14 +1,14 @@
 import * as React from "react";
 import {fireEvent, render} from '@testing-library/react-native';
 import '@testing-library/jest-dom';
-import HomeProfileAvatar from "../HomeProfileAvatar";
+import ProfileAvatar from "../ProfileAvatar";
 
 describe("home profile avatar", () => {
 
     test('renders correctly and handle onPress', () => {
         let onPress = jest.fn();
         let {toJSON,getByTestId} = render(
-            <HomeProfileAvatar onPress={onPress}/>
+            <ProfileAvatar onPress={onPress}/>
         );
         let avatar = getByTestId('home-avatar');
         expect(toJSON()).toMatchSnapshot();

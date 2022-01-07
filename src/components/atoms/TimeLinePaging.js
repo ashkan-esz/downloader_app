@@ -10,14 +10,13 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
 
     const getDay = () => {
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const date = new Date();
-        date.setDate(date.getDate() + spacing);
-        if (spacing === 0) {
-            return daysOfWeek[date.getDay()] + ' - Today';
-        } else if (spacing === 1) {
-            return daysOfWeek[date.getDay()] + ' - Tomorrow';
+        const todayNumber = new Date().getDay();
+        if (spacing === todayNumber) {
+            return daysOfWeek[spacing] + ' - Today';
+        } else if (spacing === todayNumber + 1) {
+            return daysOfWeek[spacing] + ' - Tomorrow';
         }
-        return daysOfWeek[date.getDay()];
+        return daysOfWeek[spacing];
     }
 
     return (

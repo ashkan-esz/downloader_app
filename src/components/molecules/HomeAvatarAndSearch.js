@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {HomeProfileAvatar, HomeSearchBar} from "../atoms";
+import {ProfileAvatar, HomeSearchBar} from "../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useDispatch, useSelector} from "react-redux";
@@ -16,7 +16,7 @@ const HomeAvatarAndSearch = ({extraStyle}) => {
 
     return (
         <View style={[style.container, extraStyle]}>
-            <HomeProfileAvatar
+            <ProfileAvatar
                 onPress={() => {
                     navigation.navigate('Profile');
                 }}

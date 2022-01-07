@@ -5,8 +5,9 @@ import {useSelector} from "react-redux";
 import CustomImage from "./CustomImage";
 import PropTypes from 'prop-types';
 
+//todo :
 
-const HomeProfileAvatar = ({size, onPress}) => {
+const ProfileAvatar = ({size, onPress}) => {
     const profileImages = useSelector(state => state.user.profileImages);
     const profileImage = useSelector(state => state.user.profileImage);
 
@@ -41,9 +42,9 @@ const style = StyleSheet.create({
     }
 });
 
-HomeProfileAvatar.propTypes = {
+ProfileAvatar.propTypes = {
     onPress: PropTypes.func.isRequired,
     size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
 }
 
-export default HomeProfileAvatar;
+export default ProfileAvatar;

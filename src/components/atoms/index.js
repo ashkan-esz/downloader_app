@@ -1,7 +1,7 @@
 export {default as GoogleButton} from './GoogleButton';
 export {default as HomeSearchBar} from './HomeSearchBar';
 export {default as MovieSearchNotFound} from './MovieSearchNotFound';
-export {default as HomeProfileAvatar} from './HomeProfileAvatar';
+export {default as ProfileAvatar} from './ProfileAvatar';
 export {default as CustomRating} from './CustomRating';
 export {default as CustomVideo} from './CustomVideo';
 export {default as TrailerImageSwitch} from './TrailerImageSwitch';
@@ -22,5 +22,4 @@ export {default as MovieTrailer} from './MovieTrailer';
 export {default as MoviePlot} from './MoviePlot';
 export {default as CustomImage} from './CustomImage';
 export {default as RootToast} from './RootToast';
-export {default as LoggedOutModal} from './LoggedOutModal';
 export {default as MyOverlay} from './MyOverlay';

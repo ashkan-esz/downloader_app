@@ -33,6 +33,8 @@ const userSlice = createSlice({
         updateExist: false,
         isDownloadingUpdate: false,
         showUpdateOverlay: true,
+        //-------------
+        closeAppFlag: false,
     },
     reducers: {
         setInternet: (state, action) => {
@@ -56,6 +58,9 @@ const userSlice = createSlice({
         },
         setShowUpdateOverlayFlag: (state, action) => {
             state.showUpdateOverlay = action.payload;
+        },
+        setCloseAppFlag: (state, action) => {
+            state.closeAppFlag = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -95,6 +100,7 @@ export const {
     setUpdateFlag,
     setDownloadingUpdateFlag,
     setShowUpdateOverlayFlag,
+    setCloseAppFlag,
 } = userSlice.actions;
 
 export {

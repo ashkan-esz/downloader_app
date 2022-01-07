@@ -15,8 +15,10 @@ const HomeTimeLineSection = () => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
+    const todayNumber = new Date().getDay();
+
     async function getData() {
-        let result = await getSeriesOfDay(0, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+        let result = await getSeriesOfDay(todayNumber, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {
@@ -25,7 +27,7 @@ const HomeTimeLineSection = () => {
     }
 
     const {data, isLoading, isError} = useQuery(
-        ['timeLine', 0],
+        ['timeLine', todayNumber],
         getData,
         {
             placeholderData: [],
