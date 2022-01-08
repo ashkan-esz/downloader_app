@@ -1,4 +1,4 @@
-export {default as GoogleButton} from './GoogleButton';
+
 export {default as HomeSearchBar} from './HomeSearchBar';
 export {default as MovieSearchNotFound} from './MovieSearchNotFound';
 export {default as ProfileAvatar} from './ProfileAvatar';

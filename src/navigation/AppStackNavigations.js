@@ -25,6 +25,7 @@ const AppStackNavigations = () => {
                 headerTintColor: '#fff',
                 headerHideShadow: true,
                 headerTransparent: true,
+                headerShadowVisible: false,
                 animation: "fade",
             }}
         >

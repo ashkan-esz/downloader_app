@@ -13,14 +13,6 @@ jest.mock("../../../components/organisms/SignUpForm", () => {
     }
 );
 
-jest.mock('../../../components/atoms/GoogleButton',()=>{
-    const {Button} = require("react-native");
-    return ({onPress})=>{
-        return (
-            <Button title={'google-btn'} onPress={onPress}/>
-        );
-    }
-})
 
 describe("signup screen", () => {
 

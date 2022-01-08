@@ -12,7 +12,7 @@ export default function authNavigation() {
             initialRouteName={'signCreateAcc'}
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: Colors.PRIMARY,
+                    backgroundColor: Colors.LOGO_BACKGROUND,
                 },
                 headerTintColor: '#fff',
                 headerTitleStyle: {
@@ -21,6 +21,7 @@ export default function authNavigation() {
                 },
                 headerHideShadow: true,
                 headerTransparent: true,
+                headerShadowVisible: false,
                 animation: "fade",
             }}
         >

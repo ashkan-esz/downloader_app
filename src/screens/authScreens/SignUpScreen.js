@@ -1,13 +1,12 @@
 import React from 'react';
 import {View, StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Button, Text} from "react-native-elements";
-import {Colors} from "../../styles";
+import {Colors, Mixins} from "../../styles";
 import {SignUpForm} from "../../components/organisms";
-import {GoogleButton} from "../../components/atoms";
 import {ScreenLayout} from "../../components/layouts";
 import {useSelector} from "react-redux";
+import FastImage from "react-native-fast-image";
 
-//todo : google sign up
 
 const SignUpScreen = ({navigation}) => {
     const internet = useSelector(state => state.user.internet);
@@ -16,52 +15,52 @@ const SignUpScreen = ({navigation}) => {
         paddingBottom: internet ? 0 : 38,
     }
 
-    const googleSignUp = () => {
-        //todo : add google signup
-    };
-
     return (
-        <ScreenLayout>
+        <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={[style.container, paddingBottom]}>
+                <>
+                    <FastImage
+                        source={require('../../assets/icons/logo.png')}
+                        style={style.logo}
+                    />
 
-                    {/*//todo : add logo*/}
-                    <Text h3 style={style.header}>
-                        <Text h3 style={{color: Colors.RED}}>
-                            Hello!
+                    <View style={[style.container, paddingBottom]}>
+                        <Text h3 style={style.header}>
+                            <Text h3 style={{color: Colors.RED}}>
+                                Hello!
+                            </Text>
+                            <Text> </Text>
+                            Creat your account and enjoy
                         </Text>
-                        <Text> </Text>
-                        Creat your account and enjoy
-                    </Text>
 
-                    <SignUpForm
-                        extraStyle={style.signUpForm}
-                    />
+                        <SignUpForm
+                            extraStyle={style.signUpForm}
+                        />
 
-                    <GoogleButton
-                        extraStyle={style.googleButton}
-                        text={"Or Create Account With"}
-                        onPress={googleSignUp}
-                    />
-
-                    <View style={style.divider}/>
-                    <Button
-                        containerStyle={style.signInContainer}
-                        titleStyle={style.signInText}
-                        title={'SIGN IN'}
-                        type={"clear"}
-                        onPress={() => {
-                            navigation.navigate('SignIn');
-                        }}
-                    />
-
-                </View>
+                        <View style={style.divider}/>
+                        <Button
+                            containerStyle={style.signInContainer}
+                            titleStyle={style.signInText}
+                            title={'SIGN IN'}
+                            type={"clear"}
+                            onPress={() => {
+                                navigation.navigate('SignIn');
+                            }}
+                        />
+                    </View>
+                </>
             </TouchableWithoutFeedback>
         </ScreenLayout>
     );
 };
 
 const style = StyleSheet.create({
+    logo: {
+        width: 340,
+        height: 200,
+        alignSelf: 'center',
+        marginTop: Mixins.getWindowHeight(12),
+    },
     container: {
         position: 'absolute',
         bottom: '2%',
@@ -78,7 +77,7 @@ const style = StyleSheet.create({
         marginTop: 20
     },
     divider: {
-        marginTop: 15,
+        marginTop: 30,
         borderBottomColor: '#636161',
         borderBottomWidth: 0.9,
     },
@@ -89,7 +88,6 @@ const style = StyleSheet.create({
     signInText: {
         color: Colors.RED
     }
-
 })
 
 

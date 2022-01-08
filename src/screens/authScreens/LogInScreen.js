@@ -1,14 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Button, Text} from "react-native-elements";
-import {Colors} from "../../styles";
+import {Colors, Mixins} from "../../styles";
 import {LogInForm} from "../../components/organisms";
-import {GoogleButton} from "../../components/atoms";
 import {ScreenLayout} from "../../components/layouts";
 import {useSelector} from "react-redux";
+import FastImage from "react-native-fast-image";
 
 //todo : forget password
-//todo : google sign in
 
 const LogInScreen = ({navigation}) => {
 
@@ -18,52 +17,56 @@ const LogInScreen = ({navigation}) => {
         paddingBottom: internet ? 0 : 38,
     }
 
-    const googleSignIn = () => {
-        //todo : add google login
-    };
-
     return (
-        <ScreenLayout>
+        <ScreenLayout
+            backgroundColor={Colors.LOGO_BACKGROUND}
+        >
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={[style.container, paddingBottom]}>
+                <>
 
-                    {/*//todo : add logo*/}
-                    <Text h3 style={style.header}>
-                        <Text h3 style={{color: Colors.RED}}>
-                            Welcome!
+                    <FastImage
+                        source={require('../../assets/icons/logo.png')}
+                        style={style.logo}
+                    />
+
+                    <View style={[style.container, paddingBottom]}>
+                        <Text h3 style={style.header}>
+                            <Text h3 style={{color: Colors.RED}}>
+                                Welcome!
+                            </Text>
+                            <Text> </Text>
+                            Login with your account and enjoy
                         </Text>
-                        <Text> </Text>
-                        Login with your account and enjoy
-                    </Text>
 
-                    <LogInForm
-                        extraStyle={style.loginForm}
-                    />
+                        <LogInForm
+                            extraStyle={style.loginForm}
+                        />
 
-                    <GoogleButton
-                        extraStyle={style.googleButton}
-                        text={"Or Login With"}
-                        onPress={googleSignIn}
-                    />
+                        <View style={style.divider}/>
+                        <Button
+                            containerStyle={style.signInContainer}
+                            titleStyle={style.signInText}
+                            title={'CREATE ACCOUNT'}
+                            type={"clear"}
+                            onPress={() => {
+                                navigation.navigate('SignUp');
+                            }}
+                        />
 
-                    <View style={style.divider}/>
-                    <Button
-                        containerStyle={style.signInContainer}
-                        titleStyle={style.signInText}
-                        title={'CREATE ACCOUNT'}
-                        type={"clear"}
-                        onPress={() => {
-                            navigation.navigate('SignUp');
-                        }}
-                    />
-
-                </View>
+                    </View>
+                </>
             </TouchableWithoutFeedback>
         </ScreenLayout>
     );
 };
 
 const style = StyleSheet.create({
+    logo:{
+        width: Mixins.WINDOW_WIDTH,
+        height: 300,
+        alignSelf: 'center',
+        marginTop: Mixins.getWindowHeight(12),
+    },
     container: {
         position: 'absolute',
         bottom: '2%',
@@ -80,7 +83,7 @@ const style = StyleSheet.create({
         marginTop: 25
     },
     divider: {
-        marginTop: 15,
+        marginTop: 50,
         borderBottomColor: '#636161',
         borderBottomWidth: 0.9,
     },
