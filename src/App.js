@@ -32,12 +32,15 @@ LogBox.ignoreLogs([
 //todo : fix ram usage of stack navigation
 //todo : load prev data while loading app
 //todo : sort components
+//todo : save app password
+//todo : fix auth forms
 
 //todo : add offline usage
 
 //todo : add gesture
 //todo : fix splash screen jump up before end
 
+//todo : app starts soo slow
 
 try {
     I18nManager.allowRTL(false);

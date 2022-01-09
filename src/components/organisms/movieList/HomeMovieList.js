@@ -17,9 +17,18 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
         );
     }
 
-    if (loadedData.length === 0 || isLoading) {
+    if (isLoading) {
         return (
             <HomeMovieListPlaceHolder number={3}/>
+        );
+    }
+
+    if (!isLoading && loadedData.length === 0) {
+        return (
+            <MovieError
+                containerStyle={style.notFound}
+                errorMessage={"No Title Found!"}
+            />
         );
     }
 
@@ -55,6 +64,12 @@ const style = StyleSheet.create({
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    notFound: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Mixins.getWindowHeight(33) + 3,
+        marginTop: 11,
     }
 });
 

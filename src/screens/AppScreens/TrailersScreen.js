@@ -36,7 +36,6 @@ const TrailersScreen = () => {
         {
             getNextPageParam: (lastPage, allPages) => allPages.length + 1,
             placeholderData: {pages: [[]]},
-            refetchInterval: 3 * 60 * 1000,
         });
 
     const _onRefresh = async () => {

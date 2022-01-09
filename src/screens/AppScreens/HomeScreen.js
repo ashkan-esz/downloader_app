@@ -18,7 +18,7 @@ const HomeScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        const sections = ['recent', 'updates', 'populars', 'todaySeries', 'trailers'];
+        const sections = ['multipleStatus', 'timeLine', 'trailers'];
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
             let query = queryClient.refetchQueries([sections[i]]);

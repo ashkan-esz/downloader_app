@@ -47,7 +47,7 @@ const SignUpForm = ({extraStyle}) => {
                     required: {value: true, message: 'This is required'},
                     minLength: {value: 6, message: 'Too short'},
                     maxLength: {value: 50, message: 'Too long'},
-                    validate: (value) => !!value.toString().match(/^[a-z|0-9_]+$/g) || 'Only a-z, 0-9, and underscores are allowed',
+                    validate: (value) => !!value.toString().match(/^[a-z|0-9_]+$/gi) || 'Only a-z, 0-9, and underscores are allowed',
                 }}
                 render={({field: {onChange, value}}) => (
                     <CustomTextInput

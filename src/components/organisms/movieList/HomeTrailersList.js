@@ -85,7 +85,7 @@ const HomeTrailersList = () => {
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 style={style.scrollView}
-                data={data.slice(0, 3)}
+                data={data.slice(0, 6)}
                 keyExtractor={_keyExtractor}
                 renderItem={_renderItem}
             />

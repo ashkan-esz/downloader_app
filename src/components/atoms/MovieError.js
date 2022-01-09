@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 
 
-const MovieError = ({containerStyle, buttonStyle, retry, hideRetry}) => {
+const MovieError = ({containerStyle, buttonStyle, retry, hideRetry, errorMessage}) => {
     const internet = useSelector(state => state.user.internet);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const MovieError = ({containerStyle, buttonStyle, retry, hideRetry}) => {
         }
     }, [internet]);
 
-    const message = internet ? 'There is a problem!' : 'no internet connection!';
+    const message = errorMessage || (internet ? 'There is a problem!' : 'no internet connection!');
 
     const textMargin = {
         marginTop: (retry && !hideRetry) ? 15 : 0,
@@ -72,6 +72,7 @@ MovieError.propTypes = {
     buttonStyle: PropTypes.object,
     retry: PropTypes.func,
     showRetry: PropTypes.bool,
+    errorMessage: PropTypes.string,
 };
 
 

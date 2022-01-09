@@ -10,7 +10,7 @@ import {getNews, getSortedMovies, getUpdates} from "../../api";
 
 
 const SectionScreen = () => {
-    const sections = ['inTheaters', 'comingSoon', 'recent', 'updates'];
+    const sections = ['inTheaters', 'comingSoon', 'recent', 'update'];
     const route = useRoute();
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
@@ -41,7 +41,7 @@ const SectionScreen = () => {
                 result = await getSortedMovies('comingSoon', types, 'medium', 1);
             } else if (TAB === 'recent') {
                 result = await getNews(types, 'medium', 1);
-            } else if (TAB === 'updates') {
+            } else if (TAB === 'update') {
                 result = await getUpdates(types, 'medium', 1);
             }
         } else {
@@ -51,7 +51,7 @@ const SectionScreen = () => {
                 result = await getSortedMovies('comingSoon', types, 'medium', 1);
             } else if (tab === 'recent') {
                 result = await getNews(types, 'medium', pageParam);
-            } else if (tab === 'updates') {
+            } else if (tab === 'update') {
                 result = await getUpdates(types, 'medium', pageParam);
             }
         }
@@ -80,8 +80,8 @@ const SectionScreen = () => {
                 () => getData({TAB: 'recent'}));
             promiseArray.push(promise3);
             let promise4 = queryClient.prefetchInfiniteQuery(
-                ['updates', 'sectionScreen', types],
-                () => getData({TAB: 'updates'}));
+                ['update', 'sectionScreen', types],
+                () => getData({TAB: 'update'}));
             promiseArray.push(promise4);
             await Promise.all(promiseArray);
         }
@@ -100,7 +100,6 @@ const SectionScreen = () => {
                 return undefined;
             },
             placeholderData: {pages: [[]]},
-            refetchInterval: 3 * 60 * 1000,
         });
 
     const _onTabChange = (value) => {

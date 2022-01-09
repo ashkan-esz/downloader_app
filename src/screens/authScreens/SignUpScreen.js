@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {View, StyleSheet, Keyboard, TouchableOpacity} from 'react-native';
 import {Button, Text} from "react-native-elements";
 import {Colors, Mixins} from "../../styles";
 import {SignUpForm} from "../../components/organisms";
@@ -17,39 +17,44 @@ const SignUpScreen = ({navigation}) => {
 
     return (
         <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND}>
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <>
-                    <FastImage
-                        source={require('../../assets/icons/logo.png')}
-                        style={style.logo}
-                    />
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => Keyboard.dismiss()}
+            >
+                <FastImage
+                    source={require('../../assets/icons/logo.png')}
+                    style={style.logo}
+                />
+            </TouchableOpacity>
 
-                    <View style={[style.container, paddingBottom]}>
-                        <Text h3 style={style.header}>
-                            <Text h3 style={{color: Colors.RED}}>
-                                Hello!
-                            </Text>
-                            <Text> </Text>
-                            Creat your account and enjoy
-                        </Text>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={[style.container, paddingBottom]}
+                onPress={() => Keyboard.dismiss()}
+            >
+                <Text h3 style={style.header}>
+                    <Text h3 style={{color: Colors.RED}}>
+                        Hello!
+                    </Text>
+                    <Text> </Text>
+                    Creat your account and enjoy
+                </Text>
 
-                        <SignUpForm
-                            extraStyle={style.signUpForm}
-                        />
+                <SignUpForm
+                    extraStyle={style.signUpForm}
+                />
 
-                        <View style={style.divider}/>
-                        <Button
-                            containerStyle={style.signInContainer}
-                            titleStyle={style.signInText}
-                            title={'SIGN IN'}
-                            type={"clear"}
-                            onPress={() => {
-                                navigation.navigate('SignIn');
-                            }}
-                        />
-                    </View>
-                </>
-            </TouchableWithoutFeedback>
+                <View style={style.divider}/>
+                <Button
+                    containerStyle={style.signInContainer}
+                    titleStyle={style.signInText}
+                    title={'SIGN IN'}
+                    type={"clear"}
+                    onPress={() => {
+                        navigation.navigate('SignIn');
+                    }}
+                />
+            </TouchableOpacity>
         </ScreenLayout>
     );
 };

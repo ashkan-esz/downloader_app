@@ -8,8 +8,6 @@ import {useNavigation} from "@react-navigation/native";
 import {getSeriesOfDay} from "../../api";
 import {Colors, Mixins, Typography} from "../../styles";
 
-//todo : fix wasted stale data
-//todo : also fix for timeLine screen
 
 const HomeTimeLineSection = () => {
     const navigation = useNavigation();
@@ -31,8 +29,6 @@ const HomeTimeLineSection = () => {
         getData,
         {
             placeholderData: [],
-            refetchInterval: 3 * 60 * 1000,
-            refetchIntervalInBackground: true,
         });
 
     const _retry = async () => {

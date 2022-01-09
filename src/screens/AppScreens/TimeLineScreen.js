@@ -58,8 +58,6 @@ const TimeLineScreen = () => {
                 return undefined;
             },
             placeholderData: {pages: [[]]},
-            refetchInterval: 3 * 60 * 1000,
-            // refetchIntervalInBackground: true,
         });
 
     const _onSpacingChange = (value) => {

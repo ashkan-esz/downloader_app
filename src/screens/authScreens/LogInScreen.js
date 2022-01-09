@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {View, StyleSheet, Keyboard, TouchableOpacity} from 'react-native';
 import {Button, Text} from "react-native-elements";
 import {Colors, Mixins} from "../../styles";
 import {LogInForm} from "../../components/organisms";
@@ -21,47 +21,51 @@ const LogInScreen = ({navigation}) => {
         <ScreenLayout
             backgroundColor={Colors.LOGO_BACKGROUND}
         >
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <>
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => Keyboard.dismiss()}
+            >
+                <FastImage
+                    source={require('../../assets/icons/logo.png')}
+                    style={style.logo}
+                />
+            </TouchableOpacity>
 
-                    <FastImage
-                        source={require('../../assets/icons/logo.png')}
-                        style={style.logo}
-                    />
+            <TouchableOpacity
+                activeOpacity={1}
+                style={[style.container, paddingBottom]}
+                onPress={() => Keyboard.dismiss()}
+            >
+                <Text h3 style={style.header}>
+                    <Text h3 style={{color: Colors.RED}}>
+                        Welcome!
+                    </Text>
+                    <Text> </Text>
+                    Login with your account and enjoy
+                </Text>
 
-                    <View style={[style.container, paddingBottom]}>
-                        <Text h3 style={style.header}>
-                            <Text h3 style={{color: Colors.RED}}>
-                                Welcome!
-                            </Text>
-                            <Text> </Text>
-                            Login with your account and enjoy
-                        </Text>
+                <LogInForm
+                    extraStyle={style.loginForm}
+                />
 
-                        <LogInForm
-                            extraStyle={style.loginForm}
-                        />
+                <View style={style.divider}/>
+                <Button
+                    containerStyle={style.signInContainer}
+                    titleStyle={style.signInText}
+                    title={'CREATE ACCOUNT'}
+                    type={"clear"}
+                    onPress={() => {
+                        navigation.navigate('SignUp');
+                    }}
+                />
 
-                        <View style={style.divider}/>
-                        <Button
-                            containerStyle={style.signInContainer}
-                            titleStyle={style.signInText}
-                            title={'CREATE ACCOUNT'}
-                            type={"clear"}
-                            onPress={() => {
-                                navigation.navigate('SignUp');
-                            }}
-                        />
-
-                    </View>
-                </>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         </ScreenLayout>
     );
 };
 
 const style = StyleSheet.create({
-    logo:{
+    logo: {
         width: Mixins.WINDOW_WIDTH,
         height: 300,
         alignSelf: 'center',

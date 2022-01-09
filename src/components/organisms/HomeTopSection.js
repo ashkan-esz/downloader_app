@@ -4,45 +4,32 @@ import {SectionNavBar} from "../molecules";
 import HomeMovieList from "./movieList/HomeMovieList";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from '@react-navigation/native';
-import {getSortedMovies, getNews, getUpdates} from "../../api";
+import {getMultipleStatus} from "../../api";
 import {SeeAllButton} from "../atoms";
 
 
 const HomeTopSection = () => {
-    const sections = ['inTheaters', 'comingSoon', 'recent', 'updates'];
+    const sections = ['inTheaters', 'comingSoon', 'recent', 'update'];
     const [tab, setTab] = useState('inTheaters');
+    const [isMounted, setIsMounted] = useState(false);
     const queryClient = useQueryClient();
     const navigation = useNavigation();
 
-    //todo : fix wasted stale data
-    //todo : also fix for section screen
-
-    async function getData({TAB}) {
-        const types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
-        let result;
-        if (TAB) {
-            if (TAB === 'inTheaters') {
-                result = await getSortedMovies('inTheaters', types, 'medium', 1);
-            } else if (TAB === 'comingSoon') {
-                result = await getSortedMovies('comingSoon', types, 'medium', 1);
-            } else if (TAB === 'recent') {
-                result = await getNews(types, 'medium', 1);
-            } else if (TAB === 'updates') {
-                result = await getUpdates(types, 'medium', 1);
-            }
-        } else {
-            if (tab === 'inTheaters') {
-                result = await getSortedMovies('inTheaters', types, 'medium', 1);
-            } else if (tab === 'comingSoon') {
-                result = await getSortedMovies('comingSoon', types, 'medium', 1);
-            } else if (tab === 'recent') {
-                result = await getNews(types, 'medium', 1);
-            } else if (tab === 'updates') {
-                result = await getUpdates(types, 'medium', 1);
+    useEffect(() => {
+        if (isMounted) {
+            if (data.inTheaters.length === 0) {
+                if (data.comingSoon.length > 0) {
+                    setTab('comingSoon');
+                } else {
+                    setTab('recent');
+                }
             }
         }
+    }, [isMounted]);
 
-
+    async function getData() {
+        const types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
+        let result = await getMultipleStatus(types, 'medium', 6, 1);
         if (result !== 'error') {
             return result;
         } else {
@@ -50,32 +37,22 @@ const HomeTopSection = () => {
         }
     }
 
-    //prefetch data
-    useEffect(() => {
-        async function prefetchData() {
-            let promiseArray = [];
-            let promise1 = queryClient.prefetchQuery(['inTheaters'], () => getData({TAB: 'inTheaters'}));
-            promiseArray.push(promise1);
-            let promise2 = queryClient.prefetchQuery(['comingSoon'], () => getData({TAB: 'comingSoon'}));
-            promiseArray.push(promise2);
-            let promise3 = queryClient.prefetchQuery(['recent'], () => getData({TAB: 'recent'}));
-            promiseArray.push(promise3);
-            let promise4 = queryClient.prefetchQuery(['updates'], () => getData({TAB: 'updates'}));
-            promiseArray.push(promise4);
-            await Promise.all(promiseArray);
-        }
-
-        prefetchData();
-    }, []);
-
-    const {data, isLoading, isError} = useQuery(
-        [tab],
+    const {data, isLoading, isFetching, isError} = useQuery(
+        ['multipleStatus'],
         getData,
         {
-            placeholderData: [],
-            refetchInterval: 3 * 60 * 1000,
-            refetchIntervalInBackground: true,
+            placeholderData: {
+                inTheaters: [],
+                comingSoon: [],
+                news: [],
+                update: [],
+            },
+            keepPreviousData: true,
         });
+
+    useEffect(() => {
+        !isFetching && setIsMounted(true);
+    }, [isFetching]);
 
     const _retry = async () => {
         await queryClient.refetchQueries({active: true});
@@ -89,14 +66,14 @@ const HomeTopSection = () => {
                 onTabChange={setTab}
             />
             <HomeMovieList
-                loadedData={data}
+                loadedData={data[tab.replace('recent', 'news')]}
                 tab={tab}
-                isLoading={isLoading}
+                isLoading={isLoading || !isMounted}
                 error={isError}
                 retry={_retry}
             />
             <SeeAllButton
-                disabled={data && data.length < 4}
+                disabled={data[tab.replace('recent', 'news')].length < 4}
                 onPress={() => {
                     navigation.navigate('Section', {startTab: tab});
                 }}
