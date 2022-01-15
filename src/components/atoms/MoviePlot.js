@@ -1,19 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, View, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
-import PropTypes from 'prop-types';
 import {Button, Text} from "react-native-elements";
+import {IntersectionObserverView} from 'rn-intersection-observer';
 import {Colors, Typography} from "../../styles";
+import PropTypes from 'prop-types';
 
 
 const MoviePlot = ({summary}) => {
+    const [isVisible, setIsVisible] = useState(true);
     const [plotLanguage, setPlotLanguage] = useState('english');
     const [showAll, setShowAll] = useState(false);
+
+    const plot = showAll
+        ? summary[plotLanguage]
+        : summary[plotLanguage].slice(0, 250) + (summary[plotLanguage].includes('..') ? '' : ' .....');
+
+    const plot_empty = plotLanguage === 'english'
+        ? 'no summary available.'
+        : 'خلاصه داستان موجود نیست.';
 
     useEffect(() => {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }, []);
+
+    useEffect(() => {
+        if (!isVisible && showAll) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            setShowAll(false);
+        }
+    }, [isVisible]);
 
     const _onPress = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -31,7 +48,12 @@ const MoviePlot = ({summary}) => {
     };
 
     return (
-        <View style={style.container}>
+        <IntersectionObserverView
+            style={style.container}
+            scope={'moviePlotScope'}
+            thresholds={[0.8]}
+            onIntersectionChange={(t) => setIsVisible(t.isInsecting)}
+        >
             <Text style={style.section}>
                 PLOT
             </Text>
@@ -60,12 +82,8 @@ const MoviePlot = ({summary}) => {
             <Animated.Text style={[style.plotText, plotPadding]}>
                 {
                     summary[plotLanguage].length === 0
-                        ? plotLanguage === 'english'
-                            ? 'no summary available.'
-                            : 'خلاصه داستان موجود نیست.'
-                        : showAll
-                            ? summary[plotLanguage]
-                            : summary[plotLanguage].slice(0, 250) + '.....'
+                        ? plot_empty
+                        : plot
                 }
             </Animated.Text>
             {
@@ -77,7 +95,7 @@ const MoviePlot = ({summary}) => {
                     onPress={_onPress}
                 />
             }
-        </View>
+        </IntersectionObserverView>
     );
 };
 

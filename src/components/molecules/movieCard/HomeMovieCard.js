@@ -52,7 +52,7 @@ const style = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
         width: Mixins.getWindowWidth(31),
-        height: Mixins.getWindowHeight(33) + 3,
+        height: Mixins.getWindowHeight(33),
     },
     image: {
         width: Mixins.getWindowWidth(31),

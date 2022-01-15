@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
 import {homeStackHelpers} from "../../helper";
@@ -7,16 +7,20 @@ import PropTypes from 'prop-types';
 
 
 const MovieScreenDetailsSection = ({data}) => {
+    const [numberOfEpisodes, setNumberOfEpisodes] = useState(0);
     const {
         type, status,
         premiered, year, endYear,
-        seasons, episodes, duration,
+        seasons, duration,
         latestData,
         country, movieLang,
         rated, boxOffice,
     } = data;
 
-    const numberOfEpisodes = homeStackHelpers.filterReleasedEpisodes(episodes, latestData).length;
+    useEffect(() => {
+        let temp = homeStackHelpers.getNumberOfReleasedEpisodes(seasons, latestData);
+        setNumberOfEpisodes(temp);
+    }, []);
 
     const getType = () => {
         return type

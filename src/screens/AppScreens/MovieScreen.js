@@ -1,5 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
+import {IntersectionObserver} from 'rn-intersection-observer';
 import {MovieLoadingAndError} from "../../components/atoms";
 import {MovieTopPoster, MovieScreenDownloadSection} from "../../components/molecules";
 import {MovieScreenInfoSection} from "../../components/organisms";
@@ -23,7 +24,7 @@ const MovieScreen = () => {
     const route = useRoute();
     const routeParams = route.params;
     const queryClient = useQueryClient();
-    const flatListRef = useRef(null);
+    const scrollViewRef = useRef(null);
 
     const getData = async () => {
         let result = await searchByID(routeParams.id, 'high');
@@ -39,8 +40,9 @@ const MovieScreen = () => {
         getData,
         {
             placeholderData: null,
-            cacheTime: 5 * 60 * 1000,
-            staleTime: 5 * 60 * 1000,
+            keepPreviousData: true,
+            cacheTime: 3 * 60 * 1000,
+            staleTime: 3 * 60 * 1000,
         }
     );
 
@@ -55,14 +57,20 @@ const MovieScreen = () => {
     }
 
     const episodesOrDuration = data !== null
-        ? homeStackHelpers.getEpisodeCountsDuration(data.latestData, data.episodes, data.duration, data.type)
+        ? homeStackHelpers.getEpisodeCountsDuration(data.seasons, data.latestData, data.duration, data.type)
         : '';
+
+    const onScroll = useCallback((event) => {
+        IntersectionObserver.emitEvent('moviePlotScope');
+    }, []);
+
 
     return (
         <ScreenLayout paddingSides={5}>
             <View style={style.container}>
                 <ScrollView
-                    ref={flatListRef}
+                    ref={scrollViewRef}
+                    onScroll={onScroll}
                     refreshControl={
                         <RefreshControl
                             onRefresh={_onRefresh}
@@ -93,7 +101,7 @@ const MovieScreen = () => {
                                 />
                                 <MovieScreenDownloadSection
                                     data={data}
-                                    flatListRef={flatListRef}
+                                    scrollViewRef={scrollViewRef}
                                 />
                                 <View style={{paddingBottom: 100}}/>
                             </View>

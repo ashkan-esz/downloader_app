@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 
 const CustomAccordion = ({extraStyle, sections, expandedIndex, renderHeader, renderContent, flatListRef}) => {
 
-    //todo : need fix
     const keyExtractor = (item) =>
-        (item.seasonNumber || '').toString() +
-        (item.episode || '').toString() +
-        (item.quality || '').toString();
+        (item.seasonNumber || '') +
+        (item.episodeNumber || '') +
+        (item.quality || '');
+
     const renderItem = ({item, index}) => (
         <View>
             {renderHeader(item, index)}

@@ -92,7 +92,7 @@ const style = StyleSheet.create({
         paddingBottom: 10,
     },
     scrollView: {
-        marginTop: 20,
+        marginTop: 8,
         justifyContent: "space-between",
     },
     sectionTitle: {
@@ -110,7 +110,7 @@ const style = StyleSheet.create({
         marginRight: 6
     },
     error: {
-        marginTop: 20,
+        marginTop: 8,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',

@@ -56,11 +56,11 @@ const style = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: "space-between",
-        marginTop: 11,
+        marginTop: 8,
         alignItems: 'center',
     },
     error: {
-        marginTop: 11,
+        marginTop: 8,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',
@@ -68,8 +68,8 @@ const style = StyleSheet.create({
     notFound: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: Mixins.getWindowHeight(33) + 3,
-        marginTop: 11,
+        height: Mixins.getWindowHeight(33),
+        marginTop: 8,
     }
 });
 

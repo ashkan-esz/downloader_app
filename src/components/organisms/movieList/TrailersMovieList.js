@@ -48,7 +48,7 @@ const trailersMovieList = ({
         <TrailerMovieCard
             isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
-            trailer={item.trailers ? item.trailers[0].link : ''}
+            trailer={item.trailers ? item.trailers[0].url : ''}
             id={item._id}
             title={item.rawTitle}
             rating={item.rating.imdb || item.rating.myAnimeList}

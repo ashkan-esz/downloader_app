@@ -4,24 +4,17 @@ import {Text} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisode from "./MovieScreenEpisode";
-import {homeStackHelpers} from "../../helper";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes, rawTitle}) => {
+const MovieScreenEpisodeCollapsible = ({episodes, rawTitle}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
-    const [episodesLinks, setEpisodesLinks] = useState([]);
 
     useEffect(() => {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
-    }, []);
-
-    useEffect(() => {
-        let temp = homeStackHelpers.getEpisodesLinks(sources, seasonNumber, episodes);
-        setEpisodesLinks(temp);
     }, []);
 
     const toggleExpand = (index) => {
@@ -41,7 +34,10 @@ const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes, rawTitl
             : style.headerGradient;
 
         return (
-            <TouchableOpacity onPress={() => toggleExpand(index)} activeOpacity={0.7}>
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => item.links.length > 0 && toggleExpand(index)}
+            >
                 <LinearGradient
                     colors={blueGradient}
                     locations={[0, 1]}
@@ -50,7 +46,7 @@ const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes, rawTitl
                     style={gradientStyle}
                 >
                     <Text style={style.headerText} numberOfLines={1}>
-                        {'Episode : ' + item.episode + episodeTitle}
+                        {'Episode : ' + item.episodeNumber + episodeTitle}
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>
@@ -79,7 +75,7 @@ const MovieScreenEpisodeCollapsible = ({sources, seasonNumber, episodes, rawTitl
     return (
         <CustomAccordion
             extraStyle={style.container}
-            sections={episodesLinks}
+            sections={episodes}
             expandedIndex={expandedIndex}
             renderHeader={_renderHeader}
             renderContent={_renderContent}
@@ -114,8 +110,6 @@ const style = StyleSheet.create({
 });
 
 MovieScreenEpisodeCollapsible.propTypes = {
-    sources: PropTypes.array.isRequired,
-    seasonNumber: PropTypes.number.isRequired,
     episodes: PropTypes.array.isRequired,
     rawTitle: PropTypes.string.isRequired,
 }

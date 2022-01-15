@@ -4,19 +4,12 @@ import {Text} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisode from "./MovieScreenEpisode";
-import {homeStackHelpers} from "../../helper";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenQualityCollapsible = ({rawTitle, sources, scrollToDownload}) => {
-    const [qualities, setQualities] = useState([]);
+const MovieScreenQualityCollapsible = ({rawTitle, qualities, scrollToDownload}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
-
-    useEffect(() => {
-        let temp = homeStackHelpers.getMovieQualitiesSorted(sources);
-        setQualities(temp);
-    }, []);
 
     useEffect(() => {
         if (Platform.OS === 'android') {
@@ -36,15 +29,21 @@ const MovieScreenQualityCollapsible = ({rawTitle, sources, scrollToDownload}) =>
 
     const _renderHeader = (item, index) => {
         const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
+        const gradientStyle = item.links.length === 0
+            ? [style.headerGradient, {opacity: 0.4}]
+            : style.headerGradient;
 
         return (
-            <TouchableOpacity onPress={() => toggleExpand(index)} activeOpacity={0.7}>
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => item.links.length > 0 && toggleExpand(index)}
+            >
                 <LinearGradient
                     colors={cyanGradient}
                     start={[0, 0]}
                     end={[1, 1]}
                     locations={[0, 1]}
-                    style={style.headerGradient}
+                    style={gradientStyle}
                 >
                     <Text style={style.headerText}>
                         {'Quality : ' + item.quality}
@@ -108,7 +107,7 @@ const style = StyleSheet.create({
 
 MovieScreenQualityCollapsible.propTypes = {
     scrollToDownload: PropTypes.func.isRequired,
-    sources: PropTypes.array.isRequired,
+    qualities: PropTypes.array.isRequired,
     rawTitle: PropTypes.string.isRequired,
 }
 

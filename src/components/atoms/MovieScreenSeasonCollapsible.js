@@ -4,24 +4,18 @@ import {Text} from "react-native-elements";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisodeCollapsible from "./MovieScreenEpisodeCollapsible";
-import {homeStackHelpers} from "../../helper";
 import {Typography} from "../../styles";
+import {homeStackHelpers} from "../../helper";
 import PropTypes from 'prop-types';
 
 
-const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, rawTitle, scrollToDownload}) => {
+const MovieScreenSeasonCollapsible = ({seasons, latestData, rawTitle, scrollToDownload}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
-    const [seasonsEpisodes, setSeasonsEpisodes] = useState([]);
 
     useEffect(() => {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
-    }, []);
-
-    useEffect(() => {
-        let temp = homeStackHelpers.getSeasonsEpisodes(seasons, episodes, latestData);
-        setSeasonsEpisodes(temp);
     }, []);
 
     const toggleExpand = (index) => {
@@ -35,16 +29,21 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, r
     }
 
     const _renderHeader = (item, index) => {
-        const releasedEpisodesText = item.releasedEpisodesNumber !== item.episodesNumber
-            ? ` | released : ${item.releasedEpisodesNumber}`
+        const totalSeasonLinksNumber = item.episodes.map(item => item.links).flat(1).length;
+        const releasedEpisodesNumber = homeStackHelpers.getNumberOfReleasedEpisodes([item], latestData);
+        const releasedEpisodesText = releasedEpisodesNumber !== item.episodes.length
+            ? ` | released : ${releasedEpisodesNumber}`
             : '';
         const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
-        const gradientStyle = item.releasedEpisodesNumber === 0
+        const gradientStyle = totalSeasonLinksNumber === 0
             ? [style.headerGradient, {opacity: 0.4}]
             : style.headerGradient;
 
         return (
-            <TouchableOpacity onPress={() => toggleExpand(index)} activeOpacity={0.7}>
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => totalSeasonLinksNumber > 0 && toggleExpand(index)}
+            >
                 <LinearGradient
                     colors={cyanGradient}
                     start={[0, 0]}
@@ -53,7 +52,7 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, r
                     style={gradientStyle}
                 >
                     <Text style={style.headerText}>
-                        {'Season : ' + item.seasonNumber + ' | Episodes : ' + item.episodesNumber + releasedEpisodesText}
+                        {'Season : ' + item.seasonNumber + ' | Episodes : ' + item.episodes.length + releasedEpisodesText}
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>
@@ -61,12 +60,9 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, r
     }
 
     const _renderContent = (item) => {
-        const filterEpisodes = episodes.filter(value => value.season === item.seasonNumber);
         return (
             <MovieScreenEpisodeCollapsible
-                sources={sources}
-                seasonNumber={item.seasonNumber}
-                episodes={filterEpisodes}
+                episodes={item.episodes}
                 rawTitle={rawTitle}
             />
         )
@@ -74,7 +70,7 @@ const MovieScreenSeasonCollapsible = ({latestData, sources, seasons, episodes, r
 
     return (
         <CustomAccordion
-            sections={seasonsEpisodes}
+            sections={seasons}
             expandedIndex={expandedIndex}
             renderHeader={_renderHeader}
             renderContent={_renderContent}
@@ -99,9 +95,7 @@ const style = StyleSheet.create({
 MovieScreenSeasonCollapsible.propTypes = {
     scrollToDownload: PropTypes.func.isRequired,
     latestData: PropTypes.object.isRequired,
-    sources: PropTypes.array.isRequired,
     seasons: PropTypes.array.isRequired,
-    episodes: PropTypes.array.isRequired,
     rawTitle: PropTypes.string.isRequired,
 }
 

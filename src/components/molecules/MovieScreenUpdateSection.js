@@ -11,10 +11,11 @@ const MovieScreenUpdateSection = ({data}) => {
     const {
         type, status,
         latestData, nextEpisode,
-        episodes, totalDuration, releaseDay
+        seasons, totalDuration, releaseDay
     } = data;
 
-    const episodeData = episodes.find(value => value.season === latestData.season && value.episode === latestData.episode);
+    const seasonData = seasons.find(item => item.seasonNumber === latestData.season);
+    const episodeData = seasonData && seasonData.episodes.find(item => item.episodeNumber === latestData.episode);
     const episodeText = type.includes('serial')
         ? ('S' + latestData.season + 'E' + latestData.episode) +
         (episodeData ? ' , ' + episodeData.title : '')

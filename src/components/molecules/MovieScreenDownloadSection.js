@@ -8,20 +8,24 @@ import PropTypes from 'prop-types';
 
 //todo : check section list
 
-const MovieScreenDownloadSection = ({data, flatListRef}) => {
+const MovieScreenDownloadSection = ({data, scrollViewRef}) => {
     const sectionRef = useRef(null);
     const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
     const [downloadPosition, setDownloadPosition] = useState(0);
 
+    const numberOfLinks = data.type.includes('movie')
+        ? data.qualities.map(item => item.links).flat(1).length
+        : data.seasons.map(item => item.links).flat(1).length;
+
     const _scrollToDownload = () => {
-        if (flatListRef && flatListRef.current) {
+        if (scrollViewRef && scrollViewRef.current) {
             if (downloadPosition > 0) {
                 setTimeout(() => {
-                    flatListRef.current.scrollTo({
+                    scrollViewRef.current.scrollTo({
                         y: downloadPosition,
                         animated: true,
                     });
-                }, 10);
+                }, 20);
             }
         }
     }
@@ -54,7 +58,7 @@ const MovieScreenDownloadSection = ({data, flatListRef}) => {
             </View>
 
             {
-                data.sources.length === 0
+                numberOfLinks === 0
                     ? <TouchableOpacity activeOpacity={0.7}>
                         <LinearGradient
                             colors={cyanGradient}
@@ -72,14 +76,12 @@ const MovieScreenDownloadSection = ({data, flatListRef}) => {
                         ? <MovieScreenSeasonCollapsible
                             scrollToDownload={_scrollToDownload}
                             latestData={data.latestData}
-                            sources={data.sources}
                             seasons={data.seasons}
-                            episodes={data.episodes}
                             rawTitle={data.rawTitle}
                         />
                         : <MovieScreenQualityCollapsible
                             scrollToDownload={_scrollToDownload}
-                            sources={data.sources}
+                            qualities={data.qualities}
                             rawTitle={data.rawTitle}
                         />
             }
@@ -129,7 +131,7 @@ const style = StyleSheet.create({
 
 MovieScreenDownloadSection.propTypes = {
     data: PropTypes.object.isRequired,
-    flatListRef: PropTypes.object,
+    scrollViewRef: PropTypes.object,
 }
 
 
