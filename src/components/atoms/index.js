@@ -23,3 +23,6 @@ export {default as MoviePlot} from './MoviePlot';
 export {default as CustomImage} from './CustomImage';
 export {default as RootToast} from './RootToast';
 export {default as MyOverlay} from './MyOverlay';
+export {default as MovieLikeAndBookmark} from './MovieLikeAndBookmark';
+export {default as LikeIconWithAnimation} from './LikeIconWithAnimation';
+export {default as DoubleTap} from './DoubleTap';

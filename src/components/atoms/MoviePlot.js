@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Animated, View, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
 import {Button, Text} from "react-native-elements";
 import {IntersectionObserverView} from 'rn-intersection-observer';
+import {useIsMounted} from '../../hooks';
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -10,6 +11,7 @@ const MoviePlot = ({summary}) => {
     const [isVisible, setIsVisible] = useState(true);
     const [plotLanguage, setPlotLanguage] = useState('english');
     const [showAll, setShowAll] = useState(false);
+    const isMounted = useIsMounted();
 
     const plot = showAll
         ? summary[plotLanguage]
@@ -52,7 +54,7 @@ const MoviePlot = ({summary}) => {
             style={style.container}
             scope={'moviePlotScope'}
             thresholds={[0.8]}
-            onIntersectionChange={(t) => setIsVisible(t.isInsecting)}
+            onIntersectionChange={(t) => isMounted.current && setIsVisible(t.isInsecting)}
         >
             <Text style={style.section}>
                 PLOT

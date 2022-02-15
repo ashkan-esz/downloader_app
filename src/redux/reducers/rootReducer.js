@@ -15,7 +15,7 @@ export const authPersistConfig = {
 }
 
 export const userPersistConfig = {
-    timeout: 3000,
+    timeout: 1000,
     key: 'user',
     storage: FilesystemStorage,
     whitelist: userPersistStates,

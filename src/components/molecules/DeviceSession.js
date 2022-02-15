@@ -30,6 +30,17 @@ const DeviceSession = ({session, isLoggingOut, noActiveSession, isFirst, isLast,
         ? 'Are you sure you want to terminate all other session?'
         : 'Are you sure you want to terminate this session?';
 
+    const getIconName = () => {
+        let os = session.deviceOs.toLowerCase();
+        if (os === 'ios') {
+            return 'apple';
+        }
+        if (os === 'android' || os === 'desktop' || os === 'linux' || os === 'ubuntu') {
+            return os;
+        }
+        return 'question';
+    }
+
     const _onRemove = () => {
         if (isCurrentDevice) {
             onRemove('all');
@@ -45,7 +56,7 @@ const DeviceSession = ({session, isLoggingOut, noActiveSession, isFirst, isLast,
         >
             <View style={style.icon}>
                 <FontAwesome5
-                    name={session.deviceOs.toLowerCase().replace('ios', 'apple') || 'desktop'}
+                    name={getIconName()}
                     size={32}
                     color={Colors.RED}
                 />

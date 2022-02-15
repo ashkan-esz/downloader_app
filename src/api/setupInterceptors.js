@@ -114,6 +114,8 @@ const handleTokenRequest = async () => {
     }
 }
 
+//todo : handle 429
+//todo : fix error with waiting on logout overlay
 //todo : fix : false forceLogout when internet reconnect
 
 API.interceptors.request.use(async (config) => {

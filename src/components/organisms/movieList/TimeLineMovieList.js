@@ -26,6 +26,8 @@ const TimeLineMovieList = ({
         );
     }
 
+    //todo : handle data.length === 0
+
     if (data.length === 0 || isLoading || spacing !== changedSpacing) {
         return (
             <ActivityIndicator
@@ -40,18 +42,20 @@ const TimeLineMovieList = ({
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <SectionMovieCard
-            tab={'todaySeries'}
+            tab={spacing === new Date().getDay() ? 'todaySeries' : ''}
             posters={item.posters}
-            id={item._id}
+            movieId={item._id}
             title={item.rawTitle}
             rating={item.rating.imdb || item.rating.myAnimeList}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}
             latestData={item.latestData}
-            nextEpisode={item.nextEpisode || {}}
+            nextEpisode={item.nextEpisode}
             status={item.status}
-            like={item.like}
+            likesCount={item.likesCount}
+            dislikesCount={item.dislikesCount}
+            likeOrDislike={item.likeOrDislike}
         />
     );
 

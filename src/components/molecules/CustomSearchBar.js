@@ -6,7 +6,7 @@ import {Colors, Mixins} from "../../styles";
 import PropsTypes from "prop-types";
 
 
-const CustomSearchBar = ({extraStyle, onTextChange, isLoading, inputRef, closeFilterBox}) => {
+const CustomSearchBar = ({onTextChange, isLoading, inputRef, closeFilterBox}) => {
     const inputStyle = {
         color: '#ffffff',
         marginLeft: isLoading ? 7 : -5
@@ -15,36 +15,33 @@ const CustomSearchBar = ({extraStyle, onTextChange, isLoading, inputRef, closeFi
     const debouncedSearchTerm = useDebounce(searchValue, 500);
 
     useEffect(() => {
-        onTextChange(debouncedSearchTerm)
+        onTextChange(debouncedSearchTerm);
     }, [debouncedSearchTerm]);
 
     return (
-        <View style={extraStyle}>
-            <SearchBar
-                onClear={() => {
-                    inputRef.current.focus();
-                }}
-                containerStyle={style.searchBarContainer}
-                inputContainerStyle={style.searchBar}
-                inputStyle={inputStyle}
-                onChangeText={(value) => {
-                    closeFilterBox();
-                    setSearchValue(value);
-                }}
-                searchIcon={
-                    <ActivityIndicator
-                        size={"large"}
-                        color={'blue'}
-                        animating={isLoading}
-                    />
-                }
-                showLoading={true}
-                value={searchValue}
-                placeholder={'Avengers....'}
-                ref={inputRef}
-                testID={'custom-searchBar'}
-            />
-        </View>
+        <SearchBar
+            onClear={() => {
+                inputRef.current.focus();
+            }}
+            containerStyle={style.searchBarContainer}
+            inputContainerStyle={style.searchBar}
+            inputStyle={inputStyle}
+            onChangeText={(value) => {
+                closeFilterBox();
+                setSearchValue(value);
+            }}
+            searchIcon={
+                <ActivityIndicator
+                    size={"large"}
+                    color={'blue'}
+                    animating={isLoading}
+                />
+            }
+            value={searchValue}
+            placeholder={'Avengers....'}
+            ref={inputRef}
+            testID={'custom-searchBar'}
+        />
     );
 };
 
@@ -62,7 +59,6 @@ const style = StyleSheet.create({
 })
 
 CustomSearchBar.propTypes = {
-    extraStyle: PropsTypes.object,
     onTextChange: PropsTypes.func.isRequired,
     isLoading: PropsTypes.bool.isRequired,
     inputRef: PropsTypes.object,

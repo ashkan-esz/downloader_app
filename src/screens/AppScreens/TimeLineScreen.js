@@ -8,7 +8,7 @@ import {getSeriesOfDay} from "../../api";
 
 
 const TimeLineScreen = () => {
-    const [spacing, setSpacing] = useState(0);
+    const [spacing, setSpacing] = useState(-1);
     const [changedSpacing, setChangedSpacing] = useState(-10);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
@@ -21,9 +21,10 @@ const TimeLineScreen = () => {
     }, []);
 
     async function getData({pageParam = 1, SPACING = null}) {
-        let result = (SPACING !== null)
-            ? await getSeriesOfDay(SPACING, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial'])
-            : await getSeriesOfDay(spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+        if (!SPACING && spacing === -1){
+            return [];
+        }
+        let result = await getSeriesOfDay(SPACING || spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {
@@ -34,12 +35,15 @@ const TimeLineScreen = () => {
     //prefetch data
     useEffect(() => {
         async function prefetchData() {
+            const todayNumber = new Date().getDay();
             let promiseArray = [];
-            let promise1 = queryClient.prefetchInfiniteQuery(['timeLineScreen', -1],
-                () => getData({SPACING: -1}));
+            let next = (todayNumber + 1) % 7;
+            let promise1 = queryClient.prefetchInfiniteQuery(['timeLineScreen', next],
+                () => getData({SPACING: next}));
             promiseArray.push(promise1);
-            let promise2 = queryClient.prefetchInfiniteQuery(['timeLineScreen', 1],
-                () => getData({SPACING: 1}));
+            let prev = (todayNumber + 6) % 7;
+            let promise2 = queryClient.prefetchInfiniteQuery(['timeLineScreen', prev],
+                () => getData({SPACING: prev}));
             promiseArray.push(promise2);
             await Promise.all(promiseArray);
         }
@@ -53,7 +57,7 @@ const TimeLineScreen = () => {
         {
             getNextPageParam: (lastPage, allPages) => {
                 if (lastPage.length % 12 === 0) {
-                    return allPages.length + 1
+                    return allPages.length + 1;
                 }
                 return undefined;
             },
@@ -65,21 +69,12 @@ const TimeLineScreen = () => {
             flatListRef.current.scrollToOffset({animated: true, offset: 0});
         }
         setChangedSpacing(value);
-        setTimeout(() => setSpacing(value), 5);
+        setTimeout(() => setSpacing(value), 10);
     }
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        let promiseArray = [];
-        let query = queryClient.refetchQueries(['timeLineScreen', spacing]);
-        promiseArray.push(query);
-        let dayCounter = spacing - 1;
-        while (dayCounter <= spacing + 1) {
-            let query = queryClient.refetchQueries(['timeLineScreen', dayCounter]);
-            promiseArray.push(query);
-            dayCounter++;
-        }
-        await Promise.all(promiseArray);
+        await queryClient.refetchQueries(['timeLineScreen']);
         setRefreshing(false);
     };
 

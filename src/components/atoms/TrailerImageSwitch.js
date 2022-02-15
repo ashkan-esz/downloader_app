@@ -1,13 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {AntDesign} from "@expo/vector-icons";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
 import CustomVideo from "./CustomVideo";
 import CustomImage from "./CustomImage";
 import {useDebounce} from "../../hooks";
 import PropTypes from 'prop-types';
+import {Colors} from "../../styles";
 
 
-const TrailerImageSwitch = ({videoStyle, isOnScreenView, trailer, poster, onLongPress}) => {
+const TrailerImageSwitch = ({
+                                videoStyle,
+                                isOnScreenView,
+                                trailer,
+                                poster,
+                                onLongPress,
+                                likeOrDislike,
+                                hideLikeIcon
+                            }) => {
     const [shouldLoad, setShouldLoad] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const debouncedIsPlaying = useDebounce(isPlaying, 15000, true);
@@ -20,12 +29,22 @@ const TrailerImageSwitch = ({videoStyle, isOnScreenView, trailer, poster, onLong
         return (
             <View>
                 <CustomImage
-                    extraStyle={videoStyle}
+                    extraStyle={[style.image, videoStyle]}
                     url={poster}
                     resizeModeStretch={true}
                     progressSize={60}
                     progressThickness={4}
-                />
+                >
+                    {
+                        !hideLikeIcon && likeOrDislike !== '' && <View style={style.likeContainer}>
+                            <Ionicons
+                                name={likeOrDislike === 'like' ? 'heart' : 'md-heart-dislike'}
+                                size={24}
+                                color={"red"}
+                            />
+                        </View>
+                    }
+                </CustomImage>
                 <View style={style.imageTextContainer}>
                     <AntDesign
                         name={'play'}
@@ -61,6 +80,19 @@ const style = StyleSheet.create({
         bottom: 0,
         right: 0,
     },
+    image: {
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+    },
+    likeContainer: {
+        flexDirection: 'row',
+        backgroundColor: Colors.SECONDARY,
+        borderRadius: 8,
+        paddingLeft: 3,
+        paddingRight: 3,
+        paddingTop: 3,
+        paddingBottom: 3,
+    },
 });
 
 TrailerImageSwitch.propTypes = {
@@ -69,6 +101,8 @@ TrailerImageSwitch.propTypes = {
     trailer: PropTypes.string.isRequired,
     poster: PropTypes.object,
     onLongPress: PropTypes.func,
+    likeOrDislike: PropTypes.string.isRequired,
+    hideLikeIcon: PropTypes.bool,
 }
 
 

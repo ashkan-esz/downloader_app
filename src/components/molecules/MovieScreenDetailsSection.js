@@ -57,7 +57,7 @@ const MovieScreenDetailsSection = ({data}) => {
             </Text>
 
             {
-                type === 'serial' && <View>
+                type.includes('serial') && <View>
                     <Text style={style.text}>
                         <Text style={style.statement}>Seasons : </Text> {seasons.length}
                     </Text>

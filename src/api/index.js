@@ -260,3 +260,20 @@ export const getSeriesOfDay = async (spacing, page, types, imdbScores = '0-10', 
         return 'error';
     }
 }
+
+export const likeOrDislikeApi = async (docType, id, type, isRemove) => {
+    try {
+        let url = `/movies/${type}/${id}?remove=${isRemove}`;
+        if (docType === 'staff' || docType === 'characters') {
+            url = `/movies/${docType}/${type}/${id}?remove=${isRemove}`;
+        }
+        let response = await API.put(url);
+        return 'ok';
+    } catch (error) {
+        if (error.response && error.response.status === 409) {
+            return 'ok'; //already liked
+        }
+        return 'error';
+    }
+}
+

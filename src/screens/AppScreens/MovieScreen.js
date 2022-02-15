@@ -1,16 +1,16 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {IntersectionObserver} from 'rn-intersection-observer';
-import {MovieLoadingAndError} from "../../components/atoms";
+import {MovieLoadingAndError, MovieLikeAndBookmark} from "../../components/atoms";
 import {MovieTopPoster, MovieScreenDownloadSection} from "../../components/molecules";
 import {MovieScreenInfoSection} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "react-query";
 import {homeStackHelpers} from "../../helper";
+import {useIsMounted, useLikeOrDislike} from "../../hooks";
 import {searchByID} from "../../api";
 
-//todo : fix title show on poster
 //todo : show alternate title
 //todo : add like/dislike number and functionality to like
 //todo : enhanced trailer watching
@@ -25,9 +25,10 @@ const MovieScreen = () => {
     const routeParams = route.params;
     const queryClient = useQueryClient();
     const scrollViewRef = useRef(null);
+    const isMounted = useIsMounted();
 
     const getData = async () => {
-        let result = await searchByID(routeParams.id, 'high');
+        let result = await searchByID(routeParams.movieId, 'high');
         if (result !== 'error') {
             return result;
         } else {
@@ -36,7 +37,7 @@ const MovieScreen = () => {
     }
 
     const {data, isLoading, isError} = useQuery(
-        [routeParams.title, routeParams.posters[0]],
+        ['movieData', routeParams.movieId],
         getData,
         {
             placeholderData: null,
@@ -46,14 +47,27 @@ const MovieScreen = () => {
         }
     );
 
+    const {
+        isLike,
+        isDisLike,
+        _onLike,
+        _onDisLike
+    } = useLikeOrDislike(
+        routeParams.movieId,
+        data ? data.likesCount : 0,
+        data ? data.dislikesCount : 0,
+        data ? data.likeOrDislike : '',
+        data !== null && !isError
+    );
+
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries([routeParams.title, routeParams.posters[0]]);
-        setRefreshing(false);
+        await queryClient.refetchQueries(['movieData', routeParams.movieId]);
+        isMounted.current && setRefreshing(false);
     }
 
     const _retry = async () => {
-        await queryClient.resetQueries([routeParams.title, routeParams.posters[0]]);
+        await queryClient.resetQueries(['movieData', routeParams.movieId]);
     }
 
     const episodesOrDuration = data !== null
@@ -87,6 +101,18 @@ const MovieScreen = () => {
                         rating={routeParams.rating}
                         genres={data ? data.genres : []}
                         posters={data ? data.posters : []}
+                        isLike={isLike}
+                        onDoubleTap={_onLike}
+                    />
+
+                    <MovieLikeAndBookmark
+                        isLike={isLike}
+                        isDisLike={isDisLike}
+                        onLike={_onLike}
+                        onDisLike={_onDisLike}
+                        likesCount={data ? data.likesCount : 0}
+                        dislikesCount={data ? data.dislikesCount : 0}
+                        disable={!data || isLoading || isError}
                     />
 
                     {

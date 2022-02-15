@@ -28,6 +28,8 @@ const SectionMovieList = ({
         );
     }
 
+    //todo : handle data.length === 0
+
     if (data.length === 0 || isLoading || tab !== changedTab) {
         return (
             <ActivityIndicator
@@ -45,16 +47,18 @@ const SectionMovieList = ({
         <SectionMovieCard
             tab={tab}
             posters={item.posters}
-            id={item._id}
+            movieId={item._id}
             title={item.rawTitle}
             rating={item.rating.imdb || item.rating.myAnimeList}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}
             latestData={item.latestData}
-            nextEpisode={item.nextEpisode || {}}
+            nextEpisode={item.nextEpisode}
             status={item.status}
-            like={item.like}
+            likesCount={item.likesCount}
+            dislikesCount={item.dislikesCount}
+            likeOrDislike={item.likeOrDislike}
         />
     );
 

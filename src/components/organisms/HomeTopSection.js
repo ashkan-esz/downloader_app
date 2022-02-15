@@ -30,7 +30,7 @@ const HomeTopSection = () => {
     async function getData() {
         const types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
         let result = await getMultipleStatus(types, 'medium', 6, 1);
-        if (result !== 'error') {
+        if (result && result !== 'error') {
             return result;
         } else {
             throw new Error();
@@ -73,7 +73,6 @@ const HomeTopSection = () => {
                 retry={_retry}
             />
             <SeeAllButton
-                disabled={data[tab.replace('recent', 'news')].length < 4}
                 onPress={() => {
                     navigation.navigate('Section', {startTab: tab});
                 }}

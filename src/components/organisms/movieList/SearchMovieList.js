@@ -49,10 +49,9 @@ const SearchMovieList = ({
             title={item.rawTitle}
             premiered={item.premiered}
             type={item.type}
-            extraData={{
-                id: item._id,
-                rating: item.rating.imdb || item.rating.myAnimeList,
-            }}
+            movieId={item._id}
+            rating={item.rating.imdb || item.rating.myAnimeList}
+            likeOrDislike={item.likeOrDislike}
         />
     );
 

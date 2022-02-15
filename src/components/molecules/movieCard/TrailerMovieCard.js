@@ -1,8 +1,9 @@
 import React, {memo, useCallback} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
-import {TrailerImageSwitch, SectionMovieCardRating} from "../../atoms";
+import {TrailerImageSwitch, SectionMovieCardRating, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
+import {useLikeOrDislike} from "../../../hooks";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -13,7 +14,7 @@ const TrailerMovieCard = ({
                               isOnScreenView,
                               posters,
                               trailer,
-                              id,
+                              movieId,
                               title,
                               rating,
                               premiered,
@@ -22,22 +23,35 @@ const TrailerMovieCard = ({
                               latestData,
                               nextEpisode,
                               status,
-                              like
+                              likesCount,
+                              dislikesCount,
+                              likeOrDislike,
                           }) => {
 
     const navigation = useNavigation();
 
     const memorizedNavigation = useCallback(() => {
         navigation.navigate('Movie', {
-            name: title.slice(0, 25),
-            id, title, type, posters, rating
+            name: title.slice(0, 20),
+            movieId, title, type, posters, rating
         });
-    }, [id, title, type, posters, rating]);
+    }, [movieId, title, type, posters, rating]);
+
+    const {
+        isLike,
+        isDisLike,
+        _onLike,
+        _onDisLike
+    } = useLikeOrDislike(movieId, likesCount, dislikesCount, likeOrDislike);
+
+    const _handleDoubleTap = useCallback(() => {
+        !isLike && _onLike();
+    }, [isLike]);
 
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 4);
 
     const typeColor = {
-        color: type === 'movie' ? Colors.RED2 : 'cyan',
+        color: type.includes('movie') ? Colors.RED2 : 'cyan',
     }
 
     return (
@@ -49,17 +63,32 @@ const TrailerMovieCard = ({
                 trailer={trailer}
                 poster={posters[0]}
                 onLongPress={memorizedNavigation}
+                likeOrDislike={likeOrDislike}
+                hideLikeIcon={true}
             />
 
-            <TouchableOpacity
-                onPress={memorizedNavigation}
-                activeOpacity={1}
+            <DoubleTap
+                activeOpacity={0.8}
+                onTap={memorizedNavigation}
+                onDoubleTap={_handleDoubleTap}
+                doublePressDelay={200}
             >
                 <View style={style.infoContainer}>
                     <Text style={style.title} numberOfLines={1}>
                         Title : {title}
                     </Text>
-                    <SectionMovieCardRating rating={rating} like={like}/>
+
+                    <SectionMovieCardRating
+                        likeContainerStyle={style.likeContainer}
+                        rating={rating}
+                        likesCount={likesCount}
+                        dislikesCount={dislikesCount}
+                        isLike={isLike}
+                        isDisLike={isDisLike}
+                        onLike={_onLike}
+                        onDisLike={_onDisLike}
+                    />
+
                     <View style={style.lineSeparator}/>
 
                     <View style={style.flexDirectionRow}>
@@ -73,10 +102,12 @@ const TrailerMovieCard = ({
 
                         <Text style={[style.year, style.paddingLeft]}>
                             <Text style={style.statement}>Type : </Text><Text
-                            style={[style.year, typeColor]}> {type}</Text>
+                            style={[style.year, typeColor]}> {
+                            type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
+                        }</Text>
                         </Text>
                         {
-                            type === 'serial' &&
+                            type.includes('serial') &&
                             <Text style={[style.year, style.paddingLeft]}>
                                 <Text style={style.statement}>Status :</Text> {status.slice(0, 15)}
                             </Text>
@@ -88,19 +119,19 @@ const TrailerMovieCard = ({
 
                     <View style={style.flexDirectionRow}>
                         {
-                            type === 'serial' &&
+                            type.includes('serial') &&
                             <Text style={style.year}>
                                 <Text style={style.statement}>Episode
                                     : </Text> {'S' + latestData.season + 'E' + latestData.episode}
                             </Text>
                         }
-                        <Text style={[style.year, type === 'serial' && style.paddingLeft]} numberOfLines={1}>
+                        <Text style={[style.year, type.includes('serial') && style.paddingLeft]} numberOfLines={1}>
                             <Text style={style.statement}>Quality : </Text> {partialQuality}
                         </Text>
                     </View>
 
                 </View>
-            </TouchableOpacity>
+            </DoubleTap>
         </View>
     );
 }
@@ -108,7 +139,7 @@ const TrailerMovieCard = ({
 const style = StyleSheet.create({
     container: {
         width: '100%',
-        height: Mixins.WINDOW_WIDTH / 1.6 + 160,
+        height: Mixins.WINDOW_WIDTH / 1.6 + 170,
         backgroundColor: Colors.SECONDARY,
         borderRadius: 10,
         marginBottom: 30,
@@ -128,6 +159,10 @@ const style = StyleSheet.create({
     title: {
         fontSize: Typography.getFontSize(18),
         color: '#ffffff',
+    },
+    likeContainer: {
+        paddingTop: 0,
+        paddingBottom: 0,
     },
     lineSeparator: {
         borderBottomWidth: 1,
@@ -159,10 +194,12 @@ TrailerMovieCard.propTypes = {
     isOnScreenView: PropTypes.bool.isRequired,
     posters: PropTypes.array.isRequired,
     trailer: PropTypes.any.isRequired,
-    id: PropTypes.string.isRequired,
+    movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    like: PropTypes.number.isRequired,
+    likesCount: PropTypes.number.isRequired,
+    dislikesCount: PropTypes.number.isRequired,
+    likeOrDislike: PropTypes.string.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
@@ -172,7 +209,10 @@ TrailerMovieCard.propTypes = {
 }
 
 const areEqual = (prevProps, nextProps) => {
-    return prevProps.poster === nextProps.poster &&
+    return prevProps.posters[0] === nextProps.posters[0] &&
+        prevProps.likesCount === nextProps.likesCount &&
+        prevProps.dislikesCount === nextProps.dislikesCount &&
+        prevProps.likeOrDislike === nextProps.likeOrDislike &&
         prevProps.isOnScreenView === nextProps.isOnScreenView;
 }
 

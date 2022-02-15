@@ -67,13 +67,14 @@ const HomeTimeLineSection = () => {
                                     <HomeMovieCard
                                         key={item._id.toString()}
                                         posters={item.posters}
-                                        id={item._id}
+                                        movieId={item._id}
                                         title={item.rawTitle}
                                         type={item.type}
                                         tab={'todaySeries'}
                                         latestData={item.latestData}
                                         nextEpisode={item.nextEpisode}
                                         rating={item.rating.imdb || item.rating.myAnimeList}
+                                        likeOrDislike={item.likeOrDislike}
                                     />
                                 );
                             })

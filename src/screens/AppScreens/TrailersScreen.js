@@ -17,8 +17,10 @@ const TrailersScreen = () => {
 
 
     const _onScroll = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setExpanded(false);
+        if (expanded){
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            setExpanded(false);
+        }
     }
 
     async function getData({pageParam = 1}) {

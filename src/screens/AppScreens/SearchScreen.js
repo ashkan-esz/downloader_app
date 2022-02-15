@@ -22,8 +22,10 @@ const SearchScreen = () => {
     }, []);
 
     const _closeFilterBox = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setExpanded(false);
+        if (expanded){
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            setExpanded(false);
+        }
     }
 
     const getData = async ({pageParam = 1}) => {
@@ -44,22 +46,24 @@ const SearchScreen = () => {
         {
             getNextPageParam: (lastPage, allPages) => {
                 if (
-                    lastPage.movies.length % 12 === 0 ||
-                    lastPage.staff.length % 12 === 0 ||
-                    lastPage.characters.length % 12 === 0
+                    lastPage.movies.length && lastPage.movies.length % 12 === 0 ||
+                    lastPage.staff.length && lastPage.staff.length % 12 === 0 ||
+                    lastPage.characters.length && lastPage.characters.length % 12 === 0
                 ) {
-                    return allPages.length + 1
+                    return allPages.length + 1;
                 }
                 return undefined;
             },
             placeholderData: {pages: [{movies: [], staff: [], characters: []}]},
-            keepPreviousData: true
+            keepPreviousData: true,
+            cacheTime: 3 * 60 * 1000,
+            staleTime: 3 * 60 * 1000,
         });
 
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.removeQueries([debouncedSearchValue, 'searchScreen', types]);
+        await queryClient.refetchQueries([debouncedSearchValue, 'searchScreen', types]);
         setRefreshing(false);
     }
 

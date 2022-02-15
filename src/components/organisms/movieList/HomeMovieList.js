@@ -37,7 +37,7 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
             {loadedData.slice(0, 3).map(((item) => (
                 <HomeMovieCard
                     key={item._id.toString() + tab}
-                    id={item._id}
+                    movieId={item._id}
                     title={item.rawTitle}
                     posters={item.posters}
                     type={item.type}
@@ -45,6 +45,7 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
                     latestData={item.latestData}
                     nextEpisode={item.nextEpisode}
                     rating={item.rating.imdb || item.rating.myAnimeList}
+                    likeOrDislike={item.likeOrDislike}
                 />
             )))}
         </View>

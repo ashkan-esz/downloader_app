@@ -28,35 +28,25 @@ const SectionScreen = () => {
     }, []);
 
     const _closeFilterBox = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setExpanded(false);
+        if (expanded){
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            setExpanded(false);
+        }
     }
 
     async function getData({pageParam = 1, TAB}) {
+        const state = TAB || tab;
         let result;
-        if (TAB) {
-            if (TAB === 'inTheaters') {
-                result = await getSortedMovies('inTheaters', types, 'medium', 1);
-            } else if (TAB === 'comingSoon') {
-                result = await getSortedMovies('comingSoon', types, 'medium', 1);
-            } else if (TAB === 'recent') {
-                result = await getNews(types, 'medium', 1);
-            } else if (TAB === 'update') {
-                result = await getUpdates(types, 'medium', 1);
-            }
-        } else {
-            if (tab === 'inTheaters') {
-                result = await getSortedMovies('inTheaters', types, 'medium', 1);
-            } else if (tab === 'comingSoon') {
-                result = await getSortedMovies('comingSoon', types, 'medium', 1);
-            } else if (tab === 'recent') {
-                result = await getNews(types, 'medium', pageParam);
-            } else if (tab === 'update') {
-                result = await getUpdates(types, 'medium', pageParam);
-            }
+        if (state === 'inTheaters') {
+            result = await getSortedMovies('inTheaters', types, 'medium', pageParam);
+        } else if (state === 'comingSoon') {
+            result = await getSortedMovies('comingSoon', types, 'medium', pageParam);
+        } else if (state === 'recent') {
+            result = await getNews(types, 'medium', pageParam);
+        } else if (state === 'update') {
+            result = await getUpdates(types, 'medium', pageParam);
         }
-
-        if (result !== 'error') {
+        if (result && result !== 'error') {
             return result;
         } else {
             throw new Error();
@@ -67,22 +57,12 @@ const SectionScreen = () => {
     useEffect(() => {
         async function prefetchData() {
             let promiseArray = [];
-            let promise1 = queryClient.prefetchInfiniteQuery(
-                ['inTheaters', 'sectionScreen', types],
-                () => getData({TAB: 'inTheaters'}));
-            promiseArray.push(promise1);
-            let promise2 = queryClient.prefetchInfiniteQuery(
-                ['comingSoon', 'sectionScreen', types],
-                () => getData({TAB: 'comingSoon'}));
-            promiseArray.push(promise2);
-            let promise3 = queryClient.prefetchInfiniteQuery(
-                ['recent', 'sectionScreen', types],
-                () => getData({TAB: 'recent'}));
-            promiseArray.push(promise3);
-            let promise4 = queryClient.prefetchInfiniteQuery(
-                ['update', 'sectionScreen', types],
-                () => getData({TAB: 'update'}));
-            promiseArray.push(promise4);
+            for (let i = 0; i < sections.length; i++) {
+                let query = queryClient.prefetchInfiniteQuery(
+                    [sections[i], 'sectionScreen', types],
+                    () => getData({TAB: sections[i]}));
+                promiseArray.push(query);
+            }
             await Promise.all(promiseArray);
         }
 
@@ -95,11 +75,13 @@ const SectionScreen = () => {
         {
             getNextPageParam: (lastPage, allPages) => {
                 if (lastPage.length % 12 === 0) {
-                    return allPages.length + 1
+                    return allPages.length + 1;
                 }
                 return undefined;
             },
             placeholderData: {pages: [[]]},
+            cacheTime: 2 * 60 * 1000,
+            staleTime: 2 * 60 * 1000,
         });
 
     const _onTabChange = (value) => {

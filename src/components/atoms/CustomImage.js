@@ -15,6 +15,7 @@ const CustomImage = ({
                          progressSize,
                          progressThickness,
                          noProgress,
+                         children,
                      }) => {
     const [isError, setIsError] = useState(false);
     const [loadPercent, setLoadPercent] = useState(-1);
@@ -46,7 +47,7 @@ const CustomImage = ({
                 />
             }
             <FastImage
-                style={extraStyle}
+                style={[style.image, extraStyle]}
                 source={(!isError && url) ? {
                     uri: (url.link || url.url),
                     priority: FastImage.priority.normal,
@@ -55,7 +56,9 @@ const CustomImage = ({
                 resizeMode={_resizeMode}
                 onProgress={e => setLoadPercent(e.nativeEvent.loaded / e.nativeEvent.total)}
                 onLoadEnd={() => setLoadPercent(1)}
-            />
+            >
+                {children}
+            </FastImage>
         </TouchableOpacity>
     );
 };
@@ -66,6 +69,10 @@ const style = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         zIndex: 10,
+    },
+    image: {
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 });
 

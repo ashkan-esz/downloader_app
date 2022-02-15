@@ -65,10 +65,9 @@ const HomeTrailersList = () => {
             title={item.rawTitle}
             genres={item.genres}
             type={item.type}
-            extraData={{
-                id: item._id,
-                rating: item.rating.imdb || item.rating.myAnimeList,
-            }}
+            movieId={item._id}
+            rating={item.rating.imdb || item.rating.myAnimeList}
+            likeOrDislike={item.likeOrDislike}
         />
     );
 

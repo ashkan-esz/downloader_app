@@ -6,7 +6,7 @@ export function getSerialState(latestData, nextEpisode, tab) {
             if (tab !== 'todaySeries') {
                 return latestSeasonEpisode;
             }
-            if (compareSeasonEpisode(latestData, nextEpisode)) {
+            if (nextEpisode && compareSeasonEpisode(latestData, nextEpisode)) {
                 if (latestData.season < nextEpisode.season) {
                     return 'waiting ' + 'S' + nextEpisode.season + 'E' + nextEpisode.episode;
                 } else {
@@ -39,11 +39,11 @@ export function compareSeasonEpisode(data1, data2, checkEqual = false) {
 export function getEpisodeCountsDuration(seasons, latestData, duration, type) {
     duration = typeof duration === "number" ? duration + ' min' : duration;
     duration = duration ? duration.replace('N/A', '?? min') : '?? min';
-    if (type === 'movie') {
+    if (type.includes('movie')) {
         return duration;
     }
-    let filter = getNumberOfReleasedEpisodes(seasons, latestData);
-    return filter.length + '  episodes  ' + duration;
+    let episodesNumber = getNumberOfReleasedEpisodes(seasons, latestData);
+    return episodesNumber + '  episodes  ' + duration;
 }
 
 export function getNumberOfReleasedEpisodes(seasons, latestData) {
@@ -65,7 +65,7 @@ export function getNumberOfReleasedEpisodes(seasons, latestData) {
 export function get_hardSub_dubbed_text(latestData, type) {
     //todo :
     let hardSubText;
-    if (type === 'serial') {
+    if (type.includes('serial')) {
         if (latestData.hardSub !== '') {
             hardSubText = latestData.hardSub.toUpperCase();
         } else {
@@ -76,7 +76,7 @@ export function get_hardSub_dubbed_text(latestData, type) {
     }
 
     let dubbedText;
-    if (type === 'serial') {
+    if (type.includes('serial')) {
         if (latestData.dubbed !== '') {
             dubbedText = latestData.dubbed.toUpperCase();
         } else {

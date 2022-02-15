@@ -68,14 +68,15 @@ const HomeSoonList = () => {
                     data.slice(0, 3).map((item) => {
                         return (
                             <HomeMovieCard
+                                key={item._id.toString()}
                                 extraStyle={style.movieCard}
                                 posters={item.posters}
-                                id={item._id}
+                                movieId={item._id}
                                 title={item.rawTitle}
                                 type={''}
                                 rating={0}
                                 noRating={true}
-                                key={item._id.toString()}
+                                likeOrDislike={item.likeOrDislike}
                             />
                         );
                     })

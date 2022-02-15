@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "react-native-elements";
 import {TrailerImageSwitch} from "../../atoms";
@@ -7,15 +7,26 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeTrailer = ({extraStyle, isOnScreenView, posters, trailer, title, genres, type, extraData}) => {
+const HomeTrailer = ({
+                         extraStyle,
+                         isOnScreenView,
+                         posters,
+                         trailer,
+                         title,
+                         genres,
+                         type,
+                         movieId,
+                         rating,
+                         likeOrDislike
+                     }) => {
     const navigation = useNavigation();
 
-    const _navigateToMovieScreen = () => {
+    const _navigateToMovieScreen = useCallback(() => {
         navigation.navigate('Movie', {
-            name: title.slice(0, 25),
-            title, type, posters, ...extraData
-        })
-    }
+            name: title.slice(0, 20),
+            movieId, title, type, posters, rating
+        });
+    }, [movieId, title, type, posters, rating]);
 
     return (
         <View style={[style.container, extraStyle]}>
@@ -26,6 +37,7 @@ const HomeTrailer = ({extraStyle, isOnScreenView, posters, trailer, title, genre
                 trailer={trailer}
                 poster={posters[0]}
                 onLongPress={_navigateToMovieScreen}
+                likeOrDislike={likeOrDislike}
             />
 
             <Text
@@ -103,7 +115,9 @@ HomeTrailer.propTypes = {
     title: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
     type: PropTypes.string,
-    extraData: PropTypes.object.isRequired,
+    movieId: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    likeOrDislike: PropTypes.string.isRequired,
 };
 
 
