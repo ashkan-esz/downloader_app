@@ -4,6 +4,8 @@ import Toast from "react-native-toast-message";
 
 let store;
 let tokenServerError = false;
+
+//todo : check again, need remove and change
 const errorMessages = {
     '401': 'Error: Request failed with status code 401',
     '403': 'Error: Request failed with status code 403',
@@ -20,7 +22,7 @@ const accessTokenShouldBeRefreshed = () => (
 );
 
 const getNewToken = async () => {
-    return await API.post(tokenEndPoint, {}, {
+    return await API.put(tokenEndPoint, {}, {
         headers: {
             refreshToken: store.getState().auth.refreshToken,
         }

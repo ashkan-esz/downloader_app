@@ -76,7 +76,7 @@ const HomeSoonList = () => {
                                 type={''}
                                 rating={0}
                                 noRating={true}
-                                likeOrDislike={item.likeOrDislike}
+                                likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
                             />
                         );
                     })

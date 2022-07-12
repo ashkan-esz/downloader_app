@@ -8,6 +8,7 @@ import {Typography} from "../../styles";
 import {homeStackHelpers} from "../../helper";
 import PropTypes from 'prop-types';
 
+//todo : handle large number of episodes in titles like 'naruto' or 'one piece'
 
 const MovieScreenSeasonCollapsible = ({seasons, latestData, rawTitle, scrollToDownload}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);

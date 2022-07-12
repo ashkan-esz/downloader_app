@@ -4,7 +4,11 @@
     "name": "downloader_app",
     "version": "0.0.1",
     "slug": "downloader_app",
-    "updates.checkAutomatically": "ON_ERROR_RECOVERY",
+    "updates": {
+      "enabled": false,
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_ERROR_RECOVERY"
+    },
     "assetBundlePatterns": [
       "assets/images/*"
     ],

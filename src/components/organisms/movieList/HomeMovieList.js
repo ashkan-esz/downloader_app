@@ -45,7 +45,7 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
                     latestData={item.latestData}
                     nextEpisode={item.nextEpisode}
                     rating={item.rating.imdb || item.rating.myAnimeList}
-                    likeOrDislike={item.likeOrDislike}
+                    likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
                 />
             )))}
         </View>

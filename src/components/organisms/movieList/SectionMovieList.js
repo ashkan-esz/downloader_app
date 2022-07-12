@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, FlatList, RefreshControl, ActivityIndicator} from 'react-native';
+// import {FlashList} from "@shopify/flash-list";
 import {Text} from "react-native-elements";
 import {MovieError} from "../../atoms";
 import {SectionMovieCard} from "../../molecules";
@@ -56,9 +57,9 @@ const SectionMovieList = ({
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
             status={item.status}
-            likesCount={item.likesCount}
-            dislikesCount={item.dislikesCount}
-            likeOrDislike={item.likeOrDislike}
+            likesCount={item.userStats.like_movie_count}
+            dislikesCount={item.userStats.dislike_movie_count}
+            likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
         />
     );
 

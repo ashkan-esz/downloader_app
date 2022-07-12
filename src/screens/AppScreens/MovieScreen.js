@@ -1,6 +1,5 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
-import {IntersectionObserver} from 'rn-intersection-observer';
 import {MovieLoadingAndError, MovieLikeAndBookmark} from "../../components/atoms";
 import {MovieTopPoster, MovieScreenDownloadSection} from "../../components/molecules";
 import {MovieScreenInfoSection} from "../../components/organisms";
@@ -21,6 +20,7 @@ import {searchByID} from "../../api";
 
 const MovieScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
+    const [forceClosePlot, setForceClosePlot] = useState(false);
     const route = useRoute();
     const routeParams = route.params;
     const queryClient = useQueryClient();
@@ -54,9 +54,9 @@ const MovieScreen = () => {
         _onDisLike
     } = useLikeOrDislike(
         routeParams.movieId,
-        data ? data.likesCount : 0,
-        data ? data.dislikesCount : 0,
-        data ? data.likeOrDislike : '',
+        data ? data.userStats.like_movie_count : 0,
+        data ? data.userStats.dislike_movie_count : 0,
+        data ? data.userStats.like_movie ? 'like' : data.userStats.dislike_movie ? 'dislike' : '' : '',
         data !== null && !isError
     );
 
@@ -74,9 +74,9 @@ const MovieScreen = () => {
         ? homeStackHelpers.getEpisodeCountsDuration(data.seasons, data.latestData, data.duration, data.type)
         : '';
 
-    const onScroll = useCallback((event) => {
-        IntersectionObserver.emitEvent('moviePlotScope');
-    }, []);
+    const _onScrollToDownload = useCallback(() => {
+        !forceClosePlot && setForceClosePlot(true);
+    }, [forceClosePlot]);
 
 
     return (
@@ -84,7 +84,6 @@ const MovieScreen = () => {
             <View style={style.container}>
                 <ScrollView
                     ref={scrollViewRef}
-                    onScroll={onScroll}
                     refreshControl={
                         <RefreshControl
                             onRefresh={_onRefresh}
@@ -110,8 +109,8 @@ const MovieScreen = () => {
                         isDisLike={isDisLike}
                         onLike={_onLike}
                         onDisLike={_onDisLike}
-                        likesCount={data ? data.likesCount : 0}
-                        dislikesCount={data ? data.dislikesCount : 0}
+                        likesCount={data ? data.userStats.like_movie_count : 0}
+                        dislikesCount={data ? data.userStats.dislike_movie_count : 0}
                         disable={!data || isLoading || isError}
                     />
 
@@ -124,10 +123,13 @@ const MovieScreen = () => {
                             : <View>
                                 <MovieScreenInfoSection
                                     data={data}
+                                    forceClosePlot={forceClosePlot}
+                                    setForceClosePlot={setForceClosePlot}
                                 />
                                 <MovieScreenDownloadSection
                                     data={data}
                                     scrollViewRef={scrollViewRef}
+                                    onScrollToDownload={_onScrollToDownload}
                                 />
                                 <View style={{paddingBottom: 100}}/>
                             </View>

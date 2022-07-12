@@ -39,7 +39,7 @@ const TrailerImageSwitch = ({
                         !hideLikeIcon && likeOrDislike !== '' && <View style={style.likeContainer}>
                             <Ionicons
                                 name={likeOrDislike === 'like' ? 'heart' : 'md-heart-dislike'}
-                                size={24}
+                                size={22}
                                 color={"red"}
                             />
                         </View>

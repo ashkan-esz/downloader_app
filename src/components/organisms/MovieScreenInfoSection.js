@@ -5,7 +5,7 @@ import {MovieScreenDetailsSection, MovieScreenUpdateSection} from "../molecules"
 import PropTypes from 'prop-types';
 
 
-const MovieScreenInfoSection = ({data}) => {
+const MovieScreenInfoSection = ({data, forceClosePlot, setForceClosePlot}) => {
     return (
         <View>
             <MovieTrailer
@@ -14,6 +14,8 @@ const MovieScreenInfoSection = ({data}) => {
             />
             <MoviePlot
                 summary={data.summary}
+                forceClosePlot={forceClosePlot}
+                setForceClosePlot={setForceClosePlot}
             />
             <MovieScreenDetailsSection
                 data={data}
@@ -29,6 +31,8 @@ const style = StyleSheet.create({});
 
 MovieScreenInfoSection.propTypes = {
     data: PropTypes.object.isRequired,
+    forceClosePlot: PropTypes.bool.isRequired,
+    setForceClosePlot: PropTypes.func.isRequired,
 }
 
 

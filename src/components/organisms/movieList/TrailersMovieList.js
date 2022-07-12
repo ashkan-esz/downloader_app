@@ -58,9 +58,9 @@ const trailersMovieList = ({
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
             status={item.status}
-            likesCount={item.likesCount}
-            dislikesCount={item.dislikesCount}
-            likeOrDislike={item.likeOrDislike}
+            likesCount={item.userStats.like_movie_count}
+            dislikesCount={item.userStats.dislike_movie_count}
+            likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
         />
     );
 

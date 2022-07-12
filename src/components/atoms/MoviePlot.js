@@ -1,21 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, View, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
 import {Button, Text} from "react-native-elements";
-import {IntersectionObserverView} from 'rn-intersection-observer';
-import {useIsMounted} from '../../hooks';
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const MoviePlot = ({summary}) => {
-    const [isVisible, setIsVisible] = useState(true);
+const MoviePlot = ({summary, forceClosePlot, setForceClosePlot}) => {
     const [plotLanguage, setPlotLanguage] = useState('english');
     const [showAll, setShowAll] = useState(false);
-    const isMounted = useIsMounted();
 
     const plot = showAll
         ? summary[plotLanguage]
-        : summary[plotLanguage].slice(0, 250) + (summary[plotLanguage].includes('..') ? '' : ' .....');
+        : summary[plotLanguage].slice(0, 250) + (summary[plotLanguage].length > 250 ? ' .....' : '');
 
     const plot_empty = plotLanguage === 'english'
         ? 'no summary available.'
@@ -28,15 +24,16 @@ const MoviePlot = ({summary}) => {
     }, []);
 
     useEffect(() => {
-        if (!isVisible && showAll) {
+        if (forceClosePlot && showAll) {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
             setShowAll(false);
         }
-    }, [isVisible]);
+    }, [forceClosePlot]);
 
     const _onPress = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setShowAll((prevState => !prevState));
+        forceClosePlot && setForceClosePlot(false);
     }
 
     const plotPadding = {
@@ -50,12 +47,7 @@ const MoviePlot = ({summary}) => {
     };
 
     return (
-        <IntersectionObserverView
-            style={style.container}
-            scope={'moviePlotScope'}
-            thresholds={[0.8]}
-            onIntersectionChange={(t) => isMounted.current && setIsVisible(t.isInsecting)}
-        >
+        <View style={style.container}>
             <Text style={style.section}>
                 PLOT
             </Text>
@@ -97,7 +89,7 @@ const MoviePlot = ({summary}) => {
                     onPress={_onPress}
                 />
             }
-        </IntersectionObserverView>
+        </View>
     );
 };
 
@@ -126,7 +118,7 @@ const style = StyleSheet.create({
     },
     activeButtonTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(22),
+        fontSize: Typography.getFontSize(20),
         marginLeft: -2,
     },
     plotText: {

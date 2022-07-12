@@ -83,6 +83,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, likeOrDislike, act
 
         let result = await likeOrDislikeApi('movies', movieId, 'like', saveIsLike);
         if (result === 'error' && isMounted.current) {
+            //todo : show toast: couldn't refresh feed
             await updateCachedData(
                 saveIsLike ? 'like' : isDisLike ? 'dislike' : '',
                 saveLikeNumber,
@@ -107,6 +108,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, likeOrDislike, act
 
         let result = await likeOrDislikeApi('movies', movieId, 'dislike', saveIsDislike);
         if (result === 'error' && isMounted.current) {
+            //todo : show toast: couldn't refresh feed
             await updateCachedData(
                 saveIsDislike ? 'dislike' : isLike ? 'like' : '',
                 saveLikeNumber,

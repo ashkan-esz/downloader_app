@@ -85,10 +85,10 @@ const MovieScreenDetailsSection = ({data}) => {
             </Text>
             <Text style={style.text}>
                 <Text style={style.statement}>Directors
-                    :</Text> {data.staff.directors.map(item => item.rawName).join(', ')}
+                    :</Text> {data.staff.directors.map(item => item.name).join(', ')}
             </Text>
             <Text style={style.text}>
-                <Text style={style.statement}>Writers :</Text> {data.staff.writers.map(item => item.rawName).join(', ')}
+                <Text style={style.statement}>Writers :</Text> {data.staff.writers.map(item => item.name).join(', ')}
             </Text>
 
         </View>

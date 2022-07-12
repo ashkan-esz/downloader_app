@@ -37,8 +37,19 @@ LogBox.ignoreLogs([
 
 //todo : add offline usage
 
+//todo : fuse icons in gradle
+
 //todo : add gesture
 //todo : fix splash screen jump up before end
+//todo : fix keyboard in auth screens forms
+
+//todo : fix 'MyOverlay' style
+//todo : fix placeHolders
+
+//todo : show no update available on icon click
+//todo : check for update option in profile screen
+//todo : ota update dont come again after cancel
+//todo : why app update on restart
 
 //todo : app starts soo slow
 
@@ -100,6 +111,7 @@ export default function App() {
                 require('./assets/images/noImage.png'),
             ]);
 
+            //todo : check adding 'MaterialIcons' performance
             const fontAssets = [FontAwesome.font, AntDesign.font].map(font => Font.loadAsync(font));
 
             await Promise.all([...imageAssets, ...fontAssets]);

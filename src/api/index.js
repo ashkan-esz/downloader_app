@@ -2,7 +2,8 @@ import axios from 'axios';
 import {BASE_URL, BASE_URL_DEV} from '@env';
 
 const API = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? BASE_URL : BASE_URL_DEV,
+    // baseURL: process.env.NODE_ENV === 'production' ? BASE_URL : BASE_URL_DEV,
+    baseURL: BASE_URL,
     withCredentials: true,
 });
 
@@ -22,6 +23,8 @@ export const authEndpoints = [
 export const tokenEndPoint = '/users/getToken?noCookie=true';
 
 //todo : do not print error on (401 | network) error and keep state as loading
+
+//todo : handle errors again
 
 //auth
 export const loginApi = async (data) => {
@@ -50,7 +53,7 @@ export const signupApi = async (data) => {
 
 export const logoutApi = async () => {
     try {
-        const response = await API.post('/users/logout?noCookie=true');
+        const response = await API.put('/users/logout?noCookie=true');
         return response.data;
     } catch (error) {
         if (!error.response.data.errorMessage || error.response && error.response.status === 403) {
@@ -62,7 +65,7 @@ export const logoutApi = async () => {
 
 export const forceLogoutApi = async (deviceId) => {
     try {
-        const response = await API.post(`/users/forceLogout/${deviceId}`);
+        const response = await API.put(`/users/forceLogout/${deviceId}`);
         return response.data;
     } catch (error) {
         if (!error.response.data.errorMessage || error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -77,7 +80,7 @@ export const forceLogoutApi = async (deviceId) => {
 
 export const forceLogoutAllApi = async () => {
     try {
-        const response = await API.post('/users/forceLogoutAll');
+        const response = await API.put('/users/forceLogoutAll');
         return response.data;
     } catch (error) {
         if (!error.response.data.errorMessage || error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -142,7 +145,7 @@ export const searchTitle = async (title, types, dataLevel, page, years = '1900-2
         let response = await API.get(
             `/movies/searchByTitle/${title}/${types}/${dataLevel}/${years}/${imdbScores}/${malScores}/${page}`
         );
-        return response.data;
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return {
@@ -158,7 +161,7 @@ export const searchTitle = async (title, types, dataLevel, page, years = '1900-2
 export const searchByID = async (id, dataLevel) => {
     try {
         let response = await API.get(`/movies/searchByID/${id}/${dataLevel}/`);
-        return response.data || null;
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return null;
@@ -174,7 +177,7 @@ export const getNews = async (types, dataLevel, page, imdbScores = '0-10', malSc
     try {
         types = types.join('-');
         let response = await API.get(`/movies/news/${types}/${dataLevel}/${imdbScores}/${malScores}/${page}`);
-        return response.data || [];
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return [];
@@ -187,7 +190,7 @@ export const getUpdates = async (types, dataLevel, page, imdbScores = '0-10', ma
     try {
         types = types.join('-');
         let response = await API.get(`/movies/updates/${types}/${dataLevel}/${imdbScores}/${malScores}/${page}`);
-        return response.data || [];
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return [];
@@ -200,7 +203,7 @@ export const getSortedMovies = async (sortBy, types, dataLevel, page, imdbScores
     try {
         types = types.join('-');
         let response = await API.get(`/movies/sortedMovies/${sortBy}/${types}/${dataLevel}/${imdbScores}/${malScores}/${page}`);
-        return response.data || [];
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return [];
@@ -213,7 +216,7 @@ export const getMultipleStatus = async (types, dataLevel, count, page, imdbScore
     try {
         types = types.join('-');
         let response = await API.get(`/movies/multiple/status/${types}/${dataLevel}/${imdbScores}/${malScores}/${count}/${page}`);
-        return response.data;
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return null;
@@ -226,7 +229,7 @@ export const getTopLikes = async (types, dataLevel, page, imdbScores = '0-10', m
     try {
         types = types.join('-');
         let response = await API.get(`/movies/topsByLikes/${types}/${dataLevel}/${imdbScores}/${malScores}/${page}`);
-        return response.data || [];
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return [];
@@ -239,7 +242,7 @@ export const getTrailers = async (types, dataLevel, page, imdbScores = '0-10', m
     try {
         types = types.join('-');
         let response = await API.get(`/movies/trailers/${types}/${dataLevel}/${imdbScores}/${malScores}/${page}`);
-        return response.data || [];
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return [];
@@ -252,7 +255,7 @@ export const getSeriesOfDay = async (spacing, page, types, imdbScores = '0-10', 
     try {
         types = types.join('-');
         let response = await API.get(`/movies/seriesOfDay/${spacing}/${types}/${imdbScores}/${malScores}/${page}`);
-        return response.data || [];
+        return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return [];
@@ -263,9 +266,9 @@ export const getSeriesOfDay = async (spacing, page, types, imdbScores = '0-10', 
 
 export const likeOrDislikeApi = async (docType, id, type, isRemove) => {
     try {
-        let url = `/movies/${type}/${id}?remove=${isRemove}`;
+        let url = `/movies/addUserStats/${type}_movie/${id}?remove=${isRemove}`;
         if (docType === 'staff' || docType === 'characters') {
-            url = `/movies/${docType}/${type}/${id}?remove=${isRemove}`;
+            url = `/movies/addUserStats/${docType}/${type}/${id}?remove=${isRemove}`;
         }
         let response = await API.put(url);
         return 'ok';

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 //todo : check section list
 
-const MovieScreenDownloadSection = ({data, scrollViewRef}) => {
+const MovieScreenDownloadSection = ({data, scrollViewRef, onScrollToDownload}) => {
     const sectionRef = useRef(null);
     const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
     const [downloadPosition, setDownloadPosition] = useState(0);
@@ -20,6 +20,7 @@ const MovieScreenDownloadSection = ({data, scrollViewRef}) => {
     const _scrollToDownload = () => {
         if (scrollViewRef && scrollViewRef.current) {
             if (downloadPosition > 0) {
+                onScrollToDownload();
                 setTimeout(() => {
                     scrollViewRef.current.scrollTo({
                         y: downloadPosition,
@@ -73,17 +74,17 @@ const MovieScreenDownloadSection = ({data, scrollViewRef}) => {
                         </LinearGradient>
                     </TouchableOpacity>
                     : data.type.includes('serial')
-                        ? <MovieScreenSeasonCollapsible
-                            scrollToDownload={_scrollToDownload}
-                            latestData={data.latestData}
-                            seasons={data.seasons}
-                            rawTitle={data.rawTitle}
-                        />
-                        : <MovieScreenQualityCollapsible
-                            scrollToDownload={_scrollToDownload}
-                            qualities={data.qualities}
-                            rawTitle={data.rawTitle}
-                        />
+                    ? <MovieScreenSeasonCollapsible
+                        scrollToDownload={_scrollToDownload}
+                        latestData={data.latestData}
+                        seasons={data.seasons}
+                        rawTitle={data.rawTitle}
+                    />
+                    : <MovieScreenQualityCollapsible
+                        scrollToDownload={_scrollToDownload}
+                        qualities={data.qualities}
+                        rawTitle={data.rawTitle}
+                    />
             }
 
         </View>
@@ -132,6 +133,7 @@ const style = StyleSheet.create({
 MovieScreenDownloadSection.propTypes = {
     data: PropTypes.object.isRequired,
     scrollViewRef: PropTypes.object,
+    onScrollToDownload: PropTypes.func.isRequired,
 }
 
 
