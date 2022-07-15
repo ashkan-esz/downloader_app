@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Divider, Text} from "react-native-elements";
+import {Divider, Text} from "@rneui/themed";
 import {CustomImage, FullScreenImageView, DoubleTap, LikeIconWithAnimation} from "../atoms";
 import MovieTopPosterCarousel from "./MovieTopPosterCarousel";
 import {BlurView} from 'expo-blur';

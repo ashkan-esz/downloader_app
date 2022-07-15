@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
-import {Button} from "react-native-elements";
+import {Button} from "@rneui/themed";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -100,7 +100,7 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         opacity: 0.6
     },
-    typesButtonTitle:{
+    typesButtonTitle: {
         fontSize: Typography.getFontSize(18),
         color: '#ffffff',
         justifyContent: 'center',

@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {MovieScreenQualityCollapsible, MovieScreenSeasonCollapsible} from "../atoms";
 import {Typography, Colors} from "../../styles";
 import {LinearGradient} from "expo-linear-gradient";
@@ -74,17 +74,17 @@ const MovieScreenDownloadSection = ({data, scrollViewRef, onScrollToDownload}) =
                         </LinearGradient>
                     </TouchableOpacity>
                     : data.type.includes('serial')
-                    ? <MovieScreenSeasonCollapsible
-                        scrollToDownload={_scrollToDownload}
-                        latestData={data.latestData}
-                        seasons={data.seasons}
-                        rawTitle={data.rawTitle}
-                    />
-                    : <MovieScreenQualityCollapsible
-                        scrollToDownload={_scrollToDownload}
-                        qualities={data.qualities}
-                        rawTitle={data.rawTitle}
-                    />
+                        ? <MovieScreenSeasonCollapsible
+                            scrollToDownload={_scrollToDownload}
+                            latestData={data.latestData}
+                            seasons={data.seasons}
+                            rawTitle={data.rawTitle}
+                        />
+                        : <MovieScreenQualityCollapsible
+                            scrollToDownload={_scrollToDownload}
+                            qualities={data.qualities}
+                            rawTitle={data.rawTitle}
+                        />
             }
 
         </View>

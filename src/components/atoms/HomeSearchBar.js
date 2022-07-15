@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {SearchBar} from "react-native-elements";
+import {SearchBar} from "@rneui/themed";
 import {Colors, Mixins} from "../../styles";
 import PropTypes from 'prop-types';
 

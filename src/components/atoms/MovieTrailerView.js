@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Video} from "expo-av";
 import PropTypes from 'prop-types';
-import {Overlay} from "react-native-elements";
+import {Overlay} from "@rneui/themed";
 import {Mixins} from "../../styles";
 
 

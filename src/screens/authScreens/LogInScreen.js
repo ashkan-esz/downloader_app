@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Keyboard, TouchableOpacity} from 'react-native';
-import {Button, Text} from "react-native-elements";
+import {Button, Text} from "@rneui/themed";
 import {Colors, Mixins} from "../../styles";
 import {LogInForm} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";

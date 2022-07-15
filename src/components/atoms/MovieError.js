@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, Text} from "react-native-elements";
+import {Button, Text} from "@rneui/themed";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";

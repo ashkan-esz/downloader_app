@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {TrailerImageSwitch} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {Colors, Mixins, Typography} from "../../../styles";

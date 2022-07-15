@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {View, StyleSheet, Keyboard, FlatList} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {MovieSearchNotFound, MovieError} from "../../atoms";
 import {SearchMovieCard} from "../../molecules";
 import {Colors, Mixins, Typography} from "../../../styles";

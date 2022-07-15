@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {homeStackHelpers} from "../../helper";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {AntDesign} from "@expo/vector-icons";
 import PropTypes from 'prop-types';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {Typography} from "../../styles";
 
 

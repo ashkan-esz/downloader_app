@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, FlatList, RefreshControl, ActivityIndicator} from 'react-native';
 // import {FlashList} from "@shopify/flash-list";
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {MovieError} from "../../atoms";
 import {SectionMovieCard} from "../../molecules";
 import {Colors, Mixins, Typography} from "../../../styles";

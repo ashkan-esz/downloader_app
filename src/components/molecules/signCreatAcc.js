@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button} from "react-native-elements";
+import {Button} from "@rneui/themed";
 import {useSelector} from "react-redux";
 import {Colors, Typography} from '../../styles';
 import PropsTypes from 'prop-types';

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {SearchBar} from "react-native-elements";
+import {SearchBar} from "@rneui/themed";
 import {useDebounce} from "../../hooks";
 import {Colors, Mixins} from "../../styles";
 import PropsTypes from "prop-types";

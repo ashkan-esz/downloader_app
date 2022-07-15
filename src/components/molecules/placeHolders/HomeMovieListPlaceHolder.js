@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {CustomRating, CustomImage} from "../../atoms";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Divider, Text} from "react-native-elements";
+import {Divider, Text} from "@rneui/themed";
 import MovieTrailerView from "./MovieTrailerView";
 import {Typography} from "../../styles";
 import PropTypes from 'prop-types';

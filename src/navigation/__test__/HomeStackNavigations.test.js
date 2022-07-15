@@ -5,7 +5,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import AppStackNavigations from "../AppStackNavigations";
 
 jest.mock("../../screens/AppScreens/HomeScreen", () => {
-    const {SearchBar} = require("react-native-elements");
+    const {SearchBar} = require("@rneui/themed");
     return () => {
         return (
             <SearchBar testID={'searchBar'}/>

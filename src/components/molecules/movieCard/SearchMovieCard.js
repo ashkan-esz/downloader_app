@@ -1,6 +1,6 @@
 import React, {memo, useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {Ionicons} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import {CustomImage} from "../../atoms";
@@ -48,8 +48,8 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, 
                 </Text>
                 <Text style={style.year} numberOfLines={1}>
                     {premiered.split('-')[0]} - <Text style={[style.year, typeColor]}>{
-                        type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
-                    }</Text>
+                    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
+                }</Text>
                 </Text>
             </View>
         </TouchableOpacity>

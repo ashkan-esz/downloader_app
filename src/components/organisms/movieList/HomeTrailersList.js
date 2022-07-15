@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {MovieError} from "../../atoms";
 import {HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";

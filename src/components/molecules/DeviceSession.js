@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Divider, ListItem, Text} from "react-native-elements";
+import {Divider, ListItem, Text} from "@rneui/themed";
 import {AntDesign, FontAwesome5, Ionicons} from "@expo/vector-icons";
 import {MyOverlay} from "../atoms";
 import {Colors, Typography} from "../../styles";

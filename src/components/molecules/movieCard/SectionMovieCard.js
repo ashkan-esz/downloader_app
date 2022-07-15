@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {SectionMovieCardRating, CustomImage, LikeIconWithAnimation, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
@@ -106,8 +106,8 @@ const SectionMovieCard = ({
                 <Text style={style.year}>
                     <Text style={style.statement}>Type : </Text><Text
                     style={[style.year, typeColor]}> {
-                        type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
-                    }</Text>
+                    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
+                }</Text>
                 </Text>
 
                 <Text style={style.year} numberOfLines={1}>

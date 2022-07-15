@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import PropTypes from 'prop-types';
+import {Button} from "@rneui/themed";
 import {Colors, Typography} from "../../styles";
-import {Button} from "react-native-elements";
+import PropTypes from 'prop-types';
 
 
 const SeeAllButton = ({onPress, disabled}) => {
@@ -30,7 +30,8 @@ const style = StyleSheet.create({
     },
     buttonTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(19)
+        fontSize: Typography.getFontSize(19),
+        height: 30,
     }
 });
 

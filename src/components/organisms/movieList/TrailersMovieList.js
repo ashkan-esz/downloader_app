@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {MovieError} from "../../atoms";
 import {TrailerMovieCard} from "../../molecules";
 import {Colors, Mixins, Typography} from "../../../styles";

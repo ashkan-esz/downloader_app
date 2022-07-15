@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl, ActivityIndicator} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import Toast from "react-native-toast-message";
 import {ScreenLayout} from "../../components/layouts";
 import {DeviceSession} from "../../components/molecules";

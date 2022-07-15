@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Button} from "react-native-elements";
+import {Button} from "@rneui/themed";
 import {LinearGradient} from "expo-linear-gradient";
 import * as Clipboard from 'expo-clipboard';
 import Share from 'react-native-share';

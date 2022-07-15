@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
-import {Button, Text} from "react-native-elements";
+import {Button, Text} from "@rneui/themed";
 import {useDispatch, useSelector} from "react-redux";
 import {sendVerifyEmail_api, logout_api, resetMessage, resetAuthError} from "../../redux/slices/auth.slice";
 import {profile_api, resetUserError, setShowUpdateOverlayFlag} from "../../redux/slices/user.slice";

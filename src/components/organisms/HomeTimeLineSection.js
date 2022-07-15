@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {MovieError} from "../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
 import {useQuery, useQueryClient} from "react-query";

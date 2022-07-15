@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {AirbnbRating} from "react-native-ratings";
 import LikeIconWithAnimation from "./LikeIconWithAnimation";
 import {Colors, Typography} from "../../styles";

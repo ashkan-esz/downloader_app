@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {Colors, Typography} from "../../styles";
 import {MaterialIcons} from "@expo/vector-icons";
 

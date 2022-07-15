@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Avatar} from "react-native-elements";
+import {Avatar} from "@rneui/themed";
 import {useSelector} from "react-redux";
 import CustomImage from "./CustomImage";
 import PropTypes from 'prop-types';

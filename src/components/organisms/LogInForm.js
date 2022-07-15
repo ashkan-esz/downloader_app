@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button, Text} from "react-native-elements";
+import {Button, Text} from "@rneui/themed";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
 import {Colors, Typography} from "../../styles";

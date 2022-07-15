@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Input, Text} from "react-native-elements";
+import {Input, Text} from "@rneui/themed";
 import {Colors, Mixins} from "../../styles";
 import PropsTypes from "prop-types";
 import {Entypo, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
@@ -66,11 +66,11 @@ const CustomTextInput = ({
                 testID={placeholder.toLowerCase() + '-input'}
             />
             {error &&
-            <Text
-                style={style.error}
-                testID={placeholder.toLowerCase() + '-error'}>
-                *{error.message}.
-            </Text>}
+                <Text
+                    style={style.error}
+                    testID={placeholder.toLowerCase() + '-error'}>
+                    *{error.message}.
+                </Text>}
         </View>
     );
 };

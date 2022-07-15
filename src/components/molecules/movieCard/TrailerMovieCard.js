@@ -1,6 +1,6 @@
 import React, {memo, useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Text} from "react-native-elements";
+import {Text} from "@rneui/themed";
 import {TrailerImageSwitch, SectionMovieCardRating, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {useLikeOrDislike} from "../../../hooks";

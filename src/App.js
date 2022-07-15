@@ -16,6 +16,7 @@ import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
+import {ThemeProvider} from "@rneui/themed";
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -150,11 +151,13 @@ export default function App() {
             <StatusBar style="light"/>
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
-                    <OfflineStatusBar/>
-                    <GlobalOverlays/>
-                    {
-                        isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>
-                    }
+                    <ThemeProvider>
+                        <OfflineStatusBar/>
+                        <GlobalOverlays/>
+                        {
+                            isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>
+                        }
+                    </ThemeProvider>
                 </QueryClientProvider>
                 <RootToast/>
             </NavigationContainer>

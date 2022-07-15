@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Overlay} from "react-native-elements";
+import {Overlay} from "@rneui/themed";
 import CustomImage from "./CustomImage";
 import {Mixins} from "../../styles";
 import PropTypes from 'prop-types';
