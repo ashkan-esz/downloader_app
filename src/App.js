@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useState} from 'react';
 import {AppState, I18nManager, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+import {enableFreeze} from 'react-native-screens';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import {AntDesign, FontAwesome} from '@expo/vector-icons';
@@ -53,6 +54,10 @@ LogBox.ignoreLogs([
 //todo : why app update on restart
 
 //todo : app starts soo slow
+//todo : use proguard
+//------------------------------------------------
+
+enableFreeze(true);
 
 try {
     I18nManager.allowRTL(false);

@@ -10,6 +10,7 @@ export default {
     },
     "plugins": [
         "expo-av",
-        "expo-splash-screen"
+        "expo-splash-screen",
+        "expo-file-system"
     ]
 };

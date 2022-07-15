@@ -21,9 +21,9 @@ const MovieScreenEpisode = ({extraStyle, rawTitle, linkData}) => {
         color: '#fff',
     }
 
-    const _onPress = () => {
+    const _onPress = async () => {
         try {
-            Clipboard.setString(linkData.link);
+            await Clipboard.setStringAsync(linkData.link);
             Toast.show({
                 type: 'linkToClipboard',
                 text1: 'Link copied to clipboard',
