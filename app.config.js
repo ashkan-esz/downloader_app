@@ -8,4 +8,8 @@ export default {
         "package": "com.ashkanaz2828.downloader_app",
         "versionCode": 1
     },
+    "plugins": [
+        "expo-av",
+        "expo-splash-screen"
+    ]
 };
