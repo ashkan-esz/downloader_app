@@ -31,7 +31,7 @@ const style = StyleSheet.create({
     buttonTitle: {
         color: '#ffffff',
         fontSize: Typography.getFontSize(19),
-        height: 30,
+        height: '100%',
     }
 });
 

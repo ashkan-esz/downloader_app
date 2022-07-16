@@ -46,7 +46,7 @@ const HomeSoonList = () => {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>Soon</Text>
-                <HomeMovieListPlaceHolder extraStyle={{marginTop: 20}} number={3} rating={false}/>
+                <HomeMovieListPlaceHolder extraStyle={style.scrollView} number={3} rating={false} latestData={false}/>
             </View>
         );
     }
@@ -65,7 +65,7 @@ const HomeSoonList = () => {
                 contentContainerStyle={style.scrollView}
             >
                 {
-                    data.slice(0, 3).map((item) => {
+                    data.slice(0, 12).map((item) => {
                         return (
                             <HomeMovieCard
                                 key={item._id.toString()}
@@ -92,10 +92,6 @@ const style = StyleSheet.create({
         marginTop: 15,
         paddingBottom: 10,
     },
-    scrollView: {
-        marginTop: 8,
-        justifyContent: "space-between",
-    },
     sectionTitle: {
         color: '#ffffff',
         fontSize: Typography.getFontSize(24)
@@ -106,6 +102,10 @@ const style = StyleSheet.create({
         marginTop: 5,
         color: Colors.NAVBAR,
         fontSize: Typography.getFontSize(16)
+    },
+    scrollView: {
+        justifyContent: "space-between",
+        marginTop: 20,
     },
     movieCard: {
         marginRight: 6

@@ -19,7 +19,7 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
 
     if (isLoading) {
         return (
-            <HomeMovieListPlaceHolder number={3}/>
+            <HomeMovieListPlaceHolder extraStyle={style.container} number={3}/>
         );
     }
 

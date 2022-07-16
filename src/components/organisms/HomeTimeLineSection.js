@@ -59,7 +59,7 @@ const HomeTimeLineSection = () => {
 
             {
                 (data.length === 0 || isLoading)
-                    ? <HomeMovieListPlaceHolder extraStyle={{marginTop: 20}} number={3}/>
+                    ? <HomeMovieListPlaceHolder extraStyle={style.movieListContainer} number={3}/>
                     : <View style={style.movieListContainer}>
                         {
                             data.slice(0, 3).map((item) => {

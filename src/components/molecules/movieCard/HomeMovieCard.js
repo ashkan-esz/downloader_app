@@ -72,8 +72,9 @@ const HomeMovieCard = ({
 const style = StyleSheet.create({
     container: {
         flexShrink: 1,
+        alignSelf: 'center',
         alignItems: 'center',
-        justifyContent: "center",
+        justifyContent: "flex-start",
         width: Mixins.getWindowWidth(31),
         height: Mixins.getWindowHeight(33),
     },

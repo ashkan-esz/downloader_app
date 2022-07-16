@@ -6,7 +6,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true}) => {
+const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true, latestData = true}) => {
     const getPlaceHolders = () => {
         let array = [];
         for (let i = 0; i < number; i++) {
@@ -20,9 +20,9 @@ const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true}) => {
                     <Text style={style.title} numberOfLines={1}>
                         Loading....
                     </Text>
-                    <Text style={style.latestData}>
+                    {latestData && <Text style={style.latestData}>
                         ??
-                    </Text>
+                    </Text>}
                     {rating && <CustomRating rating={0}/>}
                 </View>
             );
@@ -46,8 +46,9 @@ const style = StyleSheet.create({
     },
     cardContainer: {
         alignItems: 'center',
-        justifyContent: "center",
+        justifyContent: "flex-start",
         width: Mixins.getWindowWidth(31),
+        height: Mixins.getWindowHeight(33),
     },
     image: {
         width: Mixins.getWindowWidth(31),
@@ -75,6 +76,7 @@ HomeMovieListPlaceHolder.propTypes = {
     extraStyle: PropTypes.object,
     number: PropTypes.number.isRequired,
     rating: PropTypes.bool,
+    latestData: PropTypes.bool,
 };
 
 
