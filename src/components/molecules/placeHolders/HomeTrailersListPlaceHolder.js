@@ -6,7 +6,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeTrailersListPlaceHolders = ({number}) => {
+const HomeTrailersListPlaceHolders = ({extraStyle, number}) => {
     const getPlaceHolders = () => {
         let array = [];
         for (let i = 0; i < number; i++) {
@@ -32,7 +32,7 @@ const HomeTrailersListPlaceHolders = ({number}) => {
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={style.scrollView}
+                style={[style.scrollView, extraStyle]}
             >
                 {getPlaceHolders()}
             </ScrollView>
@@ -72,6 +72,7 @@ const style = StyleSheet.create({
 });
 
 HomeTrailersListPlaceHolders.propTypes = {
+    extraStyle: PropTypes.object,
     number: PropTypes.number.isRequired,
 };
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {StyleSheet, ActivityIndicator} from 'react-native';
 import {SearchBar} from "@rneui/themed";
 import {useDebounce} from "../../hooks";
 import {Colors, Mixins} from "../../styles";
@@ -23,6 +23,7 @@ const CustomSearchBar = ({onTextChange, isLoading, inputRef, closeFilterBox}) =>
             onClear={() => {
                 inputRef.current.focus();
             }}
+            autoFocus={true}
             containerStyle={style.searchBarContainer}
             inputContainerStyle={style.searchBar}
             inputStyle={inputStyle}

@@ -20,3 +20,5 @@ export {default as MovieTopPosterCarousel} from './MovieTopPosterCarousel';
 export {default as ProfileImage} from './ProfileImage';
 export {default as DeviceSession} from './DeviceSession';
 export {default as GlobalOverlays} from './GlobalOverlays';
+export {default as CustomFlashList} from './CustomFlashList';
+export {default as HomeScreenFlashList} from './HomeScreenFlashList';

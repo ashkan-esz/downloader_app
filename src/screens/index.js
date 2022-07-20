@@ -9,3 +9,4 @@ export {default as MovieScreen} from './AppScreens/MovieScreen';
 export {default as TimeLineScreen} from './AppScreens/TimeLineScreen';
 export {default as ProfileScreen} from './AppScreens/ProfileScreen';
 export {default as ActiveSessionsScreen} from './AppScreens/ActiveSessionsScreen';
+export {default as MovieListScreen} from './AppScreens/MovieListScreen';

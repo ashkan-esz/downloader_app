@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
+import DropShadow from "react-native-drop-shadow";
 import {SectionMovieCardRating, CustomImage, LikeIconWithAnimation, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
@@ -21,7 +22,6 @@ const SectionMovieCard = ({
                               genres,
                               latestData,
                               nextEpisode,
-                              status,
                               likesCount,
                               dislikesCount,
                               likeOrDislike,
@@ -62,27 +62,32 @@ const SectionMovieCard = ({
             activeOpacity={0.8}
             onTap={_navigateToMovieScreen}
             onDoubleTap={_handleDoubleTap}
-            doublePressDelay={200}
+            doublePressDelay={180}
         >
 
-            <CustomImage
-                extraStyle={style.image}
-                url={posters[0]}
-                onPress={_navigateToMovieScreen}
+            <DropShadow
+                style={[style.image, style.imageShadow]}
             >
-                <LikeIconWithAnimation
-                    extraStyle={style.likeIcon}
-                    isActive={likeAnimation}
-                    iconName={"heart"}
-                    outlineIconName={"heart-outline"}
-                    activeIconOnly={true}
-                    activeAnimationOnly={true}
-                    autoHideLike={true}
-                    iconSize={70}
+                <CustomImage
+                    extraStyle={style.image}
+                    url={posters[0]}
                     onPress={_navigateToMovieScreen}
-                    disableOnPressActivation={true}
-                />
-            </CustomImage>
+                >
+                    <LikeIconWithAnimation
+                        extraStyle={style.likeIcon}
+                        isActive={likeAnimation}
+                        iconName={"heart"}
+                        outlineIconName={"heart-outline"}
+                        activeIconOnly={true}
+                        activeAnimationOnly={true}
+                        autoHideLike={true}
+                        iconSize={70}
+                        onPress={_navigateToMovieScreen}
+                        disableOnPressActivation={true}
+                    />
+
+                </CustomImage>
+            </DropShadow>
 
             <View style={style.infoContainer}>
                 <Text style={style.title} numberOfLines={1}>
@@ -115,21 +120,9 @@ const SectionMovieCard = ({
                 </Text>
                 {
                     type.includes('serial') &&
-                    <View>
-                        <Text style={style.year}>
-                            <Text style={style.statement}>Status : </Text>{status}
-                        </Text>
-                        <Text style={style.year}>
-                            <Text style={style.statement}>Episode : </Text>{serialState}
-                        </Text>
-                        {
-                            tab === 'todaySeries' &&
-                            <Text style={style.year}>
-                                <Text style={style.statement}>Next Episode : </Text>
-                                {nextEpisode ? ('S' + nextEpisode.season + 'E' + nextEpisode.episode) : ''}
-                            </Text>
-                        }
-                    </View>
+                    <Text style={style.year}>
+                        <Text style={style.statement}>Episode : </Text>{serialState}
+                    </Text>
                 }
 
                 <Text style={style.year} numberOfLines={1}>
@@ -150,14 +143,23 @@ const style = StyleSheet.create({
         backgroundColor: Colors.SECONDARY,
         borderRadius: 10
     },
+    imageShadow: {
+        shadowColor: Colors.GRAY_MEDIUM,
+        shadowOffset: {
+            width: 0,
+            height: -5,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        zIndex: 10,
+        marginTop: 10,
+        marginLeft: 10,
+    },
     image: {
         width: Mixins.getWindowWidth(37),
         height: Mixins.getWindowHeight(33) + 8,
         maxHeight: 250,
         borderRadius: 8,
-        marginTop: 10,
-        paddingTop: 30,
-        marginLeft: 10,
     },
     likeIcon: {
         paddingBottom: 10,
@@ -209,11 +211,11 @@ SectionMovieCard.propTypes = {
     genres: PropTypes.array.isRequired,
     latestData: PropTypes.object.isRequired,
     nextEpisode: PropTypes.object,
-    status: PropTypes.string.isRequired,
 }
 
 const areEqual = (prevProps, nextProps) => {
-    return prevProps.posters[0] === nextProps.posters[0] &&
+    return prevProps.posters[0] && nextProps.posters[0] &&
+        prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.likesCount === nextProps.likesCount &&
         prevProps.dislikesCount === nextProps.dislikesCount &&
         prevProps.likeOrDislike === nextProps.likeOrDislike;

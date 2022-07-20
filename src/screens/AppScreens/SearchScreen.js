@@ -1,9 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, LayoutAnimation} from 'react-native';
+import {View, StyleSheet, LayoutAnimation, Keyboard} from 'react-native';
 import {ScreenLayout} from '../../components/layouts';
 import {SearchMovieList} from "../../components/organisms";
 import {CustomSearchBar, FilterType} from "../../components/molecules";
-import {ScrollTop} from "../../components/atoms";
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {searchTitle} from "../../api";
 
@@ -21,8 +20,13 @@ const SearchScreen = () => {
         searchBarRef.current.focus();
     }, []);
 
+    const _onScroll = () => {
+        Keyboard.dismiss();
+        _closeFilterBox();
+    }
+
     const _closeFilterBox = () => {
-        if (expanded){
+        if (expanded) {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
             setExpanded(false);
         }
@@ -95,6 +99,7 @@ const SearchScreen = () => {
 
                 <SearchMovieList
                     flatListRef={flatListRef}
+                    showScrollTopIcon={(data.pages[0].movies.length > 0)}
                     searchValue={debouncedSearchValue}
                     data={data.pages}
                     isLoading={isLoading}
@@ -105,14 +110,7 @@ const SearchScreen = () => {
                     onEndReached={fetchNextPage}
                     isError={isError}
                     retry={_retry}
-                    onScroll={_closeFilterBox}
-                />
-
-                <ScrollTop
-                    flatListRef={flatListRef}
-                    show={(data.pages[0].movies.length > 0 && !isLoading && !isError)}
-                    bottom={expanded ? 105 : 65}
-                    right={3}
+                    onScroll={_onScroll}
                 />
 
             </View>

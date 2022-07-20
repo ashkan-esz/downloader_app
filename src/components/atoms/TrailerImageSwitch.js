@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {AntDesign, Ionicons} from "@expo/vector-icons";
 import CustomVideo from "./CustomVideo";
 import CustomImage from "./CustomImage";
 import {useDebounce} from "../../hooks";
-import PropTypes from 'prop-types';
 import {Colors} from "../../styles";
+import PropTypes from 'prop-types';
 
 
 const TrailerImageSwitch = ({
@@ -15,11 +15,19 @@ const TrailerImageSwitch = ({
                                 poster,
                                 onLongPress,
                                 likeOrDislike,
-                                hideLikeIcon
+                                hideLikeIcon,
+                                startFullscreen = true,
                             }) => {
     const [shouldLoad, setShouldLoad] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const debouncedIsPlaying = useDebounce(isPlaying, 15000, true);
+
+    useEffect(() => {
+        if (isPlaying || shouldLoad) {
+            setIsPlaying(false);
+            setShouldLoad(false);
+        }
+    }, [trailer]);
 
     useEffect(() => {
         setShouldLoad(debouncedIsPlaying);
@@ -65,7 +73,7 @@ const TrailerImageSwitch = ({
             trailer={trailer}
             poster={poster}
             setIsPlaying={setIsPlaying}
-            startFullscreen={true}
+            startFullscreen={startFullscreen}
         />
     );
 };
@@ -103,7 +111,8 @@ TrailerImageSwitch.propTypes = {
     onLongPress: PropTypes.func,
     likeOrDislike: PropTypes.string.isRequired,
     hideLikeIcon: PropTypes.bool,
+    startFullscreen: PropTypes.bool,
 }
 
 
-export default TrailerImageSwitch;
+export default memo(TrailerImageSwitch);

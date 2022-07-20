@@ -93,10 +93,12 @@ const style = StyleSheet.create({
         borderRadius: 7,
         paddingLeft: 5,
         marginBottom: 10,
+        zIndex: 10,
     },
     headerText: {
         fontSize: Typography.getFontSize(16),
         color: '#fff',
+        zIndex: 10,
     },
     contentContainer: {
         marginLeft: 7,

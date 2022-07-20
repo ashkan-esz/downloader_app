@@ -102,7 +102,8 @@ SearchMovieCard.propTypes = {
 }
 
 const areEqual = (prevProps, nextProps) => {
-    return prevProps.posters[0] === nextProps.posters[0] &&
+    return prevProps.posters[0] && nextProps.posters[0] &&
+        prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.likeOrDislike === nextProps.likeOrDislike;
 }
 

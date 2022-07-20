@@ -1,53 +1,102 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
+import {Text} from "@rneui/themed";
+import {useNavigation} from "@react-navigation/native";
+import {useQuery, useQueryClient} from "react-query";
 import {MovieError} from "../../atoms";
-import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
-import {Mixins} from "../../../styles";
+import {HomeMovieCard, HomeMovieListPlaceHolder, HomeScreenFlashList} from "../../molecules";
+import {getSortedMovies} from "../../../api";
+import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
+const itemSize = Math.max(Mixins.getWindowHeight(29), 200); //240
 
-const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
+const HomeMovieList = ({name, pageType}) => {
+    const navigation = useNavigation();
+    const queryClient = useQueryClient();
 
-    if (error) {
+    async function getData() {
+        let types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
+        let result = await getSortedMovies(pageType, types, 'low', 1);
+        if (result !== 'error') {
+            return result;
+        } else {
+            throw new Error();
+        }
+    }
+
+    const {data, isLoading, isError} = useQuery(
+        [pageType, "homeMovieList"],
+        getData,
+        {placeholderData: []});
+
+    const _retry = async () => {
+        await queryClient.refetchQueries([pageType, "homeMovieList"]);
+    }
+
+    if (isError) {
         return (
-            <MovieError
-                containerStyle={style.error}
-                retry={retry}
-            />
+            <View style={style.container}>
+                <Text style={style.sectionTitle}>{name}</Text>
+                <MovieError
+                    containerStyle={style.error}
+                    retry={_retry}
+                    hideRetry={true}
+                />
+            </View>
         );
     }
 
-    if (isLoading) {
+    if (data.length === 0 || isLoading) {
         return (
-            <HomeMovieListPlaceHolder extraStyle={style.container} number={3}/>
+            <View style={style.container}>
+                <Text style={style.sectionTitle}>{name}</Text>
+                <HomeMovieListPlaceHolder
+                    extraStyle={style.listContainer}
+                    number={3}
+                    rating={false}
+                    latestData={false}
+                />
+            </View>
         );
     }
 
-    if (!isLoading && loadedData.length === 0) {
-        return (
-            <MovieError
-                containerStyle={style.notFound}
-                errorMessage={"No Title Found!"}
-            />
-        );
-    }
+    const _keyExtractor = (item) => item._id.toString();
+    const _renderItem = ({index, item}) => (
+        <HomeMovieCard
+            extraStyle={style.movieCard}
+            posters={item.posters}
+            movieId={item._id}
+            title={item.rawTitle}
+            type={''}
+            rating={0}
+            noRating={true}
+            likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
+        />
+    );
 
     return (
         <View style={style.container}>
-            {loadedData.slice(0, 3).map(((item) => (
-                <HomeMovieCard
-                    key={item._id.toString() + tab}
-                    movieId={item._id}
-                    title={item.rawTitle}
-                    posters={item.posters}
-                    type={item.type}
-                    tab={tab}
-                    latestData={item.latestData}
-                    nextEpisode={item.nextEpisode}
-                    rating={item.rating.imdb || item.rating.myAnimeList}
-                    likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
-                />
-            )))}
+            <Text style={style.sectionTitle}>{name}</Text>
+            <Text
+                style={style.seeAll}
+                onPress={() => navigation.navigate('MovieListScreen', {
+                    name: name,
+                    pageType: pageType,
+                })
+                }>
+                See All
+            </Text>
+
+            <HomeScreenFlashList
+                extraStyle={style.listContainer}
+                data={data}
+                keyExtractor={_keyExtractor}
+                renderItem={_renderItem}
+                itemSize={itemSize}
+                isError={isError}
+                isLoading={isLoading}
+            />
         </View>
     );
 };
@@ -55,32 +104,44 @@ const HomeMovieList = ({loadedData, tab, isLoading, error, retry}) => {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
+        marginTop: 15,
+        paddingBottom: 10,
+    },
+    sectionTitle: {
+        color: '#ffffff',
+        fontSize: Typography.getFontSize(24)
+    },
+    seeAll: {
+        position: 'absolute',
+        right: 5,
+        marginTop: 5,
+        color: Colors.NAVBAR,
+        fontSize: Typography.getFontSize(18)
+    },
+    listContainer: {
         justifyContent: "space-between",
-        marginTop: 8,
-        alignItems: 'center',
+        marginTop: 20,
+        flex: 0,
+        flexShrink: 1,
+        width: Mixins.WINDOW_WIDTH - 10,
+        height: Mixins.getWindowHeight(29),
+        minHeight: 200,
+    },
+    movieCard: {
+        marginRight: 6
     },
     error: {
         marginTop: 8,
         height: Mixins.getWindowHeight(25),
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    notFound: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Mixins.getWindowHeight(33),
-        marginTop: 8,
     }
 });
 
 HomeMovieList.propTypes = {
-    loadedData: PropTypes.array.isRequired,
-    tab: PropTypes.string,
-    isLoading: PropTypes.bool.isRequired,
-    error: PropTypes.bool.isRequired,
-    retry: PropTypes.func.isRequired
-};
+    name: PropTypes.string.isRequired,
+    pageType: PropTypes.string.isRequired,
+}
 
 
 export default HomeMovieList;

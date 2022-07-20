@@ -81,8 +81,8 @@ const style = StyleSheet.create({
     likeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingTop: 2,
+        paddingBottom: 3,
     },
     likeIcon: {
         marginTop: 3,

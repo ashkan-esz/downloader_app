@@ -6,28 +6,26 @@ import PropTypes from 'prop-types';
 
 const itemSize = Math.floor(Math.min(Mixins.getWindowHeight(33), 255)) + 19; //274
 
-const SectionMovieList = ({
-                              flatListRef,
-                              onScroll,
-                              showScrollTopIcon,
-                              tab,
-                              changedTab,
-                              data,
-                              isLoading,
-                              isFetching,
-                              isFetchingNextPage,
-                              onEndReached,
-                              refreshing,
-                              onRefresh,
-                              isError,
-                              retry
-                          }) => {
+const MovieList = ({
+                       flatListRef,
+                       onScroll,
+                       showScrollTopIcon,
+                       data,
+                       isLoading,
+                       isFetching,
+                       isFetchingNextPage,
+                       onEndReached,
+                       refreshing,
+                       onRefresh,
+                       isError,
+                       retry
+                   }) => {
 
 
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <SectionMovieCard
-            tab={tab}
+            tab={''}
             posters={item.posters}
             movieId={item._id}
             title={item.rawTitle}
@@ -48,6 +46,7 @@ const SectionMovieList = ({
             flatListRef={flatListRef}
             onScrollDo={onScroll}
             showScrollTopIcon={showScrollTopIcon}
+            initialNumToRender={1}
             data={data}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
@@ -56,23 +55,19 @@ const SectionMovieList = ({
             onRefresh={onRefresh}
             refreshing={refreshing}
             listFooterMarginTop={-10}
-            listFooterPaddingBottom={40}
             isError={isError}
             retry={retry}
             isLoading={isLoading}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
-            showNothing={tab !== changedTab}
         />
     );
 };
 
 const style = StyleSheet.create({});
 
-SectionMovieList.propTypes = {
+MovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,
-    tab: PropTypes.string.isRequired,
-    changedTab: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -84,7 +79,7 @@ SectionMovieList.propTypes = {
     retry: PropTypes.func.isRequired,
     onScroll: PropTypes.func.isRequired,
     showScrollTopIcon: PropTypes.bool.isRequired,
-};
+}
 
 
-export default SectionMovieList;
+export default MovieList;

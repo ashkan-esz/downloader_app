@@ -1,13 +1,14 @@
 import React, {useCallback, useState} from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {MovieError} from "../../atoms";
-import {HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
+import {HomeScreenFlashList, HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "react-query";
 import {getTrailers} from "../../../api";
 import {Colors, Mixins, Typography} from "../../../styles";
 
+const itemSize = Math.max(Mixins.getWindowHeight(20), 208) + 60; //268
 
 const HomeTrailersList = () => {
     const navigation = useNavigation();
@@ -52,7 +53,10 @@ const HomeTrailersList = () => {
 
     if (data.length === 0 || isLoading) {
         return (
-            <HomeTrailersListPlaceHolder number={3}/>
+            <HomeTrailersListPlaceHolder
+                extraStyle={style.listContainer}
+                number={3}
+            />
         );
     }
 
@@ -77,16 +81,18 @@ const HomeTrailersList = () => {
             <Text
                 style={style.seeAll}
                 onPress={() => navigation.navigate('Trailers')}>
-                See All</Text>
-            <FlatList
+                See All
+            </Text>
+
+            <HomeScreenFlashList
+                extraStyle={style.listContainer}
                 onViewableItemsChanged={handleVieweableItemsChanged}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                style={style.scrollView}
-                data={data.slice(0, 6)}
+                data={data.slice(0, 9)}
                 keyExtractor={_keyExtractor}
                 renderItem={_renderItem}
+                itemSize={itemSize}
+                isError={isError}
+                isLoading={isLoading}
             />
         </View>
     );
@@ -97,8 +103,11 @@ const style = StyleSheet.create({
         flex: 1,
         marginTop: 15,
     },
-    scrollView: {
-        marginTop: 20
+    listContainer: {
+        marginTop: 20,
+        width: Mixins.WINDOW_WIDTH - 10,
+        height: Mixins.getWindowHeight(20) + 60,
+        minHeight: 208,
     },
     sectionTitle: {
         color: '#ffffff',

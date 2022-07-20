@@ -83,7 +83,8 @@ const style = StyleSheet.create({
     },
     buttonTitle: {
         fontSize: Typography.getFontSize(20),
-        color: '#ffffff'
+        color: '#ffffff',
+        height: '100%',
     },
     typesContainer: {
         flex: 1,

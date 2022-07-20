@@ -1,23 +1,24 @@
 import React, {useCallback, useState} from 'react';
-import {View, StyleSheet, ActivityIndicator, FlatList, RefreshControl} from 'react-native';
-import {Text} from "@rneui/themed";
-import {MovieError} from "../../atoms";
-import {TrailerMovieCard} from "../../molecules";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {StyleSheet} from 'react-native';
+import {CustomFlashList, TrailerMovieCard} from "../../molecules";
+import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
+const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH / 1.6, 200) * 1.7) + 42; //427,179
 
 const trailersMovieList = ({
                                flatListRef,
                                data,
                                isLoading,
+                               isFetching,
                                isFetchingNextPage,
                                onEndReached,
                                refreshing,
                                onRefresh,
                                isError,
                                retry,
-                               onScroll
+                               onScroll,
+                               showScrollTopIcon,
                            }) => {
 
     const [onScreenViewItems, setOnScreenViewItems] = useState([]);
@@ -26,25 +27,8 @@ const trailersMovieList = ({
         setOnScreenViewItems(viewableItems.map(item => item.index));
     }, []);
 
-    if (isError) {
-        return (
-            <MovieError retry={retry}/>
-        );
-    }
-
-    if (data.length === 0 || isLoading) {
-        return (
-            <ActivityIndicator
-                style={style.loadingActivity}
-                size={"large"}
-                color={"red"}
-                animating={true}
-            />
-        );
-    }
-
-    const _keyExtractor = (item) => item._id.toString();
-    const _renderItem = ({index, item}) => (
+    const keyExtractor = (item) => item._id.toString();
+    const renderItem = ({index, item}) => (
         <TrailerMovieCard
             isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
@@ -56,79 +40,42 @@ const trailersMovieList = ({
             type={item.type}
             genres={item.genres}
             latestData={item.latestData}
-            nextEpisode={item.nextEpisode}
-            status={item.status}
             likesCount={item.userStats.like_movie_count}
             dislikesCount={item.userStats.dislike_movie_count}
             likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
         />
     );
 
-    const loadingPadding = {
-        paddingLeft: isFetchingNextPage ? '10%' : '5%',
-    };
-    const listFooterComponent = () => (
-        <Text style={[style.listFooter, loadingPadding]}>
-            {isFetchingNextPage ? 'Loading....' : (!isLoading && data.length > 4) ? 'END' : ''}
-        </Text>
-    );
-
-    const _fadingEdgeLength = Mixins.WINDOW_HEIGHT < 700 ? 55 : 100;
-
     return (
-        <View style={style.container}>
-            <FlatList
-                onViewableItemsChanged={handleVieweableItemsChanged}
-                ref={flatListRef}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                onScroll={onScroll}
-                maxToRenderPerBatch={6}
-                windowSize={51}
-                data={data}
-                keyExtractor={_keyExtractor}
-                renderItem={_renderItem}
-                initialNumToRender={3}
-                onEndReached={onEndReached}
-                onEndReachedThreshold={2}
-                fadingEdgeLength={_fadingEdgeLength}
-                ListFooterComponent={listFooterComponent}
-                refreshControl={
-                    <RefreshControl
-                        onRefresh={onRefresh}
-                        refreshing={refreshing}
-                        colors={['blue', 'red']}
-                    />
-                }
-            />
-        </View>
+        <CustomFlashList
+            onViewableItemsChanged={handleVieweableItemsChanged}
+            flatListRef={flatListRef}
+            onScrollDo={onScroll}
+            showScrollTopIcon={showScrollTopIcon}
+            data={data}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            itemSize={itemSize}
+            onEndReached={onEndReached}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            listFooterMarginTop={-15}
+            isError={isError}
+            retry={retry}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            isFetchingNextPage={isFetchingNextPage}
+        />
     );
 };
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        height: Mixins.WINDOW_HEIGHT - 85,
-        marginTop: 10,
-    },
-    loadingActivity: {
-        marginTop: 30
-    },
-    listFooter: {
-        width: Mixins.getWindowWidth(90),
-        textAlign: 'center',
-        alignItems: 'center',
-        fontSize: Typography.getFontSize(22),
-        color: Colors.RED2,
-        marginTop: -10,
-        paddingBottom: 65,
-    },
-});
+const style = StyleSheet.create({});
 
 trailersMovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,
     data: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     isFetchingNextPage: PropTypes.bool.isRequired,
     refreshing: PropTypes.bool.isRequired,
     onRefresh: PropTypes.func.isRequired,
@@ -136,6 +83,7 @@ trailersMovieList.propTypes = {
     isError: PropTypes.bool.isRequired,
     retry: PropTypes.func.isRequired,
     onScroll: PropTypes.func.isRequired,
+    showScrollTopIcon: PropTypes.bool,
 };
 
 

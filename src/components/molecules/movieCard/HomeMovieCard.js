@@ -71,12 +71,11 @@ const HomeMovieCard = ({
 
 const style = StyleSheet.create({
     container: {
-        flexShrink: 1,
+        flex: 0,
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: "flex-start",
         width: Mixins.getWindowWidth(31),
-        height: Mixins.getWindowHeight(33),
     },
     image: {
         width: Mixins.getWindowWidth(31),
@@ -105,7 +104,7 @@ const style = StyleSheet.create({
     latestData: {
         color: Colors.TextColor,
         textAlign: 'center',
-        fontSize: Typography.getFontSize(16),
+        fontSize: Typography.getFontSize(14),
         marginTop: -2,
         marginBottom: 0,
     }

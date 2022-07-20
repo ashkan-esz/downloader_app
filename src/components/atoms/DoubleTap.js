@@ -10,7 +10,7 @@ const DoubleTap = ({extraStyle, activeOpacity, children, onTap, onDoubleTap, dou
     const _handleDoubleTap = () => {
         const now = Date.now();
         const delay = now - lastTap.current;
-        const DOUBLE_PRESS_DELAY = doublePressDelay || 300;
+        const DOUBLE_PRESS_DELAY = doublePressDelay || 200;
         if (lastTap.current && delay < DOUBLE_PRESS_DELAY) {
             onDoubleTap();
             tabCount.current = 0;

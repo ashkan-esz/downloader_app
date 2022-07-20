@@ -7,7 +7,8 @@ import {
     MovieScreen,
     TimeLineScreen,
     ProfileScreen,
-    ActiveSessionsScreen
+    ActiveSessionsScreen,
+    MovieListScreen
 } from '../screens';
 import {Colors} from "../styles";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -84,6 +85,11 @@ const AppStackNavigations = () => {
             <Stack.Screen
                 name={'Movie'}
                 component={MovieScreen}
+                options={({route}) => ({title: route.params.name})}
+            />
+            <Stack.Screen
+                name={'MovieListScreen'}
+                component={MovieListScreen}
                 options={({route}) => ({title: route.params.name})}
             />
         </Stack.Navigator>

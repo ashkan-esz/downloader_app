@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {SectionNavBar} from "../molecules";
-import HomeMovieList from "./movieList/HomeMovieList";
+import HomeTopMovieList from "./movieList/HomeTopMovieList";
 import {useQuery, useQueryClient} from "react-query";
 import {useNavigation} from '@react-navigation/native';
 import {getMultipleStatus} from "../../api";
@@ -65,7 +65,7 @@ const HomeTopSection = () => {
                 tab={tab}
                 onTabChange={setTab}
             />
-            <HomeMovieList
+            <HomeTopMovieList
                 loadedData={data[tab.replace('recent', 'news')]}
                 tab={tab}
                 isLoading={isLoading || !isMounted}

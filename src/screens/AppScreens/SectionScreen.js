@@ -3,7 +3,6 @@ import {LayoutAnimation, Platform, StyleSheet, UIManager, View} from 'react-nati
 import {ScreenLayout} from "../../components/layouts";
 import {SectionMovieList} from "../../components/organisms";
 import {SectionNavBar, FilterType} from "../../components/molecules";
-import {ScrollTop} from "../../components/atoms";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "react-query";
 import {getNews, getSortedMovies, getUpdates} from "../../api";
@@ -28,7 +27,7 @@ const SectionScreen = () => {
     }, []);
 
     const _closeFilterBox = () => {
-        if (expanded){
+        if (expanded) {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
             setExpanded(false);
         }
@@ -69,12 +68,12 @@ const SectionScreen = () => {
         prefetchData();
     }, []);
 
-    const {data, fetchNextPage, isLoading, isFetchingNextPage, isError} = useInfiniteQuery(
+    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
         [tab, 'sectionScreen', types],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0) {
+                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
                     return allPages.length + 1;
                 }
                 return undefined;
@@ -90,7 +89,7 @@ const SectionScreen = () => {
         }
         setChangedTab(value);
         _closeFilterBox();
-        setTimeout(() => setTab(value), 5);
+        setTimeout(() => setTab(value), 2);
     }
 
     const _onRefresh = async () => {
@@ -120,14 +119,12 @@ const SectionScreen = () => {
                     onTabChange={_onTabChange}
                 />
 
-                {
-                    changedTab !== 'todaySeries' && <FilterType
-                        expanded={expanded}
-                        setExpanded={setExpanded}
-                        types={types}
-                        setTypes={setTypes}
-                    />
-                }
+                <FilterType
+                    expanded={expanded}
+                    setExpanded={setExpanded}
+                    types={types}
+                    setTypes={setTypes}
+                />
 
                 <SectionMovieList
                     flatListRef={flatListRef}
@@ -135,6 +132,7 @@ const SectionScreen = () => {
                     changedTab={changedTab}
                     data={data.pages.flat(1)}
                     isLoading={isLoading}
+                    isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}
                     refreshing={refreshing}
@@ -142,15 +140,8 @@ const SectionScreen = () => {
                     isError={isError}
                     retry={_retry}
                     onScroll={_closeFilterBox}
+                    showScrollTopIcon={!expanded && (data.pages[0].length > 0 && tab === changedTab)}
                 />
-
-                <ScrollTop
-                    flatListRef={flatListRef}
-                    show={(data.pages[0].length > 0 && !isLoading && tab === changedTab && !isError)}
-                    bottom={changedTab !== 'todaySeries' ? (expanded ? 110 : 70) : 25}
-                    right={10}
-                />
-
             </View>
         </ScreenLayout>
     );

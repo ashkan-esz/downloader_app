@@ -1,21 +1,21 @@
 import React, {useRef, useState} from 'react';
-import {View, StyleSheet, LayoutAnimation} from 'react-native';
-import {ScreenLayout} from "../../components/layouts";
-import {TrailersMovieList} from "../../components/organisms";
-import {FilterType} from "../../components/molecules";
+import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "react-query";
-import {getTrailers} from "../../api";
+import {ScreenLayout} from "../../components/layouts";
+import {FilterType} from "../../components/molecules";
+import {MovieList} from "../../components/organisms";
+import {getSortedMovies} from "../../api";
 
-
-const TrailersScreen = () => {
-    const [refreshing, setRefreshing] = useState(false);
+const MovieListScreen = () => {
+    const route = useRoute();
     const [expanded, setExpanded] = useState(false);
     const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
+    const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
 
-
-    const _onScroll = () => {
+    const _closeFilterBox = () => {
         if (expanded) {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
             setExpanded(false);
@@ -23,8 +23,8 @@ const TrailersScreen = () => {
     }
 
     async function getData({pageParam = 1}) {
-        let result = await getTrailers(types, 'medium', pageParam);
-        if (result !== 'error') {
+        let result = await getSortedMovies(route.params.pageType, types, 'medium', pageParam);
+        if (result && result !== 'error') {
             return result;
         } else {
             throw new Error();
@@ -32,7 +32,7 @@ const TrailersScreen = () => {
     }
 
     const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        ['trailers', 'trailersScreen', types],
+        [route.params.pageType, 'movieListScreen', types],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
@@ -42,18 +42,23 @@ const TrailersScreen = () => {
                 return undefined;
             },
             placeholderData: {pages: [[]]},
+            cacheTime: 2 * 60 * 1000,
+            staleTime: 2 * 60 * 1000,
         });
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries(['trailers', 'trailersScreen', types]);
+        await queryClient.refetchQueries([route.params.pageType, 'movieListScreen', types]);
         setRefreshing(false);
+    };
+
+    const _retry = async () => {
+        await queryClient.refetchQueries([route.params.pageType, 'movieListScreen', types]);
     };
 
     return (
         <ScreenLayout paddingSides={10}>
             <View style={style.container}>
-
                 <FilterType
                     expanded={expanded}
                     setExpanded={setExpanded}
@@ -61,9 +66,8 @@ const TrailersScreen = () => {
                     setTypes={setTypes}
                 />
 
-                <TrailersMovieList
+                <MovieList
                     flatListRef={flatListRef}
-                    showScrollTopIcon={(data.pages[0].length > 0)}
                     data={data.pages.flat(1)}
                     isLoading={isLoading}
                     isFetching={isFetching}
@@ -72,10 +76,10 @@ const TrailersScreen = () => {
                     refreshing={refreshing}
                     onRefresh={_onRefresh}
                     isError={isError}
-                    retry={_onRefresh}
-                    onScroll={_onScroll}
+                    retry={_retry}
+                    onScroll={_closeFilterBox}
+                    showScrollTopIcon={!expanded && (data.pages[0].length > 0)}
                 />
-
             </View>
         </ScreenLayout>
     );
@@ -85,9 +89,9 @@ const style = StyleSheet.create({
     container: {
         position: 'absolute',
         width: '100%',
-        top: 85,
+        top: StatusBar.currentHeight + 60,
     }
 });
 
 
-export default TrailersScreen;
+export default MovieListScreen;

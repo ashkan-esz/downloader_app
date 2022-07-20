@@ -6,9 +6,9 @@ import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const CustomRating = ({rating}) => {
+const CustomRating = ({extraStyle, rating}) => {
     return (
-        <View style={style.container}>
+        <View style={[style.container, extraStyle]}>
 
             <AirbnbRating
                 starStyle={style.star}
@@ -30,12 +30,12 @@ const style = StyleSheet.create({
         flexDirection: 'row',
     },
     star: {
-        height: 13,
+        height: 12,
         width: 10
     },
     separator: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(14),
+        fontSize: Typography.getFontSize(13),
         opacity: 0.5
     },
     rate: {
@@ -45,7 +45,8 @@ const style = StyleSheet.create({
 });
 
 CustomRating.propTypes = {
-    rating: PropTypes.number.isRequired
+    extraStyle: PropTypes.object,
+    rating: PropTypes.number.isRequired,
 }
 
 

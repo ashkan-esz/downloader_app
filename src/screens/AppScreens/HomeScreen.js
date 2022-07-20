@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
+import {View, StyleSheet, ScrollView, RefreshControl, StatusBar} from 'react-native';
 import {HomeAvatarAndSearch} from "../../components/molecules";
 import {
     HomeTopSection,
     HomeTrailersList,
-    HomeSoonList,
+    HomeMovieList,
     HomeTimeLineSection
 } from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
@@ -49,7 +49,14 @@ const HomeScreen = () => {
                     <HomeTopSection/>
                     <HomeTimeLineSection/>
                     <HomeTrailersList/>
-                    <HomeSoonList/>
+                    <HomeMovieList
+                        name={'Top'}
+                        pageType={'top'}
+                    />
+                    <HomeMovieList
+                        name={'Top Anime'}
+                        pageType={'animeTopAiring'}
+                    />
 
 
                 </ScrollView>
@@ -60,7 +67,7 @@ const HomeScreen = () => {
 
 const style = StyleSheet.create({
     container: {
-        top: 30,
+        top: StatusBar.currentHeight + 5,
         height: Mixins.WINDOW_HEIGHT - 40
     },
     avatar_searchBar: {

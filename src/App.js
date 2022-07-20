@@ -46,7 +46,6 @@ LogBox.ignoreLogs([
 //todo : fix keyboard in auth screens forms
 
 //todo : fix 'MyOverlay' style
-//todo : fix placeHolders
 
 //todo : show no update available on icon click
 //todo : check for update option in profile screen
@@ -55,6 +54,10 @@ LogBox.ignoreLogs([
 
 //todo : app starts soo slow
 //todo : use proguard
+
+//todo : change navigation animation
+//todo : fix like/dislike
+//todo : upgrade react-query to v4
 //------------------------------------------------
 
 enableFreeze(true);
@@ -76,9 +79,9 @@ const queryClient = new QueryClient({
 });
 
 focusManager.setEventListener(handleFocus => {
-    AppState.addEventListener('change', handleFocus)
+    const subscription = AppState.addEventListener('change', handleFocus)
     return () => {
-        AppState.removeEventListener('change', handleFocus)
+        subscription.remove();
     }
 });
 

@@ -45,10 +45,11 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     cardContainer: {
+        flex: 0,
+        alignSelf: 'center',
         alignItems: 'center',
         justifyContent: "flex-start",
         width: Mixins.getWindowWidth(31),
-        height: Mixins.getWindowHeight(33),
     },
     image: {
         width: Mixins.getWindowWidth(31),
@@ -64,7 +65,7 @@ const style = StyleSheet.create({
         marginBottom: 2
     },
     latestData: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: Typography.getFontSize(14),
         color: Colors.TextColor,
         textAlign: 'center',
         marginTop: -2,

@@ -93,6 +93,7 @@ const style = StyleSheet.create({
     headerText: {
         fontSize: Typography.getFontSize(18),
         color: '#fff',
+        zIndex: 10,
     },
     contentContainer: {
         marginLeft: 7,

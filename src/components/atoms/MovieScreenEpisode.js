@@ -19,6 +19,7 @@ const MovieScreenEpisode = ({extraStyle, rawTitle, linkData}) => {
             ? Typography.getFontSize(16)
             : Typography.getFontSize(14),
         color: '#fff',
+        zIndex: 10,
     }
 
     const _onPress = async () => {

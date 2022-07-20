@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {ScrollTop, TimeLinePaging} from "../../components/atoms";
+import {TimeLinePaging} from "../../components/atoms";
 import {TimeLineMovieList} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useInfiniteQuery, useQueryClient} from "react-query";
@@ -21,7 +21,7 @@ const TimeLineScreen = () => {
     }, []);
 
     async function getData({pageParam = 1, SPACING = null}) {
-        if (!SPACING && spacing === -1){
+        if (!SPACING && spacing === -1) {
             return [];
         }
         let result = await getSeriesOfDay(SPACING || spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
@@ -51,12 +51,12 @@ const TimeLineScreen = () => {
         prefetchData();
     }, []);
 
-    const {data, fetchNextPage, isLoading, isFetchingNextPage, isError} = useInfiniteQuery(
+    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
         ['timeLineScreen', spacing],
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0) {
+                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
                     return allPages.length + 1;
                 }
                 return undefined;
@@ -69,7 +69,7 @@ const TimeLineScreen = () => {
             flatListRef.current.scrollToOffset({animated: true, offset: 0});
         }
         setChangedSpacing(value);
-        setTimeout(() => setSpacing(value), 10);
+        setTimeout(() => setSpacing(value), 5);
     }
 
     const _onRefresh = async () => {
@@ -94,23 +94,18 @@ const TimeLineScreen = () => {
 
                 <TimeLineMovieList
                     flatListRef={flatListRef}
+                    showScrollTopIcon={(data.pages[0].length > 0 && spacing === changedSpacing)}
                     spacing={spacing}
                     changedSpacing={changedSpacing}
                     data={data.pages.flat(1)}
                     isLoading={isLoading}
+                    isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}
                     refreshing={refreshing}
                     onRefresh={_onRefresh}
                     isError={isError}
                     retry={_retry}
-                />
-
-                <ScrollTop
-                    flatListRef={flatListRef}
-                    show={(data.pages[0].length > 0 && !isLoading && spacing === changedSpacing && !isError)}
-                    bottom={25}
-                    right={10}
                 />
 
             </View>

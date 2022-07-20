@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {TrailerImageSwitch, SectionMovieCardRating, DoubleTap} from "../../atoms";
@@ -21,8 +21,6 @@ const TrailerMovieCard = ({
                               type,
                               genres,
                               latestData,
-                              nextEpisode,
-                              status,
                               likesCount,
                               dislikesCount,
                               likeOrDislike,
@@ -65,13 +63,14 @@ const TrailerMovieCard = ({
                 onLongPress={memorizedNavigation}
                 likeOrDislike={likeOrDislike}
                 hideLikeIcon={true}
+                startFullscreen={false}
             />
 
             <DoubleTap
                 activeOpacity={0.8}
                 onTap={memorizedNavigation}
                 onDoubleTap={_handleDoubleTap}
-                doublePressDelay={200}
+                doublePressDelay={180}
             >
                 <View style={style.infoContainer}>
                     <Text style={style.title} numberOfLines={1}>
@@ -106,15 +105,10 @@ const TrailerMovieCard = ({
                             type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
                         }</Text>
                         </Text>
-                        {
-                            type.includes('serial') &&
-                            <Text style={[style.year, style.paddingLeft]}>
-                                <Text style={style.statement}>Status :</Text> {status.slice(0, 15)}
-                            </Text>
-                        }
                     </View>
+
                     <Text style={style.year} numberOfLines={1}>
-                        <Text style={style.statement}>Genres : </Text> {genres.join(' ,') || 'unknown'}
+                        <Text style={style.statement}>Genres : </Text> {genres.join(', ') || 'unknown'}
                     </Text>
 
                     <View style={style.flexDirectionRow}>
@@ -138,10 +132,12 @@ const TrailerMovieCard = ({
 
 const style = StyleSheet.create({
     container: {
+        flex: 0,
+        flexShrink: 1,
         width: '100%',
-        height: Mixins.WINDOW_WIDTH / 1.6 + 170,
         backgroundColor: Colors.SECONDARY,
         borderRadius: 10,
+        paddingBottom: 15,
         marginBottom: 30,
     },
     video: {
@@ -180,6 +176,7 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(14),
         color: Colors.SemiCyan,
         marginTop: 2,
+        zIndex: 10,
     },
     flexDirectionRow: {
         flexDirection: 'row',
@@ -204,16 +201,7 @@ TrailerMovieCard.propTypes = {
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
     latestData: PropTypes.object.isRequired,
-    nextEpisode: PropTypes.object,
-    status: PropTypes.string.isRequired,
 }
 
-const areEqual = (prevProps, nextProps) => {
-    return prevProps.posters[0] === nextProps.posters[0] &&
-        prevProps.likesCount === nextProps.likesCount &&
-        prevProps.dislikesCount === nextProps.dislikesCount &&
-        prevProps.likeOrDislike === nextProps.likeOrDislike &&
-        prevProps.isOnScreenView === nextProps.isOnScreenView;
-}
 
-export default memo(TrailerMovieCard, areEqual);
+export default TrailerMovieCard;
