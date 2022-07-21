@@ -17,7 +17,8 @@ const HomeTrailer = ({
                          type,
                          movieId,
                          rating,
-                         likeOrDislike
+                         like,
+                         dislike,
                      }) => {
     const navigation = useNavigation();
 
@@ -37,7 +38,8 @@ const HomeTrailer = ({
                 trailer={trailer}
                 poster={posters[0]}
                 onLongPress={_navigateToMovieScreen}
-                likeOrDislike={likeOrDislike}
+                like={like}
+                dislike={dislike}
             />
 
             <Text
@@ -117,7 +119,8 @@ HomeTrailer.propTypes = {
     type: PropTypes.string,
     movieId: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    likeOrDislike: PropTypes.string.isRequired,
+    like: PropTypes.bool.isRequired,
+    dislike: PropTypes.bool.isRequired,
 };
 
 

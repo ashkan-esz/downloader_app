@@ -1,64 +1,84 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useQueryClient} from "react-query";
 import useIsMounted from './useIsMounted';
 import {likeOrDislikeApi} from "../api";
+import Toast from 'react-native-toast-message';
 
-const useLikeOrDislike = (movieId, likesCount, dislikesCount, likeOrDislike, activeFlag = true) => {
+
+const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, activeFlag = true) => {
     const queryClient = useQueryClient();
-    const [isLike, setIsLike] = useState(likeOrDislike === 'like');
-    const [isDisLike, setIsDisLike] = useState(likeOrDislike === 'dislike');
+    const [isLike, setIsLike] = useState(like);
+    const [isDisLike, setIsDisLike] = useState(dislike);
     const isMounted = useIsMounted();
 
-    useEffect(() => {
-        setIsLike(likeOrDislike === 'like');
-        setIsDisLike(likeOrDislike === 'dislike');
-    }, [likeOrDislike]);
+    const prevState = useRef({
+        isLike: false,
+        isDislike: false,
+        likeNumber: 0,
+        dislikeNumber: 0,
+    });
 
-    const updateCachedDataArray = (dataArray, newLikeOrDislike, newLikesCount, newDisLikesCount) => {
+    useEffect(() => {
+        if (activeFlag) {
+            prevState.current.isLike = like;
+            prevState.current.isDislike = dislike;
+            prevState.current.likeNumber = likesCount;
+            prevState.current.dislikeNumber = dislikesCount;
+        }
+    }, [activeFlag]);
+
+    useEffect(() => {
+        setIsLike(like);
+        setIsDisLike(dislike);
+    }, [like, dislike]);
+
+    const updateCachedDataArray = (dataArray, newLike, newDislike, newLikesCount, newDisLikesCount) => {
         for (let i = 0; i < dataArray.length; i++) {
             if (dataArray[i]._id.toString() === movieId.toString()) {
-                dataArray[i].likeOrDislike = newLikeOrDislike;
-                dataArray[i].likesCount = newLikesCount;
-                dataArray[i].dislikesCount = newDisLikesCount;
+                dataArray[i].userStats.like_movie = newLike;
+                dataArray[i].userStats.dislike_movie = newDislike;
+                dataArray[i].userStats.like_movie_count = newLikesCount;
+                dataArray[i].userStats.dislike_movie_count = newDisLikesCount;
             }
         }
     }
 
-    const updateCachedData = async (newLikeOrDislike, newLikesCount, newDisLikesCount) => {
+    const updateCachedData = async (newLike, newDislike, newLikesCount, newDisLikesCount) => {
         await queryClient.setQueriesData({active: true, stale: false}, oldData => {
             try {
                 if (Array.isArray(oldData)) {
-                    updateCachedDataArray(oldData, newLikeOrDislike, newLikesCount, newDisLikesCount);
+                    updateCachedDataArray(oldData, newLike, newDislike, newLikesCount, newDisLikesCount);
                     return oldData;
                 } else if (typeof oldData === 'object') {
                     if (oldData.pages && Array.isArray(oldData.pages)) {
                         for (let i = 0; i < oldData.pages.length; i++) {
                             if (oldData.pages[i].movies) {
-                                updateCachedDataArray(oldData.pages[i].movies, newLikeOrDislike, newLikesCount, newDisLikesCount);
-                                updateCachedDataArray(oldData.pages[i].staff, newLikeOrDislike, newLikesCount, newDisLikesCount);
-                                updateCachedDataArray(oldData.pages[i].characters, newLikeOrDislike, newLikesCount, newDisLikesCount);
+                                updateCachedDataArray(oldData.pages[i].movies, newLike, newDislike, newLikesCount, newDisLikesCount);
+                                updateCachedDataArray(oldData.pages[i].staff, newLike, newDislike, newLikesCount, newDisLikesCount);
+                                updateCachedDataArray(oldData.pages[i].characters, newLike, newDislike, newLikesCount, newDisLikesCount);
                             } else {
-                                updateCachedDataArray(oldData.pages[i], newLikeOrDislike, newLikesCount, newDisLikesCount);
+                                updateCachedDataArray(oldData.pages[i], newLike, newDislike, newLikesCount, newDisLikesCount);
                             }
                         }
                         return oldData;
                     }
                     if (oldData.inTheaters) {
-                        updateCachedDataArray(oldData.inTheaters, newLikeOrDislike, newLikesCount, newDisLikesCount);
+                        updateCachedDataArray(oldData.inTheaters, newLike, newDislike, newLikesCount, newDisLikesCount);
                     }
                     if (oldData.comingSoon) {
-                        updateCachedDataArray(oldData.comingSoon, newLikeOrDislike, newLikesCount, newDisLikesCount);
+                        updateCachedDataArray(oldData.comingSoon, newLike, newDislike, newLikesCount, newDisLikesCount);
                     }
                     if (oldData.news) {
-                        updateCachedDataArray(oldData.news, newLikeOrDislike, newLikesCount, newDisLikesCount);
+                        updateCachedDataArray(oldData.news, newLike, newDislike, newLikesCount, newDisLikesCount);
                     }
                     if (oldData.update) {
-                        updateCachedDataArray(oldData.update, newLikeOrDislike, newLikesCount, newDisLikesCount);
+                        updateCachedDataArray(oldData.update, newLike, newDislike, newLikesCount, newDisLikesCount);
                     }
                     if (oldData._id && oldData._id.toString() === movieId.toString()) {
-                        oldData.likeOrDislike = newLikeOrDislike;
-                        oldData.likesCount = newLikesCount;
-                        oldData.dislikesCount = newDisLikesCount;
+                        oldData.userStats.like_movie = newLike;
+                        oldData.userStats.dislike_movie = newDislike;
+                        oldData.userStats.like_movie_count = newLikesCount;
+                        oldData.userStats.dislike_movie_count = newDisLikesCount;
                     }
                 }
             } catch (error) {
@@ -72,22 +92,32 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, likeOrDislike, act
             return;
         }
         const saveIsLike = isLike;
-        const saveLikeNumber = likesCount;
-        const saveDislikeNumber = dislikesCount;
+        const saveIsDislike = isDisLike;
         setIsLike(!saveIsLike);
+        if (saveIsDislike) {
+            setIsDisLike(!saveIsDislike);
+        }
         await updateCachedData(
-            !saveIsLike ? 'like' : '',
+            !saveIsLike,
+            false,
             !saveIsLike ? likesCount + 1 : likesCount - 1,
-            !saveIsLike && isDisLike ? dislikesCount - 1 : dislikesCount,
+            !saveIsLike && saveIsDislike ? dislikesCount - 1 : dislikesCount,
         );
 
         let result = await likeOrDislikeApi('movies', movieId, 'like', saveIsLike);
+        if (result === 'ok' && isMounted.current) {
+            prevState.current.isLike = !saveIsLike;
+            prevState.current.isDislike = false;
+            prevState.current.likeNumber = !saveIsLike ? likesCount + 1 : likesCount - 1;
+            prevState.current.dislikeNumber = !saveIsLike && saveIsDislike ? dislikesCount - 1 : dislikesCount;
+        }
         if (result === 'error' && isMounted.current) {
-            //todo : show toast: couldn't refresh feed
+            showToast();
             await updateCachedData(
-                saveIsLike ? 'like' : isDisLike ? 'dislike' : '',
-                saveLikeNumber,
-                saveDislikeNumber,
+                prevState.current.isLike,
+                prevState.current.isDislike,
+                prevState.current.likeNumber,
+                prevState.current.dislikeNumber,
             );
         }
     }
@@ -96,26 +126,48 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, likeOrDislike, act
         if (!activeFlag) {
             return;
         }
+        const saveIsLike = isLike;
         const saveIsDislike = isDisLike;
-        const saveLikeNumber = likesCount;
-        const saveDislikeNumber = dislikesCount;
         setIsDisLike(!saveIsDislike);
+        if (saveIsLike) {
+            setIsLike(!saveIsLike);
+        }
         await updateCachedData(
-            !saveIsDislike ? 'dislike' : '',
-            !saveIsDislike && isLike ? likesCount - 1 : likesCount,
+            false,
+            !saveIsDislike,
+            !saveIsDislike && saveIsLike ? likesCount - 1 : likesCount,
             !saveIsDislike ? dislikesCount + 1 : dislikesCount - 1,
         );
 
         let result = await likeOrDislikeApi('movies', movieId, 'dislike', saveIsDislike);
+        if (result === 'ok' && isMounted.current) {
+            prevState.current.isLike = false;
+            prevState.current.isDislike = !saveIsDislike;
+            prevState.current.likeNumber = !saveIsDislike && saveIsLike ? likesCount - 1 : likesCount;
+            prevState.current.dislikeNumber = !saveIsDislike ? dislikesCount + 1 : dislikesCount - 1;
+        }
         if (result === 'error' && isMounted.current) {
-            //todo : show toast: couldn't refresh feed
+            showToast();
             await updateCachedData(
-                saveIsDislike ? 'dislike' : isLike ? 'like' : '',
-                saveLikeNumber,
-                saveDislikeNumber,
+                prevState.current.isLike,
+                prevState.current.isDislike,
+                prevState.current.likeNumber,
+                prevState.current.dislikeNumber,
             );
         }
     }
+
+    const showToast = useCallback(() => {
+        Toast.show({
+            type: 'message',
+            text1: "couldn't refresh feed",
+            position: 'bottom',
+            onPress: () => {
+                Toast.hide();
+            },
+            visibilityTime: 2000,
+        });
+    }, []);
 
     return {
         _onLike,

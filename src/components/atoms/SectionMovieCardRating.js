@@ -38,6 +38,7 @@ const SectionMovieCardRating = ({
                     outlineIconName={"heart-outline"}
                     onPress={onLike}
                     iconSize={25}
+                    firstViewAnimation={false}
                 />
                 <Text style={style.likeNumber}>
                     {likesCount} likes
@@ -50,6 +51,7 @@ const SectionMovieCardRating = ({
                     outlineIconName={"md-heart-dislike-outline"}
                     onPress={onDisLike}
                     iconSize={25}
+                    firstViewAnimation={false}
                 />
                 <Text style={style.likeNumber}>
                     {dislikesCount} dislikes

@@ -20,7 +20,8 @@ const HomeMovieCard = ({
                            nextEpisode,
                            rating,
                            noRating,
-                           likeOrDislike
+                           like,
+                           dislike,
                        }) => {
     const navigation = useNavigation();
 
@@ -45,9 +46,9 @@ const HomeMovieCard = ({
                     resizeModeStretch={true}
                 >
                     {
-                        likeOrDislike !== '' && <View style={style.likeContainer}>
+                        (like || dislike) && <View style={style.likeContainer}>
                             <Ionicons
-                                name={likeOrDislike === 'like' ? 'heart' : 'md-heart-dislike'}
+                                name={like ? 'heart' : 'md-heart-dislike'}
                                 size={22}
                                 color={"red"}
                             />
@@ -121,7 +122,8 @@ HomeMovieCard.propTypes = {
     nextEpisode: PropTypes.any,
     rating: PropTypes.number.isRequired,
     noRating: PropTypes.bool,
-    likeOrDislike: PropTypes.string.isRequired,
+    like: PropTypes.bool.isRequired,
+    dislike: PropTypes.bool.isRequired,
 }
 
 

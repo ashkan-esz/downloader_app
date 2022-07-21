@@ -37,7 +37,8 @@ const MovieList = ({
             nextEpisode={item.nextEpisode}
             likesCount={item.userStats.like_movie_count}
             dislikesCount={item.userStats.dislike_movie_count}
-            likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
+            like={item.userStats.like_movie}
+            dislike={item.userStats.dislike_movie}
         />
     );
 
@@ -46,7 +47,7 @@ const MovieList = ({
             flatListRef={flatListRef}
             onScrollDo={onScroll}
             showScrollTopIcon={showScrollTopIcon}
-            initialNumToRender={1}
+            initialNumToRender={2}
             data={data}
             keyExtractor={keyExtractor}
             renderItem={renderItem}

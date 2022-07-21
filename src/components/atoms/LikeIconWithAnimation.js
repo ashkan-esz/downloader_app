@@ -20,6 +20,7 @@ const LikeIconWithAnimation = ({
                                    onPress,
                                    activeIconOnly,
                                    activeAnimationOnly,
+                                   firstViewAnimation = true,
                                    autoHideLike,
                                    disableOnPressActivation,
                                    iconSize,
@@ -27,6 +28,7 @@ const LikeIconWithAnimation = ({
                                }) => {
 
     const mounted = useRef(false);
+    const firstView = useRef(true);
     const liked = useSharedValue((isActive && !activeAnimationOnly) ? 1 : 0);
 
     useEffect(() => {
@@ -36,11 +38,26 @@ const LikeIconWithAnimation = ({
     }, []);
 
     useEffect(() => {
+        return () => {
+            firstView.current = true;
+        }
+    });
+
+    useEffect(() => {
         if (!mounted.current) {
             return;
         }
+        if (firstView.current) {
+            firstView.current = false;
+            //do not show animation on first view
+            if (!firstViewAnimation) {
+                liked.value = isActive ? 1 : 0;
+                return;
+            }
+        }
+
         if ((isActive || activeAnimationOnly) && autoHideLike) {
-            if (liked.value !== 0){
+            if (liked.value !== 0) {
                 return;
             }
             liked.value = withSpring(1, undefined, (isFinished) => {
@@ -135,6 +152,7 @@ LikeIconWithAnimation.propTypes = {
     onPress: PropTypes.func,
     activeIconOnly: PropTypes.bool,
     activeAnimationOnly: PropTypes.bool,
+    firstViewAnimation: PropTypes.bool,
     autoHideLike: PropTypes.bool,
     disableOnPressActivation: PropTypes.bool,
     iconSize: PropTypes.number,

@@ -11,7 +11,7 @@ const RootToast = () => {
         linkToClipboard: ({text1, props, ...rest}) => (
             <BaseToast
                 {...rest}
-                style={style.linkToClipboardStyle}
+                style={[style.toast, style.linkToClipboardStyle]}
                 text1Style={style.text}
                 text1={text1}
                 renderLeadingIcon={() => <FastImage
@@ -23,7 +23,21 @@ const RootToast = () => {
         error: ({text1, props, ...rest}) => (
             <BaseToast
                 {...rest}
-                style={style.errorStyle}
+                style={[style.toast, style.errorStyle]}
+                text1Style={style.text}
+                text1={text1}
+                renderLeadingIcon={() => <MaterialIcons
+                    name="error-outline"
+                    size={34}
+                    color="black"
+                    style={style.errorIcon}
+                />}
+            />
+        ),
+        message: ({text1, props, ...rest}) => (
+            <BaseToast
+                {...rest}
+                style={[style.toast, style.messageStyle]}
                 text1Style={style.text}
                 text1={text1}
                 renderLeadingIcon={() => <MaterialIcons
@@ -44,18 +58,21 @@ const RootToast = () => {
 };
 
 const style = StyleSheet.create({
+    toast: {
+        height: 45,
+        marginBottom: -20,
+        width: '94%',
+    },
     linkToClipboardStyle: {
         borderLeftColor: 'red',
-        height: 40,
-        marginBottom: -20,
-        width: '100%',
     },
     errorStyle: {
         borderLeftColor: Colors.NAVBAR,
         backgroundColor: Colors.NAVBAR,
-        height: 40,
-        marginBottom: -20,
-        width: '100%',
+    },
+    messageStyle: {
+        borderLeftColor: Colors.GRAY_MEDIUM,
+        backgroundColor: Colors.GRAY_MEDIUM,
     },
     text: {
         fontSize: 16,

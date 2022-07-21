@@ -8,7 +8,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, rating, likeOrDislike}) => {
+const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, rating, like, dislike}) => {
     const navigation = useNavigation();
 
     const _navigateToMovieScreen = useCallback(() => {
@@ -34,9 +34,9 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, 
                     onPress={_navigateToMovieScreen}
                 >
                     {
-                        likeOrDislike !== '' && <View style={style.likeContainer}>
+                        (like || dislike) && <View style={style.likeContainer}>
                             <Ionicons
-                                name={likeOrDislike === 'like' ? 'heart' : 'md-heart-dislike'}
+                                name={like === 'like' ? 'heart' : 'md-heart-dislike'}
                                 size={22}
                                 color={"red"}
                             />
@@ -98,13 +98,15 @@ SearchMovieCard.propTypes = {
     type: PropTypes.string.isRequired,
     movieId: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    likeOrDislike: PropTypes.string.isRequired,
+    like: PropTypes.bool.isRequired,
+    dislike: PropTypes.bool.isRequired,
 }
 
 const areEqual = (prevProps, nextProps) => {
     return prevProps.posters[0] && nextProps.posters[0] &&
         prevProps.posters[0].url === nextProps.posters[0].url &&
-        prevProps.likeOrDislike === nextProps.likeOrDislike;
+        prevProps.like === nextProps.like &&
+        prevProps.dislike === nextProps.dislike;
 }
 
 export default memo(SearchMovieCard, areEqual);

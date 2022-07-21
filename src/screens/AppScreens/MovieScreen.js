@@ -56,7 +56,8 @@ const MovieScreen = () => {
         routeParams.movieId,
         data ? data.userStats.like_movie_count : 0,
         data ? data.userStats.dislike_movie_count : 0,
-        data ? data.userStats.like_movie ? 'like' : data.userStats.dislike_movie ? 'dislike' : '' : '',
+        data ? data.userStats.like_movie : false,
+        data ? data.userStats.dislike_movie : false,
         data !== null && !isError
     );
 

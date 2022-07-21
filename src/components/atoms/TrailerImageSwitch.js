@@ -14,7 +14,8 @@ const TrailerImageSwitch = ({
                                 trailer,
                                 poster,
                                 onLongPress,
-                                likeOrDislike,
+                                like,
+                                dislike,
                                 hideLikeIcon,
                                 startFullscreen = true,
                             }) => {
@@ -44,9 +45,9 @@ const TrailerImageSwitch = ({
                     progressThickness={4}
                 >
                     {
-                        !hideLikeIcon && likeOrDislike !== '' && <View style={style.likeContainer}>
+                        !hideLikeIcon && (like || dislike) && <View style={style.likeContainer}>
                             <Ionicons
-                                name={likeOrDislike === 'like' ? 'heart' : 'md-heart-dislike'}
+                                name={like ? 'heart' : 'md-heart-dislike'}
                                 size={22}
                                 color={"red"}
                             />
@@ -109,7 +110,8 @@ TrailerImageSwitch.propTypes = {
     trailer: PropTypes.string.isRequired,
     poster: PropTypes.object,
     onLongPress: PropTypes.func,
-    likeOrDislike: PropTypes.string.isRequired,
+    like: PropTypes.bool.isRequired,
+    dislike: PropTypes.bool.isRequired,
     hideLikeIcon: PropTypes.bool,
     startFullscreen: PropTypes.bool,
 }

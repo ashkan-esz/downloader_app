@@ -6,16 +6,16 @@ import {Mixins} from "../../styles";
 import PropTypes from 'prop-types';
 
 
-const CustomFlashList = ({
-                             extraStyle,
-                             onViewableItemsChanged,
-                             data,
-                             keyExtractor,
-                             renderItem,
-                             itemSize,
-                             isError,
-                             retry,
-                         }) => {
+const HomeScreenFlashList = ({
+                                 extraStyle,
+                                 onViewableItemsChanged,
+                                 data,
+                                 keyExtractor,
+                                 renderItem,
+                                 itemSize,
+                                 isError,
+                                 retry,
+                             }) => {
 
 
     if (isError) {
@@ -68,7 +68,7 @@ const style = StyleSheet.create({
     },
 });
 
-CustomFlashList.propTypes = {
+HomeScreenFlashList.propTypes = {
     extraStyle: PropTypes.object,
     data: PropTypes.array.isRequired,
     keyExtractor: PropTypes.func.isRequired,
@@ -81,4 +81,4 @@ CustomFlashList.propTypes = {
 }
 
 
-export default CustomFlashList;
+export default HomeScreenFlashList;

@@ -71,7 +71,8 @@ const HomeMovieList = ({name, pageType}) => {
             type={''}
             rating={0}
             noRating={true}
-            likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
+            like={item.userStats.like_movie}
+            dislike={item.userStats.dislike_movie}
         />
     );
 

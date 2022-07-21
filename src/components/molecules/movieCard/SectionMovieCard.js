@@ -24,7 +24,8 @@ const SectionMovieCard = ({
                               nextEpisode,
                               likesCount,
                               dislikesCount,
-                              likeOrDislike,
+                              like,
+                              dislike,
                           }) => {
 
     const navigation = useNavigation();
@@ -41,7 +42,7 @@ const SectionMovieCard = ({
         isDisLike,
         _onLike,
         _onDisLike
-    } = useLikeOrDislike(movieId, likesCount, dislikesCount, likeOrDislike);
+    } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
 
     const [likeAnimation, setLikeAnimation] = useState(false);
     const _handleDoubleTap = () => {
@@ -205,7 +206,8 @@ SectionMovieCard.propTypes = {
     rating: PropTypes.number.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
-    likeOrDislike: PropTypes.string.isRequired,
+    like: PropTypes.bool.isRequired,
+    dislike: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
@@ -218,7 +220,8 @@ const areEqual = (prevProps, nextProps) => {
         prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.likesCount === nextProps.likesCount &&
         prevProps.dislikesCount === nextProps.dislikesCount &&
-        prevProps.likeOrDislike === nextProps.likeOrDislike;
+        prevProps.like === nextProps.like &&
+        prevProps.dislike === nextProps.dislike;
 }
 
 export default memo(SectionMovieCard, areEqual);

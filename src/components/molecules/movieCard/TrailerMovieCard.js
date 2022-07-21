@@ -23,7 +23,8 @@ const TrailerMovieCard = ({
                               latestData,
                               likesCount,
                               dislikesCount,
-                              likeOrDislike,
+                              like,
+                              dislike,
                           }) => {
 
     const navigation = useNavigation();
@@ -40,7 +41,7 @@ const TrailerMovieCard = ({
         isDisLike,
         _onLike,
         _onDisLike
-    } = useLikeOrDislike(movieId, likesCount, dislikesCount, likeOrDislike);
+    } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
 
     const _handleDoubleTap = useCallback(() => {
         !isLike && _onLike();
@@ -61,7 +62,8 @@ const TrailerMovieCard = ({
                 trailer={trailer}
                 poster={posters[0]}
                 onLongPress={memorizedNavigation}
-                likeOrDislike={likeOrDislike}
+                like={like}
+                dislike={dislike}
                 hideLikeIcon={true}
                 startFullscreen={false}
             />
@@ -196,7 +198,8 @@ TrailerMovieCard.propTypes = {
     rating: PropTypes.number.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
-    likeOrDislike: PropTypes.string.isRequired,
+    like: PropTypes.bool.isRequired,
+    dislike: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,

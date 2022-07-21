@@ -37,7 +37,8 @@ const SearchMovieList = ({
             type={item.type}
             movieId={item._id}
             rating={item.rating.imdb || item.rating.myAnimeList}
-            likeOrDislike={item.userStats.like_movie ? 'like' : item.userStats.dislike_movie ? 'dislike' : ''}
+            like={item.userStats.like_movie}
+            dislike={item.userStats.dislike_movie}
         />
     );
 
