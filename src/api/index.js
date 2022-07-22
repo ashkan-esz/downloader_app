@@ -266,7 +266,12 @@ export const getSeriesOfDay = async (spacing, page, types, imdbScores = '0-10', 
 
 export const likeOrDislikeApi = async (docType, id, type, isRemove) => {
     try {
-        let url = `/movies/addUserStats/${type}_movie/${id}?remove=${isRemove}`;
+        if (docType === 'movies') {
+            if (type === 'like' || type === 'dislike') {
+                type = type + '_movie';
+            }
+        }
+        let url = `/movies/addUserStats/${type}/${id}?remove=${isRemove}`;
         if (docType === 'staff' || docType === 'characters') {
             url = `/movies/addUserStats/${docType}/${type}/${id}?remove=${isRemove}`;
         }

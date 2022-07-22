@@ -7,7 +7,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "react-query";
 import {homeStackHelpers} from "../../helper";
-import {useIsMounted, useLikeOrDislike} from "../../hooks";
+import {useIsMounted, useLikeOrDislike, useSave} from "../../hooks";
 import {searchByID} from "../../api";
 
 //todo : show alternate title
@@ -61,6 +61,16 @@ const MovieScreen = () => {
         data !== null && !isError
     );
 
+    const {
+        isSaved,
+        _onSave,
+    } = useSave(
+        routeParams.movieId,
+        data ? data.userStats.save_count : 0,
+        data ? data.userStats.save : false,
+        data !== null && !isError
+    );
+
     const _onRefresh = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries(['movieData', routeParams.movieId]);
@@ -108,8 +118,10 @@ const MovieScreen = () => {
                     <MovieLikeAndBookmark
                         isLike={isLike}
                         isDisLike={isDisLike}
+                        isSave={isSaved}
                         onLike={_onLike}
                         onDisLike={_onDisLike}
+                        onSave={_onSave}
                         likesCount={data ? data.userStats.like_movie_count : 0}
                         dislikesCount={data ? data.userStats.dislike_movie_count : 0}
                         disable={!data || isLoading || isError}

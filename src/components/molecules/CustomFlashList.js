@@ -92,7 +92,7 @@ const CustomFlashList = ({
                 renderItem={renderItem}
                 estimatedItemSize={itemSize}
                 //-----------------------------------
-                estimatedListSize={{height: itemSize * (initialNumToRender || 2.6), width: Mixins.WINDOW_WIDTH - 20}}
+                estimatedListSize={{height: itemSize * (initialNumToRender || 3), width: Mixins.WINDOW_WIDTH - 20}}
                 initialNumToRender={initialNumToRender || 3}
                 //----------------------------------
                 onEndReached={onEndReached}

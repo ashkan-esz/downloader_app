@@ -25,6 +25,7 @@ const LikeIconWithAnimation = ({
                                    disableOnPressActivation,
                                    iconSize,
                                    iconColor,
+                                   activeIconColor,
                                }) => {
 
     const mounted = useRef(false);
@@ -128,7 +129,7 @@ const LikeIconWithAnimation = ({
                 <Ionicons
                     name={iconName}
                     size={iconSize || 30}
-                    color={iconColor || "red"}
+                    color={activeIconColor || iconColor || "red"}
                     style={[style.icon, extraIconStyle]}
                 />
             </Animated.View>
@@ -157,6 +158,7 @@ LikeIconWithAnimation.propTypes = {
     disableOnPressActivation: PropTypes.bool,
     iconSize: PropTypes.number,
     iconColor: PropTypes.string,
+    activeIconColor: PropTypes.string,
 }
 
 

@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {TrailerImageSwitch, SectionMovieCardRating, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {useLikeOrDislike} from "../../../hooks";
+import {useLikeOrDislike, useSave} from "../../../hooks";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -23,8 +23,10 @@ const TrailerMovieCard = ({
                               latestData,
                               likesCount,
                               dislikesCount,
+                              savesCount,
                               like,
                               dislike,
+                              save,
                           }) => {
 
     const navigation = useNavigation();
@@ -43,6 +45,11 @@ const TrailerMovieCard = ({
         _onLike,
         _onDisLike
     } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
+
+    const {
+        isSaved,
+        _onSave,
+    } = useSave(movieId, savesCount, save);
 
     const _handleDoubleTap = useCallback(() => {
         !isLike && _onLike();
@@ -85,10 +92,13 @@ const TrailerMovieCard = ({
                         rating={rating}
                         likesCount={likesCount}
                         dislikesCount={dislikesCount}
+                        savesCount={savesCount}
                         isLike={isLike}
                         isDisLike={isDisLike}
+                        isSave={isSaved}
                         onLike={_onLike}
                         onDisLike={_onDisLike}
+                        onSave={_onSave}
                     />
 
                     <View style={style.lineSeparator}/>
@@ -199,8 +209,10 @@ TrailerMovieCard.propTypes = {
     rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
+    savesCount: PropTypes.number.isRequired,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
+    save: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,

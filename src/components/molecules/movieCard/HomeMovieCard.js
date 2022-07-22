@@ -22,6 +22,7 @@ const HomeMovieCard = ({
                            noRating,
                            like,
                            dislike,
+                           save,
                        }) => {
     const navigation = useNavigation();
 
@@ -46,12 +47,22 @@ const HomeMovieCard = ({
                     resizeModeStretch={true}
                 >
                     {
-                        (like || dislike) && <View style={style.likeContainer}>
-                            <Ionicons
-                                name={like ? 'heart' : 'md-heart-dislike'}
-                                size={22}
-                                color={"red"}
-                            />
+                        (like || dislike || save) && <View style={style.likeContainer}>
+                            {
+                                save && <Ionicons
+                                    style={(like || dislike) && style.bookmarkIcon}
+                                    name={'bookmark'}
+                                    size={22}
+                                    color={Colors.BOOKMARK_ICON}
+                                />
+                            }
+                            {
+                                (like || dislike) && <Ionicons
+                                    name={like ? 'heart' : 'md-heart-dislike'}
+                                    size={22}
+                                    color={"red"}
+                                />
+                            }
                         </View>
                     }
                 </CustomImage>
@@ -87,13 +98,15 @@ const style = StyleSheet.create({
         alignItems: 'flex-start',
     },
     likeContainer: {
-        flexDirection: 'row',
         backgroundColor: Colors.SECONDARY,
         borderRadius: 8,
         paddingLeft: 3,
         paddingRight: 3,
         paddingTop: 3,
         paddingBottom: 3,
+    },
+    bookmarkIcon: {
+        marginBottom: 10,
     },
     title: {
         fontSize: Typography.getFontSize(18),
@@ -124,6 +137,7 @@ HomeMovieCard.propTypes = {
     noRating: PropTypes.bool,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
+    save: PropTypes.bool.isRequired,
 }
 
 

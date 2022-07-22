@@ -73,6 +73,7 @@ const HomeMovieList = ({name, pageType}) => {
             noRating={true}
             like={item.userStats.like_movie}
             dislike={item.userStats.dislike_movie}
+            save={item.userStats.save}
         />
     );
 

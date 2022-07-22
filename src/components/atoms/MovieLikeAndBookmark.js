@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import {Ionicons} from "@expo/vector-icons";
 import LikeIconWithAnimation from "./LikeIconWithAnimation";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
@@ -11,8 +10,10 @@ const MovieLikeAndBookmark = ({
                                   extraStyle,
                                   isLike,
                                   isDisLike,
+                                  isSave,
                                   onLike,
                                   onDisLike,
+                                  onSave,
                                   likesCount,
                                   dislikesCount,
                                   disable
@@ -43,11 +44,15 @@ const MovieLikeAndBookmark = ({
                     {dislikesCount} dislikes
                 </Text>
 
-                <Ionicons
-                    name={"bookmark-outline"}
-                    size={30}
-                    color="grey"
-                    style={style.bookmarkIcon}
+                <LikeIconWithAnimation
+                    extraStyle={style.bookmarkIcon}
+                    isActive={isSave}
+                    iconName={"bookmark"}
+                    outlineIconName={"bookmark-outline"}
+                    onPress={onSave}
+                    disableOnPressActivation={disable}
+                    iconColor={"grey"}
+                    activeIconColor={Colors.BOOKMARK_ICON}
                 />
             </View>
         </View>
@@ -84,8 +89,10 @@ MovieLikeAndBookmark.propTypes = {
     extraStyle: PropTypes.object,
     isLike: PropTypes.bool.isRequired,
     isDisLike: PropTypes.bool.isRequired,
+    isSave: PropTypes.bool.isRequired,
     onLike: PropTypes.func.isRequired,
     onDisLike: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
     disable: PropTypes.bool,

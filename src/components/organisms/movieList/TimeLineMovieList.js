@@ -39,8 +39,10 @@ const TimeLineMovieList = ({
             nextEpisode={item.nextEpisode}
             likesCount={item.userStats.like_movie_count}
             dislikesCount={item.userStats.dislike_movie_count}
+            savesCount={item.userStats.save_count}
             like={item.userStats.like_movie}
             dislike={item.userStats.dislike_movie}
+            save={item.userStats.save}
         />
     );
 

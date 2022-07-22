@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import * as Progress from 'react-native-progress';
@@ -19,6 +19,12 @@ const CustomImage = ({
                      }) => {
     const [isError, setIsError] = useState(false);
     const [loadPercent, setLoadPercent] = useState(-1);
+
+    useEffect(() => {
+        if (url && url.url && isError) {
+            setIsError(false);
+        }
+    }, [url]);
 
     if (showLoadingImage) {
         return (

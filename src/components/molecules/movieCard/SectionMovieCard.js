@@ -5,7 +5,7 @@ import DropShadow from "react-native-drop-shadow";
 import {SectionMovieCardRating, CustomImage, LikeIconWithAnimation, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
-import {useLikeOrDislike} from "../../../hooks";
+import {useLikeOrDislike, useSave} from "../../../hooks";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -24,8 +24,10 @@ const SectionMovieCard = ({
                               nextEpisode,
                               likesCount,
                               dislikesCount,
+                              savesCount,
                               like,
                               dislike,
+                              save,
                           }) => {
 
     const navigation = useNavigation();
@@ -44,6 +46,11 @@ const SectionMovieCard = ({
         _onLike,
         _onDisLike
     } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
+
+    const {
+        isSaved,
+        _onSave,
+    } = useSave(movieId, savesCount, save);
 
     const [likeAnimation, setLikeAnimation] = useState(false);
     const _handleDoubleTap = () => {
@@ -99,10 +106,13 @@ const SectionMovieCard = ({
                     rating={rating}
                     likesCount={likesCount}
                     dislikesCount={dislikesCount}
+                    savesCount={savesCount}
                     isLike={isLike}
                     isDisLike={isDisLike}
+                    isSave={isSaved}
                     onLike={_onLike}
                     onDisLike={_onDisLike}
+                    onSave={_onSave}
                 />
                 <View style={style.lineSeparator}/>
 
@@ -207,8 +217,10 @@ SectionMovieCard.propTypes = {
     rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
+    savesCount: PropTypes.number.isRequired,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
+    save: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
@@ -221,8 +233,10 @@ const areEqual = (prevProps, nextProps) => {
         prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.likesCount === nextProps.likesCount &&
         prevProps.dislikesCount === nextProps.dislikesCount &&
+        prevProps.savesCount === nextProps.savesCount &&
         prevProps.like === nextProps.like &&
-        prevProps.dislike === nextProps.dislike;
+        prevProps.dislike === nextProps.dislike &&
+        prevProps.save === nextProps.save;
 }
 
 export default memo(SectionMovieCard, areEqual);

@@ -12,10 +12,10 @@ const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
             UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }, []);
-    
+
     const _scrollToTop = () => {
         if (flatListRef && flatListRef.current) {
-            flatListRef.current.scrollToOffset({animated: true, offset: 0});
+            flatListRef.current.scrollToIndex({animated: true, index: 1});
         }
     }
 

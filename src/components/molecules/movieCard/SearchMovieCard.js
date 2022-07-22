@@ -8,7 +8,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, rating, like, dislike}) => {
+const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, rating, like, dislike, save}) => {
     const navigation = useNavigation();
 
     const _navigateToMovieScreen = useCallback(() => {
@@ -34,12 +34,22 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, 
                     onPress={_navigateToMovieScreen}
                 >
                     {
-                        (like || dislike) && <View style={style.likeContainer}>
-                            <Ionicons
-                                name={like === 'like' ? 'heart' : 'md-heart-dislike'}
-                                size={22}
-                                color={"red"}
-                            />
+                        (like || dislike || save) && <View style={style.likeContainer}>
+                            {
+                                save && <Ionicons
+                                    style={(like || dislike) && style.bookmarkIcon}
+                                    name={'bookmark'}
+                                    size={22}
+                                    color={Colors.BOOKMARK_ICON}
+                                />
+                            }
+                            {
+                                (like || dislike) && <Ionicons
+                                    name={like ? 'heart' : 'md-heart-dislike'}
+                                    size={22}
+                                    color={"red"}
+                                />
+                            }
                         </View>
                     }
                 </CustomImage>
@@ -70,13 +80,15 @@ const style = StyleSheet.create({
         alignItems: 'flex-start',
     },
     likeContainer: {
-        flexDirection: 'row',
         backgroundColor: Colors.SECONDARY,
         borderRadius: 8,
         paddingLeft: 3,
         paddingRight: 3,
         paddingTop: 3,
         paddingBottom: 3,
+    },
+    bookmarkIcon: {
+        marginBottom: 10,
     },
     title: {
         fontSize: Typography.getFontSize(16),
@@ -100,13 +112,15 @@ SearchMovieCard.propTypes = {
     rating: PropTypes.number.isRequired,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
+    save: PropTypes.bool.isRequired,
 }
 
 const areEqual = (prevProps, nextProps) => {
     return prevProps.posters[0] && nextProps.posters[0] &&
         prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.like === nextProps.like &&
-        prevProps.dislike === nextProps.dislike;
+        prevProps.dislike === nextProps.dislike &&
+        prevProps.save === nextProps.save;
 }
 
 export default memo(SearchMovieCard, areEqual);
