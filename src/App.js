@@ -56,7 +56,6 @@ LogBox.ignoreLogs([
 //todo : use proguard
 
 //todo : change navigation animation
-//todo : fix like/dislike
 //todo : upgrade react-query to v4
 //------------------------------------------------
 

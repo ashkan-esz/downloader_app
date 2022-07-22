@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import {AirbnbRating} from "react-native-ratings";
+import FastImage from 'react-native-fast-image';
 import LikeIconWithAnimation from "./LikeIconWithAnimation";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
@@ -18,16 +18,21 @@ const SectionMovieCardRating = ({
     return (
         <View style={extraStyle}>
             <View style={style.ratingContainer}>
-                <AirbnbRating
-                    starStyle={style.ratingStar}
-                    defaultRating={rating / 2}
-                    size={5}
-                    showRating={false}
-                    isDisabled={true}
+                <FastImage
+                    source={require('../../assets/icons/imdb.png')}
+                    style={style.icon}
                 />
 
-                <Text style={style.separatorSeparator}> | </Text>
-                <Text style={style.ratingNumber}>{rating || '?'} </Text>
+                <Text style={style.separator}> | </Text>
+                <Text style={style.ratingNumber}>{rating.imdb || '?'} </Text>
+
+                <FastImage
+                    source={require('../../assets/icons/mal.png')}
+                    style={[style.icon, style.malIcon]}
+                />
+
+                <Text style={style.separator}> | </Text>
+                <Text style={style.ratingNumber}>{rating.myAnimeList || '?'} </Text>
             </View>
 
             <View style={[style.likeContainer, likeContainerStyle]}>
@@ -66,14 +71,19 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 2
     },
-    ratingStar: {
-        height: 15,
-        width: 11
-    },
-    separatorSeparator: {
+    separator: {
         color: '#ffffff',
         fontSize: Typography.getFontSize(14),
         opacity: 0.5
+    },
+    icon: {
+        width: 40,
+        height: 20,
+        alignSelf: 'center',
+    },
+    malIcon: {
+        marginLeft: 5,
+        borderRadius: 4,
     },
     ratingNumber: {
         fontSize: Typography.getFontSize(16),
@@ -102,7 +112,7 @@ const style = StyleSheet.create({
 SectionMovieCardRating.propTypes = {
     extraStyle: PropTypes.object,
     likeContainerStyle: PropTypes.object,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
     isLike: PropTypes.bool.isRequired,

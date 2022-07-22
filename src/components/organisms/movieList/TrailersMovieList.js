@@ -4,7 +4,7 @@ import {CustomFlashList, TrailerMovieCard} from "../../molecules";
 import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
-const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH / 1.6, 200) * 1.7) + 42; //427,179
+const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH / 1.6, 200) * 1.7) + 35; //417,472
 
 const trailersMovieList = ({
                                flatListRef,
@@ -35,7 +35,7 @@ const trailersMovieList = ({
             trailer={item.trailers ? item.trailers[0].url : ''}
             movieId={item._id}
             title={item.rawTitle}
-            rating={item.rating.imdb || item.rating.myAnimeList}
+            rating={item.rating}
             premiered={item.premiered}
             type={item.type}
             genres={item.genres}

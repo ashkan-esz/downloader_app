@@ -32,7 +32,8 @@ const TrailerMovieCard = ({
     const memorizedNavigation = useCallback(() => {
         navigation.navigate('Movie', {
             name: title.slice(0, 20),
-            movieId, title, type, posters, rating
+            movieId, title, type, posters,
+            rating: (rating.imdb || rating.myAnimeList)
         });
     }, [movieId, title, type, posters, rating]);
 
@@ -195,7 +196,7 @@ TrailerMovieCard.propTypes = {
     trailer: PropTypes.any.isRequired,
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
     like: PropTypes.bool.isRequired,
