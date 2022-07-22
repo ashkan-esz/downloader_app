@@ -85,7 +85,10 @@ const AppStackNavigations = () => {
             <Stack.Screen
                 name={'Movie'}
                 component={MovieScreen}
-                options={({route}) => ({title: route.params.name})}
+                options={({route}) => ({
+                    animation: 'default',
+                    title: route.params.name
+                })}
             />
             <Stack.Screen
                 name={'MovieListScreen'}

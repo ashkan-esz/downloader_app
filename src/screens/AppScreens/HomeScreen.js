@@ -8,7 +8,7 @@ import {
     HomeTimeLineSection
 } from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
-import {useQueryClient} from "react-query";
+import {useQueryClient} from "@tanstack/react-query";
 import {Mixins} from "../../styles";
 
 

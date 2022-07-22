@@ -13,7 +13,7 @@ import {RootToast} from './components/atoms';
 import {GlobalOverlays, OfflineStatusBar} from "./components/molecules";
 import {useDispatch, useSelector} from "react-redux";
 import {profile_api} from "./redux/slices/user.slice";
-import {QueryClient, QueryClientProvider, focusManager} from 'react-query';
+import {QueryClient, QueryClientProvider, focusManager} from '@tanstack/react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
@@ -55,8 +55,6 @@ LogBox.ignoreLogs([
 //todo : app starts soo slow
 //todo : use proguard
 
-//todo : change navigation animation
-//todo : upgrade react-query to v4
 //------------------------------------------------
 
 enableFreeze(true);

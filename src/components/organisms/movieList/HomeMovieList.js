@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder, HomeScreenFlashList} from "../../molecules";
 import {getSortedMovies} from "../../../api";

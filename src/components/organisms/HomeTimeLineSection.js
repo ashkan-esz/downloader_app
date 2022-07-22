@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {MovieError} from "../atoms";
 import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useNavigation} from "@react-navigation/native";
 import {getSeriesOfDay} from "../../api";
 import {Colors, Mixins, Typography} from "../../styles";

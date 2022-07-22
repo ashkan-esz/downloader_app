@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import {useInfiniteQuery, useQueryClient} from "react-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {ScreenLayout} from "../../components/layouts";
 import {FilterType} from "../../components/molecules";
 import {MovieList} from "../../components/organisms";

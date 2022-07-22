@@ -5,7 +5,7 @@ import {MovieTopPoster, MovieScreenDownloadSection} from "../../components/molec
 import {MovieScreenInfoSection} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from "@react-navigation/native";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {homeStackHelpers} from "../../helper";
 import {useIsMounted, useLikeOrDislike, useSave} from "../../hooks";
 import {searchByID} from "../../api";

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {SectionNavBar} from "../molecules";
 import HomeTopMovieList from "./movieList/HomeTopMovieList";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useNavigation} from '@react-navigation/native';
 import {getMultipleStatus} from "../../api";
 import {SeeAllButton} from "../atoms";
@@ -55,7 +55,7 @@ const HomeTopSection = () => {
     }, [isFetching]);
 
     const _retry = async () => {
-        await queryClient.refetchQueries({active: true});
+        await queryClient.refetchQueries({type: 'active'});
     };
 
     return (

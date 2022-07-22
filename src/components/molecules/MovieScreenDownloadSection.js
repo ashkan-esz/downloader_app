@@ -38,9 +38,11 @@ const MovieScreenDownloadSection = ({data, scrollViewRef, onScrollToDownload}) =
                 ref={sectionRef}
                 onLayout={({nativeEvent}) => {
                     setTimeout(() => {
-                        sectionRef.current.measure((x, y, width, height, pageX, pageY) => {
-                            setDownloadPosition(pageY - height - 40);
-                        });
+                        if (sectionRef.current) {
+                            sectionRef.current.measure((x, y, width, height, pageX, pageY) => {
+                                setDownloadPosition(pageY - height - 40);
+                            });
+                        }
                     }, 5);
                 }}
             >

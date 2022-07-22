@@ -4,7 +4,7 @@ import {Text} from "@rneui/themed";
 import {MovieError} from "../../atoms";
 import {HomeScreenFlashList, HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
-import {useQuery, useQueryClient} from "react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getTrailers} from "../../../api";
 import {Colors, Mixins, Typography} from "../../../styles";
 

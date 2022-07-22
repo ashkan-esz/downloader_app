@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {TimeLinePaging} from "../../components/atoms";
 import {TimeLineMovieList} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
-import {useInfiniteQuery, useQueryClient} from "react-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {getSeriesOfDay} from "../../api";
 
 

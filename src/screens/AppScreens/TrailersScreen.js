@@ -3,7 +3,7 @@ import {View, StyleSheet, LayoutAnimation} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {TrailersMovieList} from "../../components/organisms";
 import {FilterType} from "../../components/molecules";
-import {useInfiniteQuery, useQueryClient} from "react-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {getTrailers} from "../../api";
 
 

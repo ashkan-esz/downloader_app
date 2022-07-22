@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {useQueryClient} from "react-query";
+import {useQueryClient} from "@tanstack/react-query";
 import useIsMounted from './useIsMounted';
 import {likeOrDislikeApi} from "../api";
 import Toast from 'react-native-toast-message';
@@ -44,7 +44,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
     }
 
     const updateCachedData = async (newLike, newDislike, newLikesCount, newDisLikesCount) => {
-        await queryClient.setQueriesData({active: true, stale: false}, oldData => {
+        await queryClient.setQueriesData({type: 'active', stale: false}, oldData => {
             try {
                 if (Array.isArray(oldData)) {
                     updateCachedDataArray(oldData, newLike, newDislike, newLikesCount, newDisLikesCount);

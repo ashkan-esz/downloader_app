@@ -4,7 +4,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {SectionMovieList} from "../../components/organisms";
 import {SectionNavBar, FilterType} from "../../components/molecules";
 import {useRoute} from '@react-navigation/native';
-import {useInfiniteQuery, useQueryClient} from "react-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {getNews, getSortedMovies, getUpdates} from "../../api";
 
 

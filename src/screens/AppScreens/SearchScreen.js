@@ -3,7 +3,7 @@ import {View, StyleSheet, LayoutAnimation, Keyboard} from 'react-native';
 import {ScreenLayout} from '../../components/layouts';
 import {SearchMovieList} from "../../components/organisms";
 import {CustomSearchBar, FilterType} from "../../components/molecules";
-import {useInfiniteQuery, useQueryClient} from "react-query";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {searchTitle} from "../../api";
 
 
