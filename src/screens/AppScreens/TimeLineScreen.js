@@ -28,7 +28,8 @@ const TimeLineScreen = () => {
         if (result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return [];
         }
     }
 

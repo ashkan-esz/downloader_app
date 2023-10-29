@@ -19,12 +19,19 @@ const CustomImage = ({
                      }) => {
     const [isError, setIsError] = useState(false);
     const [loadPercent, setLoadPercent] = useState(-1);
+    // const debouncedSearchTerm = useDebounce(searchValue, 100,1);
 
     useEffect(() => {
+        // console.log(url);
         if (url && url.url && isError) {
             setIsError(false);
         }
-    }, [url]);
+        if (url && url.url && loadPercent !== -1) {
+            setLoadPercent(-1);
+        }
+    }, [url?.url]);
+
+    // console.log(url, loadPercent, isError);
 
     if (showLoadingImage) {
         return (
@@ -54,10 +61,12 @@ const CustomImage = ({
             }
             <FastImage
                 style={[style.image, extraStyle]}
-                source={(!isError && url) ? {
-                    uri: (url.link || url.url),
-                    priority: FastImage.priority.normal,
-                } : require('../../assets/images/noImage.png')}
+                source={(!isError && url)
+                    ? {
+                        uri: (loadPercent !== 1 && url.thumbnail) ? url.thumbnail : url.url,
+                        priority: FastImage.priority.normal,
+                    }
+                    : (isError && url.thumbnail) ? {uri: url.thumbnail} : require('../../assets/images/noImage.png')}
                 onError={() => setIsError(true)}
                 resizeMode={_resizeMode}
                 onProgress={e => setLoadPercent(e.nativeEvent.loaded / e.nativeEvent.total)}

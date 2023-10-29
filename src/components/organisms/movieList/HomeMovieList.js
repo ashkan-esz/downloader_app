@@ -21,7 +21,8 @@ const HomeMovieList = ({name, pageType}) => {
         if (result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return [];
         }
     }
 
@@ -71,9 +72,9 @@ const HomeMovieList = ({name, pageType}) => {
             type={''}
             rating={0}
             noRating={true}
-            like={item.userStats.like_movie}
-            dislike={item.userStats.dislike_movie}
-            save={item.userStats.save}
+            like={item.userStats.like}
+            dislike={item.userStats.dislike}
+            follow={item.userStats.follow}
         />
     );
 

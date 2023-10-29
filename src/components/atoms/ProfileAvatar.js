@@ -19,7 +19,7 @@ const ProfileAvatar = ({size, onPress}) => {
             ImageComponent={CustomImage}
             imageProps={{
                 extraStyle: style.image,
-                url: profileImages.length > 0 ? profileImages[0] : profileImage ? {url: profileImage} : null,
+                url: profileImages.length > 0 ? profileImages[0].url : profileImage ? {url: profileImage} : null,
                 onPress: onPress,
                 resizeModeStretch: false,
                 isProfile: true,

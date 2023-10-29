@@ -160,7 +160,7 @@ export const searchTitle = async (title, types, dataLevel, page, years = '1900-2
 
 export const searchByID = async (id, dataLevel) => {
     try {
-        let response = await API.get(`/movies/searchByID/${id}/${dataLevel}/`);
+        let response = await API.get(`/movies/searchByID/${id}/${dataLevel}/?embedStaffAndCharacter=true`);
         return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {

@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {TrailerImageSwitch, SectionMovieCardRating, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {useLikeOrDislike, useSave} from "../../../hooks";
+import {useFollow, useLikeOrDislike} from "../../../hooks";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -23,10 +23,10 @@ const TrailerMovieCard = ({
                               latestData,
                               likesCount,
                               dislikesCount,
-                              savesCount,
+                              followsCount,
                               like,
                               dislike,
-                              save,
+                              follow,
                           }) => {
 
     const navigation = useNavigation();
@@ -47,9 +47,9 @@ const TrailerMovieCard = ({
     } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
 
     const {
-        isSaved,
-        _onSave,
-    } = useSave(movieId, savesCount, save);
+        isFollowed,
+        _onFollow,
+    } = useFollow(movieId, followsCount, follow);
 
     const _handleDoubleTap = useCallback(() => {
         !isLike && _onLike();
@@ -92,13 +92,13 @@ const TrailerMovieCard = ({
                         rating={rating}
                         likesCount={likesCount}
                         dislikesCount={dislikesCount}
-                        savesCount={savesCount}
+                        followsCount={followsCount}
                         isLike={isLike}
                         isDisLike={isDisLike}
-                        isSave={isSaved}
+                        isFollow={isFollowed}
                         onLike={_onLike}
                         onDisLike={_onDisLike}
-                        onSave={_onSave}
+                        onFollow={_onFollow}
                     />
 
                     <View style={style.lineSeparator}/>
@@ -209,10 +209,10 @@ TrailerMovieCard.propTypes = {
     rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
-    savesCount: PropTypes.number.isRequired,
+    followsCount: PropTypes.number.isRequired,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
-    save: PropTypes.bool.isRequired,
+    follow: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,

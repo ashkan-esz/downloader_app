@@ -33,7 +33,13 @@ const HomeTopSection = () => {
         if (result && result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return {
+                inTeaters: [],
+                comingSoon: [],
+                news: [],
+                update: [],
+            }
         }
     }
 

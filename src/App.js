@@ -107,6 +107,9 @@ export default function App() {
                 const imageAssets = cacheImages([
                     require('./assets/images/loadingImage.png'),
                     require('./assets/images/noImage.png'),
+                    require('./assets/icons/logo.png'),
+                    require('./assets/icons/imdb.png'),
+                    require('./assets/icons/mal.png'),
                 ]);
                 // Pre-load fonts, make any API calls you need to do here
                 //todo : check adding 'MaterialIcons' performance

@@ -48,9 +48,9 @@ const HomeTopMovieList = ({loadedData, tab, isLoading, error, retry}) => {
                     latestData={item.latestData}
                     nextEpisode={item.nextEpisode}
                     rating={item.rating.imdb || item.rating.myAnimeList}
-                    like={item.userStats.like_movie}
-                    dislike={item.userStats.dislike_movie}
-                    save={item.userStats.save}
+                    like={item.userStats.like}
+                    dislike={item.userStats.dislike}
+                    follow={item.userStats.follow}
                 />
             )))}
         </View>

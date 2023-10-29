@@ -27,7 +27,8 @@ const MovieListScreen = () => {
         if (result && result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return [];
         }
     }
 

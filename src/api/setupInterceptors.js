@@ -106,7 +106,7 @@ const handleTokenRequest = async () => {
             return 'logout';
         } else {
             store.dispatch({type: "auth/updateTokens", payload: rs.data});
-            store.dispatch({type: "user/setProfileImages", payload: rs.data.profileImages});
+            // store.dispatch({type: "user/setProfileImages", payload: rs.data.profileImages});
             return 'retry';
         }
     } catch (_error) {

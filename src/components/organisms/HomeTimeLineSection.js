@@ -20,7 +20,8 @@ const HomeTimeLineSection = () => {
         if (result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return [];
         }
     }
 
@@ -74,9 +75,9 @@ const HomeTimeLineSection = () => {
                                         latestData={item.latestData}
                                         nextEpisode={item.nextEpisode}
                                         rating={item.rating.imdb || item.rating.myAnimeList}
-                                        like={item.userStats.like_movie}
-                                        dislike={item.userStats.dislike_movie}
-                                        save={item.userStats.save}
+                                        like={item.userStats.like}
+                                        dislike={item.userStats.dislike}
+                                        follow={item.userStats.follow}
                                     />
                                 );
                             })

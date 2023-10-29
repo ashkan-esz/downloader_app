@@ -48,7 +48,8 @@ const SectionScreen = () => {
         if (result && result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return [];
         }
     }
 
@@ -82,6 +83,8 @@ const SectionScreen = () => {
             cacheTime: 2 * 60 * 1000,
             staleTime: 2 * 60 * 1000,
         });
+
+    // console.log('----- ', data);
 
     const _onTabChange = (value) => {
         if (tab === value && flatListRef && flatListRef.current) {

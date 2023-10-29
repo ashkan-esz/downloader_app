@@ -7,7 +7,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {homeStackHelpers} from "../../helper";
-import {useIsMounted, useLikeOrDislike, useSave} from "../../hooks";
+import {useFollow, useIsMounted, useLikeOrDislike} from "../../hooks";
 import {searchByID} from "../../api";
 
 //todo : show alternate title
@@ -32,7 +32,8 @@ const MovieScreen = () => {
         if (result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return null;
         }
     }
 
@@ -54,20 +55,20 @@ const MovieScreen = () => {
         _onDisLike
     } = useLikeOrDislike(
         routeParams.movieId,
-        data ? data.userStats.like_movie_count : 0,
-        data ? data.userStats.dislike_movie_count : 0,
-        data ? data.userStats.like_movie : false,
-        data ? data.userStats.dislike_movie : false,
+        data ? data.userStats.likes_count : 0,
+        data ? data.userStats.dislikes_count : 0,
+        data ? data.userStats.like : false,
+        data ? data.userStats.dislike : false,
         data !== null && !isError
     );
 
     const {
-        isSaved,
-        _onSave,
-    } = useSave(
+        isFollowed,
+        _onFollow,
+    } = useFollow(
         routeParams.movieId,
-        data ? data.userStats.save_count : 0,
-        data ? data.userStats.save : false,
+        data ? data.userStats.follow_count : 0,
+        data ? data.userStats.follow : false,
         data !== null && !isError
     );
 
@@ -118,12 +119,12 @@ const MovieScreen = () => {
                     <MovieLikeAndBookmark
                         isLike={isLike}
                         isDisLike={isDisLike}
-                        isSave={isSaved}
+                        isFollowed={isFollowed}
                         onLike={_onLike}
                         onDisLike={_onDisLike}
-                        onSave={_onSave}
-                        likesCount={data ? data.userStats.like_movie_count : 0}
-                        dislikesCount={data ? data.userStats.dislike_movie_count : 0}
+                        onFollow={_onFollow}
+                        likesCount={data ? data.userStats.likes_count : 0}
+                        dislikesCount={data ? data.userStats.dislikes_count : 0}
                         disable={!data || isLoading || isError}
                     />
 

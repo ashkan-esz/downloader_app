@@ -25,7 +25,8 @@ const HomeTrailersList = () => {
         if (result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            //todo : handle error
+            return [];
         }
     }
 
@@ -71,8 +72,8 @@ const HomeTrailersList = () => {
             type={item.type}
             movieId={item._id}
             rating={item.rating.imdb || item.rating.myAnimeList}
-            like={item.userStats.like_movie}
-            dislike={item.userStats.dislike_movie}
+            like={item.userStats.like}
+            dislike={item.userStats.dislike}
         />
     );
 

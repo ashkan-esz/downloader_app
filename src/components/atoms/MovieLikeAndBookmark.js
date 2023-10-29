@@ -10,10 +10,10 @@ const MovieLikeAndBookmark = ({
                                   extraStyle,
                                   isLike,
                                   isDisLike,
-                                  isSave,
+                                  isFollowed,
                                   onLike,
                                   onDisLike,
-                                  onSave,
+                                  onFollow,
                                   likesCount,
                                   dislikesCount,
                                   disable
@@ -46,10 +46,10 @@ const MovieLikeAndBookmark = ({
 
                 <LikeIconWithAnimation
                     extraStyle={style.bookmarkIcon}
-                    isActive={isSave}
+                    isActive={isFollowed}
                     iconName={"bookmark"}
                     outlineIconName={"bookmark-outline"}
-                    onPress={onSave}
+                    onPress={onFollow}
                     disableOnPressActivation={disable}
                     iconColor={"grey"}
                     activeIconColor={Colors.BOOKMARK_ICON}
@@ -89,10 +89,10 @@ MovieLikeAndBookmark.propTypes = {
     extraStyle: PropTypes.object,
     isLike: PropTypes.bool.isRequired,
     isDisLike: PropTypes.bool.isRequired,
-    isSave: PropTypes.bool.isRequired,
+    isFollowed: PropTypes.bool.isRequired,
     onLike: PropTypes.func.isRequired,
     onDisLike: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
+    onFollow: PropTypes.func.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
     disable: PropTypes.bool,

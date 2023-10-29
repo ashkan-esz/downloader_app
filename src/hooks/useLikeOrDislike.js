@@ -27,18 +27,20 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
         }
     }, [activeFlag]);
 
+    // console.log(movieId, typeof movieId);
+
     useEffect(() => {
         setIsLike(like);
         setIsDisLike(dislike);
-    }, [like, dislike]);
+    }, [movieId, like, dislike]);
 
     const updateCachedDataArray = (dataArray, newLike, newDislike, newLikesCount, newDisLikesCount) => {
         for (let i = 0; i < dataArray.length; i++) {
             if (dataArray[i]._id.toString() === movieId.toString()) {
-                dataArray[i].userStats.like_movie = newLike;
-                dataArray[i].userStats.dislike_movie = newDislike;
-                dataArray[i].userStats.like_movie_count = newLikesCount;
-                dataArray[i].userStats.dislike_movie_count = newDisLikesCount;
+                dataArray[i].userStats.like = newLike;
+                dataArray[i].userStats.dislike = newDislike;
+                dataArray[i].userStats.likes_count = newLikesCount;
+                dataArray[i].userStats.dislikes_count = newDisLikesCount;
             }
         }
     }
@@ -75,10 +77,10 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
                         updateCachedDataArray(oldData.update, newLike, newDislike, newLikesCount, newDisLikesCount);
                     }
                     if (oldData._id && oldData._id.toString() === movieId.toString()) {
-                        oldData.userStats.like_movie = newLike;
-                        oldData.userStats.dislike_movie = newDislike;
-                        oldData.userStats.like_movie_count = newLikesCount;
-                        oldData.userStats.dislike_movie_count = newDisLikesCount;
+                        oldData.userStats.like = newLike;
+                        oldData.userStats.dislike = newDislike;
+                        oldData.userStats.likes_count = newLikesCount;
+                        oldData.userStats.dislikes_count = newDisLikesCount;
                     }
                 }
             } catch (error) {
@@ -106,6 +108,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
 
         let result = await likeOrDislikeApi('movies', movieId, 'like', saveIsLike);
         if (result === 'ok' && isMounted.current) {
+            //todo : fix
             prevState.current.isLike = !saveIsLike;
             prevState.current.isDislike = false;
             prevState.current.likeNumber = !saveIsLike ? likesCount + 1 : likesCount - 1;
@@ -141,6 +144,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
 
         let result = await likeOrDislikeApi('movies', movieId, 'dislike', saveIsDislike);
         if (result === 'ok' && isMounted.current) {
+            //todo : fix
             prevState.current.isLike = false;
             prevState.current.isDislike = !saveIsDislike;
             prevState.current.likeNumber = !saveIsDislike && saveIsLike ? likesCount - 1 : likesCount;

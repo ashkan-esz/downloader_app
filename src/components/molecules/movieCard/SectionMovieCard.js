@@ -5,7 +5,7 @@ import DropShadow from "react-native-drop-shadow";
 import {SectionMovieCardRating, CustomImage, LikeIconWithAnimation, DoubleTap} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
-import {useLikeOrDislike, useSave} from "../../../hooks";
+import {useLikeOrDislike, useFollow} from "../../../hooks";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -24,10 +24,10 @@ const SectionMovieCard = ({
                               nextEpisode,
                               likesCount,
                               dislikesCount,
-                              savesCount,
+                              followsCount,
                               like,
                               dislike,
-                              save,
+                              follow,
                           }) => {
 
     const navigation = useNavigation();
@@ -48,9 +48,9 @@ const SectionMovieCard = ({
     } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
 
     const {
-        isSaved,
-        _onSave,
-    } = useSave(movieId, savesCount, save);
+        isFollowed,
+        _onFollow,
+    } = useFollow(movieId, followsCount, follow);
 
     const [likeAnimation, setLikeAnimation] = useState(false);
     const _handleDoubleTap = () => {
@@ -65,6 +65,8 @@ const SectionMovieCard = ({
         color: type.includes('movie') ? 'red' : 'cyan',
     }
 
+    //todo : remove shadow to make it lighter
+
     return (
         <DoubleTap
             extraStyle={[style.container, extraStyle]}
@@ -74,29 +76,24 @@ const SectionMovieCard = ({
             doublePressDelay={180}
         >
 
-            <DropShadow
-                style={[style.image, style.imageShadow]}
+            <CustomImage
+                extraStyle={[style.image, style.imageShadow]}
+                url={posters[0]}
+                onPress={_navigateToMovieScreen}
             >
-                <CustomImage
-                    extraStyle={style.image}
-                    url={posters[0]}
+                <LikeIconWithAnimation
+                    extraStyle={style.likeIcon}
+                    isActive={likeAnimation}
+                    iconName={"heart"}
+                    outlineIconName={"heart-outline"}
+                    activeIconOnly={true}
+                    activeAnimationOnly={true}
+                    autoHideLike={true}
+                    iconSize={70}
                     onPress={_navigateToMovieScreen}
-                >
-                    <LikeIconWithAnimation
-                        extraStyle={style.likeIcon}
-                        isActive={likeAnimation}
-                        iconName={"heart"}
-                        outlineIconName={"heart-outline"}
-                        activeIconOnly={true}
-                        activeAnimationOnly={true}
-                        autoHideLike={true}
-                        iconSize={70}
-                        onPress={_navigateToMovieScreen}
-                        disableOnPressActivation={true}
-                    />
-
-                </CustomImage>
-            </DropShadow>
+                    disableOnPressActivation={true}
+                />
+            </CustomImage>
 
             <View style={style.infoContainer}>
                 <Text style={style.title} numberOfLines={1}>
@@ -106,13 +103,13 @@ const SectionMovieCard = ({
                     rating={rating}
                     likesCount={likesCount}
                     dislikesCount={dislikesCount}
-                    savesCount={savesCount}
+                    followsCount={followsCount}
                     isLike={isLike}
                     isDisLike={isDisLike}
-                    isSave={isSaved}
+                    isFollow={isFollowed}
                     onLike={_onLike}
                     onDisLike={_onDisLike}
-                    onSave={_onSave}
+                    onFollow={_onFollow}
                 />
                 <View style={style.lineSeparator}/>
 
@@ -217,10 +214,10 @@ SectionMovieCard.propTypes = {
     rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
-    savesCount: PropTypes.number.isRequired,
+    followsCount: PropTypes.number.isRequired,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
-    save: PropTypes.bool.isRequired,
+    follow: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
@@ -233,10 +230,10 @@ const areEqual = (prevProps, nextProps) => {
         prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.likesCount === nextProps.likesCount &&
         prevProps.dislikesCount === nextProps.dislikesCount &&
-        prevProps.savesCount === nextProps.savesCount &&
+        prevProps.followsCount === nextProps.followsCount &&
         prevProps.like === nextProps.like &&
         prevProps.dislike === nextProps.dislike &&
-        prevProps.save === nextProps.save;
+        prevProps.follow === nextProps.follow;
 }
 
 export default memo(SectionMovieCard, areEqual);

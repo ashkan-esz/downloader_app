@@ -20,7 +20,7 @@ target 'downloaderapp' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => true
+    :hermes_enabled => podfile_properties['expo.jsEngine'] == 'hermes'
   )
 
   # Uncomment to opt-in to using Flipper

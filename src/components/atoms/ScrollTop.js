@@ -15,6 +15,7 @@ const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
 
     const _scrollToTop = () => {
         if (flatListRef && flatListRef.current) {
+            //todo : use offset
             flatListRef.current.scrollToIndex({animated: true, index: 1});
         }
     }

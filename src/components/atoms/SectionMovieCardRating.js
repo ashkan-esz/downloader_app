@@ -10,10 +10,12 @@ import PropTypes from 'prop-types';
 const SectionMovieCardRating = ({
                                     extraStyle, likeContainerStyle,
                                     rating,
-                                    likesCount, dislikesCount, savesCount,
-                                    isLike, isDisLike, isSave,
-                                    onLike, onDisLike, onSave,
+                                    likesCount, dislikesCount, followsCount,
+                                    isLike, isDisLike, isFollow,
+                                    onLike, onDisLike, onFollow,
                                 }) => {
+
+    //todo : use memo for imdb/mal icon
 
     return (
         <View style={extraStyle}>
@@ -64,17 +66,17 @@ const SectionMovieCardRating = ({
 
                 <LikeIconWithAnimation
                     extraIconStyle={style.likeIcon}
-                    isActive={isSave}
+                    isActive={isFollow}
                     iconName={"bookmark"}
                     outlineIconName={"bookmark-outline"}
                     iconColor={"grey"}
                     activeIconColor={Colors.BOOKMARK_ICON}
-                    onPress={onSave}
+                    onPress={onFollow}
                     iconSize={25}
                     firstViewAnimation={false}
                 />
                 <Text style={style.likeNumber}>
-                    {savesCount}
+                    {followsCount}
                 </Text>
             </View>
         </View>
@@ -130,13 +132,13 @@ SectionMovieCardRating.propTypes = {
     rating: PropTypes.object.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
-    savesCount: PropTypes.number.isRequired,
+    followsCount: PropTypes.number.isRequired,
     isLike: PropTypes.bool.isRequired,
     isDisLike: PropTypes.bool.isRequired,
-    isSave: PropTypes.bool.isRequired,
+    isFollow: PropTypes.bool.isRequired,
     onLike: PropTypes.func.isRequired,
     onDisLike: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
+    onFollow: PropTypes.func.isRequired,
 }
 
 

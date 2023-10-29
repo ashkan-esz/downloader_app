@@ -22,7 +22,7 @@ const HomeMovieCard = ({
                            noRating,
                            like,
                            dislike,
-                           save,
+                           follow,
                        }) => {
     const navigation = useNavigation();
 
@@ -47,9 +47,9 @@ const HomeMovieCard = ({
                     resizeModeStretch={true}
                 >
                     {
-                        (like || dislike || save) && <View style={style.likeContainer}>
+                        (like || dislike || follow) && <View style={style.likeContainer}>
                             {
-                                save && <Ionicons
+                                follow && <Ionicons
                                     style={(like || dislike) && style.bookmarkIcon}
                                     name={'bookmark'}
                                     size={22}
@@ -137,7 +137,7 @@ HomeMovieCard.propTypes = {
     noRating: PropTypes.bool,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
-    save: PropTypes.bool.isRequired,
+    follow: PropTypes.bool.isRequired,
 }
 
 
