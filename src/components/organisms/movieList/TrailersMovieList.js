@@ -32,6 +32,7 @@ const trailersMovieList = ({
         <TrailerMovieCard
             isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
+            widePoster={item.poster_wide_s3}
             trailer={item.trailers ? item.trailers[0].url : ''}
             movieId={item._id}
             title={item.rawTitle}

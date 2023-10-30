@@ -165,7 +165,7 @@ API.interceptors.response.use(
                 store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                 return Promise.reject(err);
             }
-            if (!store.getState().auth.isFetchingToken && err.response.status === 403 && !originalConfig._retry) {
+            if (!store.getState().auth.isFetchingToken && err.response?.status === 403 && !originalConfig._retry) {
                 originalConfig._retry = true;
                 let result = await handleTokenRequest();
                 if (result === 'retry') {

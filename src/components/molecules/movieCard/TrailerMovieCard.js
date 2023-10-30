@@ -13,6 +13,7 @@ const TrailerMovieCard = ({
                               extraStyle,
                               isOnScreenView,
                               posters,
+                              widePoster,
                               trailer,
                               movieId,
                               title,
@@ -68,7 +69,7 @@ const TrailerMovieCard = ({
                 videoStyle={style.video}
                 isOnScreenView={isOnScreenView}
                 trailer={trailer}
-                poster={posters[0]}
+                poster={widePoster || posters[0]}
                 onLongPress={memorizedNavigation}
                 like={like}
                 dislike={dislike}
@@ -203,6 +204,7 @@ TrailerMovieCard.propTypes = {
     extraStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool.isRequired,
     posters: PropTypes.array.isRequired,
+    widePoster: PropTypes.object,
     trailer: PropTypes.any.isRequired,
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

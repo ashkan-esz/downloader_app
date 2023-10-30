@@ -11,6 +11,7 @@ const HomeTrailer = ({
                          extraStyle,
                          isOnScreenView,
                          posters,
+                         widePoster,
                          trailer,
                          title,
                          genres,
@@ -36,7 +37,7 @@ const HomeTrailer = ({
                 videoStyle={style.video}
                 isOnScreenView={isOnScreenView}
                 trailer={trailer}
-                poster={posters[0]}
+                poster={widePoster  || posters[0]}
                 onLongPress={_navigateToMovieScreen}
                 like={like}
                 dislike={dislike}
@@ -113,6 +114,7 @@ HomeTrailer.propTypes = {
     extraStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool.isRequired,
     posters: PropTypes.array.isRequired,
+    widePoster: PropTypes.object,
     trailer: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,

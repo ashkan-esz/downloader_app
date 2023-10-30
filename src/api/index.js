@@ -257,7 +257,7 @@ export const getSeriesOfDay = async (spacing, page, types, imdbScores = '0-10', 
         let response = await API.get(`/movies/seriesOfDay/${spacing}/${types}/${imdbScores}/${malScores}/${page}`);
         return response.data.data;
     } catch (error) {
-        if (error.response && error.response.status === 404) {
+        if (error.response?.status === 404) {
             return [];
         }
         return 'error';

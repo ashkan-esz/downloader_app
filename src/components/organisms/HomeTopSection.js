@@ -35,7 +35,7 @@ const HomeTopSection = () => {
         } else {
             //todo : handle error
             return {
-                inTeaters: [],
+                inTheaters: [],
                 comingSoon: [],
                 news: [],
                 update: [],
