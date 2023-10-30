@@ -58,6 +58,7 @@ LogBox.ignoreLogs([
 //todo : handle ota-update
 //todo : get new build
 //todo : use new architect
+//todo : re add removed dev dependencies
 //todo : update expo sdk
 
 //------------------------------------------------
