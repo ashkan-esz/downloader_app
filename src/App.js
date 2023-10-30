@@ -161,7 +161,10 @@ export default function App() {
 
     return (
         <View style={style.container} onLayout={onLayoutRootView}>
-            <StatusBar style="light"/>
+            <StatusBar style="light"
+                       // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                       // backgroundColor={backgroundStyle.backgroundColor}
+            />
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
                     <ThemeProvider>
