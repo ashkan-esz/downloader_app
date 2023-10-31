@@ -17,7 +17,7 @@ import {QueryClient, QueryClientProvider, focusManager} from '@tanstack/react-qu
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
-import {ThemeProvider} from "@rneui/themed";
+import {createTheme, ThemeProvider} from "@rneui/themed";
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -65,6 +65,10 @@ LogBox.ignoreLogs([
 //------------------------------------------------
 
 enableFreeze(true);
+
+const theme = createTheme({
+
+});
 
 try {
     I18nManager.allowRTL(false);
@@ -169,7 +173,7 @@ export default function App() {
             />
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>
-                    <ThemeProvider>
+                    <ThemeProvider theme={theme}>
                         <OfflineStatusBar/>
                         <GlobalOverlays/>
                         {
