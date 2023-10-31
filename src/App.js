@@ -61,6 +61,8 @@ LogBox.ignoreLogs([
 //todo : re add removed dev dependencies
 //todo : update expo sdk
 
+//todo : check entryFile in android folder
+
 //------------------------------------------------
 
 enableFreeze(true);
