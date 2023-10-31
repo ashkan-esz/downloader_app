@@ -23,6 +23,7 @@ LogBox.ignoreLogs([
     'Setting a timer',
     '`flexWrap: `wrap`` is not supported with the `VirtualizedList',
     'VirtualizedLists should never be nested inside plain ScrollViews',
+    'new NativeEventEmitter()',
 ]);
 
 //todo : check build commands
@@ -58,10 +59,8 @@ LogBox.ignoreLogs([
 //todo : handle ota-update
 //todo : get new build
 //todo : use new architect
-//todo : re add removed dev dependencies
+//todo : update dependencies
 //todo : update expo sdk
-
-//todo : check entryFile in android folder
 
 //------------------------------------------------
 
