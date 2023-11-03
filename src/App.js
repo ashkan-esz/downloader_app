@@ -56,6 +56,8 @@ LogBox.ignoreLogs([
 //todo : app starts soo slow
 //todo : use proguard
 
+//todo : re check infinite scrolling api call + react-query + redux
+
 //todo : handle ota-update
 //todo : get new build
 //todo : use new architect
