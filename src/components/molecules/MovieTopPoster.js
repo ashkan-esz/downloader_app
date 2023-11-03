@@ -74,28 +74,28 @@ const MovieTopPoster = ({
                     <BlurView
                         style={style.blurView}
                         tint={'dark'}
-                        intensity={120}
-                    />
+                        intensity={50}
+                    >
+                        <Text style={[style.title, titleSize]}>
+                            {title}
+                        </Text>
+                        <Text style={style.episodesDuration}>
+                            {episodesDuration}
+                        </Text>
 
-                    <Text style={[style.title, titleSize]}>
-                        {title}
-                    </Text>
-                    <Text style={style.episodesDuration}>
-                        {episodesDuration}
-                    </Text>
-
-                    <View style={style.genresRowContainer}>
-                        {
-                            (genres.length > 0 ? genres : ['unknown']).map(item => (
-                                <View style={style.genreContainer} key={item}>
-                                    <Text style={style.genre}>
-                                        {item.trim()}
-                                    </Text>
-                                    <Divider style={style.genresUnderLine}/>
-                                </View>
-                            ))
-                        }
-                    </View>
+                        <View style={style.genresRowContainer}>
+                            {
+                                (genres.length > 0 ? genres : ['unknown']).map(item => (
+                                    <View style={style.genreContainer} key={item}>
+                                        <Text style={style.genre}>
+                                            {item.trim()}
+                                        </Text>
+                                        <Divider style={style.genresUnderLine}/>
+                                    </View>
+                                ))
+                            }
+                        </View>
+                    </BlurView>
                 </View>
             </DoubleTap>
 
@@ -130,11 +130,11 @@ const style = StyleSheet.create({
         zIndex: 3,
     },
     blurView: {
-        position: 'absolute',
         height: '100%',
         width: '100%',
         zIndex: 2,
         borderRadius: 10,
+        overflow: 'hidden',
     },
     title: {
         color: '#ffffff',
