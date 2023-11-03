@@ -63,7 +63,6 @@ LogBox.ignoreLogs([
 //todo : handle ota-update
 //todo : get new build
 //todo : use new architect
-//todo : update dependencies
 
 //------------------------------------------------
 
