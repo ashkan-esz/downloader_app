@@ -38,7 +38,7 @@ const useFollow = (movieId, FollowedCount, follow, activeFlag = true) => {
     }
 
     const updateCachedData = async (newFollowState, newFollowCount) => {
-        await queryClient.setQueriesData({type: 'active', stale: false}, oldData => {
+        queryClient.setQueriesData({type: 'active', stale: false}, oldData => {
             try {
                 if (Array.isArray(oldData)) {
                     updateCachedDataArray(oldData, newFollowState, newFollowCount);

@@ -22,7 +22,7 @@ const MovieListScreen = () => {
         }
     }
 
-    async function getData({pageParam = 1}) {
+    async function getData(pageParam) {
         let result = await getSortedMovies(route.params.pageType, types, 'medium', pageParam);
         if (result && result !== 'error') {
             return result;
@@ -32,29 +32,33 @@ const MovieListScreen = () => {
         }
     }
 
-    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        [route.params.pageType, 'movieListScreen', types],
-        getData,
-        {
-            getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
-                    return allPages.length + 1;
-                }
-                return undefined;
-            },
-            placeholderData: {pages: [[]]},
-            cacheTime: 2 * 60 * 1000,
-            staleTime: 2 * 60 * 1000,
-        });
+    const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
+        queryKey: [route.params.pageType, 'movieListScreen', types],
+        queryFn: ({pageParam}) => getData(pageParam),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
+                return allPages.length + 1;
+            }
+            return null;
+        },
+        placeholderData: {pages: [[]]},
+        gcTime: 2 * 60 * 1000,
+        staleTime: 2 * 60 * 1000,
+    });
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries([route.params.pageType, 'movieListScreen', types]);
+        await queryClient.refetchQueries({
+            queryKey: [route.params.pageType, 'movieListScreen', types]
+        });
         setRefreshing(false);
     };
 
     const _retry = async () => {
-        await queryClient.refetchQueries([route.params.pageType, 'movieListScreen', types]);
+        await queryClient.refetchQueries({
+            queryKey: [route.params.pageType, 'movieListScreen', types]
+        });
     };
 
     return (
@@ -70,7 +74,7 @@ const MovieListScreen = () => {
                 <MovieList
                     flatListRef={flatListRef}
                     data={data.pages.flat(1)}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}

@@ -22,7 +22,7 @@ const TrailersScreen = () => {
         }
     }
 
-    async function getData({pageParam = 1}) {
+    async function getData(pageParam) {
         let result = await getTrailers(types, 'medium', pageParam);
         if (result !== 'error') {
             return result;
@@ -32,22 +32,24 @@ const TrailersScreen = () => {
         }
     }
 
-    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        ['trailers', 'trailersScreen', types],
-        getData,
-        {
-            getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
-                    return allPages.length + 1;
-                }
-                return undefined;
-            },
-            placeholderData: {pages: [[]]},
-        });
+    const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
+        queryKey: ['trailers', 'trailersScreen', types],
+        queryFn: ({pageParam}) => getData(pageParam),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
+                return allPages.length + 1;
+            }
+            return null;
+        },
+        placeholderData: {pages: [[]]},
+    });
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries(['trailers', 'trailersScreen', types]);
+        await queryClient.refetchQueries({
+            queryKey: ['trailers', 'trailersScreen', types]
+        });
         setRefreshing(false);
     };
 
@@ -66,7 +68,7 @@ const TrailersScreen = () => {
                     flatListRef={flatListRef}
                     showScrollTopIcon={(data.pages[0].length > 0)}
                     data={data.pages.flat(1)}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}

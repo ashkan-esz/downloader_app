@@ -37,16 +37,13 @@ const MovieScreen = () => {
         }
     }
 
-    const {data, isLoading, isError} = useQuery(
-        ['movieData', routeParams.movieId],
-        getData,
-        {
-            placeholderData: null,
-            keepPreviousData: true,
-            cacheTime: 3 * 60 * 1000,
-            staleTime: 3 * 60 * 1000,
-        }
-    );
+    const {data, isPending, isError} = useQuery({
+        queryKey: ['movieData', routeParams.movieId],
+        queryFn: getData,
+        placeholderData: null,
+        gcTime: 3 * 60 * 1000,
+        staleTime: 3 * 60 * 1000,
+    });
 
     const {
         isLike,
@@ -74,12 +71,16 @@ const MovieScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries(['movieData', routeParams.movieId]);
+        await queryClient.refetchQueries({
+            queryKey: ['movieData', routeParams.movieId]
+        });
         isMounted.current && setRefreshing(false);
     }
 
     const _retry = async () => {
-        await queryClient.resetQueries(['movieData', routeParams.movieId]);
+        await queryClient.resetQueries({
+            queryKey: ['movieData', routeParams.movieId]
+        });
     }
 
     const episodesOrDuration = data !== null
@@ -126,11 +127,11 @@ const MovieScreen = () => {
                         onFollow={_onFollow}
                         likesCount={data ? data.userStats.likes_count : 0}
                         dislikesCount={data ? data.userStats.dislikes_count : 0}
-                        disable={!data || isLoading || isError}
+                        disable={!data || isPending || isError}
                     />
 
                     {
-                        (!data || isLoading || isError)
+                        (!data || isPending || isError)
                             ? <MovieLoadingAndError
                                 isError={isError}
                                 retry={_retry}

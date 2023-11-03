@@ -25,15 +25,16 @@ const HomeTimeLineSection = () => {
         }
     }
 
-    const {data, isLoading, isError} = useQuery(
-        ['timeLine', todayNumber],
-        getData,
-        {
-            placeholderData: [],
-        });
+    const {data, isPending, isError} = useQuery({
+        queryKey: ['timeLine', todayNumber],
+        queryFn: getData,
+        placeholderData: [],
+    });
 
     const _retry = async () => {
-        await queryClient.refetchQueries(['timeLine', 0]);
+        await queryClient.refetchQueries({
+            queryKey: ['timeLine', 0]
+        });
     }
 
     if (isError) {
@@ -59,7 +60,7 @@ const HomeTimeLineSection = () => {
             </Text>
 
             {
-                (data.length === 0 || isLoading)
+                (data.length === 0 || isPending)
                     ? <HomeMovieListPlaceHolder extraStyle={style.movieListContainer} number={3}/>
                     : <View style={style.movieListContainer}>
                         {

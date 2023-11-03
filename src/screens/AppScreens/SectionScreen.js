@@ -58,9 +58,10 @@ const SectionScreen = () => {
         async function prefetchData() {
             let promiseArray = [];
             for (let i = 0; i < sections.length; i++) {
-                let query = queryClient.prefetchInfiniteQuery(
-                    [sections[i], 'sectionScreen', types],
-                    () => getData({TAB: sections[i]}));
+                let query = queryClient.prefetchInfiniteQuery({
+                    queryKey: [sections[i], 'sectionScreen', types],
+                    queryFn: () => getData({TAB: sections[i]})
+                });
                 promiseArray.push(query);
             }
             await Promise.all(promiseArray);
@@ -69,20 +70,20 @@ const SectionScreen = () => {
         prefetchData();
     }, []);
 
-    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        [tab, 'sectionScreen', types],
-        getData,
-        {
-            getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
-                    return allPages.length + 1;
-                }
-                return undefined;
-            },
-            placeholderData: {pages: [[]]},
-            cacheTime: 2 * 60 * 1000,
-            staleTime: 2 * 60 * 1000,
-        });
+    const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
+        queryKey: [tab, 'sectionScreen', types],
+        queryFn: ({pageParam}) => getData({pageParam}),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
+                return allPages.length + 1;
+            }
+            return null;
+        },
+        placeholderData: {pages: [[]]},
+        gcTime: 2 * 60 * 1000,
+        staleTime: 2 * 60 * 1000,
+    });
 
     // console.log('----- ', data);
 
@@ -99,7 +100,9 @@ const SectionScreen = () => {
         setRefreshing(true);
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
-            let query = queryClient.refetchQueries([sections[i], 'sectionScreen', types]);
+            let query = queryClient.refetchQueries({
+                queryKey: [sections[i], 'sectionScreen', types]
+            });
             promiseArray.push(query);
         }
         await Promise.all(promiseArray);
@@ -107,7 +110,9 @@ const SectionScreen = () => {
     };
 
     const _retry = async () => {
-        await queryClient.refetchQueries([tab, 'sectionScreen', types]);
+        await queryClient.refetchQueries({
+            queryKey: [tab, 'sectionScreen', types]
+        });
     };
 
     return (
@@ -134,7 +139,7 @@ const SectionScreen = () => {
                     tab={tab}
                     changedTab={changedTab}
                     data={data.pages.flat(1)}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}

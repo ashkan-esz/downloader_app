@@ -21,7 +21,7 @@ const HomeScreen = () => {
         const sections = ['multipleStatus', 'timeLine', 'trailers'];
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
-            let query = queryClient.refetchQueries([sections[i]]);
+            let query = queryClient.refetchQueries({queryKey: [sections[i]]});
             promiseArray.push(query);
         }
         await Promise.all(promiseArray);

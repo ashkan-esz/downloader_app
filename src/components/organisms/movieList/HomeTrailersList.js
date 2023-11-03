@@ -30,13 +30,14 @@ const HomeTrailersList = () => {
         }
     }
 
-    const {data, isLoading, isError} = useQuery(
-        ["trailers"],
-        getData,
-        {placeholderData: []});
+    const {data, isPending, isError} = useQuery({
+        queryKey: ["trailers"],
+        queryFn: getData,
+        placeholderData: []
+    });
 
     const _retry = async () => {
-        await queryClient.refetchQueries(["trailers"]);
+        await queryClient.refetchQueries({queryKey: ["trailers"]});
     }
 
     if (isError) {
@@ -52,7 +53,7 @@ const HomeTrailersList = () => {
         );
     }
 
-    if (data.length === 0 || isLoading) {
+    if (data.length === 0 || isPending) {
         return (
             <HomeTrailersListPlaceHolder
                 extraStyle={style.listContainer}
@@ -95,7 +96,7 @@ const HomeTrailersList = () => {
                 renderItem={_renderItem}
                 itemSize={itemSize}
                 isError={isError}
-                isLoading={isLoading}
+                isLoading={isPending}
             />
         </View>
     );

@@ -39,12 +39,16 @@ const TimeLineScreen = () => {
             const todayNumber = new Date().getDay();
             let promiseArray = [];
             let next = (todayNumber + 1) % 7;
-            let promise1 = queryClient.prefetchInfiniteQuery(['timeLineScreen', next],
-                () => getData({SPACING: next}));
+            let promise1 = queryClient.prefetchInfiniteQuery({
+                queryKey: ['timeLineScreen', next],
+                queryFn: () => getData({SPACING: next})
+            });
             promiseArray.push(promise1);
             let prev = (todayNumber + 6) % 7;
-            let promise2 = queryClient.prefetchInfiniteQuery(['timeLineScreen', prev],
-                () => getData({SPACING: prev}));
+            let promise2 = queryClient.prefetchInfiniteQuery({
+                queryKey: ['timeLineScreen', prev],
+                queryFn: () => getData({SPACING: prev})
+            });
             promiseArray.push(promise2);
             await Promise.all(promiseArray);
         }
@@ -52,18 +56,18 @@ const TimeLineScreen = () => {
         prefetchData();
     }, []);
 
-    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        ['timeLineScreen', spacing],
-        getData,
-        {
-            getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
-                    return allPages.length + 1;
-                }
-                return undefined;
-            },
-            placeholderData: {pages: [[]]},
-        });
+    const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
+        queryKey: ['timeLineScreen', spacing],
+        queryFn: ({pageParam}) => getData({pageParam}),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
+                return allPages.length + 1;
+            }
+            return null;
+        },
+        placeholderData: {pages: [[]]},
+    });
 
     const _onSpacingChange = (value) => {
         if (spacing === value && flatListRef && flatListRef.current) {
@@ -75,12 +79,14 @@ const TimeLineScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries(['timeLineScreen']);
+        await queryClient.refetchQueries({queryKey: ['timeLineScreen']});
         setRefreshing(false);
     };
 
     const _retry = async () => {
-        await queryClient.refetchQueries(['timeLineScreen', spacing]);
+        await queryClient.refetchQueries({
+            queryKey: ['timeLineScreen', spacing]
+        });
     };
 
     return (
@@ -99,7 +105,7 @@ const TimeLineScreen = () => {
                     spacing={spacing}
                     changedSpacing={changedSpacing}
                     data={data.pages.flat(1)}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     onEndReached={fetchNextPage}

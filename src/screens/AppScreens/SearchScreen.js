@@ -32,7 +32,7 @@ const SearchScreen = () => {
         }
     }
 
-    const getData = async ({pageParam = 1}) => {
+    const getData = async (pageParam) => {
         if (!debouncedSearchValue) {
             return [];
         }
@@ -45,31 +45,34 @@ const SearchScreen = () => {
         }
     }
 
-    const {data, fetchNextPage, isLoading, isFetching, isFetchingNextPage, isError} = useInfiniteQuery(
-        [debouncedSearchValue, 'searchScreen', types],
-        getData,
-        {
-            getNextPageParam: (lastPage, allPages) => {
-                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
-                    return allPages.length + 1;
-                }
-                return undefined;
-            },
-            placeholderData: {pages: [[]]},
-            keepPreviousData: true,
-            cacheTime: 3 * 60 * 1000,
-            staleTime: 3 * 60 * 1000,
-        });
+    const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
+        queryKey: [debouncedSearchValue, 'searchScreen', types],
+        queryFn: ({pageParam}) => getData(pageParam),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
+                return allPages.length + 1;
+            }
+            return null;
+        },
+        placeholderData: {pages: [[]]},
+        gcTime: 3 * 60 * 1000,
+        staleTime: 3 * 60 * 1000,
+    });
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries([debouncedSearchValue, 'searchScreen', types]);
+        await queryClient.refetchQueries({
+            queryKey: [debouncedSearchValue, 'searchScreen', types]
+        });
         setRefreshing(false);
     }
 
     const _retry = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries([debouncedSearchValue, 'searchScreen', types]);
+        await queryClient.refetchQueries({
+            queryKey: [debouncedSearchValue, 'searchScreen', types]
+        });
         setRefreshing(false);
     }
 
@@ -81,7 +84,7 @@ const SearchScreen = () => {
 
                 <CustomSearchBar
                     onTextChange={setDebouncedSearchValue}
-                    isLoading={isLoading || isFetching}
+                    isLoading={isPending || isFetching}
                     inputRef={searchBarRef}
                     closeFilterBox={_closeFilterBox}
                 />
@@ -98,7 +101,7 @@ const SearchScreen = () => {
                     showScrollTopIcon={(data.pages[0].length > 0)}
                     searchValue={debouncedSearchValue}
                     data={data.pages.flat(1)}
-                    isLoading={isLoading}
+                    isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
                     refreshing={refreshing}

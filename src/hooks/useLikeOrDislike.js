@@ -46,7 +46,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
     }
 
     const updateCachedData = async (newLike, newDislike, newLikesCount, newDisLikesCount) => {
-        await queryClient.setQueriesData({type: 'active', stale: false}, oldData => {
+        queryClient.setQueriesData({type: 'active', stale: false}, oldData => {
             try {
                 if (Array.isArray(oldData)) {
                     updateCachedDataArray(oldData, newLike, newDislike, newLikesCount, newDisLikesCount);

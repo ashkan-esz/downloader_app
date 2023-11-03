@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useState} from 'react';
-import {AppState, I18nManager, View, StyleSheet} from 'react-native';
+import {AppState, I18nManager, View, StyleSheet, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {enableFreeze} from 'react-native-screens';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,11 +13,12 @@ import {RootToast} from './components/atoms';
 import {GlobalOverlays, OfflineStatusBar} from "./components/molecules";
 import {useDispatch, useSelector} from "react-redux";
 import {profile_api} from "./redux/slices/user.slice";
-import {QueryClient, QueryClientProvider, focusManager} from '@tanstack/react-query';
+import {QueryClient, QueryClientProvider, focusManager, onlineManager} from '@tanstack/react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
 import {Colors} from "./styles";
 import {createTheme, ThemeProvider} from "@rneui/themed";
+import NetInfo from '@react-native-community/netinfo';
 
 LogBox.ignoreLogs([
     'Setting a timer',
@@ -56,6 +57,7 @@ LogBox.ignoreLogs([
 //todo : app starts soo slow
 //todo : use proguard
 
+//todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
 
 //todo : handle ota-update
@@ -67,9 +69,7 @@ LogBox.ignoreLogs([
 
 enableFreeze(true);
 
-const theme = createTheme({
-
-});
+const theme = createTheme({});
 
 try {
     I18nManager.allowRTL(false);
@@ -81,17 +81,16 @@ try {
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            cacheTime: 3.2 * 60 * 1000,
+            gcTime: 3.2 * 60 * 1000,
             staleTime: 3.2 * 60 * 1000
         }
     }
 });
 
-focusManager.setEventListener(handleFocus => {
-    const subscription = AppState.addEventListener('change', handleFocus)
-    return () => {
-        subscription.remove();
-    }
+onlineManager.setEventListener(setOnline => {
+    return NetInfo.addEventListener(state => {
+        setOnline(!!state.isConnected)
+    })
 });
 
 function cacheImages(images) {
@@ -112,6 +111,17 @@ export default function App() {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const [appIsReady, setAppIsReady] = useState(false);
+
+    function onAppStateChange(status) {
+        if (Platform.OS !== 'web') {
+            focusManager.setFocused(status === 'active')
+        }
+    }
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', onAppStateChange);
+        return () => subscription.remove()
+    }, []);
 
     useEffect(() => {
         async function prepare() {
@@ -169,8 +179,8 @@ export default function App() {
     return (
         <View style={style.container} onLayout={onLayoutRootView}>
             <StatusBar style="light"
-                       // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                       // backgroundColor={backgroundStyle.backgroundColor}
+                // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                // backgroundColor={backgroundStyle.backgroundColor}
             />
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>

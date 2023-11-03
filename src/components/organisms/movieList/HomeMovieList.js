@@ -26,13 +26,16 @@ const HomeMovieList = ({name, pageType}) => {
         }
     }
 
-    const {data, isLoading, isError} = useQuery(
-        [pageType, "homeMovieList"],
-        getData,
-        {placeholderData: []});
+    const {data, isPending, isError} = useQuery({
+        queryKey: [pageType, "homeMovieList"],
+        queryFn: getData,
+        placeholderData: []
+    });
 
     const _retry = async () => {
-        await queryClient.refetchQueries([pageType, "homeMovieList"]);
+        await queryClient.refetchQueries({
+            queryKey: [pageType, "homeMovieList"]
+        });
     }
 
     if (isError) {
@@ -48,7 +51,7 @@ const HomeMovieList = ({name, pageType}) => {
         );
     }
 
-    if (data.length === 0 || isLoading) {
+    if (data.length === 0 || isPending) {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>{name}</Text>
@@ -98,7 +101,7 @@ const HomeMovieList = ({name, pageType}) => {
                 renderItem={_renderItem}
                 itemSize={itemSize}
                 isError={isError}
-                isLoading={isLoading}
+                isLoading={isPending}
             />
         </View>
     );

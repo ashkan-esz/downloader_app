@@ -43,18 +43,16 @@ const HomeTopSection = () => {
         }
     }
 
-    const {data, isLoading, isFetching, isError} = useQuery(
-        ['multipleStatus'],
-        getData,
-        {
-            placeholderData: {
-                inTheaters: [],
-                comingSoon: [],
-                news: [],
-                update: [],
-            },
-            keepPreviousData: true,
-        });
+    const {data, isPending, isFetching, isError} = useQuery({
+        queryKey: ['multipleStatus'],
+        queryFn: getData,
+        placeholderData: {
+            inTheaters: [],
+            comingSoon: [],
+            news: [],
+            update: [],
+        },
+    });
 
     useEffect(() => {
         !isFetching && setIsMounted(true);
@@ -74,7 +72,7 @@ const HomeTopSection = () => {
             <HomeTopMovieList
                 loadedData={data[tab.replace('recent', 'news')]}
                 tab={tab}
-                isLoading={isLoading || !isMounted}
+                isLoading={isPending || !isMounted}
                 error={isError}
                 retry={_retry}
             />
