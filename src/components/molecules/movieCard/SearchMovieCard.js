@@ -30,29 +30,31 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, 
             <View style={[style.container, extraStyle]}>
                 <CustomImage
                     extraStyle={style.image}
-                    url={posters[0]}
+                    posters={posters}
                     onPress={_navigateToMovieScreen}
-                >
-                    {
-                        (like || dislike || follow) && <View style={style.likeContainer}>
-                            {
-                                follow && <Ionicons
-                                    style={(like || dislike) && style.bookmarkIcon}
-                                    name={'bookmark'}
-                                    size={22}
-                                    color={Colors.BOOKMARK_ICON}
-                                />
-                            }
-                            {
-                                (like || dislike) && <Ionicons
-                                    name={like ? 'heart' : 'md-heart-dislike'}
-                                    size={22}
-                                    color={"red"}
-                                />
-                            }
-                        </View>
-                    }
-                </CustomImage>
+                    movieId={movieId}
+                />
+
+                {
+                    (like || dislike || follow) && <View style={style.likeContainer}>
+                        {
+                            follow && <Ionicons
+                                style={(like || dislike) && style.bookmarkIcon}
+                                name={'bookmark'}
+                                size={22}
+                                color={Colors.BOOKMARK_ICON}
+                            />
+                        }
+                        {
+                            (like || dislike) && <Ionicons
+                                name={like ? 'heart' : 'md-heart-dislike'}
+                                size={22}
+                                color={"red"}
+                            />
+                        }
+                    </View>
+                }
+
                 <Text style={style.title} numberOfLines={1}>
                     {title}
                 </Text>
@@ -86,6 +88,7 @@ const style = StyleSheet.create({
         paddingRight: 3,
         paddingTop: 3,
         paddingBottom: 3,
+        position: 'absolute',
     },
     bookmarkIcon: {
         marginBottom: 10,
@@ -117,7 +120,7 @@ SearchMovieCard.propTypes = {
 
 const areEqual = (prevProps, nextProps) => {
     return prevProps.posters[0] && nextProps.posters[0] &&
-        prevProps.posters[0].url === nextProps.posters[0].url &&
+        prevProps.posters[0]?.url === nextProps.posters[0]?.url &&
         prevProps.like === nextProps.like &&
         prevProps.dislike === nextProps.dislike &&
         prevProps.follow === nextProps.follow;

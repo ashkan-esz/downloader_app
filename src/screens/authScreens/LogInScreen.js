@@ -5,7 +5,7 @@ import {Colors, Mixins} from "../../styles";
 import {LogInForm} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useSelector} from "react-redux";
-import FastImage from "react-native-fast-image";
+import { Image } from 'expo-image';
 
 //todo : forget password
 
@@ -25,7 +25,7 @@ const LogInScreen = ({navigation}) => {
                 activeOpacity={1}
                 onPress={() => Keyboard.dismiss()}
             >
-                <FastImage
+                <Image
                     source={require('../../assets/icons/logo.png')}
                     style={style.logo}
                 />

@@ -12,12 +12,14 @@ const TrailerImageSwitch = ({
                                 videoStyle,
                                 isOnScreenView,
                                 trailer,
-                                poster,
+                                posters,
+                                widePoster,
                                 onLongPress,
                                 like,
                                 dislike,
                                 hideLikeIcon,
                                 startFullscreen = true,
+                                movieId,
                             }) => {
     const [shouldLoad, setShouldLoad] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -39,21 +41,21 @@ const TrailerImageSwitch = ({
             <View>
                 <CustomImage
                     extraStyle={[style.image, videoStyle]}
-                    url={poster}
+                    posters={widePoster ? [widePoster] : posters}
                     resizeModeStretch={true}
-                    progressSize={60}
-                    progressThickness={4}
-                >
-                    {
-                        !hideLikeIcon && (like || dislike) && <View style={style.likeContainer}>
-                            <Ionicons
-                                name={like ? 'heart' : 'md-heart-dislike'}
-                                size={22}
-                                color={"red"}
-                            />
-                        </View>
-                    }
-                </CustomImage>
+                    movieId={movieId}
+                />
+
+                {
+                    !hideLikeIcon && (like || dislike) && <View style={style.likeContainer}>
+                        <Ionicons
+                            name={like ? 'heart' : 'md-heart-dislike'}
+                            size={22}
+                            color={"red"}
+                        />
+                    </View>
+                }
+
                 <View style={style.imageTextContainer}>
                     <AntDesign
                         name={'play'}
@@ -72,7 +74,7 @@ const TrailerImageSwitch = ({
             videoStyle={videoStyle}
             isOnScreenView={isOnScreenView}
             trailer={trailer}
-            poster={poster}
+            poster={widePoster || posters[0]}
             setIsPlaying={setIsPlaying}
             startFullscreen={startFullscreen}
         />
@@ -101,6 +103,8 @@ const style = StyleSheet.create({
         paddingRight: 3,
         paddingTop: 3,
         paddingBottom: 3,
+        position: 'absolute',
+        left: 0,
     },
 });
 
@@ -108,7 +112,9 @@ TrailerImageSwitch.propTypes = {
     videoStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool.isRequired,
     trailer: PropTypes.string.isRequired,
-    poster: PropTypes.object,
+    posters: PropTypes.array,
+    widePoster: PropTypes.object,
+    movieId: PropTypes.string,
     onLongPress: PropTypes.func,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,

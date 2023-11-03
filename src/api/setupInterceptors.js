@@ -148,6 +148,7 @@ API.interceptors.request.use(async (config) => {
 });
 
 API.interceptors.response.use(
+    //todo : handle isGuest=true in response
     (res) => {
         return res;
     },

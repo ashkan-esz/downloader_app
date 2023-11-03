@@ -69,12 +69,14 @@ const TrailerMovieCard = ({
                 videoStyle={style.video}
                 isOnScreenView={isOnScreenView}
                 trailer={trailer}
-                poster={widePoster || posters[0]}
+                posters={posters}
+                widePoster={widePoster}
                 onLongPress={memorizedNavigation}
                 like={like}
                 dislike={dislike}
                 hideLikeIcon={true}
                 startFullscreen={false}
+                movieId={movieId}
             />
 
             <DoubleTap

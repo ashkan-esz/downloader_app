@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from "react-native";
 import Toast, {BaseToast} from 'react-native-toast-message';
-import FastImage from "react-native-fast-image";
+import { Image } from 'expo-image';
 import {MaterialIcons} from "@expo/vector-icons";
 import {Colors} from "../../styles";
 
@@ -14,7 +14,7 @@ const RootToast = () => {
                 style={[style.toast, style.linkToClipboardStyle]}
                 text1Style={style.text}
                 text1={text1}
-                renderLeadingIcon={() => <FastImage
+                renderLeadingIcon={() => <Image
                     style={style.linkIcon}
                     source={require('../../assets/icons/link.png')}
                 />}

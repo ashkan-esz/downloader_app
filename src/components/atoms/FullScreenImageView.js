@@ -17,7 +17,7 @@ const FullScreenImageView = ({poster, overlay, setOverlay}) => {
             >
                 <CustomImage
                     extraStyle={style.image}
-                    url={poster}
+                    posters={[poster]}
                     resizeModeStretch={true}
                     onPress={() => setOverlay(false)}
                 />

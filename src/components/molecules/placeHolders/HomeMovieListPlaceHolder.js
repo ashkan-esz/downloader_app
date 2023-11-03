@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import {CustomRating, CustomImage} from "../../atoms";
+import {CustomRating} from "../../atoms";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
+import {Image} from "expo-image";
 
 
 const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true, latestData = true}) => {
@@ -12,10 +13,9 @@ const HomeMovieListPlaceHolder = ({extraStyle, number, rating = true, latestData
         for (let i = 0; i < number; i++) {
             array.push(
                 <View style={style.cardContainer} key={i}>
-                    <CustomImage
-                        extraStyle={style.image}
-                        url={null}
-                        showLoadingImage={true}
+                    <Image
+                        style={style.image}
+                        source={require('../../../assets/images/loadingImage.png')}
                     />
                     <Text style={style.title} numberOfLines={1}>
                         Loading....

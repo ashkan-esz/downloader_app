@@ -9,7 +9,17 @@ import PropTypes from 'prop-types';
 
 //todo : swipe to see other posters
 
-const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, posters, isLike, onDoubleTap}) => {
+const MovieTopPoster = ({
+                            title,
+                            episodesDuration,
+                            poster,
+                            rating,
+                            genres,
+                            posters,
+                            widePoster,
+                            isLike,
+                            onDoubleTap
+                        }) => {
     const [overlay, setOverlay] = useState(false);
     const [likeAnimation, setLikeAnimation] = useState(false);
 
@@ -28,20 +38,20 @@ const MovieTopPoster = ({title, episodesDuration, poster, rating, genres, poster
         <View>
             <CustomImage
                 extraStyle={style.image}
-                url={poster}
+                posters={posters.length > 0 ? posters : [poster]}
                 resizeModeStretch={true}
-            >
-                <LikeIconWithAnimation
-                    extraStyle={style.likeIcon}
-                    isActive={likeAnimation}
-                    iconName={"heart"}
-                    outlineIconName={"heart-outline"}
-                    activeIconOnly={true}
-                    activeAnimationOnly={true}
-                    autoHideLike={true}
-                    iconSize={70}
-                />
-            </CustomImage>
+            />
+
+            <LikeIconWithAnimation
+                extraStyle={style.likeIcon}
+                isActive={likeAnimation}
+                iconName={"heart"}
+                outlineIconName={"heart-outline"}
+                activeIconOnly={true}
+                activeAnimationOnly={true}
+                autoHideLike={true}
+                iconSize={70}
+            />
 
             <MovieTopPosterCarousel
                 posters={posters.length > 0 ? posters : [poster]}
@@ -105,7 +115,8 @@ const style = StyleSheet.create({
         height: Mixins.getWindowHeight(55),
     },
     likeIcon: {
-        paddingBottom: 10,
+        // paddingTop: -10,
+        position: 'absolute',
     },
     doubleTap: {
         position: 'absolute',
@@ -189,6 +200,7 @@ MovieTopPoster.propTypes = {
     rating: PropTypes.number.isRequired,
     genres: PropTypes.array.isRequired,
     posters: PropTypes.array.isRequired,
+    widePoster: PropTypes.object,
     isLike: PropTypes.bool.isRequired,
     onDoubleTap: PropTypes.func.isRequired,
 }

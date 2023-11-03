@@ -112,6 +112,7 @@ const MovieScreen = () => {
                         rating={routeParams.rating}
                         genres={data ? data.genres : []}
                         posters={data ? data.posters : []}
+                        widePoster={data?.poster_wide_s3}
                         isLike={isLike}
                         onDoubleTap={_onLike}
                     />

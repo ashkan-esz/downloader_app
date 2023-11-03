@@ -5,7 +5,7 @@ import {Colors, Mixins} from "../../styles";
 import {SignUpForm} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useSelector} from "react-redux";
-import FastImage from "react-native-fast-image";
+import { Image } from 'expo-image';
 
 
 const SignUpScreen = ({navigation}) => {
@@ -21,7 +21,7 @@ const SignUpScreen = ({navigation}) => {
                 activeOpacity={1}
                 onPress={() => Keyboard.dismiss()}
             >
-                <FastImage
+                <Image
                     source={require('../../assets/icons/logo.png')}
                     style={style.logo}
                 />

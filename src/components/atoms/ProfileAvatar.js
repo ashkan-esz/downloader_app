@@ -19,11 +19,10 @@ const ProfileAvatar = ({size, onPress}) => {
             ImageComponent={CustomImage}
             imageProps={{
                 extraStyle: style.image,
-                url: profileImages.length > 0 ? profileImages[0].url : profileImage ? {url: profileImage} : null,
+                posters: profileImages.length > 0 ? profileImages.map(p => ({url: p})) : [{url: profileImage}],
                 onPress: onPress,
                 resizeModeStretch: false,
                 isProfile: true,
-                noProgress: true,
             }}
             onPress={onPress}
             rounded

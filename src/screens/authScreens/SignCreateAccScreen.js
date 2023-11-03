@@ -3,13 +3,13 @@ import {View, StyleSheet} from 'react-native';
 import {SignInCreateAcc} from "../../components/molecules";
 import {ScreenLayout} from "../../components/layouts";
 import {Colors, Mixins} from "../../styles";
-import FastImage from "react-native-fast-image";
+import { Image } from 'expo-image';
 
 
 const SignCreateAccScreen = ({navigation}) => {
     return (
         <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND}>
-            <FastImage
+            <Image
                 source={require('../../assets/icons/logo.png')}
                 style={style.logo}
             />

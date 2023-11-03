@@ -42,30 +42,31 @@ const HomeMovieCard = ({
 
                 <CustomImage
                     extraStyle={style.image}
-                    url={posters[0]}
+                    posters={posters}
                     onPress={_navigateToMovieScreen}
                     resizeModeStretch={true}
-                >
-                    {
-                        (like || dislike || follow) && <View style={style.likeContainer}>
-                            {
-                                follow && <Ionicons
-                                    style={(like || dislike) && style.bookmarkIcon}
-                                    name={'bookmark'}
-                                    size={22}
-                                    color={Colors.BOOKMARK_ICON}
-                                />
-                            }
-                            {
-                                (like || dislike) && <Ionicons
-                                    name={like ? 'heart' : 'md-heart-dislike'}
-                                    size={22}
-                                    color={"red"}
-                                />
-                            }
-                        </View>
-                    }
-                </CustomImage>
+                    movieId={movieId}
+                />
+
+                {
+                    (like || dislike || follow) && <View style={style.likeContainer}>
+                        {
+                            follow && <Ionicons
+                                style={(like || dislike) && style.bookmarkIcon}
+                                name={'bookmark'}
+                                size={22}
+                                color={Colors.BOOKMARK_ICON}
+                            />
+                        }
+                        {
+                            (like || dislike) && <Ionicons
+                                name={like ? 'heart' : 'md-heart-dislike'}
+                                size={22}
+                                color={"red"}
+                            />
+                        }
+                    </View>
+                }
 
                 <Text style={style.title} numberOfLines={1}>
                     {title}
@@ -104,6 +105,8 @@ const style = StyleSheet.create({
         paddingRight: 3,
         paddingTop: 3,
         paddingBottom: 3,
+        position: 'absolute',
+        left: 3,
     },
     bookmarkIcon: {
         marginBottom: 10,

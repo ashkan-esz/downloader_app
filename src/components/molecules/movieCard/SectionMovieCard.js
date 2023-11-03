@@ -78,22 +78,23 @@ const SectionMovieCard = ({
 
             <CustomImage
                 extraStyle={[style.image, style.imageShadow]}
-                url={posters[0]}
+                posters={posters}
                 onPress={_navigateToMovieScreen}
-            >
-                <LikeIconWithAnimation
-                    extraStyle={style.likeIcon}
-                    isActive={likeAnimation}
-                    iconName={"heart"}
-                    outlineIconName={"heart-outline"}
-                    activeIconOnly={true}
-                    activeAnimationOnly={true}
-                    autoHideLike={true}
-                    iconSize={70}
-                    onPress={_navigateToMovieScreen}
-                    disableOnPressActivation={true}
-                />
-            </CustomImage>
+                movieId={movieId}
+            />
+
+            <LikeIconWithAnimation
+                extraStyle={style.likeIcon}
+                isActive={likeAnimation}
+                iconName={"heart"}
+                outlineIconName={"heart-outline"}
+                activeIconOnly={true}
+                activeAnimationOnly={true}
+                autoHideLike={true}
+                iconSize={70}
+                onPress={_navigateToMovieScreen}
+                disableOnPressActivation={true}
+            />
 
             <View style={style.infoContainer}>
                 <Text style={style.title} numberOfLines={1}>
@@ -172,6 +173,7 @@ const style = StyleSheet.create({
     },
     likeIcon: {
         paddingBottom: 10,
+        position: 'absolute',
     },
     infoContainer: {
         paddingTop: 5,

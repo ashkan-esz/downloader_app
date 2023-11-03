@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import * as Updates from "expo-updates";
 import {useDispatch} from "react-redux";
-import FastImage from "react-native-fast-image";
+import { Image } from 'expo-image';
 import {setDownloadingUpdateFlag, setUpdateFlag} from "../redux/slices/user.slice";
 
 
@@ -30,8 +30,8 @@ const useCheckUpdate = () => {
             dispatch(setDownloadingUpdateFlag(false));
             dispatch(setUpdateFlag(false));
             await Updates.clearUpdateCacheExperimentalAsync();
-            await FastImage.clearMemoryCache();
-            await FastImage.clearDiskCache();
+            await Image.clearMemoryCache();
+            await Image.clearDiskCache();
             await Updates.reloadAsync();
         } catch (e) {
             dispatch(setUpdateFlag(false));

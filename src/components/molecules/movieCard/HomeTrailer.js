@@ -37,10 +37,12 @@ const HomeTrailer = ({
                 videoStyle={style.video}
                 isOnScreenView={isOnScreenView}
                 trailer={trailer}
-                poster={widePoster  || posters[0]}
+                posters={posters}
+                widePoster={widePoster}
                 onLongPress={_navigateToMovieScreen}
                 like={like}
                 dislike={dislike}
+                movieId={movieId}
             />
 
             <Text

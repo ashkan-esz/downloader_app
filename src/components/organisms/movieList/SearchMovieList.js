@@ -22,8 +22,6 @@ const SearchMovieList = ({
                              showScrollTopIcon
                          }) => {
 
-    const moviesData = data.map(item => item.movies).flat(1);
-
     if (!searchValue) {
         return null;
     }
@@ -50,7 +48,7 @@ const SearchMovieList = ({
             flatListRef={flatListRef}
             onScrollDo={onScroll}
             showScrollTopIcon={showScrollTopIcon}
-            data={moviesData}
+            data={data}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             itemSize={itemSize}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {Text} from "@rneui/themed";
-import {CustomImage} from "../../atoms";
+import {Image} from "expo-image";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -12,10 +12,9 @@ const HomeTrailersListPlaceHolders = ({extraStyle, number}) => {
         for (let i = 0; i < number; i++) {
             array.push(
                 <View style={style.trailerContainer} key={i}>
-                    <CustomImage
-                        extraStyle={style.image}
-                        url={null}
-                        showLoadingImage={true}
+                    <Image
+                        style={style.image}
+                        source={require('../../../assets/images/loadingImage.png')}
                     />
                     <Text style={style.title} numberOfLines={1}>
                         Loading....

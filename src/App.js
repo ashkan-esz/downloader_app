@@ -60,7 +60,6 @@ LogBox.ignoreLogs([
 //todo : get new build
 //todo : use new architect
 //todo : update dependencies
-//todo : update expo sdk
 
 //------------------------------------------------
 

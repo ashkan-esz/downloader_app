@@ -34,7 +34,7 @@ const SearchScreen = () => {
 
     const getData = async ({pageParam = 1}) => {
         if (!debouncedSearchValue) {
-            return {movies: [], staff: [], characters: []};
+            return [];
         }
         let result = await searchTitle(debouncedSearchValue, types, 'low', pageParam);
         if (result !== 'error') {
@@ -50,21 +50,16 @@ const SearchScreen = () => {
         getData,
         {
             getNextPageParam: (lastPage, allPages) => {
-                if (
-                    lastPage.movies.length && lastPage.movies.length % 12 === 0 ||
-                    lastPage.staff.length && lastPage.staff.length % 12 === 0 ||
-                    lastPage.characters.length && lastPage.characters.length % 12 === 0
-                ) {
+                if (lastPage.length % 12 === 0 && lastPage.length !== 0) {
                     return allPages.length + 1;
                 }
                 return undefined;
             },
-            placeholderData: {pages: [{movies: [], staff: [], characters: []}]},
+            placeholderData: {pages: [[]]},
             keepPreviousData: true,
             cacheTime: 3 * 60 * 1000,
             staleTime: 3 * 60 * 1000,
         });
-
 
     const _onRefresh = async () => {
         setRefreshing(true);
@@ -100,9 +95,9 @@ const SearchScreen = () => {
 
                 <SearchMovieList
                     flatListRef={flatListRef}
-                    showScrollTopIcon={(data.pages[0].movies.length > 0)}
+                    showScrollTopIcon={(data.pages[0].length > 0)}
                     searchValue={debouncedSearchValue}
-                    data={data.pages}
+                    data={data.pages.flat(1)}
                     isLoading={isLoading}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}

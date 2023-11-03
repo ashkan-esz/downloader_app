@@ -143,16 +143,12 @@ export const searchTitle = async (title, types, dataLevel, page, years = '1900-2
         title = title.toLowerCase();
         types = types.join('-');
         let response = await API.get(
-            `/movies/searchByTitle/${title}/${types}/${dataLevel}/${years}/${imdbScores}/${malScores}/${page}`
+            `/movies/searchMovie/${dataLevel}/${page}?title=${title}&types=${types}&imdbScores=${imdbScores}&malScores=${malScores}&years=${years}`,
         );
         return response.data.data;
     } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return {
-                movies: [],
-                staff: [],
-                characters: [],
-            };
+        if (error.response?.status === 404) {
+            return [];
         }
         return 'error';
     }

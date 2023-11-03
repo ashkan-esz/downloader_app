@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import LikeIconWithAnimation from "./LikeIconWithAnimation";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
@@ -20,7 +20,7 @@ const SectionMovieCardRating = ({
     return (
         <View style={extraStyle}>
             <View style={style.ratingContainer}>
-                <FastImage
+                <Image
                     source={require('../../assets/icons/imdb.png')}
                     style={style.icon}
                 />
@@ -28,7 +28,7 @@ const SectionMovieCardRating = ({
                 <Text style={style.separator}> | </Text>
                 <Text style={style.ratingNumber}>{rating.imdb || '?'} </Text>
 
-                <FastImage
+                <Image
                     source={require('../../assets/icons/mal.png')}
                     style={[style.icon, style.malIcon]}
                 />
