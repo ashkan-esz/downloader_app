@@ -55,8 +55,8 @@ const CustomVideo = ({
         <Video
             style={videoStyle}
             source={{uri: trailer}}
-            usePoster={true}
-            posterSource={poster ? {uri: poster.url} : null}
+            usePoster={!!poster}
+            posterSource={{uri: poster}}
             posterStyle={[style.video, {resizeMode: 'stretch'}]}
             ref={videoRef}
             rate={1.0}
@@ -74,14 +74,14 @@ const CustomVideo = ({
 const style = StyleSheet.create({});
 
 CustomVideo.propTypes = {
-    poster: null,
+    poster: '',
 };
 
 CustomVideo.propTypes = {
     videoStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool,
     trailer: PropTypes.string.isRequired,
-    poster: PropTypes.object,
+    poster: PropTypes.string,
     setIsPlaying: PropTypes.func.isRequired,
     startFullscreen: PropTypes.bool,
 }

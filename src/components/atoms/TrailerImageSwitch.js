@@ -74,7 +74,7 @@ const TrailerImageSwitch = ({
             videoStyle={videoStyle}
             isOnScreenView={isOnScreenView}
             trailer={trailer}
-            poster={widePoster || posters[0]}
+            poster={widePoster || posters[0]?.url || ''}
             setIsPlaying={setIsPlaying}
             startFullscreen={startFullscreen}
         />
