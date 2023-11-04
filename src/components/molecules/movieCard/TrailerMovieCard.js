@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
-import {TrailerImageSwitch, SectionMovieCardRating, DoubleTap} from "../../atoms";
+import {TrailerImageSwitch, SectionMovieCardRating} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {useFollow, useLikeOrDislike} from "../../../hooks";
 import {homeStackHelpers} from "../../../helper";
@@ -52,10 +52,6 @@ const TrailerMovieCard = ({
         _onFollow,
     } = useFollow(movieId, followsCount, follow);
 
-    const _handleDoubleTap = useCallback(() => {
-        !isLike && _onLike();
-    }, [isLike]);
-
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 4);
 
     const typeColor = {
@@ -79,11 +75,9 @@ const TrailerMovieCard = ({
                 movieId={movieId}
             />
 
-            <DoubleTap
+            <TouchableOpacity
                 activeOpacity={0.8}
-                onTap={memorizedNavigation}
-                onDoubleTap={_handleDoubleTap}
-                doublePressDelay={180}
+                onPress={memorizedNavigation}
             >
                 <View style={style.infoContainer}>
                     <Text style={style.title} numberOfLines={1}>
@@ -141,7 +135,7 @@ const TrailerMovieCard = ({
                     </View>
 
                 </View>
-            </DoubleTap>
+            </TouchableOpacity>
         </View>
     );
 }

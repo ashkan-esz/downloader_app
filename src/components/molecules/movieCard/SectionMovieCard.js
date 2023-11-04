@@ -1,8 +1,7 @@
-import React, {memo, useCallback, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {memo, useCallback} from 'react';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
-import DropShadow from "react-native-drop-shadow";
-import {SectionMovieCardRating, CustomImage, LikeIconWithAnimation, DoubleTap} from "../../atoms";
+import {SectionMovieCardRating, CustomImage} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
 import {useLikeOrDislike, useFollow} from "../../../hooks";
@@ -52,12 +51,6 @@ const SectionMovieCard = ({
         _onFollow,
     } = useFollow(movieId, followsCount, follow);
 
-    const [likeAnimation, setLikeAnimation] = useState(false);
-    const _handleDoubleTap = () => {
-        !isLike && _onLike();
-        setLikeAnimation(prevState => !prevState);
-    }
-
     const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode, tab);
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
 
@@ -65,35 +58,17 @@ const SectionMovieCard = ({
         color: type.includes('movie') ? 'red' : 'cyan',
     }
 
-    //todo : remove shadow to make it lighter
-
     return (
-        <DoubleTap
-            extraStyle={[style.container, extraStyle]}
+        <TouchableOpacity
+            style={[style.container, extraStyle]}
+            onPress={_navigateToMovieScreen}
             activeOpacity={0.8}
-            onTap={_navigateToMovieScreen}
-            onDoubleTap={_handleDoubleTap}
-            doublePressDelay={180}
         >
-
             <CustomImage
                 extraStyle={[style.image, style.imageShadow]}
                 posters={posters}
                 onPress={_navigateToMovieScreen}
                 movieId={movieId}
-            />
-
-            <LikeIconWithAnimation
-                extraStyle={style.likeIcon}
-                isActive={likeAnimation}
-                iconName={"heart"}
-                outlineIconName={"heart-outline"}
-                activeIconOnly={true}
-                activeAnimationOnly={true}
-                autoHideLike={true}
-                iconSize={70}
-                onPress={_navigateToMovieScreen}
-                disableOnPressActivation={true}
             />
 
             <View style={style.infoContainer}>
@@ -139,7 +114,7 @@ const SectionMovieCard = ({
                     <Text style={style.statement}>Quality :</Text> {partialQuality}
                 </Text>
             </View>
-        </DoubleTap>
+        </TouchableOpacity>
     );
 }
 
@@ -170,10 +145,6 @@ const style = StyleSheet.create({
         height: Mixins.getWindowHeight(33) + 8,
         maxHeight: 250,
         borderRadius: 8,
-    },
-    likeIcon: {
-        paddingBottom: 10,
-        position: 'absolute',
     },
     infoContainer: {
         paddingTop: 5,
