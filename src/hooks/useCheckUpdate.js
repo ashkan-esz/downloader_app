@@ -30,6 +30,7 @@ const useCheckUpdate = () => {
             dispatch(setDownloadingUpdateFlag(false));
             dispatch(setUpdateFlag(false));
             await Updates.clearUpdateCacheExperimentalAsync();
+            await Updates.clearLogEntriesAsync();
             await Image.clearMemoryCache();
             await Image.clearDiskCache();
             await Updates.reloadAsync();

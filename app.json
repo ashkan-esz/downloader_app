@@ -1,37 +1,29 @@
 {
   "expo": {
-    "jsEngine": "hermes",
     "name": "downloader_app",
-    "version": "0.0.1",
     "slug": "downloader_app",
+    "runtimeVersion": "1.0.0",
     "updates": {
-      "enabled": false,
+      "url": "http://localhost:3000/api/manifest?project=downloader_api&channel=default",
+      "enabled": true,
+      "checkAutomatically": "ON_ERROR_RECOVERY",
       "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_ERROR_RECOVERY"
+      "codeSigningCertificate": "./certificate.pem",
+      "codeSigningMetadata": {
+        "keyid": "main",
+        "alg": "rsa-v1_5-sha256"
+      }
     },
-    "assetBundlePatterns": [
-      "assets/images/*"
-    ],
+    "ios": {
+      "bundleIdentifier": "com.ashkanaz2828.downloader-app"
+    },
+    "android": {
+      "package": "com.ashkanaz2828.downloader_app"
+    },
     "splash": {
       "image": "./src/assets/images/splashScreen.png",
       "backgroundColor": "#22222B",
       "resizeMode": "contain"
-    },
-    "icon": "./assets/icons/logo.png",
-    "ios": {
-      "bundleIdentifier": "com.ashkanaz2828.downloader-app",
-      "buildNumber": "1.0.0",
-      "jsEngine": "hermes"
-    },
-    "android": {
-      "package": "com.ashkanaz2828.downloader_app",
-      "versionCode": 1,
-      "jsEngine": "hermes"
-    },
-    "plugins": [
-      "expo-av",
-      "expo-splash-screen",
-      "expo-file-system"
-    ]
+    }
   }
 }

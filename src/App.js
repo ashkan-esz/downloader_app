@@ -28,7 +28,6 @@ LogBox.ignoreLogs([
 ]);
 
 //todo : check build commands
-//todo : force to download new version from store
 //todo : bottom of page is white
 //todo : stop rotation except trailer fullscreen
 //todo : remove unused dependencies
@@ -51,16 +50,12 @@ LogBox.ignoreLogs([
 
 //todo : show no update available on icon click
 //todo : check for update option in profile screen
-//todo : ota update dont come again after cancel
-//todo : why app update on restart
 
 //todo : app starts soo slow
 //todo : use proguard
 
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
-
-//todo : handle ota-update
 
 //------------------------------------------------
 
