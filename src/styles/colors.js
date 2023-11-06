@@ -22,3 +22,6 @@ export const GRAY_DARK = '#8a8a8a';
 //movie screen
 export const SectionHeader = '#FD3A4A'; //RED2
 export const BOOKMARK_ICON = '#478df3'; //
+
+export const SHIMMER_DARK = '#2f2f3b';
+export const SHIMMER_LIGHT = '#5a5a71';

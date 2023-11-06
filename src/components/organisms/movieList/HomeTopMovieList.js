@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {MovieError} from "../../atoms";
-import {HomeMovieCard, HomeMovieListPlaceHolder} from "../../molecules";
+import {HomeMovieCard, HomeMovieCardPlaceHolder} from "../../molecules";
 import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -19,10 +19,14 @@ const HomeTopMovieList = ({loadedData, tab, isLoading, error, retry}) => {
 
     if (isLoading) {
         return (
-            <HomeMovieListPlaceHolder
-                extraStyle={style.container}
-                number={3}
-            />
+            <View style={style.container}>
+                {
+                    Array.apply(null, Array(3)).map((item, index) => (
+                        <HomeMovieCardPlaceHolder key={index}/>
+                        )
+                    )
+                }
+            </View>
         );
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {MovieError} from "../atoms";
-import {HomeMovieCard, HomeMovieListPlaceHolder} from "../molecules";
+import {HomeMovieCard, HomeMovieCardPlaceHolder} from "../molecules";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useNavigation} from "@react-navigation/native";
 import {getSeriesOfDay} from "../../api";
@@ -50,6 +50,21 @@ const HomeTimeLineSection = () => {
         );
     }
 
+    if (data.length === 0 || isPending) {
+        return (
+            <View style={style.container}>
+                <Text style={style.sectionTitle}>Today Series</Text>
+                <View style={style.movieListContainer}>
+                    {
+                        Array.apply(null, Array(3)).map((item, index) => (
+                            <HomeMovieCardPlaceHolder extraStyle={style.movieCard} key={index}/>
+                        ))
+                    }
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={style.container}>
             <Text style={style.sectionTitle}>Today Series</Text>
@@ -59,33 +74,28 @@ const HomeTimeLineSection = () => {
                 See All
             </Text>
 
-            {
-                (data.length === 0 || isPending)
-                    ? <HomeMovieListPlaceHolder extraStyle={style.movieListContainer} number={3}/>
-                    : <View style={style.movieListContainer}>
-                        {
-                            data.slice(0, 3).map((item) => {
-                                return (
-                                    <HomeMovieCard
-                                        key={item._id.toString()}
-                                        posters={item.posters}
-                                        movieId={item._id}
-                                        title={item.rawTitle}
-                                        type={item.type}
-                                        tab={'todaySeries'}
-                                        latestData={item.latestData}
-                                        nextEpisode={item.nextEpisode}
-                                        rating={item.rating.imdb || item.rating.myAnimeList}
-                                        like={item.userStats.like}
-                                        dislike={item.userStats.dislike}
-                                        follow={item.userStats.follow}
-                                    />
-                                );
-                            })
-                        }
-                    </View>
-            }
-
+            <View style={style.movieListContainer}>
+                {
+                    data.slice(0, 3).map((item) => {
+                        return (
+                            <HomeMovieCard
+                                key={item._id.toString()}
+                                posters={item.posters}
+                                movieId={item._id}
+                                title={item.rawTitle}
+                                type={item.type}
+                                tab={'todaySeries'}
+                                latestData={item.latestData}
+                                nextEpisode={item.nextEpisode}
+                                rating={item.rating.imdb || item.rating.myAnimeList}
+                                like={item.userStats.like}
+                                dislike={item.userStats.dislike}
+                                follow={item.userStats.follow}
+                            />
+                        );
+                    })
+                }
+            </View>
         </View>
     );
 };

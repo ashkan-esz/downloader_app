@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ScrollView} from 'react-native';
 import {Text} from "@rneui/themed";
 import {MovieError} from "../../atoms";
-import {HomeScreenFlashList, HomeTrailer, HomeTrailersListPlaceHolder} from "../../molecules";
+import {HomeScreenFlashList, HomeTrailer, HomeTrailerCardPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getTrailers} from "../../../api";
@@ -55,10 +55,21 @@ const HomeTrailersList = () => {
 
     if (data.length === 0 || isPending) {
         return (
-            <HomeTrailersListPlaceHolder
-                extraStyle={style.listContainer}
-                number={3}
-            />
+            <View style={style.container}>
+                <Text style={style.sectionTitle}>New Trailers</Text>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={style.placeHolderScrollView}
+                >
+                    {
+                        Array.apply(null, Array(3)).map((item, index) => (
+                                <HomeTrailerCardPlaceHolder key={index}/>
+                            )
+                        )
+                    }
+                </ScrollView>
+            </View>
         );
     }
 
@@ -112,6 +123,11 @@ const style = StyleSheet.create({
         width: Mixins.WINDOW_WIDTH - 10,
         height: Mixins.getWindowHeight(20) + 60,
         minHeight: 208,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    placeHolderScrollView: {
+        marginTop: 20
     },
     sectionTitle: {
         color: '#ffffff',

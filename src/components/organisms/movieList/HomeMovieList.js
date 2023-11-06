@@ -4,7 +4,7 @@ import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {MovieError} from "../../atoms";
-import {HomeMovieCard, HomeMovieListPlaceHolder, HomeScreenFlashList} from "../../molecules";
+import {HomeMovieCard, HomeMovieCardPlaceHolder, HomeScreenFlashList} from "../../molecules";
 import {getSortedMovies} from "../../../api";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -55,12 +55,18 @@ const HomeMovieList = ({name, pageType}) => {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>{name}</Text>
-                <HomeMovieListPlaceHolder
-                    extraStyle={style.listContainer}
-                    number={3}
-                    rating={false}
-                    latestData={false}
-                />
+                <View style={style.listContainer}>
+                    {
+                        Array.apply(null, Array(3)).map((item, index) => (
+                                <HomeMovieCardPlaceHolder
+                                    extraStyle={style.movieCard}
+                                    rating={false}
+                                    latestData={false}
+                                    key={index}/>
+                            )
+                        )
+                    }
+                </View>
             </View>
         );
     }
@@ -111,7 +117,7 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 15,
-        paddingBottom: 10,
+        paddingBottom: 15,
     },
     sectionTitle: {
         color: '#ffffff',
@@ -132,6 +138,8 @@ const style = StyleSheet.create({
         width: Mixins.WINDOW_WIDTH - 10,
         height: Mixins.getWindowHeight(29),
         minHeight: 200,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     movieCard: {
         marginRight: 6

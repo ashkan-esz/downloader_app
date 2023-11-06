@@ -49,10 +49,10 @@ const HomeScreen = () => {
                     <HomeTopSection/>
                     <HomeTimeLineSection/>
                     <HomeTrailersList/>
-                    <HomeMovieList
-                        name={'Top'}
-                        pageType={'top'}
-                    />
+                    {/*<HomeMovieList*/}
+                    {/*    name={'Top'}*/}
+                    {/*    pageType={'top'}*/}
+                    {/*/>*/}
                     <HomeMovieList
                         name={'Top Anime'}
                         pageType={'animeTopAiring'}

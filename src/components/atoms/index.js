@@ -26,3 +26,4 @@ export {default as MyOverlay} from './MyOverlay';
 export {default as MovieLikeAndBookmark} from './MovieLikeAndBookmark';
 export {default as LikeIconWithAnimation} from './LikeIconWithAnimation';
 export {default as DoubleTap} from './DoubleTap';
+export {default as MyShimmerPlaceHolder} from './MyShimmerPlaceHolder';

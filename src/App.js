@@ -52,7 +52,6 @@ LogBox.ignoreLogs([
 //todo : check for update option in profile screen
 
 //todo : app starts soo slow
-//todo : use proguard
 
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
