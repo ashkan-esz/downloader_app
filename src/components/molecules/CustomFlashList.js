@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet, RefreshControl, ActivityIndicator} from 'react-native';
 import {FlashList} from "@shopify/flash-list";
-import {Text} from "@rneui/themed";
 import {MovieError, ScrollTop} from "../atoms";
 import {useScrollDirection} from "../../hooks";
-import {Colors, Mixins, Typography} from "../../styles";
+import {Mixins} from "../../styles";
 import PropTypes from 'prop-types';
+import {useSelector} from "react-redux";
 
 
 const CustomFlashList = ({
@@ -22,7 +22,6 @@ const CustomFlashList = ({
                              onRefresh,
                              fadingEdgeLength,
                              listFooterPaddingBottom,
-                             listFooterMarginTop,
                              showScrollTopIcon = false,
                              isError,
                              retry,
@@ -36,23 +35,27 @@ const CustomFlashList = ({
                          }) => {
 
     const {scrollDirection, onScroll} = useScrollDirection();
+    const internet = useSelector(state => state.user.internet);
+
+    const containerHeight = useMemo(() => ({
+        height: internet ? Mixins.WINDOW_HEIGHT - 140 : Mixins.WINDOW_HEIGHT - 165,
+    }), [internet]);
 
     const _onScroll = (event) => {
         onScrollDo && onScrollDo();
         onScroll(event);
     }
 
-    const listFooterText = isFetchingNextPage
-        ? 'Loading....'
-        : (!isLoading && data.length > 4) ? 'END' : ''
-
-    const listFooterComponent = () => (
-        <View style={style.listFooter}>
-            <Text style={style.listFooterText}>
-                {listFooterText}
-            </Text>
-        </View>
-    );
+    const listFooterComponent = useMemo(() => (
+        isFetchingNextPage && <ActivityIndicator
+            style={{
+                marginBottom: 30 + (listFooterPaddingBottom || 0) + (internet ? 0 : 5),
+            }}
+            size={"large"}
+            color={"red"}
+            animating={true}
+        />
+    ), [isFetchingNextPage, listFooterPaddingBottom, internet]);
 
     if (isError) {
         return (
@@ -79,7 +82,7 @@ const CustomFlashList = ({
     }
 
     return (
-        <View style={[style.container, extraStyle]}>
+        <View style={[style.container, containerHeight, extraStyle]}>
             <FlashList
                 numColumns={columnsNumber || 1}
                 ref={flatListRef}
@@ -105,10 +108,6 @@ const CustomFlashList = ({
                     />
                 }
                 ListFooterComponent={listFooterComponent}
-                ListFooterComponentStyle={{
-                    paddingBottom: listFooterPaddingBottom || 0,
-                    marginTop: listFooterMarginTop || 0,
-                }}
                 refreshControl={
                     <RefreshControl
                         onRefresh={onRefresh}
@@ -120,7 +119,7 @@ const CustomFlashList = ({
 
             <ScrollTop
                 flatListRef={flatListRef}
-                extraMarginBottom={listFooterPaddingBottom}
+                extraMarginBottom={(listFooterPaddingBottom || 0) + (internet ? 0 : 5)}
                 show={scrollDirection === 'top' && !isLoading && !isError && showScrollTopIcon}
             />
 
@@ -132,7 +131,6 @@ const style = StyleSheet.create({
     container: {
         flex: 0,
         flexShrink: 1,
-        height: Mixins.WINDOW_HEIGHT - 100,
         marginTop: 10,
     },
     notFound: {
@@ -144,21 +142,6 @@ const style = StyleSheet.create({
     loadingActivity: {
         marginTop: 30
     },
-    listFooter: {
-        width: Mixins.getWindowWidth(90),
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 100,
-    },
-    listFooterText: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        textAlignVertical: 'center',
-        marginTop: -30,
-        fontSize: Typography.getFontSize(22),
-        color: Colors.RED2,
-    }
 });
 
 CustomFlashList.propTypes = {
@@ -172,7 +155,6 @@ CustomFlashList.propTypes = {
     onRefresh: PropTypes.func.isRequired,
     fadingEdgeLength: PropTypes.number,
     listFooterPaddingBottom: PropTypes.number,
-    listFooterMarginTop: PropTypes.number,
     flatListRef: PropTypes.object,
     onViewableItemsChanged: PropTypes.func,
     onScrollDo: PropTypes.func,

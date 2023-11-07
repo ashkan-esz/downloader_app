@@ -1,11 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {LayoutAnimation, Platform, StyleSheet, UIManager, View} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {LayoutAnimation, Platform, StatusBar, StyleSheet, UIManager, View} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {SectionMovieList} from "../../components/organisms";
 import {SectionNavBar, FilterType} from "../../components/molecules";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {getNews, getSortedMovies, getUpdates} from "../../api";
+import {useSelector} from "react-redux";
 
 
 const SectionScreen = () => {
@@ -18,6 +19,13 @@ const SectionScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
+    const internet = useSelector(state => state.user.internet);
+
+    const containerStyle = useMemo(() => ({
+        position: 'absolute',
+        width: '100%',
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 35,
+    }), [internet]);
 
     useEffect(() => {
         if (Platform.OS === 'android') {
@@ -117,7 +125,7 @@ const SectionScreen = () => {
 
     return (
         <ScreenLayout paddingSides={10}>
-            <View style={style.container}>
+            <View style={containerStyle}>
 
                 <SectionNavBar
                     extraStyle={style.navbar}
@@ -155,13 +163,7 @@ const SectionScreen = () => {
     );
 };
 
-const style = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        width: '100%',
-        top: 75,
-    }
-});
+const style = StyleSheet.create({});
 
 
 export default SectionScreen;

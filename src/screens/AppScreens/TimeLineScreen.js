@@ -1,10 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {View, StyleSheet, StatusBar} from 'react-native';
 import {TimeLinePaging} from "../../components/atoms";
 import {TimeLineMovieList} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {getSeriesOfDay} from "../../api";
+import {useSelector} from "react-redux";
 
 
 const TimeLineScreen = () => {
@@ -13,6 +14,13 @@ const TimeLineScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
+    const internet = useSelector(state => state.user.internet);
+
+    const containerStyle = useMemo(() => ({
+        position: 'absolute',
+        width: '100%',
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 35,
+    }), [internet]);
 
     useEffect(() => {
         const todayNumber = new Date().getDay();
@@ -91,7 +99,7 @@ const TimeLineScreen = () => {
 
     return (
         <ScreenLayout paddingSides={10}>
-            <View style={style.container}>
+            <View style={containerStyle}>
 
                 <TimeLinePaging
                     extraStyle={style.topPaging}
@@ -121,11 +129,6 @@ const TimeLineScreen = () => {
 };
 
 const style = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        width: '100%',
-        top: 80,
-    },
     topPaging: {
         marginTop: 5,
         paddingBottom: 15,

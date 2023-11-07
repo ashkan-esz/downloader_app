@@ -41,7 +41,7 @@ const style = StyleSheet.create({
         backgroundColor: '#b52424',
         width: Mixins.WINDOW_WIDTH,
         height: 28,
-        marginBottom: 10,
+        marginBottom: 25,
     },
     text: {
         color: '#fff'

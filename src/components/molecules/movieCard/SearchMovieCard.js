@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {Ionicons} from "@expo/vector-icons";
@@ -118,12 +118,4 @@ SearchMovieCard.propTypes = {
     follow: PropTypes.bool.isRequired,
 }
 
-const areEqual = (prevProps, nextProps) => {
-    return prevProps.posters[0] && nextProps.posters[0] &&
-        prevProps.posters[0]?.url === nextProps.posters[0]?.url &&
-        prevProps.like === nextProps.like &&
-        prevProps.dislike === nextProps.dislike &&
-        prevProps.follow === nextProps.follow;
-}
-
-export default memo(SearchMovieCard, areEqual);
+export default SearchMovieCard;

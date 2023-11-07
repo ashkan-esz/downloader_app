@@ -44,7 +44,6 @@ LogBox.ignoreLogs([
 
 //todo : fix splash screen jump up before end
 //todo : add gesture
-//todo : handle notch
 
 //todo : fix 'MyOverlay' style
 

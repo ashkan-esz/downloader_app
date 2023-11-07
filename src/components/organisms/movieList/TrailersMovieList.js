@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 import {CustomFlashList, TrailerMovieCard} from "../../molecules";
 import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
+import {useSelector} from "react-redux";
 
 const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH / 1.6, 200) * 1.7) + 35; //417,472
 
@@ -22,6 +23,7 @@ const trailersMovieList = ({
                            }) => {
 
     const [onScreenViewItems, setOnScreenViewItems] = useState([]);
+    const internet = useSelector(state => state.user.internet);
 
     const handleVieweableItemsChanged = useCallback(({viewableItems}) => {
         setOnScreenViewItems(viewableItems.map(item => item.index));
@@ -63,7 +65,6 @@ const trailersMovieList = ({
             onEndReached={onEndReached}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            listFooterMarginTop={-15}
             isError={isError}
             retry={retry}
             isLoading={isLoading}

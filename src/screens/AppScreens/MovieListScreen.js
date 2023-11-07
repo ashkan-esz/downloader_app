@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
@@ -6,6 +6,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {FilterType} from "../../components/molecules";
 import {MovieList} from "../../components/organisms";
 import {getSortedMovies} from "../../api";
+import {useSelector} from "react-redux";
 
 const MovieListScreen = () => {
     const route = useRoute();
@@ -14,6 +15,13 @@ const MovieListScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
+    const internet = useSelector(state => state.user.internet);
+
+    const containerStyle = useMemo(() => ({
+        position: 'absolute',
+        width: '100%',
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 35,
+    }), [internet]);
 
     const _closeFilterBox = () => {
         if (expanded) {
@@ -63,7 +71,7 @@ const MovieListScreen = () => {
 
     return (
         <ScreenLayout paddingSides={10}>
-            <View style={style.container}>
+            <View style={containerStyle}>
                 <FilterType
                     expanded={expanded}
                     setExpanded={setExpanded}
@@ -90,13 +98,7 @@ const MovieListScreen = () => {
     );
 };
 
-const style = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        width: '100%',
-        top: StatusBar.currentHeight + 60,
-    }
-});
+const style = StyleSheet.create({});
 
 
 export default MovieListScreen;

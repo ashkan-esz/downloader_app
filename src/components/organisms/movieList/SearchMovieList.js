@@ -1,8 +1,9 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {CustomFlashList, SearchMovieCard} from "../../molecules";
 import {Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
+import {useSelector} from "react-redux";
 
 const itemSize = Mixins.getWindowHeight(24) + Typography.getFontSize(16 + 14 + 3) + 20; //252,256
 
@@ -21,6 +22,13 @@ const SearchMovieList = ({
                              onScroll,
                              showScrollTopIcon
                          }) => {
+
+    const internet = useSelector(state => state.user.internet);
+    const listStyle = useMemo(() => ({
+        marginTop: 15,
+        height: internet ? Mixins.WINDOW_HEIGHT - 230 : Mixins.WINDOW_HEIGHT - 255,
+        paddingLeft: 10,
+    }), [internet]);
 
     if (!searchValue) {
         return null;
@@ -43,7 +51,7 @@ const SearchMovieList = ({
 
     return (
         <CustomFlashList
-            extraStyle={style.listWrapper}
+            extraStyle={listStyle}
             columnsNumber={3}
             flatListRef={flatListRef}
             onScrollDo={onScroll}
@@ -56,8 +64,6 @@ const SearchMovieList = ({
             onEndReachedThreshold={0.6}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            listFooterMarginTop={-15}
-            listFooterPaddingBottom={70}
             isError={isError}
             retry={retry}
             isLoading={isLoading}
@@ -67,11 +73,7 @@ const SearchMovieList = ({
     );
 };
 
-const style = StyleSheet.create({
-    listWrapper: {
-        marginTop: 15,
-    }
-});
+const style = StyleSheet.create({});
 
 SearchMovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,

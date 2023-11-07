@@ -23,7 +23,6 @@ const TimeLineMovieList = ({
                                retry
                            }) => {
 
-
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <SectionMovieCard
@@ -58,7 +57,6 @@ const TimeLineMovieList = ({
             onEndReached={onEndReached}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            listFooterMarginTop={-10}
             isError={isError}
             retry={retry}
             isLoading={isLoading}

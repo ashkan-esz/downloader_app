@@ -1,10 +1,11 @@
-import React, {useRef, useState} from 'react';
-import {View, StyleSheet, LayoutAnimation} from 'react-native';
+import React, {useMemo, useRef, useState} from 'react';
+import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {TrailersMovieList} from "../../components/organisms";
 import {FilterType} from "../../components/molecules";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {getTrailers} from "../../api";
+import {useSelector} from "react-redux";
 
 
 const TrailersScreen = () => {
@@ -13,7 +14,13 @@ const TrailersScreen = () => {
     const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
+    const internet = useSelector(state => state.user.internet);
 
+    const containerStyle = useMemo(() => ({
+        position: 'absolute',
+        width: '100%',
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 35,
+    }), [internet]);
 
     const _onScroll = () => {
         if (expanded) {
@@ -55,7 +62,7 @@ const TrailersScreen = () => {
 
     return (
         <ScreenLayout paddingSides={10}>
-            <View style={style.container}>
+            <View style={containerStyle}>
 
                 <FilterType
                     expanded={expanded}
@@ -84,13 +91,7 @@ const TrailersScreen = () => {
     );
 };
 
-const style = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        width: '100%',
-        top: 85,
-    }
-});
+const style = StyleSheet.create({});
 
 
 export default TrailersScreen;

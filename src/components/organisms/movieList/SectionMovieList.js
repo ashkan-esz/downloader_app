@@ -58,7 +58,6 @@ const SectionMovieList = ({
             onEndReached={onEndReached}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            listFooterMarginTop={-10}
             listFooterPaddingBottom={40}
             isError={isError}
             retry={retry}

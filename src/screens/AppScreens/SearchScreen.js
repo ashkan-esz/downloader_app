@@ -1,10 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, LayoutAnimation, Keyboard} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {View, StyleSheet, LayoutAnimation, Keyboard, StatusBar} from 'react-native';
 import {ScreenLayout} from '../../components/layouts';
 import {SearchMovieList} from "../../components/organisms";
 import {CustomSearchBar, FilterType} from "../../components/molecules";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {searchTitle} from "../../api";
+import {useSelector} from "react-redux";
 
 
 const SearchScreen = () => {
@@ -15,6 +16,13 @@ const SearchScreen = () => {
     const searchBarRef = useRef();
     const flatListRef = useRef();
     const queryClient = useQueryClient();
+    const internet = useSelector(state => state.user.internet);
+
+    const containerStyle = useMemo(() => ({
+        position: 'absolute',
+        width: '100%',
+        top: internet ? StatusBar.currentHeight + 95 : StatusBar.currentHeight + 70,
+    }), [internet]);
 
     useEffect(() => {
         searchBarRef.current.focus();
@@ -79,8 +87,8 @@ const SearchScreen = () => {
     return (
         <ScreenLayout
             backgroundColor={'#000000'}
-            paddingSides={20}>
-            <View style={style.container}>
+            paddingSides={10}>
+            <View style={containerStyle}>
 
                 <CustomSearchBar
                     onTextChange={setDebouncedSearchValue}
@@ -117,13 +125,7 @@ const SearchScreen = () => {
     );
 };
 
-const style = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        width: '100%',
-        top: 95,
-    }
-});
+const style = StyleSheet.create({});
 
 
 export default SearchScreen;

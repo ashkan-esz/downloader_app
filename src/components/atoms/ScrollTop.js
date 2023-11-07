@@ -22,7 +22,7 @@ const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
     return (
         show && <AntDesign
             style={[style.icon, extraStyle, {
-                bottom: 50 + (extraMarginBottom | 0)
+                bottom: 20 + (extraMarginBottom | 0)
             }]}
             name="upcircle"
             size={55}
@@ -38,7 +38,7 @@ const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
 const style = StyleSheet.create({
     icon: {
         position: 'absolute',
-        bottom: 50,
+        bottom: 20,
         right: 10,
         zIndex: 10,
     }

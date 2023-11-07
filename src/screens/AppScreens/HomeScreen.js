@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl, StatusBar} from 'react-native';
 import {HomeAvatarAndSearch} from "../../components/molecules";
 import {
@@ -10,11 +10,18 @@ import {
 import {ScreenLayout} from "../../components/layouts";
 import {useQueryClient} from "@tanstack/react-query";
 import {Mixins} from "../../styles";
+import {useSelector} from "react-redux";
 
 
 const HomeScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const queryClient = useQueryClient();
+    const internet = useSelector(state => state.user.internet);
+
+    const containerStyle = useMemo(() => ({
+        top: internet ? StatusBar.currentHeight + 5 : StatusBar.currentHeight - 20,
+        height: internet ? Mixins.WINDOW_HEIGHT - 40 : Mixins.WINDOW_HEIGHT - 60,
+    }), [internet]);
 
     const _onRefresh = async () => {
         setRefreshing(true);
@@ -30,7 +37,7 @@ const HomeScreen = () => {
 
     return (
         <ScreenLayout paddingSides={10}>
-            <View style={style.container}>
+            <View style={containerStyle}>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     refreshControl={
@@ -66,10 +73,6 @@ const HomeScreen = () => {
 };
 
 const style = StyleSheet.create({
-    container: {
-        top: StatusBar.currentHeight + 5,
-        height: Mixins.WINDOW_HEIGHT - 40
-    },
     avatar_searchBar: {
         marginTop: 0
     }
