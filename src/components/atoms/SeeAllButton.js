@@ -26,7 +26,9 @@ const style = StyleSheet.create({
         width: '100%',
         height: 35,
         marginTop: 10,
-        backgroundColor: Colors.RED2
+        backgroundColor: Colors.RED2,
+        position: 'absolute',
+        bottom: -45,
     },
     buttonTitle: {
         color: '#ffffff',

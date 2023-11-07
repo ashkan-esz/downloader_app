@@ -3,9 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {SectionNavBar} from "../molecules";
 import HomeTopMovieList from "./movieList/HomeTopMovieList";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {useNavigation} from '@react-navigation/native';
 import {getMultipleStatus} from "../../api";
-import {SeeAllButton} from "../atoms";
 
 
 const HomeTopSection = () => {
@@ -13,7 +11,6 @@ const HomeTopSection = () => {
     const [tab, setTab] = useState('inTheaters');
     const [isMounted, setIsMounted] = useState(false);
     const queryClient = useQueryClient();
-    const navigation = useNavigation();
 
     useEffect(() => {
         if (isMounted) {
@@ -75,11 +72,6 @@ const HomeTopSection = () => {
                 isLoading={isPending || !isMounted}
                 error={isError}
                 retry={_retry}
-            />
-            <SeeAllButton
-                onPress={() => {
-                    navigation.navigate('Section', {startTab: tab});
-                }}
             />
         </View>
     );

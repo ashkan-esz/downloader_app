@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {MovieError} from "../../atoms";
+import {MovieError, MyShimmerPlaceHolder, SeeAllButton} from "../../atoms";
 import {HomeMovieCard, HomeMovieCardPlaceHolder} from "../../molecules";
 import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
+import {useNavigation} from "@react-navigation/native";
 
 
 const HomeTopMovieList = ({loadedData, tab, isLoading, error, retry}) => {
+    const navigation = useNavigation();
 
     if (error) {
         return (
@@ -22,10 +24,12 @@ const HomeTopMovieList = ({loadedData, tab, isLoading, error, retry}) => {
             <View style={style.container}>
                 {
                     Array.apply(null, Array(3)).map((item, index) => (
-                        <HomeMovieCardPlaceHolder key={index}/>
+                            <HomeMovieCardPlaceHolder key={index}/>
                         )
                     )
                 }
+
+                <MyShimmerPlaceHolder extraStyle={style.buttonPlaceHolder}/>
             </View>
         );
     }
@@ -57,6 +61,12 @@ const HomeTopMovieList = ({loadedData, tab, isLoading, error, retry}) => {
                     follow={item.userStats.follow}
                 />
             )))}
+
+            <SeeAllButton
+                onPress={() => {
+                    navigation.navigate('Section', {startTab: tab});
+                }}
+            />
         </View>
     );
 };
@@ -68,6 +78,7 @@ const style = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 8,
         alignItems: 'center',
+        marginBottom: 40,
     },
     error: {
         marginTop: 8,
@@ -80,6 +91,16 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         height: Mixins.getWindowHeight(33),
         marginTop: 8,
+    },
+    buttonPlaceHolder: {
+        alignSelf: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        width: '100%',
+        height: 35,
+        position: 'absolute',
+        bottom: -46,
+        borderRadius: 4,
     }
 });
 

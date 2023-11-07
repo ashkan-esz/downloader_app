@@ -40,10 +40,8 @@ LogBox.ignoreLogs([
 
 //todo : add offline usage
 
-//todo : fuse icons in gradle
-
 //todo : fix splash screen jump up before end
-//todo : add gesture
+//todo : fuse icons in gradle
 
 //todo : fix 'MyOverlay' style
 
@@ -102,6 +100,12 @@ export default function App() {
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const [appIsReady, setAppIsReady] = useState(false);
 
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(profile_api());
+        }
+    }, []);
+
     function onAppStateChange(status) {
         if (Platform.OS !== 'web') {
             focusManager.setFocused(status === 'active')
@@ -149,12 +153,6 @@ export default function App() {
             await SplashScreen.hideAsync();
         }
     }, [appIsReady]);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            dispatch(profile_api());
-        }
-    }, []);
 
     useEffect(() => {
         if (isLoggedIn && appIsReady) {
