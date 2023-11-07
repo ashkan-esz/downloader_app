@@ -42,9 +42,9 @@ LogBox.ignoreLogs([
 
 //todo : fuse icons in gradle
 
-//todo : add gesture
 //todo : fix splash screen jump up before end
-//todo : fix keyboard in auth screens forms
+//todo : add gesture
+//todo : handle notch
 
 //todo : fix 'MyOverlay' style
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Keyboard, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView} from 'react-native';
 import {Button, Text} from "@rneui/themed";
 import {Colors, Mixins} from "../../styles";
 import {LogInForm} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useSelector} from "react-redux";
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 
 //todo : forget password
 
@@ -14,68 +14,70 @@ const LogInScreen = ({navigation}) => {
     const internet = useSelector(state => state.user.internet);
 
     const paddingBottom = {
-        paddingBottom: internet ? 0 : 38,
+        paddingBottom: internet ? 0 : 53,
     }
 
     return (
-        <ScreenLayout
-            backgroundColor={Colors.LOGO_BACKGROUND}
-        >
-            <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => Keyboard.dismiss()}
+        <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={style.container}
             >
-                <Image
-                    source={require('../../assets/icons/logo.png')}
-                    style={style.logo}
-                />
-            </TouchableOpacity>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={[style.inner, paddingBottom]}>
+                        <Image
+                            source={require('../../assets/icons/logo.png')}
+                            style={style.logo}
+                        />
 
-            <TouchableOpacity
-                activeOpacity={1}
-                style={[style.container, paddingBottom]}
-                onPress={() => Keyboard.dismiss()}
-            >
-                <Text h3 style={style.header}>
-                    <Text h3 style={{color: Colors.RED}}>
-                        Welcome!
-                    </Text>
-                    <Text> </Text>
-                    Login with your account and enjoy
-                </Text>
+                        <Text h3 style={style.header}>
+                            <Text h3 style={{color: Colors.RED}}>
+                                Welcome!
+                            </Text>
+                            <Text> </Text>
+                            Login with your account and enjoy
+                        </Text>
 
-                <LogInForm
-                    extraStyle={style.loginForm}
-                />
+                        <LogInForm
+                            extraStyle={style.loginForm}
+                        />
 
-                <View style={style.divider}/>
-                <Button
-                    containerStyle={style.signInContainer}
-                    titleStyle={style.signInText}
-                    title={'CREATE ACCOUNT'}
-                    type={"clear"}
-                    onPress={() => {
-                        navigation.navigate('SignUp');
-                    }}
-                />
-
-            </TouchableOpacity>
+                        <View style={style.divider}/>
+                        <Button
+                            containerStyle={style.signInContainer}
+                            titleStyle={style.signInText}
+                            title={'CREATE ACCOUNT'}
+                            type={"clear"}
+                            onPress={() => {
+                                navigation.navigate('SignUp');
+                            }}
+                        />
+                    </View>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
         </ScreenLayout>
     );
 };
 
 const style = StyleSheet.create({
+    container: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        maxWidth: 400,
+    },
+    inner: {
+        position: 'absolute',
+        bottom: 20,
+        width: '100%',
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
     logo: {
         width: Mixins.WINDOW_WIDTH,
         height: 300,
         alignSelf: 'center',
-        marginTop: Mixins.getWindowHeight(12),
-    },
-    container: {
-        position: 'absolute',
-        bottom: '2%',
-        width: '85%',
-        maxWidth: 350,
+        marginBottom: 60,
     },
     header: {
         color: '#b1aeae'
@@ -83,11 +85,8 @@ const style = StyleSheet.create({
     loginForm: {
         marginTop: 10
     },
-    googleButton: {
-        marginTop: 25
-    },
     divider: {
-        marginTop: 50,
+        marginTop: 30,
         borderBottomColor: '#636161',
         borderBottomWidth: 0.9,
     },
