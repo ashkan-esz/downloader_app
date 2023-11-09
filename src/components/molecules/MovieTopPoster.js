@@ -26,7 +26,9 @@ const MovieTopPoster = ({
     const titleSize = {
         fontSize: title.length < 20
             ? Typography.getFontSize(30)
-            : Typography.getFontSize(28)
+            : title.length < 30
+                ? Typography.getFontSize(28)
+                : Typography.getFontSize(24),
     }
 
     const _handleDoubleTap = () => {

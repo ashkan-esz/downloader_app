@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import LikeIconWithAnimation from "./LikeIconWithAnimation";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
@@ -15,24 +15,22 @@ const SectionMovieCardRating = ({
                                     onLike, onDisLike, onFollow,
                                 }) => {
 
-    //todo : use memo for imdb/mal icon
+    const MemoImdbIcon = memo(() => <Image
+        source={require('../../assets/icons/imdb.png')}
+        style={style.icon}
+    />);
+    const MemoMalIcon = memo(() => <Image
+        source={require('../../assets/icons/mal.png')}
+        style={style.icon}
+    />);
 
     return (
         <View style={extraStyle}>
             <View style={style.ratingContainer}>
-                <Image
-                    source={require('../../assets/icons/imdb.png')}
-                    style={style.icon}
-                />
-
+                <MemoImdbIcon/>
                 <Text style={style.separator}> | </Text>
                 <Text style={style.ratingNumber}>{rating.imdb || '?'} </Text>
-
-                <Image
-                    source={require('../../assets/icons/mal.png')}
-                    style={[style.icon, style.malIcon]}
-                />
-
+                <MemoMalIcon/>
                 <Text style={style.separator}> | </Text>
                 <Text style={style.ratingNumber}>{rating.myAnimeList || '?'} </Text>
             </View>
@@ -97,6 +95,7 @@ const style = StyleSheet.create({
         width: 40,
         height: 20,
         alignSelf: 'center',
+        borderRadius: 4,
     },
     malIcon: {
         marginLeft: 5,

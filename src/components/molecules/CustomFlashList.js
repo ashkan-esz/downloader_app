@@ -32,14 +32,15 @@ const CustomFlashList = ({
                              columnsNumber,
                              onEndReachedThreshold,
                              initialNumToRender,
+                             extraHeightDiff,
                          }) => {
 
     const {scrollDirection, onScroll} = useScrollDirection();
     const internet = useSelector(state => state.user.internet);
 
     const containerHeight = useMemo(() => ({
-        height: internet ? Mixins.WINDOW_HEIGHT - 140 : Mixins.WINDOW_HEIGHT - 165,
-    }), [internet]);
+        height: internet ? Mixins.WINDOW_HEIGHT - 140 - (extraHeightDiff || 0) : Mixins.WINDOW_HEIGHT - 165 - (extraHeightDiff || 0),
+    }), [internet, extraHeightDiff]);
 
     const _onScroll = (event) => {
         onScrollDo && onScrollDo();
@@ -119,7 +120,7 @@ const CustomFlashList = ({
 
             <ScrollTop
                 flatListRef={flatListRef}
-                extraMarginBottom={(listFooterPaddingBottom || 0) + (internet ? 0 : 5)}
+                extraMarginBottom={(listFooterPaddingBottom || 0) + (internet ? 0 : 5) - (extraHeightDiff || 0)}
                 show={scrollDirection === 'top' && !isLoading && !isError && showScrollTopIcon}
             />
 
@@ -168,6 +169,7 @@ CustomFlashList.propTypes = {
     columnsNumber: PropTypes.number,
     onEndReachedThreshold: PropTypes.number,
     initialNumToRender: PropTypes.number,
+    extraHeightDiff: PropTypes.number,
 }
 
 
