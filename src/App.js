@@ -32,16 +32,13 @@ LogBox.ignoreLogs([
 //todo : stop rotation except trailer fullscreen
 //todo : remove unused dependencies
 //todo : handle error show in home screen
-//todo : fix ram usage of stack navigation
-//todo : load prev data while loading app
 //todo : sort components
 //todo : save app password
 //todo : fix auth forms
 
-//todo : add offline usage
+//todo : load prev data while loading app
 
 //todo : fix splash screen jump up before end
-//todo : fuse icons in gradle
 
 //todo : fix 'MyOverlay' style
 
@@ -81,18 +78,10 @@ onlineManager.setEventListener(setOnline => {
     })
 });
 
-function cacheImages(images) {
-    return images.map(image => {
-        if (typeof image === 'string') {
-            return Image.prefetch(image);
-        } else {
-            return Asset.fromModule(image).downloadAsync();
-        }
-    });
-}
-
 // Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync().catch(() => {
+    /* reloading the app might trigger some race conditions, ignore them */
+});
 
 export default function App() {
     useKeepAwake();
@@ -120,18 +109,24 @@ export default function App() {
     useEffect(() => {
         async function prepare() {
             try {
-                const imageAssets = cacheImages([
-                    require('./assets/images/loadingImage.png'),
-                    require('./assets/images/noImage.png'),
+                const imageAssets = [
                     require('./assets/icons/logo.png'),
                     require('./assets/icons/imdb.png'),
                     require('./assets/icons/mal.png'),
-                ]);
+                ];
+                const imageAssetsPromise = imageAssets.map(image => {
+                    if (typeof image === 'string') {
+                        return Image.prefetch(image);
+                    } else {
+                        return Asset.fromModule(image).downloadAsync();
+                    }
+                });
+
                 // Pre-load fonts, make any API calls you need to do here
                 //todo : check adding 'MaterialIcons' performance
                 const fontAssets = [FontAwesome.font, AntDesign.font].map(font => Font.loadAsync(font));
 
-                await Promise.all([...imageAssets, ...fontAssets]);
+                await Promise.all([...imageAssetsPromise, ...fontAssets]);
             } catch (error) {
                 console.warn(error);
             } finally {
