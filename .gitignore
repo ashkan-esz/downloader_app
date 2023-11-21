@@ -393,3 +393,5 @@ Temporary Items
 
 # testing
 /coverage
+
+/android/app/src/main/assets/appcenter-config.json

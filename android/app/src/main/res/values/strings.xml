@@ -2,4 +2,6 @@
 <resources>
   <string name="app_name">downloader_app</string>
   <string name="expo_splash_screen_resize_mode">contain</string>
+  <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+  <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
 </resources>

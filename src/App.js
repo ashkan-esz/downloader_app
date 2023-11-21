@@ -25,14 +25,10 @@ LogBox.ignoreLogs([
     'new NativeEventEmitter()',
 ]);
 
-//todo : check build commands
-//todo : bottom of page is white
 //todo : stop rotation except trailer fullscreen
-//todo : remove unused dependencies
 //todo : handle error show in home screen
 //todo : sort components
 //todo : save app password
-//todo : fix auth forms
 
 //todo : load prev data while loading app
 
@@ -55,7 +51,6 @@ const theme = createTheme({});
 try {
     I18nManager.allowRTL(false);
 } catch (e) {
-    // todo : use sentry
     // console.log(e);
 }
 
