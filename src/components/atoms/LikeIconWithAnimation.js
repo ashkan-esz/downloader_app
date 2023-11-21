@@ -7,7 +7,7 @@ import Animated, {
     useSharedValue, withDelay,
     withSpring
 } from "react-native-reanimated";
-import {Ionicons} from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import PropTypes from 'prop-types';
 
 

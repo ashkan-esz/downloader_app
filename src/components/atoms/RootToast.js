@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet} from "react-native";
 import Toast, {BaseToast} from 'react-native-toast-message';
-import { Image } from 'expo-image';
-import {MaterialIcons} from "@expo/vector-icons";
+import {Image} from 'expo-image';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {Colors} from "../../styles";
 
 

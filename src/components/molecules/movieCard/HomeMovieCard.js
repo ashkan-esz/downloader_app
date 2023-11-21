@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
-import {Ionicons} from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {CustomRating, CustomImage} from "../../atoms";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";

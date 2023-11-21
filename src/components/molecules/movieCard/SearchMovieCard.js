@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
-import {Ionicons} from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {useNavigation} from "@react-navigation/native";
 import {CustomImage} from "../../atoms";
 import {Colors, Mixins, Typography} from "../../../styles";

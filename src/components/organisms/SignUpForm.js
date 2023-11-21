@@ -56,8 +56,8 @@ const SignUpForm = ({extraStyle}) => {
                         placeholder={'User Name'}
                         onChangeText={value => onChange(value)}
                         inputRef={userNameInputRef}
-                        leftIconName={'user'}
-                        iconType={'entypo'}
+                        leftIconName={'user-alt'}
+                        iconType={'font-awesome-5'}
                         error={errors.username}
                     />
                 )}

@@ -4,8 +4,6 @@ import {AppState, I18nManager, View, StyleSheet, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {enableFreeze} from 'react-native-screens';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
-import {AntDesign, FontAwesome} from '@expo/vector-icons';
 import {Asset} from 'expo-asset';
 import {AuthNavigations, AppStackNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
@@ -37,8 +35,6 @@ LogBox.ignoreLogs([
 //todo : fix auth forms
 
 //todo : load prev data while loading app
-
-//todo : fix splash screen jump up before end
 
 //todo : fix 'MyOverlay' style
 
@@ -121,12 +117,7 @@ export default function App() {
                         return Asset.fromModule(image).downloadAsync();
                     }
                 });
-
-                // Pre-load fonts, make any API calls you need to do here
-                //todo : check adding 'MaterialIcons' performance
-                const fontAssets = [FontAwesome.font, AntDesign.font].map(font => Font.loadAsync(font));
-
-                await Promise.all([...imageAssetsPromise, ...fontAssets]);
+                await Promise.all(imageAssetsPromise);
             } catch (error) {
                 console.warn(error);
             } finally {

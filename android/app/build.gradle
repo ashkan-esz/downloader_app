@@ -55,6 +55,12 @@ ext {
   hermesEnabled = (findProperty('expo.jsEngine') ?: "hermes") == "hermes"
 }
 
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'Ionicons.ttf', 'AntDesign.ttf', 'FontAwesome5.ttf' ] // Specify font files
+]
+
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
+
 /**
  * Set this to true to create four separate APKs instead of one,
  * one for each native architecture. This is useful if you don't

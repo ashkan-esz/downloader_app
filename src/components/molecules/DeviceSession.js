@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Divider, ListItem, Text} from "@rneui/themed";
-import {AntDesign, FontAwesome5, Ionicons} from "@expo/vector-icons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {MyOverlay} from "../atoms";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';

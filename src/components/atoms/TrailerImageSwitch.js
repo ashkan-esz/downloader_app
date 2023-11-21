@@ -1,6 +1,7 @@
 import React, {memo, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {AntDesign, Ionicons} from "@expo/vector-icons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomVideo from "./CustomVideo";
 import CustomImage from "./CustomImage";
 import {useDebounce} from "../../hooks";

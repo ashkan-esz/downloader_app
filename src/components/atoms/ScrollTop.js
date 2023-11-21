@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Platform, StyleSheet, UIManager} from 'react-native';
-import {AntDesign} from "@expo/vector-icons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import {Colors} from '../../styles';
 import PropTypes from 'prop-types';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ProfileAvatar, HomeSearchBar} from "../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {MaterialIcons} from "@expo/vector-icons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {useDispatch, useSelector} from "react-redux";
 import {setShowUpdateOverlayFlag} from "../../redux/slices/user.slice";
 import {Colors} from "../../styles";

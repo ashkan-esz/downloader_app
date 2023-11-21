@@ -3,7 +3,9 @@ import {StyleSheet, View} from 'react-native';
 import {Input, Text} from "@rneui/themed";
 import {Colors, Mixins} from "../../styles";
 import PropsTypes from "prop-types";
-import {Entypo, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 
 const CustomTextInput = ({
@@ -28,14 +30,15 @@ const CustomTextInput = ({
     const LeftIcon = () => {
         let iconProps = {
             name: leftIconName,
-            size: 30,
+            size: iconType === 'font-awesome-5' ? 28 : 30,
             color: 'black',
             style: style.leftIcon,
+            iconStyle: style.leftIcon,
             testID: 'left-icon',
         };
-        return iconType === 'entypo'
-            ? <Entypo {...iconProps} />
-            : <MaterialIcons  {...iconProps} />
+        return iconType === 'font-awesome-5'
+            ? <FontAwesome5 {...iconProps} />
+            : <MaterialIcons {...iconProps} />
     }
 
     return (
@@ -48,7 +51,7 @@ const CustomTextInput = ({
                 leftIcon={<LeftIcon/>}
                 rightIcon={
                     secure &&
-                    <MaterialCommunityIcons
+                    <Ionicons
                         name={hidden ? 'eye' : 'eye-off'}
                         size={30}
                         color={'black'}
