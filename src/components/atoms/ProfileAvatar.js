@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Avatar} from "@rneui/themed";
 import {useSelector} from "react-redux";
-import CustomImage from "./CustomImage";
+// import CustomImage from "./CustomImage";
 import PropTypes from 'prop-types';
 
 //todo :
@@ -16,10 +16,11 @@ const ProfileAvatar = ({size, onPress}) => {
             containerStyle={style.container}
             activeOpacity={1}
             size={size || "medium"}
-            ImageComponent={CustomImage}
+            source={{uri: profileImages[0] || profileImage}}
+            // ImageComponent={CustomImage}
             imageProps={{
                 extraStyle: style.image,
-                posters: profileImages.length > 0 ? profileImages.map(p => ({url: p})) : [{url: profileImage}],
+                // posters: profileImages.length > 0 ? profileImages.map(p => ({url: p})) : [{url: profileImage}],
                 onPress: onPress,
                 resizeModeStretch: false,
                 isProfile: true,

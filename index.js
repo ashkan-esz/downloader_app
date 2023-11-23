@@ -2,7 +2,6 @@ import 'expo-asset';
 import React from 'react';
 import {registerRootComponent} from 'expo';
 
-// todo: remove this
 // if (process.env.NODE_ENV !== 'production') {
 //     const whyDidYouRender = require('@welldone-software/why-did-you-render');
 //     whyDidYouRender(React, {

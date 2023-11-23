@@ -28,7 +28,6 @@ LogBox.ignoreLogs([
 //todo : stop rotation except trailer fullscreen
 //todo : handle error show in home screen
 //todo : sort components
-//todo : save app password
 
 //todo : load prev data while loading app
 
