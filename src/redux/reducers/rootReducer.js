@@ -1,9 +1,26 @@
 import {combineReducers} from "@reduxjs/toolkit";
 import {persistReducer} from 'redux-persist';
 import * as SecureStore from "expo-secure-store";
-import FilesystemStorage from 'redux-persist-filesystem-storage';
+import { MMKV } from 'react-native-mmkv';
 import userReducer, {userPersistStates} from '../slices/user.slice';
 import authReducer, {authPersistStates} from '../slices/auth.slice';
+
+const mmkStorage = new MMKV();
+
+const reduxMmkStorage= {
+    setItem: (key, value) => {
+        mmkStorage.set(key, value);
+        return Promise.resolve(true);
+    },
+    getItem: (key) => {
+        const value = mmkStorage.getString(key);
+        return Promise.resolve(value);
+    },
+    removeItem: (key) => {
+        mmkStorage.delete(key);
+        return Promise.resolve();
+    },
+}
 
 
 function createSecureStorage(options = {}) {
@@ -37,7 +54,7 @@ export const authPersistConfig = {
 export const userPersistConfig = {
     timeout: 1000,
     key: 'user',
-    storage: FilesystemStorage,
+    storage: reduxMmkStorage,
     whitelist: userPersistStates,
 }
 

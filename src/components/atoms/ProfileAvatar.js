@@ -16,7 +16,7 @@ const ProfileAvatar = ({size, onPress}) => {
             containerStyle={style.container}
             activeOpacity={1}
             size={size || "medium"}
-            source={{uri: profileImages[0] || profileImage}}
+            source={profileImages[0] || profileImage ? {uri: profileImages[0] || profileImage} : {}}
             // ImageComponent={CustomImage}
             imageProps={{
                 extraStyle: style.image,

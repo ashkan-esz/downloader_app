@@ -9,6 +9,10 @@ import {registerRootComponent} from 'expo';
 //     });
 // }
 
+if (__DEV__) {
+    require('react-native-performance-flipper-reporter').setupDefaultFlipperReporter();
+}
+
 import App from './src/App';
 import {Provider} from "react-redux";
 import {store, persistor} from "./src/redux/store";
