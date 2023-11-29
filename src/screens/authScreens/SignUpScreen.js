@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback} from 'react-native';
+import {View, StyleSheet, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback, Platform} from 'react-native';
 import {Button, Text} from "@rneui/themed";
 import {Colors} from "../../styles";
 import {SignUpForm} from "../../components/organisms";

@@ -41,6 +41,8 @@ LogBox.ignoreLogs([
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
 
+//todo : check cpu split builds
+
 //------------------------------------------------
 
 enableFreeze(true);

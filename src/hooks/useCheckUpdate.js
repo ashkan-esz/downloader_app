@@ -1,9 +1,9 @@
 import {useEffect} from "react";
-import * as Updates from "expo-updates";
 import {useDispatch} from "react-redux";
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import {setDownloadingUpdateFlag, setUpdateFlag} from "../redux/slices/user.slice";
 
+//todo : use server api
 
 const useCheckUpdate = () => {
     const dispatch = useDispatch();
@@ -12,10 +12,7 @@ const useCheckUpdate = () => {
         if (process.env.NODE_ENV === 'production') {
             const checkUpdate = async () => {
                 try {
-                    const updateResult = await Updates.checkForUpdateAsync();
-                    if (updateResult.isAvailable) {
-                        dispatch(setUpdateFlag(true));
-                    }
+
                 } catch (e) {
                 }
             }
@@ -26,14 +23,10 @@ const useCheckUpdate = () => {
     async function downloadUpdate() {
         try {
             dispatch(setDownloadingUpdateFlag(true));
-            await Updates.fetchUpdateAsync();
             dispatch(setDownloadingUpdateFlag(false));
             dispatch(setUpdateFlag(false));
-            await Updates.clearUpdateCacheExperimentalAsync();
-            await Updates.clearLogEntriesAsync();
             await Image.clearMemoryCache();
             await Image.clearDiskCache();
-            await Updates.reloadAsync();
         } catch (e) {
             dispatch(setUpdateFlag(false));
             dispatch(setDownloadingUpdateFlag(false));
