@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import 'expo-asset';
 import React from 'react';
 import {registerRootComponent} from 'expo';
