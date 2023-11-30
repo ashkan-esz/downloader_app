@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {MovieError} from "../atoms";
@@ -30,6 +30,11 @@ const HomeTimeLineSection = () => {
         queryFn: getData,
         placeholderData: [],
     });
+
+    const justifyContent = useMemo(() => ({
+        justifyContent: data.length < 3 ? 'flex-start' : undefined,
+        marginRight: data.length < 3 ? 5 : undefined,
+    }), [data]);
 
     const _retry = async () => {
         await queryClient.refetchQueries({
@@ -74,11 +79,12 @@ const HomeTimeLineSection = () => {
                 See All
             </Text>
 
-            <View style={style.movieListContainer}>
+            <View style={[style.movieListContainer, justifyContent]}>
                 {
                     data.slice(0, 3).map((item) => {
                         return (
                             <HomeMovieCard
+                                extraStyle={justifyContent}
                                 key={item._id.toString()}
                                 posters={item.posters}
                                 movieId={item._id}

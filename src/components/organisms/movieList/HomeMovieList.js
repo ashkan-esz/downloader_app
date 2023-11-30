@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
@@ -31,6 +31,11 @@ const HomeMovieList = ({name, pageType}) => {
         queryFn: getData,
         placeholderData: []
     });
+
+    const justifyContent = useMemo(() => ({
+        justifyContent: data.length < 3 ? 'flex-start' : undefined,
+        marginRight: data.length < 3 ? 5 : 6,
+    }), [data]);
 
     const _retry = async () => {
         await queryClient.refetchQueries({
@@ -74,7 +79,7 @@ const HomeMovieList = ({name, pageType}) => {
     const _keyExtractor = (item) => item._id.toString();
     const _renderItem = ({index, item}) => (
         <HomeMovieCard
-            extraStyle={style.movieCard}
+            extraStyle={justifyContent}
             posters={item.posters}
             movieId={item._id}
             title={item.rawTitle}
