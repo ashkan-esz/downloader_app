@@ -23,6 +23,7 @@ export default function authNavigation() {
                 headerTransparent: true,
                 headerShadowVisible: false,
                 animation: "fade",
+                orientation: 'portrait',
             }}
         >
             <Stack.Screen
