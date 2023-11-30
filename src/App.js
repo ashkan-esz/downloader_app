@@ -24,7 +24,6 @@ LogBox.ignoreLogs([
     'new NativeEventEmitter()',
 ]);
 
-//todo : stop rotation except trailer fullscreen
 //todo : handle error show in home screen
 //todo : sort components
 

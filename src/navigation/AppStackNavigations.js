@@ -28,6 +28,7 @@ const AppStackNavigations = () => {
                 headerTransparent: true,
                 headerShadowVisible: false,
                 animation: "fade",
+                orientation: 'portrait',
             }}
         >
             <Stack.Screen
