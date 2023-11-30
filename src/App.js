@@ -36,12 +36,8 @@ LogBox.ignoreLogs([
 //todo : show no update available on icon click
 //todo : check for update option in profile screen
 
-//todo : app starts soo slow
-
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
-
-//todo : check cpu split builds
 
 //------------------------------------------------
 
