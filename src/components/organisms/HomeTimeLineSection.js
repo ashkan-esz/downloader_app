@@ -33,7 +33,7 @@ const HomeTimeLineSection = () => {
 
     const justifyContent = useMemo(() => ({
         justifyContent: data.length < 3 ? 'flex-start' : undefined,
-        marginRight: data.length < 3 ? 5 : undefined,
+        marginRight: 5,
     }), [data]);
 
     const _retry = async () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import {ProfileAvatar} from "../atoms";
+import {CustomImage} from "../atoms";
 import {useSelector} from "react-redux";
 import {Typography} from "../../styles";
 
@@ -9,15 +9,15 @@ import {Typography} from "../../styles";
 
 const ProfileImage = () => {
     const profileImages = useSelector(state => state.user.profileImages);
-    const profileImage = useSelector(state => state.user.profileImage);
+    const defaultProfileImage = useSelector(state => state.user.defaultProfileImage);
     const username = useSelector(state => state.auth.username);
 
     return (
         <View>
-            <ProfileAvatar
-                size={'xlarge'}
-                onPress={() => {
-                }}
+            <CustomImage
+                extraStyle={style.avatar}
+                resizeModeStretch={false}
+                posters={profileImages.length > 0 ? profileImages.map(p => ({url: p})) : [{url: defaultProfileImage}]}
             />
 
             <Text style={style.username}>
@@ -28,6 +28,12 @@ const ProfileImage = () => {
 };
 
 const style = StyleSheet.create({
+    avatar: {
+        width: 150,
+        height: 150,
+        borderRadius: 120,
+        alignSelf: 'center',
+    },
     username: {
         fontSize: Typography.getFontSize(20),
         color: '#fff',

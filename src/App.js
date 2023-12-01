@@ -27,8 +27,6 @@ LogBox.ignoreLogs([
 //todo : handle error show in home screen
 //todo : sort components
 
-//todo : load prev data while loading app
-
 //todo : fix 'MyOverlay' style
 
 //todo : show no update available on icon click

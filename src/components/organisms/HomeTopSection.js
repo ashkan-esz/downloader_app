@@ -14,11 +14,11 @@ const HomeTopSection = () => {
 
     useEffect(() => {
         if (isMounted) {
-            if (data.inTheaters.length === 0) {
-                if (data.comingSoon.length > 0) {
-                    setTab('comingSoon');
-                } else {
-                    setTab('recent');
+            let keys = Object.keys(data);
+            for (let i = 0; i < keys.length; i++) {
+                if (data[keys[i]] && data[keys[i]].length > 0) {
+                    setTab(keys[i]);
+                    break;
                 }
             }
         }

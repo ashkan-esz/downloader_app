@@ -25,7 +25,7 @@ const userSlice = createSlice({
         internet: true,
         connectionType: '',
         profileImages: [],
-        profileImage: '',
+        defaultProfileImage: '',
         emailVerified: false,
         isLoading: false,
         userError: '',
@@ -83,14 +83,14 @@ const setProfileData = (state, action) => {
             profileImages, defaultProfile, emailVerified,
         } = action.payload;
         state.profileImages = profileImages;
-        state.profileImage = defaultProfile;
+        state.defaultProfileImage = defaultProfile;
         state.emailVerified = emailVerified;
         state.userError = '';
     }
     state.isLoading = false;
 }
 
-export const userPersistStates = ['profileImages', 'profileImage', 'emailVerified'];
+export const userPersistStates = ['profileImages', 'defaultProfileImage', 'emailVerified'];
 
 export const {
     setInternet,

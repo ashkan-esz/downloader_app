@@ -42,10 +42,6 @@ const style = StyleSheet.create({
 });
 
 CustomImage.propTypes = {
-    url: null,
-};
-
-CustomImage.propTypes = {
     extraStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
     posters: PropTypes.arrayOf(PropTypes.object),
     movieId: PropTypes.string,

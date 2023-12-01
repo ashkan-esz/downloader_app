@@ -1,7 +1,5 @@
 
-export {default as HomeSearchBar} from './HomeSearchBar';
 export {default as MovieSearchNotFound} from './MovieSearchNotFound';
-export {default as ProfileAvatar} from './ProfileAvatar';
 export {default as CustomRating} from './CustomRating';
 export {default as CustomVideo} from './CustomVideo';
 export {default as TrailerImageSwitch} from './TrailerImageSwitch';

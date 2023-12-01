@@ -1,11 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {ProfileAvatar, HomeSearchBar} from "../atoms";
+import {CustomImage} from "../atoms";
 import {useNavigation} from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {SearchBar} from "@rneui/themed";
 import {useDispatch, useSelector} from "react-redux";
 import {setShowUpdateOverlayFlag} from "../../redux/slices/user.slice";
-import {Colors} from "../../styles";
+import {Colors, Mixins} from "../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -13,19 +14,29 @@ const HomeAvatarAndSearch = ({extraStyle}) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const updateExist = useSelector(state => state.user.updateExist);
+    const profileImages = useSelector(state => state.user.profileImages);
+    const defaultProfileImage = useSelector(state => state.user.defaultProfileImage);
 
     return (
         <View style={[style.container, extraStyle]}>
-            <ProfileAvatar
-                onPress={() => {
-                    navigation.navigate('Profile');
-                }}
+            <CustomImage
+                extraStyle={style.avatar}
+                resizeModeStretch={false}
+                onPress={() => navigation.navigate('Profile')}
+                posters={profileImages.length > 0 ? profileImages.map(p => ({url: p})) : [{url: defaultProfileImage}]}
             />
-            <HomeSearchBar
-                onPress={() => {
-                    navigation.navigate('Search');
-                }}
-            />
+
+            <View onTouchEnd={() => navigation.navigate('Search')}>
+                <SearchBar
+                    editable={false}
+                    containerStyle={style.searchBarContainer}
+                    inputContainerStyle={style.searchBar}
+                    inputStyle={style.icon}
+                    placeholder={'Search here ....'}
+                    testID={'home-searchBar'}
+                />
+            </View>
+
             <MaterialIcons
                 name={'system-update'}
                 size={32}
@@ -45,10 +56,31 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    avatar: {
+        width: 50,
+        height: 50,
+        borderRadius: 24,
+    },
+    searchBarContainer: {
+        borderRadius: 25,
+        ...Mixins.padding(0),
+        marginLeft: 10,
+        width: Mixins.getWindowWidth(78) - 35,
+    },
+    searchBar: {
+        borderRadius: 25,
+        backgroundColor: Colors.SECONDARY,
+        height: 45,
+    },
+    icon: {
+        color: '#ffffff',
+        marginLeft: 5,
+        fontSize: 15,
+    },
     updateIcon: {
         alignSelf: 'center',
         marginLeft: 5,
-    }
+    },
 });
 
 HomeAvatarAndSearch.propTypes = {
