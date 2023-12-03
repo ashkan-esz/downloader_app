@@ -1,23 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {ScreenLayout} from "../../components/layouts";
 import {Button, Text} from "@rneui/themed";
 import {useDispatch, useSelector} from "react-redux";
 import {sendVerifyEmail_api, logout_api, resetMessage, resetAuthError} from "../../redux/slices/auth.slice";
-import {profile_api, resetUserError, setShowUpdateOverlayFlag} from "../../redux/slices/user.slice";
+import {
+    checkAppUpdate_thunk,
+    profile_api,
+    resetUserError,
+    setShowUpdateOverlayFlag
+} from "../../redux/slices/user.slice";
 import Toast from 'react-native-toast-message';
 import {ProfileImage} from "../../components/molecules";
 import {useNavigation} from "@react-navigation/native";
 import {Colors, Typography} from "../../styles";
 import {MyOverlay} from "../../components/atoms";
+import {Image} from 'expo-image';
+import {showToast} from "../../utils";
 
 //todo :
 
 const ProfileScreen = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const updateExist = useSelector(state => state.user.updateExist);
-    const isDownloadingUpdate = useSelector(state => state.user.isDownloadingUpdate);
+    const updateExist = useSelector(state => state.user.update.exist);
+    const isCheckingUpdate = useSelector(state => state.user.update.isChecking);
+    const isDownloadingUpdate = useSelector(state => state.user.update.isDownloading);
     const authIsLoading = useSelector(state => state.auth.isLoading);
     const userIsLoading = useSelector(state => state.user.isLoading);
     const authError = useSelector(state => state.auth.authError);
@@ -26,10 +34,7 @@ const ProfileScreen = () => {
     const isLoggingOut = useSelector(state => state.auth.isLoggingOut);
     const emailVerified = useSelector(state => state.user.emailVerified);
     const [logoutOverlay, setLogoutOverlay] = useState(false);
-
-    const _navigateToActiveSession = () => {
-        navigation.navigate('ActiveSessions');
-    }
+    const isCheckingUpdate_prevValue = useRef();
 
     useEffect(() => {
         if (authError) {
@@ -100,8 +105,20 @@ const ProfileScreen = () => {
         return () => Toast.hide();
     }, [message]);
 
+    useEffect(() => {
+        if (isCheckingUpdate_prevValue.current && !isCheckingUpdate && !updateExist) {
+            showToast({text: 'No Update Available', time: 2000})
+        }
+        isCheckingUpdate_prevValue.current = isCheckingUpdate;
+        return () => Toast.hide();
+    }, [isCheckingUpdate, updateExist]);
+
     const _onRefresh = async () => {
         dispatch(profile_api());
+    }
+    const _clearCache = async () => {
+        await Image.clearMemoryCache();
+        await Image.clearDiskCache();
     }
 
     return (
@@ -146,13 +163,18 @@ const ProfileScreen = () => {
                     <Button
                         containerStyle={style.buttonContainer}
                         buttonStyle={style.button}
-                        title={'UPDATE'}
-                        disabled={!updateExist}
-                        loading={isDownloadingUpdate}
+                        title={updateExist ? 'UPDATE' : 'Check for update'}
+                        loading={isDownloadingUpdate || isCheckingUpdate}
                         loadingProps={{
                             animating: true,
                         }}
-                        onPress={() => dispatch(setShowUpdateOverlayFlag(true))}
+                        onPress={() => {
+                            if (updateExist) {
+                                dispatch(setShowUpdateOverlayFlag(true))
+                            } else {
+                                dispatch(checkAppUpdate_thunk());
+                            }
+                        }}
                     />
 
                     <Button
@@ -170,7 +192,14 @@ const ProfileScreen = () => {
                         containerStyle={style.buttonContainer}
                         buttonStyle={style.button}
                         title={'ActiveSessions'}
-                        onPress={_navigateToActiveSession}
+                        onPress={() => navigation.navigate('ActiveSessions')}
+                    />
+
+                    <Button
+                        containerStyle={style.buttonContainer}
+                        buttonStyle={style.button}
+                        title={'Clear Cache'}
+                        onPress={_clearCache}
                     />
 
                     <MyOverlay

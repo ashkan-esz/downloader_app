@@ -9,7 +9,7 @@ import {StatusBar} from 'expo-status-bar';
 import {RootToast} from './components/atoms';
 import {GlobalOverlays, OfflineStatusBar} from "./components/molecules";
 import {useDispatch, useSelector} from "react-redux";
-import {profile_api} from "./redux/slices/user.slice";
+import {profile_api, checkAppUpdate_thunk} from "./redux/slices/user.slice";
 import {QueryClient, QueryClientProvider, focusManager, onlineManager} from '@tanstack/react-query';
 import {useKeepAwake} from 'expo-keep-awake';
 import {LogBox} from 'react-native';
@@ -28,9 +28,6 @@ LogBox.ignoreLogs([
 //todo : sort components
 
 //todo : fix 'MyOverlay' style
-
-//todo : show no update available on icon click
-//todo : check for update option in profile screen
 
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
@@ -130,6 +127,7 @@ export default function App() {
 
     useEffect(() => {
         if (isLoggedIn) {
+            dispatch(checkAppUpdate_thunk());
             dispatch(profile_api());
         }
     }, [isLoggedIn]);

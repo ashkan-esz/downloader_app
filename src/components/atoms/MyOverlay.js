@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 const MyOverlay = ({
                        message,
+                       secondMessage,
                        overlay,
                        setOverlay,
                        leftOption,
@@ -19,11 +20,18 @@ const MyOverlay = ({
                        buttonType,
                        titleColor,
                        titleFontSize,
+                       secondTitleFontSize,
+                       backDropDisable,
+                       persistentOnClick,
                    }) => {
 
     const titleStyle = {
         color: titleColor || Colors.GRAY_LIGHT,
         fontSize: Typography.getFontSize(titleFontSize || 20),
+    };
+    const secondTitleStyle = {
+        color: titleColor || Colors.GRAY_LIGHT,
+        fontSize: Typography.getFontSize(secondTitleFontSize || 20),
     };
 
     const leftButtonTitle = {
@@ -41,14 +49,17 @@ const MyOverlay = ({
             overlayStyle={style.overlay}
             isVisible={overlay}
             onBackdropPress={() => {
-                setOverlay(false);
-                onLeftClick && onLeftClick();
+                if (!backDropDisable) {
+                    setOverlay?.(false);
+                    onLeftClick && onLeftClick();
+                }
             }}
             animationType={"slide"}
         >
             <View style={style.container}>
 
                 <Text style={[style.text, titleStyle]}> {message} </Text>
+                {secondMessage && <Text style={[style.secondText, secondTitleStyle]}> {secondMessage} </Text>}
 
                 <View style={style.buttonsContainer}>
                     <Button
@@ -57,7 +68,7 @@ const MyOverlay = ({
                         type={buttonType || "clear"}
                         title={leftOption}
                         onPress={() => {
-                            setOverlay(false);
+                            !persistentOnClick && setOverlay?.(false);
                             onLeftClick && onLeftClick();
                         }}
                     />
@@ -70,7 +81,7 @@ const MyOverlay = ({
                             title={rightOption}
                             loading={isLoading}
                             onPress={() => {
-                                setOverlay(false);
+                                !persistentOnClick && setOverlay?.(false);
                                 onRightClick && onRightClick();
                             }}
                         />
@@ -92,14 +103,18 @@ const style = StyleSheet.create({
         minWidth: 250,
         maxWidth: 400,
         height: '25%',
-        minHeight: 100,
+        minHeight: 120,
         maxHeight: 150,
         borderRadius: 10
     },
     container: {
-        top: '12%',
+        top: 20,
     },
     text: {
+        textAlign: 'center',
+        opacity: 0.9,
+    },
+    secondText: {
         textAlign: 'center',
         opacity: 0.9,
     },
@@ -111,14 +126,15 @@ const style = StyleSheet.create({
     button: {
         width: '100%',
         minWidth: 110,
-        maxWidth: 140,
+        maxWidth: 160,
     },
 });
 
 MyOverlay.propTypes = {
     overlay: PropTypes.bool.isRequired,
-    setOverlay: PropTypes.func.isRequired,
+    setOverlay: PropTypes.func,
     message: PropTypes.string,
+    secondMessage: PropTypes.string,
     leftOption: PropTypes.string.isRequired,
     rightOption: PropTypes.string,
     onLeftClick: PropTypes.func,
@@ -129,6 +145,9 @@ MyOverlay.propTypes = {
     buttonType: PropTypes.string,
     titleColor: PropTypes.string,
     titleFontSize: PropTypes.number,
+    secondTitleFontSize: PropTypes.number,
+    backDropDisable: PropTypes.bool,
+    persistentOnClick: PropTypes.bool,
 }
 
 

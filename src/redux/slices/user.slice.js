@@ -1,5 +1,7 @@
+import {Platform} from 'react-native';
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {getProfileDataApi} from "../../api";
+import {checkUpdateExist, getServerMessage} from "../../api/others";
 
 
 const profile_api = createAsyncThunk(
@@ -19,6 +21,57 @@ const profile_api = createAsyncThunk(
     }
 );
 
+const checkAppUpdate_thunk = createAsyncThunk(
+    'user/checkAppUpdate_thunk',
+    async (_, thunkAPI) => {
+        try {
+            if (Platform.OS === 'android') {
+                if (process.env.NODE_ENV === 'production') {
+                    let result = await checkUpdateExist();
+                    if (result?.hasUpdate) {
+                        thunkAPI.dispatch({
+                            type: 'user/setUpdateFlag',
+                            payload: {
+                                exist: true,
+                                isForce: result.isForceUpdate,
+                                fileData: result.fileData,
+                                version: result.version,
+                                minVersion: result.minVersion,
+                                versionName: result.versionName,
+                            },
+                        });
+                    }
+                    if (result?.message) {
+                        thunkAPI.dispatch({
+                            type: 'user/setServerMessage',
+                            payload: result.message,
+                        });
+                    }
+                } else {
+                    let result = await getServerMessage();
+                    if (result?.message) {
+                        thunkAPI.dispatch({
+                            type: 'user/setServerMessage',
+                            payload: result.message,
+                        });
+                    }
+                }
+
+            } else if (Platform.OS === 'ios') {
+                let result = await getServerMessage();
+                if (result?.message) {
+                    thunkAPI.dispatch({
+                        type: 'user/setServerMessage',
+                        payload: result.message,
+                    });
+                }
+            }
+        } catch (e) {
+        }
+    }
+);
+
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -29,10 +82,21 @@ const userSlice = createSlice({
         emailVerified: false,
         isLoading: false,
         userError: '',
-        //----ota update
-        updateExist: false,
-        isDownloadingUpdate: false,
-        showUpdateOverlay: true,
+        //----Ota Update
+        update: {
+            isChecking: false,
+            exist: false,
+            isForce: false,
+            fileData: null,//addDate, sha256checksum, size, url
+            isDownloading: false,
+            showOverlay: true,
+            minVersion: '',
+            version: '',
+            versionName: '',
+        },
+        //----Message
+        serverMessage: '',
+        prevServerMessage: '',
         //-------------
         closeAppFlag: false,
     },
@@ -51,16 +115,40 @@ const userSlice = createSlice({
             state.userError = '';
         },
         setUpdateFlag: (state, action) => {
-            state.updateExist = action.payload;
+            if (action.payload.exist) {
+                state.update.exist = true;
+                state.update.isForce = action.payload.isForce;
+                state.update.fileData = action.payload.fileData;
+                state.update.fileData.size = ((action.payload.fileData.size || 0) / 1024 / 1024).toFixed(0);
+                state.update.version = action.payload.version;
+                state.update.minVersion = action.payload.minVersion;
+                state.update.versionName = action.payload.versionName;
+            } else {
+                state.update = {
+                    isChecking: false,
+                    exist: false,
+                    isForce: false,
+                    fileData: null,
+                    isDownloading: false,
+                    showOverlay: false,
+                    minVersion: '',
+                    version: '',
+                    versionName: '',
+                }
+            }
         },
         setDownloadingUpdateFlag: (state, action) => {
-            state.isDownloadingUpdate = action.payload;
+            state.update.isDownloading = action.payload;
         },
         setShowUpdateOverlayFlag: (state, action) => {
-            state.showUpdateOverlay = action.payload;
+            state.update.showOverlay = action.payload;
         },
         setCloseAppFlag: (state, action) => {
             state.closeAppFlag = action.payload;
+        },
+        setServerMessage: (state, action) => {
+            state.prevServerMessage = state.serverMessage;
+            state.serverMessage = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -70,6 +158,12 @@ const userSlice = createSlice({
         });
         builder.addCase(profile_api.fulfilled, (state, action) => {
             setProfileData(state, action);
+        });
+        builder.addCase(checkAppUpdate_thunk.pending, (state, action) => {
+            state.update.isChecking = true;
+        });
+        builder.addCase(checkAppUpdate_thunk.fulfilled, (state, action) => {
+            state.update.isChecking = false;
         });
     },
 });
@@ -90,7 +184,7 @@ const setProfileData = (state, action) => {
     state.isLoading = false;
 }
 
-export const userPersistStates = ['profileImages', 'defaultProfileImage', 'emailVerified'];
+export const userPersistStates = ['profileImages', 'defaultProfileImage', 'emailVerified', 'serverMessage', 'prevServerMessage'];
 
 export const {
     setInternet,
@@ -101,10 +195,12 @@ export const {
     setDownloadingUpdateFlag,
     setShowUpdateOverlayFlag,
     setCloseAppFlag,
+    setServerMessage,
 } = userSlice.actions;
 
 export {
     profile_api,
+    checkAppUpdate_thunk,
 };
 
 export default userSlice.reducer;
