@@ -1,18 +1,18 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {loginApi, logoutApi, sendVerifyEmailApi, signupApi,} from "../../api";
+import * as authApis from "../../api/authApis";
 import {purgeStoredState} from "redux-persist";
 
 const userLogin_api = createAsyncThunk(
     'auth/userLogin_api',
     async (formData, thunkAPI) => {
-        return await loginApi(formData);
+        return await authApis.loginApi(formData);
     }
 );
 
 const userSignup_api = createAsyncThunk(
     'auth/userSignup_api',
     async (formData, thunkAPI) => {
-        return await signupApi(formData);
+        return await authApis.signupApi(formData);
     }
 );
 
@@ -22,7 +22,7 @@ const logout_api = createAsyncThunk(
         thunkAPI.dispatch({type: 'auth/setLoggingOutFlag', payload: true});
         let result = null;
         if (callLogoutApi) {
-            result = await logoutApi();
+            result = await authApis.logoutApi();
         }
         if (!callLogoutApi || result && !result.errorMessage) {
             thunkAPI.dispatch({type: 'USER_LOGOUT'});
@@ -41,7 +41,7 @@ const logout_api = createAsyncThunk(
 const sendVerifyEmail_api = createAsyncThunk(
     'auth/sendVerifyEmail_api',
     async (_, thunkAPI) => {
-        return await sendVerifyEmailApi();
+        return await authApis.sendVerifyEmailApi();
     }
 );
 
@@ -118,32 +118,26 @@ const authSlice = createSlice({
 });
 
 const addUserData = (state, action) => {
-    const {
-        username, userId, errorMessage,
-        accessToken, accessToken_expire, refreshToken
-    } = action.payload;
-    if (errorMessage) {
-        state.authError = errorMessage;
+    let result = action.payload;
+    if (result.errorMessage) {
+        state.authError = result.errorMessage;
     } else {
-        state.username = username;
-        state.userId = userId;
+        state.username = result.data.username;
+        state.userId = result.data.userId;
         state.isLoggedIn = true;
-        state.accessToken = accessToken;
-        state.accessToken_expire = accessToken_expire;
-        state.refreshToken = refreshToken;
+        state.accessToken = result.data.token.accessToken;
+        state.accessToken_expire = result.data.token.accessToken_expire;
+        state.refreshToken = result.data.token.refreshToken;
     }
     state.isLoading = false;
 }
 
 const updateTokensState = (state, action) => {
-    const {
-        username, refreshToken,
-        accessToken, accessToken_expire,
-    } = action.payload;
-    state.username = username;
-    state.accessToken = accessToken;
-    state.accessToken_expire = accessToken_expire;
-    state.refreshToken = refreshToken;
+    let result = action.payload;
+    state.username = result.data.username;
+    state.accessToken = result.data.token.accessToken;
+    state.accessToken_expire = result.data.token.accessToken_expire;
+    state.refreshToken = result.data.token.refreshToken;
     state.isFetchingToken = false;
 }
 

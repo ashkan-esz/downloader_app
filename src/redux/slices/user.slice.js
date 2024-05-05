@@ -1,19 +1,22 @@
 import {Platform} from 'react-native';
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {getProfileDataApi} from "../../api";
+import * as profileApis from "../../api/profileApis";
 import {checkUpdateExist, getServerMessage} from "../../api/others";
 
 
 const profile_api = createAsyncThunk(
     'user/profile_api',
     async (_, thunkAPI) => {
-        let result = await getProfileDataApi();
+        let result = await profileApis.getProfileDataApi({
+            loadDevice: true,
+            loadProfileImages: true,
+        });
         if (typeof result !== 'string') {
             thunkAPI.dispatch({
                 type: 'auth/setDeviceSessionAndUsername',
                 payload: {
-                    thisDevice: result.thisDevice,
-                    username: result.username,
+                    thisDevice: result.data.thisDevice,
+                    username: result.data.username,
                 }
             });
         }
@@ -175,7 +178,7 @@ const setProfileData = (state, action) => {
     } else {
         const {
             profileImages, defaultProfile, emailVerified,
-        } = action.payload;
+        } = action.payload.data;
         state.profileImages = profileImages;
         state.defaultProfileImage = defaultProfile;
         state.emailVerified = emailVerified;

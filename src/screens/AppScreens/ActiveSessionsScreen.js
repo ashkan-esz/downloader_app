@@ -6,7 +6,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {DeviceSession} from "../../components/molecules";
 import {Colors, Typography} from "../../styles";
 import {useSelector} from "react-redux";
-import {forceLogoutAllApi, forceLogoutApi, getActiveSessionsApi} from "../../api";
+import * as authApis from "../../api/authApis";
 
 //just like telegram :)
 
@@ -22,13 +22,12 @@ const ActiveSessionsScreen = () => {
     useEffect(() => {
         const callApi = async () => {
             setIsFetching(true);
-            let result = await getActiveSessionsApi();
-            const {thisDevice, activeSessions, errorMessage} = result;
-            if (errorMessage) {
-                setError(errorMessage);
+            let result = await authApis.getActiveSessionsApi();
+            if (result.errorMessage) {
+                setError(result.errorMessage);
             } else {
-                setThisDevice(thisDevice);
-                setActiveSessions(activeSessions);
+                setThisDevice(result.data.thisDevice);
+                setActiveSessions(result.data.activeSessions);
             }
             setIsFetching(false);
             setIsMount(true);
@@ -61,7 +60,7 @@ const ActiveSessionsScreen = () => {
 
     const _onRefresh = async () => {
         setIsFetching(true);
-        let result = await getActiveSessionsApi();
+        let result = await authApis.getActiveSessionsApi();
         if (result.errorMessage) {
             setError(result.errorMessage);
         } else {
@@ -74,12 +73,12 @@ const ActiveSessionsScreen = () => {
     const _forceLogout = async (deviceId) => {
         setIsLoggingOut(true);
         let result = deviceId === 'all'
-            ? await forceLogoutAllApi()
-            : await forceLogoutApi(deviceId);
+            ? await authApis.forceLogoutAllApi()
+            : await authApis.forceLogoutApi(deviceId);
         if (result.errorMessage) {
             setError(result.errorMessage);
         } else {
-            setActiveSessions(result.activeSessions);
+            setActiveSessions(result.data.activeSessions);
         }
         setIsLoggingOut(false);
     }
@@ -143,7 +142,7 @@ const ActiveSessionsScreen = () => {
                     {
                         activeSessions.map((session, index) => (
                             <DeviceSession
-                                key={session.deviceId}
+                                key={session.DeviceId}
                                 session={session}
                                 onRemove={_forceLogout}
                                 isLoggingOut={isLoggingOut}

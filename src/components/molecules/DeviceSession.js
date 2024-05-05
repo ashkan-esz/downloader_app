@@ -33,7 +33,7 @@ const DeviceSession = ({session, isLoggingOut, noActiveSession, isFirst, isLast,
         : 'Are you sure you want to terminate this session?';
 
     const getIconName = () => {
-        let os = session.deviceOs.toLowerCase();
+        let os = session.DeviceOs.toLowerCase();
         if (os === 'ios') {
             return 'apple';
         }
@@ -47,7 +47,7 @@ const DeviceSession = ({session, isLoggingOut, noActiveSession, isFirst, isLast,
         if (isCurrentDevice) {
             onRemove('all');
         } else {
-            onRemove(session.deviceId);
+            onRemove(session.DeviceId);
         }
     }
 
@@ -66,13 +66,13 @@ const DeviceSession = ({session, isLoggingOut, noActiveSession, isFirst, isLast,
 
             <ListItem.Content>
                 <ListItem.Title style={style.title}>
-                    {session.deviceModel}
+                    {session.DeviceModel}
                 </ListItem.Title>
                 <ListItem.Subtitle style={style.subtitle}>
-                    {session.appName + ' ' + session.appVersion}
+                    {session.AppName + ' ' + session.AppVersion}
                 </ListItem.Subtitle>
                 <ListItem.Subtitle style={style.subtitle2}>
-                    {(session.ipLocation || 'unknown location') + ' ' + session.lastUseDate.split('T')[0]}
+                    {(session.IpLocation || 'unknown location') + ' ' + session.LastUseDate.split('T')[0]}
                 </ListItem.Subtitle>
 
                 {

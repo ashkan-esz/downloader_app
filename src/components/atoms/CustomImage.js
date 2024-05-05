@@ -21,7 +21,7 @@ const CustomImage = ({
             <Image
                 style={[style.image, extraStyle]}
                 source={(posters?.length > 0 && posters[0] && posters.map(p => p?.url).filter(Boolean)) || noImage}
-                placeholder={posters?.[0]?.thumbnail}
+                placeholder={posters?.[0]?.blurHash || posters?.[0]?.thumbnail}
                 transition={100}
                 cachePolicy={"disk"}
                 recyclingKey={movieId}

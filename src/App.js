@@ -241,7 +241,7 @@ export default function App() {
         //     console.log(res, messaging.AuthorizationStatus.AUTHORIZED, messaging.AuthorizationStatus.PROVISIONAL)
         // });
         messaging().getToken().then(token => {
-        console.log("--- fcm token: ", token);
+        // console.log("--- fcm token: ", token);
         })
         // messaging().onTokenRefresh(token => {
         //     console.log("--- fcm token2: ", token);
