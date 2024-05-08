@@ -5,8 +5,8 @@ import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {ScreenLayout} from "../../components/layouts";
 import {FilterType} from "../../components/molecules";
 import {MovieList} from "../../components/organisms";
-import {getSortedMovies} from "../../api";
 import {useSelector} from "react-redux";
+import * as movieApis from "../../api/movieApis";
 
 const MovieListScreen = () => {
     const route = useRoute();
@@ -31,7 +31,7 @@ const MovieListScreen = () => {
     }
 
     async function getData(pageParam) {
-        let result = await getSortedMovies(route.params.pageType, types, 'medium', pageParam);
+        let result = await movieApis.getSortedMovies(route.params.pageType, types, 'medium', pageParam);
         if (result && result !== 'error') {
             return result;
         } else {

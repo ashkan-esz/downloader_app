@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import useIsMounted from './useIsMounted';
-import {likeOrDislikeApi} from "../api";
+import * as userStatsApi from "../api/userStatsApi";
 import Toast from 'react-native-toast-message';
 
 
@@ -106,7 +106,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
             !saveIsLike && saveIsDislike ? dislikesCount - 1 : dislikesCount,
         );
 
-        let result = await likeOrDislikeApi('movies', movieId, 'like', saveIsLike);
+        let result = await userStatsApi.likeOrDislikeApi('movies', movieId, 'like', saveIsLike);
         if (result === 'ok' && isMounted.current) {
             //todo : fix
             prevState.current.isLike = !saveIsLike;
@@ -142,7 +142,7 @@ const useLikeOrDislike = (movieId, likesCount, dislikesCount, like, dislike, act
             !saveIsDislike ? dislikesCount + 1 : dislikesCount - 1,
         );
 
-        let result = await likeOrDislikeApi('movies', movieId, 'dislike', saveIsDislike);
+        let result = await userStatsApi.likeOrDislikeApi('movies', movieId, 'dislike', saveIsDislike);
         if (result === 'ok' && isMounted.current) {
             //todo : fix
             prevState.current.isLike = false;

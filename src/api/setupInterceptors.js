@@ -6,6 +6,11 @@ import Toast from "react-native-toast-message";
 let store;
 let tokenServerError = false;
 
+//todo : do not print error on (401 | network) error and keep state as loading
+
+//todo : handle errors again
+
+
 //todo : check again, need remove and change
 const errorMessages = {
     '401': 'Error: Request failed with status code 401',
@@ -50,6 +55,10 @@ const addDeviceInfo = (config) => {
             os: DeviceInfo.getSystemName().replace('iPhone OS', 'iOS'),
             deviceModel: DeviceInfo.getModel(),
         };
+        config.data = {
+            ...config.data,
+            ...config.data.deviceInfo,
+        }
     } catch (error) {
         if (!config.data) {
             config.data = {};
@@ -168,6 +177,8 @@ API.interceptors.response.use(
                 err.toString() === errorMessages["401"]) {
                 //stale refreshToken or refreshToken doesn't match (force logout)
                 console.log('--- here 3: ', err.response?.status, err.toString());
+                // console.log('--- here 3: ', err.toString(), originalConfig.url);
+                // console.log(JSON.stringify(err.response, null, 4));
                 store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                 return Promise.reject(err);
             }
@@ -245,6 +256,8 @@ CHAT_API.interceptors.response.use(
                 err.toString() === errorMessages["401"]) {
                 //stale refreshToken or refreshToken doesn't match (force logout)
                 console.log('--- here 3: ', err.response?.status, err.toString());
+                // console.log('--- here 3: ', err.toString(), originalConfig.url);
+                // console.log(JSON.stringify(err.response, null, 4));
                 store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                 return Promise.reject(err);
             }

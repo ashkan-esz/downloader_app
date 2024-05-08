@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {SectionNavBar} from "../molecules";
 import HomeTopMovieList from "./movieList/HomeTopMovieList";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getMultipleStatus} from "../../api";
+import * as movieApis from "../../api/movieApis";
 
 
 const HomeTopSection = () => {
@@ -26,7 +26,7 @@ const HomeTopSection = () => {
 
     async function getData() {
         const types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
-        let result = await getMultipleStatus(types, 'medium', 6, 1);
+        let result = await movieApis.getMultipleStatus(types, 'medium', 6, 1);
         if (result && result !== 'error') {
             return result;
         } else {

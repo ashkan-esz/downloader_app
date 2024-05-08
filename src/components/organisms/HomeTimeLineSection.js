@@ -5,7 +5,7 @@ import {MovieError} from "../atoms";
 import {HomeMovieCard, HomeMovieCardPlaceHolder} from "../molecules";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useNavigation} from "@react-navigation/native";
-import {getSeriesOfDay} from "../../api";
+import * as movieApis from "../../api/movieApis";
 import {Colors, Mixins, Typography} from "../../styles";
 
 
@@ -16,7 +16,7 @@ const HomeTimeLineSection = () => {
     const todayNumber = new Date().getDay();
 
     async function getData() {
-        let result = await getSeriesOfDay(todayNumber, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+        let result = await movieApis.getSeriesOfDay(todayNumber, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {

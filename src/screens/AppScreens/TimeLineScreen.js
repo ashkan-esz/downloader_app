@@ -4,7 +4,7 @@ import {TimeLinePaging} from "../../components/atoms";
 import {TimeLineMovieList} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import {getSeriesOfDay} from "../../api";
+import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
 
 
@@ -32,7 +32,7 @@ const TimeLineScreen = () => {
         if (!SPACING && spacing === -1) {
             return [];
         }
-        let result = await getSeriesOfDay(SPACING || spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+        let result = await movieApis.getSeriesOfDay(SPACING || spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
         if (result !== 'error') {
             return result;
         } else {

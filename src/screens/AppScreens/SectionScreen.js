@@ -5,7 +5,7 @@ import {SectionMovieList} from "../../components/organisms";
 import {SectionNavBar, FilterType} from "../../components/molecules";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import {getNews, getSortedMovies, getUpdates} from "../../api";
+import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
 
 
@@ -45,13 +45,13 @@ const SectionScreen = () => {
         const state = TAB || tab;
         let result;
         if (state === 'inTheaters') {
-            result = await getSortedMovies('inTheaters', types, 'medium', pageParam);
+            result = await movieApis.getSortedMovies('inTheaters', types, 'medium', pageParam);
         } else if (state === 'comingSoon') {
-            result = await getSortedMovies('comingSoon', types, 'medium', pageParam);
+            result = await movieApis.getSortedMovies('comingSoon', types, 'medium', pageParam);
         } else if (state === 'recent') {
-            result = await getNews(types, 'medium', pageParam);
+            result = await movieApis.getNews(types, 'medium', pageParam);
         } else if (state === 'update') {
-            result = await getUpdates(types, 'medium', pageParam);
+            result = await movieApis.getUpdates(types, 'medium', pageParam);
         }
         if (result && result !== 'error') {
             return result;

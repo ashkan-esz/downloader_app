@@ -4,8 +4,8 @@ import {ScreenLayout} from '../../components/layouts';
 import {SearchMovieList} from "../../components/organisms";
 import {CustomSearchBar, FilterType} from "../../components/molecules";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import {searchTitle} from "../../api";
 import {useSelector} from "react-redux";
+import * as movieApis from "../../api/movieApis";
 
 
 const SearchScreen = () => {
@@ -44,7 +44,7 @@ const SearchScreen = () => {
         if (!debouncedSearchValue) {
             return [];
         }
-        let result = await searchTitle(debouncedSearchValue, types, 'low', pageParam);
+        let result = await movieApis.searchTitle(debouncedSearchValue, types, 'low', pageParam);
         if (result !== 'error') {
             return result;
         } else {

@@ -5,7 +5,7 @@ import {MovieError} from "../../atoms";
 import {HomeScreenFlashList, HomeTrailer, HomeTrailerCardPlaceHolder} from "../../molecules";
 import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getTrailers} from "../../../api";
+import * as movieApis from "../../../api/movieApis";
 import {Colors, Mixins, Typography} from "../../../styles";
 
 const itemSize = Math.max(Mixins.getWindowHeight(20), 208) + 60; //268
@@ -21,7 +21,7 @@ const HomeTrailersList = () => {
     }, []);
 
     async function getData() {
-        let result = await getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
+        let result = await movieApis.getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
         if (result !== 'error') {
             return result;
         } else {

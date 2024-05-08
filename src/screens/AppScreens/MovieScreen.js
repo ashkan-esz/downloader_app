@@ -8,7 +8,7 @@ import {useRoute} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {homeStackHelpers} from "../../helper";
 import {useFollow, useIsMounted, useLikeOrDislike} from "../../hooks";
-import {searchByID} from "../../api";
+import * as movieApis from "../../api/movieApis";
 
 //todo : show alternate title
 //todo : add like/dislike number and functionality to like
@@ -28,7 +28,7 @@ const MovieScreen = () => {
     const isMounted = useIsMounted();
 
     const getData = async () => {
-        let result = await searchByID(routeParams.movieId, 'high');
+        let result = await movieApis.searchByID(routeParams.movieId, 'high');
         if (result !== 'error') {
             return result;
         } else {

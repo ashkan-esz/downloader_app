@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import useIsMounted from './useIsMounted';
-import {likeOrDislikeApi} from "../api";
+import * as userStatsApi from "../api/userStatsApi";
 import Toast from 'react-native-toast-message';
 
 
@@ -91,7 +91,7 @@ const useFollow = (movieId, FollowedCount, follow, activeFlag = true) => {
             !followState ? FollowedCount + 1 : FollowedCount - 1,
         );
 
-        let result = await likeOrDislikeApi('movies', movieId, 'follow', followState);
+        let result = await userStatsApi.likeOrDislikeApi('movies', movieId, 'follow', followState);
         if (result === 'ok' && isMounted.current) {
             //todo : fix
             prevState.current.isLike = !followState;

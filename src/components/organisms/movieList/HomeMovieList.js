@@ -5,7 +5,7 @@ import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieCardPlaceHolder, HomeScreenFlashList} from "../../molecules";
-import {getSortedMovies} from "../../../api";
+import * as movieApis from "../../../api/movieApis";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -17,7 +17,7 @@ const HomeMovieList = ({name, pageType}) => {
 
     async function getData() {
         let types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
-        let result = await getSortedMovies(pageType, types, 'low', 1);
+        let result = await movieApis.getSortedMovies(pageType, types, 'low', 1);
         if (result !== 'error') {
             return result;
         } else {

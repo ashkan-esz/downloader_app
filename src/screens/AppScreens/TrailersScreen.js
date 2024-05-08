@@ -4,8 +4,8 @@ import {ScreenLayout} from "../../components/layouts";
 import {TrailersMovieList} from "../../components/organisms";
 import {FilterType} from "../../components/molecules";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import {getTrailers} from "../../api";
 import {useSelector} from "react-redux";
+import * as movieApis from "../../api/movieApis";
 
 
 const TrailersScreen = () => {
@@ -30,7 +30,7 @@ const TrailersScreen = () => {
     }
 
     async function getData(pageParam) {
-        let result = await getTrailers(types, 'medium', pageParam);
+        let result = await movieApis.getTrailers(types, 'medium', pageParam);
         if (result !== 'error') {
             return result;
         } else {
