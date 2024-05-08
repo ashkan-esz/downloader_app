@@ -10,7 +10,7 @@ const MovieScreenInfoSection = ({data, forceClosePlot, setForceClosePlot}) => {
         <View>
             <MovieTrailer
                 poster={data.posters[0]}
-                trailer={data.trailers ? data.trailers[0].url : ''}
+                trailer={data.trailers?.[0]?.url || ''}
             />
             <MoviePlot
                 summary={data.summary}

@@ -79,7 +79,7 @@ const HomeTrailersList = () => {
             isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
             widePoster={item.poster_wide_s3}
-            trailer={item.trailers ? item.trailers[0].url : ''}
+            trailer={item.trailers?.[0]?.url || ''}
             title={item.rawTitle}
             genres={item.genres}
             type={item.type}
