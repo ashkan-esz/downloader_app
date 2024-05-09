@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 
 
-const MovieError = ({containerStyle, buttonStyle, retry, hideRetry, errorMessage}) => {
+const MovieError = ({containerStyle, buttonStyle, retry, hideRetry,autoRetry, errorMessage}) => {
     const internet = useSelector(state => state.user.internet);
 
     useEffect(() => {
-        if (internet && retry) {
+        if (internet && retry && autoRetry) {
             retry();
         }
     }, [internet]);
@@ -72,6 +72,7 @@ MovieError.propTypes = {
     buttonStyle: PropTypes.object,
     retry: PropTypes.func,
     showRetry: PropTypes.bool,
+    autoRetry: PropTypes.bool,
     errorMessage: PropTypes.string,
 };
 

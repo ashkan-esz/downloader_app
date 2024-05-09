@@ -52,8 +52,8 @@ const SectionMovieCardRating = ({
                 <LikeIconWithAnimation
                     extraIconStyle={style.likeIcon}
                     isActive={isDisLike}
-                    iconName={"md-heart-dislike"}
-                    outlineIconName={"md-heart-dislike-outline"}
+                    iconName={"heart-dislike"}
+                    outlineIconName={"heart-dislike-outline"}
                     onPress={onDisLike}
                     iconSize={25}
                     firstViewAnimation={false}

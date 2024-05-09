@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import {NavigationContainer} from "@react-navigation/native";
 import AppStackNavigations from "../AppStackNavigations";
 
-jest.mock("../../screens/AppScreens/HomeScreen", () => {
+jest.mock("../../screens/AppScreens/HomeScreen/HomeScreen", () => {
     const {SearchBar} = require("@rneui/themed");
     return () => {
         return (

@@ -1,16 +1,17 @@
 import React, {useMemo, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl, StatusBar} from 'react-native';
-import {HomeAvatarAndSearch} from "../../components/molecules";
+import {HomeAvatarAndSearch} from "../../../components/molecules";
 import {
     HomeTopSection,
     HomeTrailersList,
     HomeMovieList,
     HomeTimeLineSection
-} from "../../components/organisms";
-import {ScreenLayout} from "../../components/layouts";
+} from "../../../components/organisms";
+import {ScreenLayout} from "../../../components/layouts";
 import {useQueryClient} from "@tanstack/react-query";
-import {Mixins} from "../../styles";
+import {Mixins} from "../../../styles";
 import {useSelector} from "react-redux";
+import MoviesSwiper from "./swiper/MoviesSwiper";
 
 
 const HomeScreen = () => {
@@ -25,7 +26,7 @@ const HomeScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        const sections = ['multipleStatus', 'timeLine', 'trailers'];
+        const sections = ['news', 'multipleStatus', 'timeLine', 'trailers'];
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
             let query = queryClient.refetchQueries({queryKey: [sections[i]]});
@@ -53,7 +54,7 @@ const HomeScreen = () => {
                         extraStyle={style.avatar_searchBar}
                     />
 
-                    <HomeTopSection/>
+                    <MoviesSwiper/>
                     <HomeTimeLineSection/>
                     <HomeTrailersList/>
                     {/*<HomeMovieList*/}
