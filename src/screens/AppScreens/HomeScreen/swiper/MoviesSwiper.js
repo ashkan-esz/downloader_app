@@ -6,6 +6,7 @@ import {MovieError} from "../../../../components/atoms";
 import Animated from "react-native-reanimated";
 import SwiperItem, {SRC_WIDTH, CARD_LENGTH, SIDECARD_LENGTH, SPACING} from "./SwiperItem";
 import ScalingDot from "./ScalingDot";
+import {moviesDataLevel, movieTypes} from "../../../../utils";
 
 
 const _snapToInterval = CARD_LENGTH + SIDECARD_LENGTH - 2 * SPACING;
@@ -16,7 +17,7 @@ const MoviesSwiper = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     async function getData() {
-        let result = await movieApis.getNews(['movie', 'serial', 'anime_movie', 'anime_serial'], "low", 1);
+        let result = await movieApis.getNews(movieTypes.all, moviesDataLevel.low, 1);
         if (result !== 'error') {
             return result;
         } else {
@@ -25,14 +26,15 @@ const MoviesSwiper = () => {
     }
 
     const {data, isFetching, isError} = useQuery({
-        queryKey: ['news', 1],
+        queryKey: ['movie', 'news', 1],
         queryFn: getData,
-        placeholderData: [{_id: 0}, {_id: 1}, {_id: 2}],
+        placeholderData: [{_id: "0"}, {_id: "1"}, {_id: "2"}],
+        notifyOnChangeProps: "all",
     });
 
     const _retry = async () => {
         await queryClient.refetchQueries({
-            queryKey: ['news', 1]
+            queryKey: ['movie', 'news', 1]
         });
     }
 
@@ -69,7 +71,10 @@ const MoviesSwiper = () => {
                 onScroll={(event) => {
                     // scrollX.value = event.nativeEvent.contentOffset.x;
                     let tt = event.nativeEvent.contentOffset.x - SIDECARD_LENGTH + 2 * SPACING;
-                    setActiveIndex(Math.ceil(tt / _snapToInterval));
+                    let temp = Math.ceil(tt / _snapToInterval);
+                    if (activeIndex !== temp) {
+                        setActiveIndex(temp);
+                    }
                     // setActiveIndex(tt / _snapToInterval);
                 }}
             />

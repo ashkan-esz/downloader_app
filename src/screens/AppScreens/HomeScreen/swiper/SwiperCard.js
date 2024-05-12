@@ -4,7 +4,7 @@ import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {homeStackHelpers} from "../../../../helper";
-import {Colors, Mixins, Typography} from "../../../../styles";
+import {Colors, Typography} from "../../../../styles";
 import PropTypes from 'prop-types';
 import {CustomImage} from "../../../../components/atoms";
 import {getWindowWidth} from "../../../../styles/mixins";
@@ -14,6 +14,7 @@ import {BlurView} from "expo-blur";
 const SwiperCard = ({
                         extraStyle,
                         posters,
+                        widePoster,
                         movieId,
                         title,
                         type,
@@ -22,8 +23,6 @@ const SwiperCard = ({
                         latestData,
                         nextEpisode,
                         rating,
-                        like,
-                        dislike,
                         follow,
                     }) => {
     const navigation = useNavigation();
@@ -44,29 +43,19 @@ const SwiperCard = ({
 
                 <CustomImage
                     extraStyle={style.image}
-                    posters={posters}
+                    posters={widePoster ? [widePoster] : posters}
                     onPress={_navigateToMovieScreen}
                     resizeModeStretch={true}
                     movieId={movieId}
                 />
 
                 {
-                    (like || dislike || follow) && <View style={style.likeContainer}>
-                        {
-                            follow && <Ionicons
-                                style={(like || dislike) && style.bookmarkIcon}
-                                name={'bookmark'}
-                                size={22}
-                                color={Colors.BOOKMARK_ICON}
-                            />
-                        }
-                        {
-                            (like || dislike) && <Ionicons
-                                name={like ? 'heart' : 'md-heart-dislike'}
-                                size={22}
-                                color={"red"}
-                            />
-                        }
+                    follow && <View style={style.likeContainer}>
+                        <Ionicons
+                            name={'bookmark'}
+                            size={22}
+                            color={Colors.BOOKMARK_ICON}
+                        />
                     </View>
                 }
 
@@ -76,7 +65,7 @@ const SwiperCard = ({
                         tint={'dark'}
                         intensity={70}
                     >
-                        <Text style={style.title} numberOfLines={2}>
+                        <Text style={style.title} numberOfLines={1}>
                             {title}
                         </Text>
                         <Text style={[style.title, style.year]} numberOfLines={1}>
@@ -114,15 +103,13 @@ const style = StyleSheet.create({
     likeContainer: {
         backgroundColor: Colors.SECONDARY,
         borderRadius: 8,
-        paddingLeft: 3,
-        paddingRight: 3,
-        paddingTop: 3,
-        paddingBottom: 3,
+        paddingLeft: 4,
+        paddingRight: 4,
+        paddingTop: 4,
+        paddingBottom: 6,
         position: 'absolute',
-        left: 3,
-    },
-    bookmarkIcon: {
-        marginBottom: 10,
+        top: 5,
+        right: 5,
     },
     blurViewContainer: {
         position: 'absolute',
@@ -166,6 +153,7 @@ const style = StyleSheet.create({
 SwiperCard.propTypes = {
     extraStyle: PropTypes.object,
     posters: PropTypes.array.isRequired,
+    widePoster: PropTypes.object,
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     type: PropTypes.string,
@@ -174,8 +162,6 @@ SwiperCard.propTypes = {
     latestData: PropTypes.object,
     nextEpisode: PropTypes.any,
     rating: PropTypes.number.isRequired,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
     follow: PropTypes.bool.isRequired,
 }
 

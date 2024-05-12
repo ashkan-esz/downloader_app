@@ -27,9 +27,10 @@ const HomeMovieList = ({name, pageType}) => {
     }
 
     const {data, isPending, isError} = useQuery({
-        queryKey: [pageType, "homeMovieList"],
+        queryKey: ['movie', pageType, "homeMovieList"],
         queryFn: getData,
-        placeholderData: []
+        placeholderData: [],
+        notifyOnChangeProps: "all",
     });
 
     const justifyContent = useMemo(() => ({
@@ -39,7 +40,7 @@ const HomeMovieList = ({name, pageType}) => {
 
     const _retry = async () => {
         await queryClient.refetchQueries({
-            queryKey: [pageType, "homeMovieList"]
+            queryKey: ['movie', pageType, "homeMovieList"]
         });
     }
 
@@ -86,9 +87,7 @@ const HomeMovieList = ({name, pageType}) => {
             type={''}
             rating={0}
             noRating={true}
-            like={item.userStats.like}
-            dislike={item.userStats.dislike}
-            follow={item.userStats.follow}
+            follow={item.userStats?.follow || false}
         />
     );
 

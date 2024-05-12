@@ -23,5 +23,6 @@ export {default as RootToast} from './RootToast';
 export {default as MyOverlay} from './MyOverlay';
 export {default as MovieLikeAndBookmark} from './MovieLikeAndBookmark';
 export {default as LikeIconWithAnimation} from './LikeIconWithAnimation';
+export {default as IconWithTransition} from './IconWithTransition';
 export {default as DoubleTap} from './DoubleTap';
 export {default as MyShimmerPlaceHolder} from './MyShimmerPlaceHolder';

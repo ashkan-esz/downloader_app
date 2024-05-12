@@ -16,8 +16,7 @@ const TrailerImageSwitch = ({
                                 posters,
                                 widePoster,
                                 onLongPress,
-                                like,
-                                dislike,
+                                follow,
                                 hideLikeIcon,
                                 startFullscreen = true,
                                 movieId,
@@ -48,11 +47,11 @@ const TrailerImageSwitch = ({
                 />
 
                 {
-                    !hideLikeIcon && (like || dislike) && <View style={style.likeContainer}>
+                    !hideLikeIcon && follow && <View style={style.likeContainer}>
                         <Ionicons
-                            name={like ? 'heart' : 'md-heart-dislike'}
+                            name={'bookmark'}
                             size={22}
-                            color={"red"}
+                            color={Colors.BOOKMARK_ICON}
                         />
                     </View>
                 }
@@ -97,15 +96,15 @@ const style = StyleSheet.create({
         alignItems: 'flex-start',
     },
     likeContainer: {
-        flexDirection: 'row',
         backgroundColor: Colors.SECONDARY,
         borderRadius: 8,
-        paddingLeft: 3,
-        paddingRight: 3,
-        paddingTop: 3,
-        paddingBottom: 3,
+        paddingLeft: 4,
+        paddingRight: 4,
+        paddingTop: 4,
+        paddingBottom: 6,
         position: 'absolute',
-        left: 0,
+        top: 1,
+        right: 1,
     },
 });
 
@@ -117,8 +116,7 @@ TrailerImageSwitch.propTypes = {
     widePoster: PropTypes.object,
     movieId: PropTypes.string,
     onLongPress: PropTypes.func,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
+    follow: PropTypes.bool.isRequired,
     hideLikeIcon: PropTypes.bool,
     startFullscreen: PropTypes.bool,
 }

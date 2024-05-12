@@ -36,12 +36,12 @@ const TimeLineMovieList = ({
             genres={item.genres}
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
-            likesCount={item.userStats.likes_count}
-            dislikesCount={item.userStats.dislikes_count}
-            followsCount={item.userStats.follow_count}
-            like={item.userStats.like}
-            dislike={item.userStats.dislike}
-            follow={item.userStats.follow}
+            likesCount={item.userStats?.likes_count || 0}
+            dislikesCount={item.userStats?.dislikes_count || 0}
+            followsCount={item.userStats?.follow_count || 0}
+            like={item.userStats?.like || false}
+            dislike={item.userStats?.dislike || false}
+            follow={item.userStats?.follow || false}
         />
     );
 

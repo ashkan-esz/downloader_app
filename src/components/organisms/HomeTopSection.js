@@ -41,7 +41,7 @@ const HomeTopSection = () => {
     }
 
     const {data, isPending, isFetching, isError} = useQuery({
-        queryKey: ['multipleStatus'],
+        queryKey: ['movie', 'multipleStatus'],
         queryFn: getData,
         placeholderData: {
             inTheaters: [],
@@ -49,6 +49,7 @@ const HomeTopSection = () => {
             news: [],
             update: [],
         },
+        notifyOnChangeProps: "all",
     });
 
     useEffect(() => {
@@ -56,7 +57,7 @@ const HomeTopSection = () => {
     }, [isFetching]);
 
     const _retry = async () => {
-        await queryClient.refetchQueries({type: 'active'});
+        await queryClient.refetchQueries({type: 'active', queryKey: ['movie']});
     };
 
     return (

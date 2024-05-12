@@ -11,32 +11,21 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import PropTypes from 'prop-types';
 
 
-const LikeIconWithAnimation = ({
+const IconWithTransition = ({
                                    extraStyle,
                                    extraIconStyle,
                                    isActive,
                                    iconName,
                                    outlineIconName,
                                    onPress,
-                                   activeIconOnly,
-                                   activeAnimationOnly,
                                    firstViewAnimation = true,
-                                   autoHideLike,
-                                   disableOnPressActivation,
                                    iconSize,
                                    iconColor,
                                    activeIconColor,
                                }) => {
 
-    const mounted = useRef(false);
     const firstView = useRef(true);
-    const liked = useSharedValue((isActive && !activeAnimationOnly) ? 1 : 0);
-
-    useEffect(() => {
-        setTimeout(() => {
-            mounted.current = true
-        }, 10);
-    }, []);
+    const liked = useSharedValue(isActive ? 1 : 0);
 
     useEffect(() => {
         return () => {
@@ -45,9 +34,6 @@ const LikeIconWithAnimation = ({
     });
 
     useEffect(() => {
-        if (!mounted.current) {
-            return;
-        }
         if (firstView.current) {
             firstView.current = false;
             //do not show animation on first view
@@ -57,7 +43,7 @@ const LikeIconWithAnimation = ({
             }
         }
 
-        if ((isActive || activeAnimationOnly) && autoHideLike) {
+        if (isActive) {
             if (liked.value !== 0) {
                 return;
             }
@@ -67,7 +53,7 @@ const LikeIconWithAnimation = ({
                 }
             });
         } else {
-            liked.value = withSpring((isActive || activeAnimationOnly) ? 1 : 0);
+            liked.value = withSpring(isActive ? 1 : 0);
         }
     }, [isActive]);
 
@@ -92,10 +78,7 @@ const LikeIconWithAnimation = ({
 
     const _onPress = () => {
         onPress && onPress();
-        if (disableOnPressActivation) {
-            return;
-        }
-        if (!liked.value && autoHideLike) {
+        if (!liked.value) {
             liked.value = withSpring(1, undefined, isFinished => {
                 if (isFinished) {
                     liked.value = withDelay(300, withSpring(0));
@@ -112,7 +95,7 @@ const LikeIconWithAnimation = ({
             onPress={_onPress}
         >
             {
-                !activeIconOnly && liked.value !== 1 && <Animated.View
+                liked.value !== 1 && <Animated.View
                     style={[
                         StyleSheet.absoluteFillObject,
                         outlineStyle
@@ -145,22 +128,18 @@ const style = StyleSheet.create({
     },
 });
 
-LikeIconWithAnimation.propTypes = {
+IconWithTransition.propTypes = {
     extraStyle: PropTypes.object,
     extraIconStyle: PropTypes.object,
     isActive: PropTypes.bool.isRequired,
     iconName: PropTypes.string.isRequired,
     outlineIconName: PropTypes.string.isRequired,
     onPress: PropTypes.func,
-    activeIconOnly: PropTypes.bool,
-    activeAnimationOnly: PropTypes.bool,
     firstViewAnimation: PropTypes.bool,
-    autoHideLike: PropTypes.bool,
-    disableOnPressActivation: PropTypes.bool,
     iconSize: PropTypes.number,
     iconColor: PropTypes.string,
     activeIconColor: PropTypes.string,
 }
 
 
-export default LikeIconWithAnimation;
+export default IconWithTransition;

@@ -13,12 +13,13 @@ export const SPACING = SRC_WIDTH * 0.02;
 export const SIDECARD_LENGTH = (SRC_WIDTH * 0.18) / 2;
 
 const SwiperItem = ({isLoading, index, item, activeIndex, length}) => {
-    const size = useSharedValue(0.7);
+    const initSize = index === 0 && index === activeIndex ? 1 : 0.7;
+    const size = useSharedValue(initSize);
 
     useEffect(() => {
         if (activeIndex === index) {
             size.value = withTiming(1, {
-                duration: 150,
+                duration: 100,
                 easing: Easing.ease,
             });
         } else {
@@ -49,14 +50,13 @@ const SwiperItem = ({isLoading, index, item, activeIndex, length}) => {
                     : <SwiperCard
                         movieId={item._id}
                         posters={item.posters}
+                        widePoster={item.poster_wide_s3}
                         title={item.rawTitle}
                         year={item.year}
                         type={item.type}
                         latestData={item.latestData}
                         rating={item.rating.imdb || item.rating.myAnimeList}
-                        like={item.userStats.like}
-                        dislike={item.userStats.dislike}
-                        follow={item.userStats.follow}
+                        follow={item.userStats?.follow || false}
                     />
             }
         </Animated.View>

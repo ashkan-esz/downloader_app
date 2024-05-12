@@ -56,9 +56,7 @@ const HomeTopMovieList = ({loadedData, tab, isLoading, error, retry}) => {
                     latestData={item.latestData}
                     nextEpisode={item.nextEpisode}
                     rating={item.rating.imdb || item.rating.myAnimeList}
-                    like={item.userStats.like}
-                    dislike={item.userStats.dislike}
-                    follow={item.userStats.follow}
+                    follow={item.userStats?.follow || false}
                 />
             )))}
 

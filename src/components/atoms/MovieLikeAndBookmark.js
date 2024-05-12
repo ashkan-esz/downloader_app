@@ -35,8 +35,8 @@ const MovieLikeAndBookmark = ({
 
                 <LikeIconWithAnimation
                     isActive={isDisLike}
-                    iconName={"md-heart-dislike"}
-                    outlineIconName={"md-heart-dislike-outline"}
+                    iconName={"heart-dislike"}
+                    outlineIconName={"heart-dislike-outline"}
                     onPress={onDisLike}
                     disableOnPressActivation={disable}
                 />

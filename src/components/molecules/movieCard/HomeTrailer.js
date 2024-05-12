@@ -18,8 +18,7 @@ const HomeTrailer = ({
                          type,
                          movieId,
                          rating,
-                         like,
-                         dislike,
+                         follow,
                      }) => {
     const navigation = useNavigation();
 
@@ -40,8 +39,7 @@ const HomeTrailer = ({
                 posters={posters}
                 widePoster={widePoster}
                 onLongPress={_navigateToMovieScreen}
-                like={like}
-                dislike={dislike}
+                follow={follow}
                 movieId={movieId}
             />
 
@@ -123,8 +121,7 @@ HomeTrailer.propTypes = {
     type: PropTypes.string,
     movieId: PropTypes.string.isRequired,
     rating: PropTypes.number.isRequired,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
+    follow: PropTypes.bool.isRequired,
 };
 
 

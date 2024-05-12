@@ -40,14 +40,14 @@ const SectionMovieCard = ({
     }, [movieId, title, type, posters, rating]);
 
     const {
-        isLike,
-        isDisLike,
+        isLikeLoading,
+        isDislikeLoading,
         _onLike,
         _onDisLike
     } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
 
     const {
-        isFollowed,
+        isFollowLoading,
         _onFollow,
     } = useFollow(movieId, followsCount, follow);
 
@@ -80,9 +80,9 @@ const SectionMovieCard = ({
                     likesCount={likesCount}
                     dislikesCount={dislikesCount}
                     followsCount={followsCount}
-                    isLike={isLike}
-                    isDisLike={isDisLike}
-                    isFollow={isFollowed}
+                    isLike={like}
+                    isDisLike={dislike}
+                    isFollow={follow}
                     onLike={_onLike}
                     onDisLike={_onDisLike}
                     onFollow={_onFollow}

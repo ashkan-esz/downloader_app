@@ -31,13 +31,13 @@ const HomeTrailersList = () => {
     }
 
     const {data, isPending, isError} = useQuery({
-        queryKey: ["trailers"],
+        queryKey: ['movie', "trailers"],
         queryFn: getData,
-        placeholderData: []
+        placeholderData: [],
     });
 
     const _retry = async () => {
-        await queryClient.refetchQueries({queryKey: ["trailers"]});
+        await queryClient.refetchQueries({queryKey: ["movie", "trailers"]});
     }
 
     if (isError) {
@@ -85,8 +85,7 @@ const HomeTrailersList = () => {
             type={item.type}
             movieId={item._id}
             rating={item.rating.imdb || item.rating.myAnimeList}
-            like={item.userStats.like}
-            dislike={item.userStats.dislike}
+            follow={item.userStats?.follow || false}
         />
     );
 

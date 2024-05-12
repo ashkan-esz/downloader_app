@@ -54,7 +54,7 @@ const SearchScreen = () => {
     }
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
-        queryKey: [debouncedSearchValue, 'searchScreen', types],
+        queryKey: ['movie', debouncedSearchValue, 'searchScreen', types],
         queryFn: ({pageParam}) => getData(pageParam),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -71,7 +71,7 @@ const SearchScreen = () => {
     const _onRefresh = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: [debouncedSearchValue, 'searchScreen', types]
+            queryKey: ['movie', debouncedSearchValue, 'searchScreen', types]
         });
         setRefreshing(false);
     }
@@ -79,7 +79,7 @@ const SearchScreen = () => {
     const _retry = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: [debouncedSearchValue, 'searchScreen', types]
+            queryKey: ['movie', debouncedSearchValue, 'searchScreen', types]
         });
         setRefreshing(false);
     }

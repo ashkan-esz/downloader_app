@@ -2,125 +2,120 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import useIsMounted from './useIsMounted';
 import * as userStatsApi from "../api/userStatsApi";
-import Toast from 'react-native-toast-message';
+import {showToastMessage} from "../utils";
 
 
-const useFollow = (movieId, FollowedCount, follow, activeFlag = true) => {
+const useFollow = (movieId, followedCount, follow) => {
     const queryClient = useQueryClient();
-    const [isFollowed, setIsFollowed] = useState(follow);
+    const [isFollowLoading, setIsFollowLoading] = useState(false);
     const isMounted = useIsMounted();
 
     const prevState = useRef({
-        isFollowed: false,
+        follow: false,
         followCount: 0,
     });
 
     useEffect(() => {
-        if (activeFlag) {
-            prevState.current.isFollowed = follow;
-            prevState.current.followCount = FollowedCount;
-        }
-    }, [activeFlag]);
-
-    // console.log(movieId, typeof movieId);
-
-    useEffect(() => {
-        setIsFollowed(follow);
+        prevState.current.follow = follow;
+        prevState.current.followCount = followedCount;
     }, [movieId, follow]);
 
     const updateCachedDataArray = (dataArray, newFollowState, newFollowCount) => {
+        let updated = false;
         for (let i = 0; i < dataArray.length; i++) {
-            if (dataArray[i]._id.toString() === movieId.toString()) {
+            if (dataArray[i]._id.toString() === movieId.toString() && dataArray[i].userStats) {
                 dataArray[i].userStats.follow = newFollowState;
                 dataArray[i].userStats.follow_count = newFollowCount;
+                updated = true;
             }
         }
+        return updated;
     }
 
     const updateCachedData = async (newFollowState, newFollowCount) => {
-        queryClient.setQueriesData({type: 'active', stale: false}, oldData => {
+        queryClient.setQueriesData({type: 'active', stale: false, queryKey: ['movie']}, oldData => {
+            let updated = false;
             try {
                 if (Array.isArray(oldData)) {
-                    updateCachedDataArray(oldData, newFollowState, newFollowCount);
+                    updated = updateCachedDataArray(oldData, newFollowState, newFollowCount);
+                    if (!updated) {
+                        return undefined;
+                    }
                     return oldData;
                 } else if (typeof oldData === 'object') {
                     if (oldData.pages && Array.isArray(oldData.pages)) {
                         for (let i = 0; i < oldData.pages.length; i++) {
                             if (oldData.pages[i].movies) {
-                                updateCachedDataArray(oldData.pages[i].movies, newFollowState, newFollowCount);
-                                updateCachedDataArray(oldData.pages[i].staff, newFollowState, newFollowCount);
-                                updateCachedDataArray(oldData.pages[i].characters, newFollowState, newFollowCount);
+                                updated = updateCachedDataArray(oldData.pages[i].movies, newFollowState, newFollowCount) || updated;
+                                updated = updateCachedDataArray(oldData.pages[i].staff, newFollowState, newFollowCount) || updated;
+                                updated = updateCachedDataArray(oldData.pages[i].characters, newFollowState, newFollowCount) || updated;
                             } else {
-                                updateCachedDataArray(oldData.pages[i], newFollowState, newFollowCount);
+                                updated = updateCachedDataArray(oldData.pages[i], newFollowState, newFollowCount) || updated;
                             }
                         }
                         return oldData;
                     }
                     if (oldData.inTheaters) {
-                        updateCachedDataArray(oldData.inTheaters, newFollowState, newFollowCount);
+                        updated = updateCachedDataArray(oldData.inTheaters, newFollowState, newFollowCount) || updated;
                     }
                     if (oldData.comingSoon) {
-                        updateCachedDataArray(oldData.comingSoon, newFollowState, newFollowCount);
+                        updated = updateCachedDataArray(oldData.comingSoon, newFollowState, newFollowCount) || updated;
                     }
                     if (oldData.news) {
-                        updateCachedDataArray(oldData.news, newFollowState, newFollowCount);
+                        updated = updateCachedDataArray(oldData.news, newFollowState, newFollowCount) || updated;
                     }
                     if (oldData.update) {
-                        updateCachedDataArray(oldData.update, newFollowState, newFollowCount);
+                        updated = updateCachedDataArray(oldData.update, newFollowState, newFollowCount) || updated;
                     }
-                    if (oldData._id && oldData._id.toString() === movieId.toString()) {
+                    if (oldData._id && oldData._id.toString() === movieId.toString() && oldData.userStats) {
                         oldData.userStats.follow = newFollowState;
                         oldData.userStats.follow_count = newFollowCount;
+                        updated = true;
                     }
                 }
             } catch (error) {
+            }
+            if (!updated) {
+                return undefined;
             }
             return oldData;
         });
     }
 
-    const _onFollow = async () => {
-        if (!activeFlag) {
-            return;
-        }
+    const _onFollow = useCallback(async () => {
+        const newFollowState = !prevState.current.follow;
+        const newFollowCount = newFollowState
+            ? prevState.current.followCount + 1
+            : prevState.current.followCount - 1;
 
-        const followState = isFollowed;
-        setIsFollowed(!followState);
+        setIsFollowLoading(true);
         await updateCachedData(
-            !followState,
-            !followState ? FollowedCount + 1 : FollowedCount - 1,
+            newFollowState,
+            newFollowCount,
         );
 
-        let result = await userStatsApi.likeOrDislikeApi('movies', movieId, 'follow', followState);
+        let result = await userStatsApi.followMovieApi(movieId, {remove: !newFollowState});
         if (result === 'ok' && isMounted.current) {
-            //todo : fix
-            prevState.current.isLike = !followState;
-            prevState.current.likeNumber = !followState ? FollowedCount + 1 : FollowedCount - 1;
-        }
-        if (result === 'error' && isMounted.current) {
-            showToast();
+            prevState.current.follow = newFollowState;
+            prevState.current.followCount = newFollowCount;
+        } else if (result === 'error' && isMounted.current) {
+            showToastMessage({
+                type: 'message',
+                text1: "couldn't refresh feed",
+                position: 'bottom',
+                visibilityTime: 2000,
+            });
             await updateCachedData(
-                prevState.current.isFollowed,
+                prevState.current.follow,
                 prevState.current.followCount,
             );
         }
-    }
-
-    const showToast = useCallback(() => {
-        Toast.show({
-            type: 'message',
-            text1: "couldn't refresh feed",
-            position: 'bottom',
-            onPress: () => {
-                Toast.hide();
-            },
-            visibilityTime: 2000,
-        });
-    }, []);
+        setIsFollowLoading(false);
+    }, [movieId, prevState.current]);
 
     return {
         _onFollow,
-        isFollowed,
+        isFollowLoading,
     }
 }
 

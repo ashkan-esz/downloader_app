@@ -40,7 +40,7 @@ const TrailersScreen = () => {
     }
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
-        queryKey: ['trailers', 'trailersScreen', types],
+        queryKey: ['movie', 'trailers', 'trailersScreen', types],
         queryFn: ({pageParam}) => getData(pageParam),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -50,12 +50,13 @@ const TrailersScreen = () => {
             return null;
         },
         placeholderData: {pages: [[]]},
+        notifyOnChangeProps: "all",
     });
 
     const _onRefresh = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: ['trailers', 'trailersScreen', types]
+            queryKey: ['movie', 'trailers', 'trailersScreen', types]
         });
         setRefreshing(false);
     };

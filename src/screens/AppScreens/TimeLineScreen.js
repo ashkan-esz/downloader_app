@@ -48,13 +48,13 @@ const TimeLineScreen = () => {
             let promiseArray = [];
             let next = (todayNumber + 1) % 7;
             let promise1 = queryClient.prefetchInfiniteQuery({
-                queryKey: ['timeLineScreen', next],
+                queryKey: ['movie', 'timeLineScreen', next],
                 queryFn: () => getData({SPACING: next})
             });
             promiseArray.push(promise1);
             let prev = (todayNumber + 6) % 7;
             let promise2 = queryClient.prefetchInfiniteQuery({
-                queryKey: ['timeLineScreen', prev],
+                queryKey: ['movie', 'timeLineScreen', prev],
                 queryFn: () => getData({SPACING: prev})
             });
             promiseArray.push(promise2);
@@ -65,7 +65,7 @@ const TimeLineScreen = () => {
     }, []);
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
-        queryKey: ['timeLineScreen', spacing],
+        queryKey: ['movie', 'timeLineScreen', spacing],
         queryFn: ({pageParam}) => getData({pageParam}),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -75,6 +75,7 @@ const TimeLineScreen = () => {
             return null;
         },
         placeholderData: {pages: [[]]},
+        notifyOnChangeProps: "all",
     });
 
     const _onSpacingChange = (value) => {
@@ -87,13 +88,13 @@ const TimeLineScreen = () => {
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        await queryClient.refetchQueries({queryKey: ['timeLineScreen']});
+        await queryClient.refetchQueries({queryKey: ['movie', 'timeLineScreen']});
         setRefreshing(false);
     };
 
     const _retry = async () => {
         await queryClient.refetchQueries({
-            queryKey: ['timeLineScreen', spacing]
+            queryKey: ['movie', 'timeLineScreen', spacing]
         });
     };
 
@@ -131,7 +132,7 @@ const TimeLineScreen = () => {
 const style = StyleSheet.create({
     topPaging: {
         marginTop: 5,
-        paddingBottom: 15,
+        paddingBottom: 50,
     }
 });
 

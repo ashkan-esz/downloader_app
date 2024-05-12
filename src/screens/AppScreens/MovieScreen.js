@@ -38,48 +38,47 @@ const MovieScreen = () => {
     }
 
     const {data, isPending, isError} = useQuery({
-        queryKey: ['movieData', routeParams.movieId],
+        queryKey: ['movie', 'movieData', routeParams.movieId],
         queryFn: getData,
         placeholderData: null,
         gcTime: 3 * 60 * 1000,
         staleTime: 3 * 60 * 1000,
+        notifyOnChangeProps: "all",
     });
 
     const {
-        isLike,
-        isDisLike,
+        isLikeLoading,
+        isDislikeLoading,
         _onLike,
         _onDisLike
     } = useLikeOrDislike(
         routeParams.movieId,
         data ? data.userStats.likes_count : 0,
         data ? data.userStats.dislikes_count : 0,
-        data ? data.userStats.like : false,
-        data ? data.userStats.dislike : false,
-        data !== null && !isError
+        data?.userStats?.like || false,
+        data?.userStats?.dislike || false,
     );
 
     const {
-        isFollowed,
+        isFollowLoading,
         _onFollow,
     } = useFollow(
         routeParams.movieId,
         data ? data.userStats.follow_count : 0,
-        data ? data.userStats.follow : false,
-        data !== null && !isError
+        data?.userStats?.follow || false,
     );
 
     const _onRefresh = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: ['movieData', routeParams.movieId]
+            queryKey: ['movie', 'movieData', routeParams.movieId]
         });
         isMounted.current && setRefreshing(false);
     }
 
     const _retry = async () => {
         await queryClient.resetQueries({
-            queryKey: ['movieData', routeParams.movieId]
+            queryKey: ['movie', 'movieData', routeParams.movieId]
         });
     }
 
@@ -114,20 +113,20 @@ const MovieScreen = () => {
                         genres={data ? data.genres : []}
                         posters={data ? data.posters : []}
                         widePoster={data?.poster_wide_s3}
-                        isLike={isLike}
-                        onDoubleTap={_onLike}
+                        isLike={isLikeLoading ? !data.userStats.like : (data ? data.userStats.like : false)}
+                        onDoubleTap={() => (data !== null && !isError) && _onLike()}
                     />
 
                     <MovieLikeAndBookmark
-                        isLike={isLike}
-                        isDisLike={isDisLike}
-                        isFollowed={isFollowed}
+                        isLike={isLikeLoading ? !data.userStats.like : (data ? data.userStats.like : false)}
+                        isDisLike={isDislikeLoading ? !data.userStats.dislike : (data ? data.userStats.dislike : false)}
+                        isFollowed={isFollowLoading ? !data.userStats.follow : (data ? data.userStats.follow : false)}
                         onLike={_onLike}
-                        onDisLike={_onDisLike}
+                        onDisLike={ _onDisLike}
                         onFollow={_onFollow}
                         likesCount={data ? data.userStats.likes_count : 0}
                         dislikesCount={data ? data.userStats.dislikes_count : 0}
-                        disable={!data || isPending || isError}
+                        disable={!data || !data.type.includes('serial') || isPending || isError || isFollowLoading || isLikeLoading || isDislikeLoading}
                     />
 
                     {

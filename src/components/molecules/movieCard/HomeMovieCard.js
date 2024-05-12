@@ -20,8 +20,6 @@ const HomeMovieCard = ({
                            nextEpisode,
                            rating,
                            noRating,
-                           like,
-                           dislike,
                            follow,
                        }) => {
     const navigation = useNavigation();
@@ -49,22 +47,13 @@ const HomeMovieCard = ({
                 />
 
                 {
-                    (like || dislike || follow) && <View style={style.likeContainer}>
-                        {
-                            follow && <Ionicons
-                                style={(like || dislike) && style.bookmarkIcon}
-                                name={'bookmark'}
-                                size={22}
-                                color={Colors.BOOKMARK_ICON}
-                            />
-                        }
-                        {
-                            (like || dislike) && <Ionicons
-                                name={like ? 'heart' : 'md-heart-dislike'}
-                                size={22}
-                                color={"red"}
-                            />
-                        }
+                    follow && <View style={style.likeContainer}>
+
+                        <Ionicons
+                            name={'bookmark'}
+                            size={22}
+                            color={Colors.BOOKMARK_ICON}
+                        />
                     </View>
                 }
 
@@ -102,11 +91,12 @@ const style = StyleSheet.create({
         backgroundColor: Colors.SECONDARY,
         borderRadius: 8,
         paddingLeft: 3,
-        paddingRight: 3,
+        paddingRight: 2,
         paddingTop: 3,
-        paddingBottom: 3,
+        paddingBottom: 5,
         position: 'absolute',
-        left: 3,
+        top: 0,
+        right: 0,
     },
     bookmarkIcon: {
         marginBottom: 10,
@@ -138,8 +128,6 @@ HomeMovieCard.propTypes = {
     nextEpisode: PropTypes.any,
     rating: PropTypes.number.isRequired,
     noRating: PropTypes.bool,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
     follow: PropTypes.bool.isRequired,
 }
 

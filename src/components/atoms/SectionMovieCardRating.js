@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {Image} from 'expo-image';
-import LikeIconWithAnimation from "./LikeIconWithAnimation";
+import IconWithTransition from "./IconWithTransition";
 import {Colors, Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
@@ -36,7 +36,7 @@ const SectionMovieCardRating = ({
             </View>
 
             <View style={[style.likeContainer, likeContainerStyle]}>
-                <LikeIconWithAnimation
+                <IconWithTransition
                     extraIconStyle={style.likeIcon}
                     isActive={isLike}
                     iconName={"heart"}
@@ -49,7 +49,7 @@ const SectionMovieCardRating = ({
                     {likesCount}
                 </Text>
 
-                <LikeIconWithAnimation
+                <IconWithTransition
                     extraIconStyle={style.likeIcon}
                     isActive={isDisLike}
                     iconName={"heart-dislike"}
@@ -62,7 +62,7 @@ const SectionMovieCardRating = ({
                     {dislikesCount}
                 </Text>
 
-                <LikeIconWithAnimation
+                <IconWithTransition
                     extraIconStyle={style.likeIcon}
                     isActive={isFollow}
                     iconName={"bookmark"}

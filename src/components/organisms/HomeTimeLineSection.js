@@ -26,9 +26,10 @@ const HomeTimeLineSection = () => {
     }
 
     const {data, isPending, isError} = useQuery({
-        queryKey: ['timeLine', todayNumber],
+        queryKey: ['movie', 'timeLine', todayNumber],
         queryFn: getData,
         placeholderData: [],
+        notifyOnChangeProps: "all",
     });
 
     const justifyContent = useMemo(() => ({
@@ -38,7 +39,7 @@ const HomeTimeLineSection = () => {
 
     const _retry = async () => {
         await queryClient.refetchQueries({
-            queryKey: ['timeLine', 0]
+            queryKey: ['movie', 'timeLine', 0]
         });
     }
 
@@ -94,9 +95,7 @@ const HomeTimeLineSection = () => {
                                 latestData={item.latestData}
                                 nextEpisode={item.nextEpisode}
                                 rating={item.rating.imdb || item.rating.myAnimeList}
-                                like={item.userStats.like}
-                                dislike={item.userStats.dislike}
-                                follow={item.userStats.follow}
+                                follow={item.userStats?.follow || false}
                             />
                         );
                     })

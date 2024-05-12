@@ -3,7 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import PropTypes from 'prop-types';
 import {Text} from "@rneui/themed";
-import {Typography} from "../../styles";
+import {Typography, Colors} from "../../styles";
 
 
 const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
@@ -29,7 +29,7 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
                 <AntDesign
                     name="caretleft"
                     size={32}
-                    color="red"
+                    color={Colors.THIRD}
                 />
             </TouchableOpacity>
 
@@ -43,7 +43,7 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
                 <AntDesign
                     name="caretright"
                     size={32}
-                    color="red"
+                    color={Colors.THIRD}
                 />
             </TouchableOpacity>
         </View>
@@ -67,6 +67,7 @@ const style = StyleSheet.create({
         zIndex: 1,
     },
     leftIcon: {
+        position: 'absolute',
         left: 3,
         zIndex: 2,
     },

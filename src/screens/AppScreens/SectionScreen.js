@@ -67,7 +67,7 @@ const SectionScreen = () => {
             let promiseArray = [];
             for (let i = 0; i < sections.length; i++) {
                 let query = queryClient.prefetchInfiniteQuery({
-                    queryKey: [sections[i], 'sectionScreen', types],
+                    queryKey: ['movie', sections[i], 'sectionScreen', types],
                     queryFn: () => getData({TAB: sections[i]})
                 });
                 promiseArray.push(query);
@@ -79,7 +79,7 @@ const SectionScreen = () => {
     }, []);
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
-        queryKey: [tab, 'sectionScreen', types],
+        queryKey: ['movie', tab, 'sectionScreen', types],
         queryFn: ({pageParam}) => getData({pageParam}),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -91,6 +91,7 @@ const SectionScreen = () => {
         placeholderData: {pages: [[]]},
         gcTime: 2 * 60 * 1000,
         staleTime: 2 * 60 * 1000,
+        notifyOnChangeProps: "all",
     });
 
     // console.log('----- ', data);
@@ -109,7 +110,7 @@ const SectionScreen = () => {
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
             let query = queryClient.refetchQueries({
-                queryKey: [sections[i], 'sectionScreen', types]
+                queryKey: ['movie', sections[i], 'sectionScreen', types]
             });
             promiseArray.push(query);
         }
@@ -119,7 +120,7 @@ const SectionScreen = () => {
 
     const _retry = async () => {
         await queryClient.refetchQueries({
-            queryKey: [tab, 'sectionScreen', types]
+            queryKey: ['movie', tab, 'sectionScreen', types]
         });
     };
 

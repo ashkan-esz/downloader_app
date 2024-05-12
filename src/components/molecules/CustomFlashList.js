@@ -90,6 +90,7 @@ const CustomFlashList = ({
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 onScroll={_onScroll}
+                // scrollEventThrottle={64}
                 onViewableItemsChanged={onViewableItemsChanged}
                 data={data}
                 keyExtractor={keyExtractor}

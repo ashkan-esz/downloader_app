@@ -41,7 +41,7 @@ const MovieListScreen = () => {
     }
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
-        queryKey: [route.params.pageType, 'movieListScreen', types],
+        queryKey: ['movie', route.params.pageType, 'movieListScreen', types],
         queryFn: ({pageParam}) => getData(pageParam),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -53,19 +53,20 @@ const MovieListScreen = () => {
         placeholderData: {pages: [[]]},
         gcTime: 2 * 60 * 1000,
         staleTime: 2 * 60 * 1000,
+        notifyOnChangeProps: "all",
     });
 
     const _onRefresh = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: [route.params.pageType, 'movieListScreen', types]
+            queryKey: ['movie', route.params.pageType, 'movieListScreen', types]
         });
         setRefreshing(false);
     };
 
     const _retry = async () => {
         await queryClient.refetchQueries({
-            queryKey: [route.params.pageType, 'movieListScreen', types]
+            queryKey: ['movie', route.params.pageType, 'movieListScreen', types]
         });
     };
 
