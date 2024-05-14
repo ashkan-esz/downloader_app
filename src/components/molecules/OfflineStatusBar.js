@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, StatusBar} from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import {Mixins} from "../../styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,6 +14,7 @@ const OfflineStatusBar = () => {
         let unsubscribe = NetInfo.addEventListener((netState) => {
             dispatch(setInternet({
                 internet: netState.isConnected && netState.isInternetReachable,
+                // internet: false,
                 connectionType: netState.type,
             }));
         });
@@ -33,7 +34,8 @@ const OfflineStatusBar = () => {
 
 const style = StyleSheet.create({
     container: {
-        top: 25,
+        top: StatusBar.currentHeight + 5,
+        marginBottom: StatusBar.currentHeight + 5,
         zIndex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -41,7 +43,6 @@ const style = StyleSheet.create({
         backgroundColor: '#b52424',
         width: Mixins.WINDOW_WIDTH,
         height: 28,
-        marginBottom: 25,
     },
     text: {
         color: '#fff'

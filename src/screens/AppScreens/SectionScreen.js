@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 
 
 const SectionScreen = () => {
-    const sections = ['inTheaters', 'comingSoon', 'recent', 'update'];
+    const sections = ['news', 'updates','inTheaters', 'comingSoon'];
     const route = useRoute();
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
@@ -24,7 +24,7 @@ const SectionScreen = () => {
     const containerStyle = useMemo(() => ({
         position: 'absolute',
         width: '100%',
-        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 35,
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 10,
     }), [internet]);
 
     useEffect(() => {
@@ -48,9 +48,9 @@ const SectionScreen = () => {
             result = await movieApis.getSortedMovies('inTheaters', types, 'medium', pageParam);
         } else if (state === 'comingSoon') {
             result = await movieApis.getSortedMovies('comingSoon', types, 'medium', pageParam);
-        } else if (state === 'recent') {
+        } else if (state === 'news') {
             result = await movieApis.getNews(types, 'medium', pageParam);
-        } else if (state === 'update') {
+        } else if (state === 'updates') {
             result = await movieApis.getUpdates(types, 'medium', pageParam);
         }
         if (result && result !== 'error') {

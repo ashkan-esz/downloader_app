@@ -19,7 +19,7 @@ const TrailersScreen = () => {
     const containerStyle = useMemo(() => ({
         position: 'absolute',
         width: '100%',
-        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 35,
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 10,
     }), [internet]);
 
     const _onScroll = () => {

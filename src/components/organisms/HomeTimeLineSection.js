@@ -7,6 +7,8 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useNavigation} from "@react-navigation/native";
 import * as movieApis from "../../api/movieApis";
 import {Colors, Mixins, Typography} from "../../styles";
+import Entypo from 'react-native-vector-icons/Entypo';
+import {movieTypes} from "../../utils";
 
 
 const HomeTimeLineSection = () => {
@@ -16,16 +18,15 @@ const HomeTimeLineSection = () => {
     const todayNumber = new Date().getDay();
 
     async function getData() {
-        let result = await movieApis.getSeriesOfDay(todayNumber, 1, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+        let result = await movieApis.getSeriesOfDay(todayNumber, 1, movieTypes.all);
         if (result !== 'error') {
             return result;
         } else {
-            //todo : handle error
-            return [];
+            throw new Error();
         }
     }
 
-    const {data, isPending, isError} = useQuery({
+    const {data, isPending, isFetching, isError} = useQuery({
         queryKey: ['movie', 'timeLine', todayNumber],
         queryFn: getData,
         placeholderData: [],
@@ -33,9 +34,9 @@ const HomeTimeLineSection = () => {
     });
 
     const justifyContent = useMemo(() => ({
-        justifyContent: data.length < 3 ? 'flex-start' : undefined,
+        justifyContent: data?.length < 3 ? 'flex-start' : undefined,
         marginRight: 5,
-    }), [data]);
+    }), [data?.length]);
 
     const _retry = async () => {
         await queryClient.refetchQueries({
@@ -46,7 +47,7 @@ const HomeTimeLineSection = () => {
     if (isError) {
         return (
             <View style={style.container}>
-                <Text style={style.sectionTitle}>TimeLine</Text>
+                <Text style={style.sectionTitle}>Today Series</Text>
                 <MovieError
                     containerStyle={style.error}
                     retry={_retry}
@@ -56,7 +57,7 @@ const HomeTimeLineSection = () => {
         );
     }
 
-    if (data.length === 0 || isPending) {
+    if ((data.length === 0 && isFetching) || isPending) {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>Today Series</Text>
@@ -77,8 +78,10 @@ const HomeTimeLineSection = () => {
             <Text
                 style={style.seeAll}
                 onPress={() => navigation.navigate('TimeLine')}>
-                See All
+                See more
             </Text>
+            <Entypo name="chevron-small-right" style={style.seeAllIcon} size={30} color={Colors.THIRD}
+                    onPress={() => navigation.navigate('TimeLine')}/>
 
             <View style={[style.movieListContainer, justifyContent]}>
                 {
@@ -94,7 +97,8 @@ const HomeTimeLineSection = () => {
                                 tab={'todaySeries'}
                                 latestData={item.latestData}
                                 nextEpisode={item.nextEpisode}
-                                rating={item.rating.imdb || item.rating.myAnimeList}
+                                rating={item.rating.imdb}
+                                malScore={item.rating.myAnimeList}
                                 follow={item.userStats?.follow || false}
                             />
                         );
@@ -117,10 +121,15 @@ const style = StyleSheet.create({
     },
     seeAll: {
         position: 'absolute',
-        right: 5,
+        right: 20,
         marginTop: 5,
-        color: Colors.NAVBAR,
-        fontSize: Typography.getFontSize(18)
+        color: Colors.THIRD,
+        fontSize: Typography.getFontSize(18),
+    },
+    seeAllIcon: {
+        position: 'absolute',
+        right: -8,
+        marginTop: 4,
     },
     movieListContainer: {
         flexDirection: 'row',
@@ -129,7 +138,7 @@ const style = StyleSheet.create({
     },
     error: {
         marginTop: 20,
-        height: Mixins.getWindowHeight(25),
+        height: Mixins.getWindowHeight(25) + 40,
         alignItems: 'center',
         justifyContent: 'center',
     }

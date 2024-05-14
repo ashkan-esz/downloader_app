@@ -2,7 +2,6 @@ import React, {useMemo, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl, StatusBar} from 'react-native';
 import {HomeAvatarAndSearch} from "../../../components/molecules";
 import {
-    HomeTopSection,
     HomeTrailersList,
     HomeMovieList,
     HomeTimeLineSection
@@ -20,13 +19,13 @@ const HomeScreen = () => {
     const internet = useSelector(state => state.user.internet);
 
     const containerStyle = useMemo(() => ({
-        top: internet ? StatusBar.currentHeight + 5 : StatusBar.currentHeight - 20,
-        height: internet ? Mixins.WINDOW_HEIGHT - 40 : Mixins.WINDOW_HEIGHT - 60,
+        top: internet ? StatusBar.currentHeight + 5 : 10,
+        height: internet ? Mixins.WINDOW_HEIGHT - 5 : Mixins.WINDOW_HEIGHT - StatusBar.currentHeight + 5,
     }), [internet]);
 
     const _onRefresh = async () => {
         setRefreshing(true);
-        const sections = ['news', 'multipleStatus', 'timeLine', 'trailers'];
+        const sections = ['news', 'updates', 'timeLine', 'trailers'];
         let promiseArray = [];
         for (let i = 0; i < sections.length; i++) {
             let query = queryClient.refetchQueries({queryKey: ["movie", sections[i]]});
@@ -56,16 +55,19 @@ const HomeScreen = () => {
 
                     <MoviesSwiper/>
                     <HomeTimeLineSection/>
+                    <HomeMovieList
+                        name={'Updates'}
+                        pageType={'updates'}
+                    />
                     <HomeTrailersList/>
-                    {/*<HomeMovieList*/}
-                    {/*    name={'Top'}*/}
-                    {/*    pageType={'top'}*/}
-                    {/*/>*/}
+                    <HomeMovieList
+                        name={'Coming Soon'}
+                        pageType={'comingSoon'}
+                    />
                     <HomeMovieList
                         name={'Top Anime'}
                         pageType={'animeTopAiring'}
                     />
-
 
                 </ScrollView>
             </View>

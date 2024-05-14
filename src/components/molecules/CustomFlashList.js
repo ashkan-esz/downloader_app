@@ -39,7 +39,9 @@ const CustomFlashList = ({
     const internet = useSelector(state => state.user.internet);
 
     const containerHeight = useMemo(() => ({
-        height: internet ? Mixins.WINDOW_HEIGHT - 140 - (extraHeightDiff || 0) : Mixins.WINDOW_HEIGHT - 165 - (extraHeightDiff || 0),
+        height: internet
+            ? Mixins.WINDOW_HEIGHT - 130 - (extraHeightDiff || 0)
+            : Mixins.WINDOW_HEIGHT - 150 - (extraHeightDiff || 0),
     }), [internet, extraHeightDiff]);
 
     const _onScroll = (event) => {

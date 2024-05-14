@@ -5,7 +5,7 @@ import {Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const HomeMovieCardPlaceHolder = ({extraStyle, rating = true, latestData = true}) => {
+const HomeMovieCardPlaceHolder = ({extraStyle, latestData = true}) => {
     return (
         <View style={[style.cardContainer, extraStyle]}>
 
@@ -21,16 +21,6 @@ const HomeMovieCardPlaceHolder = ({extraStyle, rating = true, latestData = true}
                     height={Typography.getFontSize(14)}
                     extraStyle={{
                         marginTop: 4,
-                        marginBottom: 0,
-                    }}
-                />
-            }
-            {
-                rating && <MyShimmerPlaceHolder
-                    width={90}
-                    height={12}
-                    extraStyle={{
-                        marginTop: 8,
                         marginBottom: 0,
                     }}
                 />
@@ -59,7 +49,6 @@ const style = {
 
 HomeMovieCardPlaceHolder.propTypes = {
     extraStyle: PropTypes.object,
-    rating: PropTypes.bool,
     latestData: PropTypes.bool,
 }
 

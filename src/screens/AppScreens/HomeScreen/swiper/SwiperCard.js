@@ -108,8 +108,8 @@ const style = StyleSheet.create({
         paddingTop: 4,
         paddingBottom: 6,
         position: 'absolute',
-        top: 5,
-        right: 5,
+        top: 1,
+        right: 3,
     },
     blurViewContainer: {
         position: 'absolute',

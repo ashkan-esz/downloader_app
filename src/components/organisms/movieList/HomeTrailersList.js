@@ -7,6 +7,8 @@ import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../../api/movieApis";
 import {Colors, Mixins, Typography} from "../../../styles";
+import Entypo from 'react-native-vector-icons/Entypo';
+import {moviesDataLevel, movieTypes} from "../../../utils";
 
 const itemSize = Math.max(Mixins.getWindowHeight(20), 208) + 60; //268
 
@@ -21,29 +23,28 @@ const HomeTrailersList = () => {
     }, []);
 
     async function getData() {
-        let result = await movieApis.getTrailers(['movie', 'serial', 'anime_movie', 'anime_serial'], 'medium', 1);
+        let result = await movieApis.getTrailers(movieTypes.all, moviesDataLevel.medium, 1);
         if (result !== 'error') {
             return result;
         } else {
-            //todo : handle error
-            return [];
+            throw new Error();
         }
     }
 
     const {data, isPending, isError} = useQuery({
-        queryKey: ['movie', "trailers"],
+        queryKey: ['movie', "trailers", 1],
         queryFn: getData,
         placeholderData: [],
     });
 
     const _retry = async () => {
-        await queryClient.refetchQueries({queryKey: ["movie", "trailers"]});
+        await queryClient.refetchQueries({queryKey: ["movie", "trailers", 1]});
     }
 
     if (isError) {
         return (
             <View style={style.container}>
-                <Text style={style.sectionTitle}>New Trailer</Text>
+                <Text style={style.sectionTitle}>New Trailers</Text>
                 <MovieError
                     containerStyle={style.error}
                     retry={_retry}
@@ -95,8 +96,10 @@ const HomeTrailersList = () => {
             <Text
                 style={style.seeAll}
                 onPress={() => navigation.navigate('Trailers')}>
-                See All
+                See more
             </Text>
+            <Entypo name="chevron-small-right" style={style.seeAllIcon} size={30} color={Colors.THIRD}
+                    onPress={() => navigation.navigate('Trailers')}/>
 
             <HomeScreenFlashList
                 extraStyle={style.listContainer}
@@ -115,7 +118,7 @@ const HomeTrailersList = () => {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 15,
+        marginTop: 10,
     },
     listContainer: {
         marginTop: 20,
@@ -134,14 +137,19 @@ const style = StyleSheet.create({
     },
     seeAll: {
         position: 'absolute',
-        right: 5,
+        right: 20,
         marginTop: 5,
-        color: Colors.NAVBAR,
-        fontSize: Typography.getFontSize(18)
+        color: Colors.THIRD,
+        fontSize: Typography.getFontSize(18),
+    },
+    seeAllIcon: {
+        position: 'absolute',
+        right: -8,
+        marginTop: 4,
     },
     error: {
         marginTop: 20,
-        height: Mixins.getWindowHeight(18),
+        height: Mixins.getWindowHeight(20) + 40,
         alignItems: 'center',
         justifyContent: 'center',
     }

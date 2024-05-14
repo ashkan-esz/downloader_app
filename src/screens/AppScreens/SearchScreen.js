@@ -21,7 +21,7 @@ const SearchScreen = () => {
     const containerStyle = useMemo(() => ({
         position: 'absolute',
         width: '100%',
-        top: internet ? StatusBar.currentHeight + 95 : StatusBar.currentHeight + 70,
+        top: internet ? StatusBar.currentHeight + 75 : StatusBar.currentHeight + 25,
     }), [internet]);
 
     useEffect(() => {

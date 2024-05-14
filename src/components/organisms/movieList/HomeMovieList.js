@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
@@ -8,25 +8,29 @@ import {HomeMovieCard, HomeMovieCardPlaceHolder, HomeScreenFlashList} from "../.
 import * as movieApis from "../../../api/movieApis";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {moviesDataLevel, movieTypes} from "../../../utils";
 
-const itemSize = Math.max(Mixins.getWindowHeight(29), 200); //240
+const itemSize = Math.max(Mixins.getWindowHeight(29), 200) + 20; //260
+
+const sectionScreens = ["updates", "comingSoon"];
 
 const HomeMovieList = ({name, pageType}) => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
     async function getData() {
-        let types = ['movie', 'serial', 'anime_movie', 'anime_serial'];
-        let result = await movieApis.getSortedMovies(pageType, types, 'low', 1);
+        let result = pageType === "updates"
+            ? await movieApis.getUpdates(movieTypes.all, moviesDataLevel.low, 1)
+            : await movieApis.getSortedMovies(pageType, movieTypes.all, moviesDataLevel.low, 1);
         if (result !== 'error') {
             return result;
         } else {
-            //todo : handle error
-            return [];
+            throw new Error();
         }
     }
 
-    const {data, isPending, isError} = useQuery({
+    const {data, isPending, isFetching, isError} = useQuery({
         queryKey: ['movie', pageType, "homeMovieList"],
         queryFn: getData,
         placeholderData: [],
@@ -34,15 +38,26 @@ const HomeMovieList = ({name, pageType}) => {
     });
 
     const justifyContent = useMemo(() => ({
-        justifyContent: data.length < 3 ? 'flex-start' : undefined,
-        marginRight: data.length < 3 ? 5 : 6,
-    }), [data]);
+        justifyContent: data?.length < 3 ? 'flex-start' : undefined,
+        marginRight: data?.length < 3 ? 5 : 6,
+    }), [data?.length]);
 
     const _retry = async () => {
         await queryClient.refetchQueries({
             queryKey: ['movie', pageType, "homeMovieList"]
         });
     }
+
+    const _onNavigate = useCallback(() => {
+        if (sectionScreens.includes(pageType)) {
+            navigation.navigate('Section', {startTab: pageType})
+        } else {
+            navigation.navigate('MovieListScreen', {
+                name: name,
+                pageType: pageType,
+            })
+        }
+    }, [name, pageType]);
 
     if (isError) {
         return (
@@ -57,18 +72,14 @@ const HomeMovieList = ({name, pageType}) => {
         );
     }
 
-    if (data.length === 0 || isPending) {
+    if ((data.length === 0 && isFetching) || isPending) {
         return (
             <View style={style.container}>
                 <Text style={style.sectionTitle}>{name}</Text>
                 <View style={style.listContainer}>
                     {
                         Array.apply(null, Array(3)).map((item, index) => (
-                                <HomeMovieCardPlaceHolder
-                                    extraStyle={style.movieCard}
-                                    rating={false}
-                                    latestData={false}
-                                    key={index}/>
+                                <HomeMovieCardPlaceHolder extraStyle={style.movieCard} key={index}/>
                             )
                         )
                     }
@@ -84,10 +95,13 @@ const HomeMovieList = ({name, pageType}) => {
             posters={item.posters}
             movieId={item._id}
             title={item.rawTitle}
-            type={''}
-            rating={0}
-            noRating={true}
+            type={item.type}
+            rating={item.rating.imdb}
+            malScore={item.rating.myAnimeList}
             follow={item.userStats?.follow || false}
+            tab={pageType}
+            latestData={item.latestData}
+            nextEpisode={item.nextEpisode}
         />
     );
 
@@ -96,13 +110,11 @@ const HomeMovieList = ({name, pageType}) => {
             <Text style={style.sectionTitle}>{name}</Text>
             <Text
                 style={style.seeAll}
-                onPress={() => navigation.navigate('MovieListScreen', {
-                    name: name,
-                    pageType: pageType,
-                })
-                }>
-                See All
+                onPress={_onNavigate}>
+                See more
             </Text>
+            <Entypo name="chevron-small-right" style={style.seeAllIcon} size={30} color={Colors.THIRD}
+                    onPress={_onNavigate}/>
 
             <HomeScreenFlashList
                 extraStyle={style.listContainer}
@@ -129,10 +141,15 @@ const style = StyleSheet.create({
     },
     seeAll: {
         position: 'absolute',
-        right: 5,
+        right: 20,
         marginTop: 5,
-        color: Colors.NAVBAR,
-        fontSize: Typography.getFontSize(18)
+        color: Colors.THIRD,
+        fontSize: Typography.getFontSize(18),
+    },
+    seeAllIcon: {
+        position: 'absolute',
+        right: -8,
+        marginTop: 4,
     },
     listContainer: {
         justifyContent: "space-between",
@@ -140,8 +157,8 @@ const style = StyleSheet.create({
         flex: 0,
         flexShrink: 1,
         width: Mixins.WINDOW_WIDTH - 10,
-        height: Mixins.getWindowHeight(29),
-        minHeight: 200,
+        height: itemSize,
+        minHeight: 220,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -150,7 +167,8 @@ const style = StyleSheet.create({
     },
     error: {
         marginTop: 8,
-        height: Mixins.getWindowHeight(25),
+        height: itemSize,
+        minHeight: 220,
         alignItems: 'center',
         justifyContent: 'center',
     }

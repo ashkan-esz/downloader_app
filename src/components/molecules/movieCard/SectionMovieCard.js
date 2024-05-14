@@ -40,14 +40,14 @@ const SectionMovieCard = ({
     }, [movieId, title, type, posters, rating]);
 
     const {
-        isLikeLoading,
-        isDislikeLoading,
+        // isLikeLoading,
+        // isDislikeLoading,
         _onLike,
         _onDisLike
     } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
 
     const {
-        isFollowLoading,
+        // isFollowLoading,
         _onFollow,
     } = useFollow(movieId, followsCount, follow);
 
@@ -121,7 +121,7 @@ const SectionMovieCard = ({
 const style = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        marginBottom: Mixins.getWindowHeight(33) < 240 ? 27 : 0,
+        marginBottom: 265 - Math.min(Mixins.getWindowHeight(33), 255),
         width: '100%',
         height: Mixins.getWindowHeight(33),
         maxHeight: 255,
@@ -142,8 +142,8 @@ const style = StyleSheet.create({
     },
     image: {
         width: Mixins.getWindowWidth(37),
-        height: Mixins.getWindowHeight(33) + 8,
-        maxHeight: 250,
+        height: Math.min(Mixins.getWindowHeight(33), 255),
+        maxHeight: 255,
         borderRadius: 8,
     },
     infoContainer: {

@@ -1,12 +1,13 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {CustomRating, CustomImage} from "../../atoms";
+import {CustomImage} from "../../atoms";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
+import {Image} from "expo-image";
 
 
 const HomeMovieCard = ({
@@ -19,6 +20,7 @@ const HomeMovieCard = ({
                            latestData,
                            nextEpisode,
                            rating,
+                           malScore,
                            noRating,
                            follow,
                        }) => {
@@ -30,6 +32,15 @@ const HomeMovieCard = ({
             movieId, title, type, posters, rating
         });
     }, [movieId, title, type, posters, rating]);
+
+    const MemoImdbIcon = memo(() => <Image
+        source={require('../../../assets/icons/imdb_round.png')}
+        style={style.ratingIcon}
+    />);
+    const MemoMalIcon = memo(() => <Image
+        source={require('../../../assets/icons/mal_round.png')}
+        style={style.ratingIcon}
+    />);
 
     return (
         <TouchableOpacity
@@ -60,12 +71,21 @@ const HomeMovieCard = ({
                 <Text style={style.title} numberOfLines={1}>
                     {title}
                 </Text>
-                {latestData && <Text style={style.latestData} numberOfLines={1}>
-                    {type.includes('serial')
-                        ? homeStackHelpers.getSerialState(latestData, nextEpisode, tab)
-                        : homeStackHelpers.getPartialQuality(latestData.quality, 2)}
-                </Text>}
-                {!noRating && <CustomRating rating={rating}/>}
+
+                {
+                    latestData && <Text style={style.latestData} numberOfLines={1}>
+                        {type.includes('serial')
+                            ? homeStackHelpers.getSerialState(latestData, nextEpisode, tab)
+                            : homeStackHelpers.getPartialQuality(latestData.quality, 2)}
+                    </Text>
+                }
+                {
+                    !noRating && (!!rating || !!malScore) && <View style={style.ratingContainer}>
+                        {rating ? <MemoImdbIcon/> : <MemoMalIcon/>}
+                        <Text style={style.rating}>{(rating || malScore).toFixed(1)}</Text>
+                    </View>
+                }
+
             </View>
         </TouchableOpacity>
     );
@@ -89,14 +109,14 @@ const style = StyleSheet.create({
     },
     likeContainer: {
         backgroundColor: Colors.SECONDARY,
-        borderRadius: 8,
+        borderRadius: 5,
         paddingLeft: 3,
-        paddingRight: 2,
+        paddingRight: 1,
         paddingTop: 3,
         paddingBottom: 5,
         position: 'absolute',
         top: 0,
-        right: 0,
+        right: -1,
     },
     bookmarkIcon: {
         marginBottom: 10,
@@ -114,7 +134,30 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(14),
         marginTop: -2,
         marginBottom: 0,
-    }
+    },
+    ratingContainer: {
+        backgroundColor: Colors.BLACK,
+        position: "absolute",
+        top: 2,
+        left: 2,
+        flexDirection: "row",
+        borderRadius: 8,
+        alignItems: "center",
+        height: 20,
+    },
+    ratingIcon: {
+        width: 16,
+        height: 16,
+        alignSelf: 'center',
+        borderRadius: 16,
+        marginLeft: 3,
+    },
+    rating: {
+        fontSize: Typography.getFontSize(12),
+        color: "#fff",
+        marginLeft: 3,
+        marginRight: 5,
+    },
 });
 
 HomeMovieCard.propTypes = {
@@ -127,6 +170,7 @@ HomeMovieCard.propTypes = {
     latestData: PropTypes.object,
     nextEpisode: PropTypes.any,
     rating: PropTypes.number.isRequired,
+    malScore: PropTypes.number.isRequired,
     noRating: PropTypes.bool,
     follow: PropTypes.bool.isRequired,
 }
