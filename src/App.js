@@ -290,6 +290,7 @@ export default function App() {
             <StatusBar style="light"
                 // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
                 // backgroundColor={backgroundStyle.backgroundColor}
+                backgroundColor={Colors.PRIMARY}
             />
             <NavigationContainer>
                 <QueryClientProvider client={queryClient}>

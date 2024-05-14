@@ -1,16 +1,23 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {LayoutAnimation, Platform, StatusBar, StyleSheet, UIManager, View} from 'react-native';
-import {ScreenLayout} from "../../components/layouts";
-import {SectionMovieList} from "../../components/organisms";
-import {SectionNavBar, FilterType} from "../../components/molecules";
+import {ScreenLayout} from "../../../components/layouts";
+import {SectionMovieList} from "../../../components/organisms";
+import {SectionNavBar, FilterType} from "../../../components/molecules";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import * as movieApis from "../../api/movieApis";
+import * as movieApis from "../../../api/movieApis";
 import {useSelector} from "react-redux";
+import {moviesDataLevel} from "../../../utils";
 
+export const sectionTypes = Object.freeze({
+    news: Object.freeze(['news', 'updates', 'inTheaters', 'comingSoon']),
+    upcoming: Object.freeze(['comingSoon', "animeSeasonUpcoming", 'animeTopComingSoon']),
+    upcoming_names: Object.freeze(['Coming Soon', "Anime Season", 'Anime Top Coming']),
+    rank: Object.freeze(["follow_month", "like_month", "like", "view_month"]),
+    rank_names: Object.freeze(["Follow Month", "Like Month", "Like", "View Month"]),
+});
 
 const SectionScreen = () => {
-    const sections = ['news', 'updates','inTheaters', 'comingSoon'];
     const route = useRoute();
     const [tab, setTab] = useState(route.params.startTab);
     const [changedTab, setChangedTab] = useState('');
@@ -44,14 +51,12 @@ const SectionScreen = () => {
     async function getData({pageParam = 1, TAB}) {
         const state = TAB || tab;
         let result;
-        if (state === 'inTheaters') {
-            result = await movieApis.getSortedMovies('inTheaters', types, 'medium', pageParam);
-        } else if (state === 'comingSoon') {
-            result = await movieApis.getSortedMovies('comingSoon', types, 'medium', pageParam);
-        } else if (state === 'news') {
-            result = await movieApis.getNews(types, 'medium', pageParam);
+        if (state === 'news') {
+            result = await movieApis.getNews(types, moviesDataLevel.medium, pageParam);
         } else if (state === 'updates') {
-            result = await movieApis.getUpdates(types, 'medium', pageParam);
+            result = await movieApis.getUpdates(types, moviesDataLevel.medium, pageParam);
+        } else {
+            result = await movieApis.getSortedMovies(state, types, moviesDataLevel.medium, pageParam);
         }
         if (result && result !== 'error') {
             return result;
@@ -65,10 +70,10 @@ const SectionScreen = () => {
     useEffect(() => {
         async function prefetchData() {
             let promiseArray = [];
-            for (let i = 0; i < sections.length; i++) {
+            for (let i = 0; i < route.params.tabs.length; i++) {
                 let query = queryClient.prefetchInfiniteQuery({
-                    queryKey: ['movie', sections[i], 'sectionScreen', types],
-                    queryFn: () => getData({TAB: sections[i]})
+                    queryKey: ['movie', route.params.tabs[i], 'sectionScreen', types],
+                    queryFn: () => getData({TAB: route.params.tabs[i]})
                 });
                 promiseArray.push(query);
             }
@@ -108,9 +113,9 @@ const SectionScreen = () => {
     const _onRefresh = async () => {
         setRefreshing(true);
         let promiseArray = [];
-        for (let i = 0; i < sections.length; i++) {
+        for (let i = 0; i < route.params.tabs.length; i++) {
             let query = queryClient.refetchQueries({
-                queryKey: ['movie', sections[i], 'sectionScreen', types]
+                queryKey: ['movie', route.params.tabs[i], 'sectionScreen', types]
             });
             promiseArray.push(query);
         }
@@ -130,7 +135,8 @@ const SectionScreen = () => {
 
                 <SectionNavBar
                     extraStyle={style.navbar}
-                    sections={sections}
+                    sections={route.params.tabs}
+                    sectionNames={route.params.tabNames}
                     tab={tab}
                     changedTab={changedTab}
                     onTabChange={_onTabChange}

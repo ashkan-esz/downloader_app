@@ -6,6 +6,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
+import {movieTypes} from "../../utils";
 
 
 const TimeLineScreen = () => {
@@ -32,7 +33,7 @@ const TimeLineScreen = () => {
         if (!SPACING && spacing === -1) {
             return [];
         }
-        let result = await movieApis.getSeriesOfDay(SPACING || spacing, pageParam, ['movie', 'serial', 'anime_movie', 'anime_serial']);
+        let result = await movieApis.getSeriesOfDay(SPACING || spacing, pageParam, movieTypes.all);
         if (result !== 'error') {
             return result;
         } else {

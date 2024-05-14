@@ -65,8 +65,16 @@ const HomeScreen = () => {
                         pageType={'comingSoon'}
                     />
                     <HomeMovieList
-                        name={'Top Anime'}
+                        name={'Coming Soon Anime'}
+                        pageType={'animeTopComingSoon'}
+                    />
+                    <HomeMovieList
+                        name={'Top Airing Anime'}
                         pageType={'animeTopAiring'}
+                    />
+                    <HomeMovieList
+                        name={'Follow Month'}
+                        pageType={'follow_month'}
                     />
 
                 </ScrollView>

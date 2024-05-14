@@ -3,7 +3,7 @@ export {default as LogInScreen} from './authScreens/LogInScreen';
 export {default as SignUpScreen} from './authScreens/SignUpScreen';
 export {default as SearchScreen} from './AppScreens/SearchScreen';
 export {default as HomeScreen} from './AppScreens/HomeScreen/HomeScreen';
-export {default as SectionScreen} from './AppScreens/SectionScreen';
+export {default as SectionScreen} from './AppScreens/movieSectionsScreen/SectionScreen';
 export {default as TrailersScreen} from './AppScreens/TrailersScreen';
 export {default as MovieScreen} from './AppScreens/MovieScreen';
 export {default as TimeLineScreen} from './AppScreens/TimeLineScreen';

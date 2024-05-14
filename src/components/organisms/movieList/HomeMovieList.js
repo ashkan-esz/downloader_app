@@ -10,10 +10,9 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {moviesDataLevel, movieTypes} from "../../../utils";
+import {sectionTypes} from "../../../screens/AppScreens/movieSectionsScreen/SectionScreen";
 
 const itemSize = Math.max(Mixins.getWindowHeight(29), 200) + 20; //260
-
-const sectionScreens = ["updates", "comingSoon"];
 
 const HomeMovieList = ({name, pageType}) => {
     const navigation = useNavigation();
@@ -24,7 +23,7 @@ const HomeMovieList = ({name, pageType}) => {
             ? await movieApis.getUpdates(movieTypes.all, moviesDataLevel.low, 1)
             : await movieApis.getSortedMovies(pageType, movieTypes.all, moviesDataLevel.low, 1);
         if (result !== 'error') {
-            return result;
+            return result.slice(0, 6);
         } else {
             throw new Error();
         }
@@ -49,8 +48,24 @@ const HomeMovieList = ({name, pageType}) => {
     }
 
     const _onNavigate = useCallback(() => {
-        if (sectionScreens.includes(pageType)) {
-            navigation.navigate('Section', {startTab: pageType})
+        if (sectionTypes.news.includes(pageType)) {
+            navigation.navigate('Section', {
+                startTab: pageType,
+                tabs: sectionTypes.news,
+                tabNames: sectionTypes.news,
+            });
+        } else if (sectionTypes.upcoming.includes(pageType)) {
+            navigation.navigate('Section', {
+                startTab: pageType,
+                tabs: sectionTypes.upcoming,
+                tabNames: sectionTypes.upcoming_names,
+            });
+        } else if (sectionTypes.rank.includes(pageType)) {
+            navigation.navigate('Section', {
+                startTab: pageType,
+                tabs: sectionTypes.rank,
+                tabNames: sectionTypes.rank_names,
+            });
         } else {
             navigation.navigate('MovieListScreen', {
                 name: name,
@@ -132,8 +147,8 @@ const HomeMovieList = ({name, pageType}) => {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 15,
-        paddingBottom: 15,
+        marginTop: 10,
+        paddingBottom: 10,
     },
     sectionTitle: {
         color: '#ffffff',
