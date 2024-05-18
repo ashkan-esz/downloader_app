@@ -1,7 +1,11 @@
 export function getSerialState(latestData, nextEpisode, tab) {
     try {
         //todo : remove
+        let torrentSeasonEpisode = latestData.torrentLinks?.toUpperCase() || "";
         let latestSeasonEpisode = 'S' + latestData.season + 'E' + latestData.episode;
+        if (torrentSeasonEpisode !== latestSeasonEpisode && torrentSeasonEpisode) {
+            latestSeasonEpisode = torrentSeasonEpisode;
+        }
         try {
             if (tab !== 'todaySeries') {
                 return latestSeasonEpisode;

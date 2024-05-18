@@ -45,7 +45,7 @@ const SwiperItem = ({isLoading, index, item, activeIndex, length}) => {
         }]}>
 
             {
-                isLoading
+                (length < 4 && isLoading)
                     ? <MyShimmerPlaceHolder extraStyle={styles.placeHolder}/>
                     : <SwiperCard
                         movieId={item._id}

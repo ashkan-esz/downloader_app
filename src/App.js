@@ -128,29 +128,6 @@ export default function App() {
     //     }
     // }, [appIsReady]);
 
-
-    //--------------------------------------------
-    const requestUserPermission = async () => {
-        const authStatus = await messaging().requestPermission();
-        const enabled =
-            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-        if (enabled) {
-            return (await messaging().getToken()).toString();
-        } else {
-            console.log('REQUEST PERMISSION DENIED');
-            return null
-        }
-    };
-    const getNewFCMToken = async () => {
-        try {
-            let token = await requestUserPermission();
-            // console.log('Token:', token);
-        } catch (error) {
-            console.error('Error getting new FCM token:', error);
-        }
-    };
-
     //---------------------------------------------------
     //---------------------------------------------------
     // const Stack = createStackNavigator();

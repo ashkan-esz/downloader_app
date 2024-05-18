@@ -8,7 +8,8 @@ import {
     TimeLineScreen,
     ProfileScreen,
     ActiveSessionsScreen,
-    MovieListScreen
+    MovieListScreen,
+    NotificationScreen
 } from '../screens';
 import {Colors} from "../styles";
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -95,6 +96,10 @@ const AppStackNavigations = () => {
                 name={'MovieListScreen'}
                 component={MovieListScreen}
                 options={({route}) => ({title: route.params.name})}
+            />
+            <Stack.Screen
+                name={'Notifications'}
+                component={NotificationScreen}
             />
         </Stack.Navigator>
     );

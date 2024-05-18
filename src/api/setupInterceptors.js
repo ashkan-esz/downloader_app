@@ -2,6 +2,7 @@ import API, {CHAT_API} from "./index";
 import {authEndpoints, tokenEndPoint} from "./authApis";
 import DeviceInfo from 'react-native-device-info';
 import Toast from "react-native-toast-message";
+import messaging from "@react-native-firebase/messaging";
 
 let store;
 let tokenServerError = false;
@@ -21,6 +22,35 @@ const errorMessages = {
 export const injectStore = _store => {
     store = _store;
 }
+
+//---------------------------------------------------
+//---------------------------------------------------
+
+const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+        return (await messaging().getToken()).toString();
+    } else {
+        console.log('REQUEST PERMISSION DENIED');
+        return null
+    }
+};
+const getNewFCMToken = async () => {
+    try {
+        let token = await requestUserPermission();
+        // console.log('Token:', token);
+        return token;
+    } catch (error) {
+        console.error('Error getting new FCM token:', error);
+        return "";
+    }
+};
+
+//---------------------------------------------------
+//---------------------------------------------------
 
 const accessTokenShouldBeRefreshed = () => (
     !store.getState().auth.accessToken ||
@@ -44,7 +74,7 @@ const enableForceLogoutIfNeeded = (error) => {
     }
 }
 
-const addDeviceInfo = (config) => {
+const addDeviceInfo = async (config) => {
     try {
         if (!config.data) {
             config.data = {};
@@ -54,6 +84,7 @@ const addDeviceInfo = (config) => {
             appVersion: DeviceInfo.getVersion(),
             os: DeviceInfo.getSystemName().replace('iPhone OS', 'iOS'),
             deviceModel: DeviceInfo.getModel(),
+            notifToken: config.url === tokenEndPoint ? "" : await getNewFCMToken(),
         };
         config.data = {
             ...config.data,
@@ -151,7 +182,7 @@ API.interceptors.request.use(async (config) => {
     }
 
     if (authEndpoints.includes(config.url)) {
-        addDeviceInfo(config);
+        await addDeviceInfo(config);
     }
 
     config.headers.authorization = `Bearer ${store.getState().auth.accessToken}`;
@@ -230,7 +261,7 @@ CHAT_API.interceptors.request.use(async (config) => {
     }
 
     if (authEndpoints.includes(config.url)) {
-        addDeviceInfo(config);
+        await addDeviceInfo(config);
     }
 
     config.headers.authorization = `Bearer ${store.getState().auth.accessToken}`;

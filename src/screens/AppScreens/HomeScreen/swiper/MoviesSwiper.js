@@ -50,6 +50,10 @@ const MoviesSwiper = () => {
         );
     }
 
+    if (data.length === 0 && !isFetching) {
+        return null;
+    }
+
     return (
         <Animated.View style={styles.container}>
             <Animated.FlatList

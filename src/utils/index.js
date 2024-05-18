@@ -13,7 +13,7 @@ export function showToast({type = 'error', text, position = 'bottom', time = 100
 }
 
 
-export function showToastMessage({text1, position = "bottom", visibilityTime = 2000})  {
+export function showToastMessage({text1, position = "bottom", visibilityTime = 2000}) {
     //todo : global function
     //todo : re design
     Toast.show({
@@ -42,3 +42,37 @@ export const moviesDataLevel = Object.freeze({
     high: "high",
     dlink: "dlink",
 });
+
+export function getElapsedTime(startTime) {
+    let timeDiff = (Date.now() - startTime.getTime()) / 1000;
+
+    let seconds = Math.floor(timeDiff % 60);
+    let secondsAsString = seconds < 10 ? "0" + seconds : seconds + "";
+
+    timeDiff = Math.floor(timeDiff / 60);
+    let minutes = timeDiff % 60;
+    let minutesAsString = minutes < 10 ? "0" + minutes : minutes + "";
+
+    timeDiff = Math.floor(timeDiff / 60);
+    let hours = timeDiff % 24;
+
+    timeDiff = Math.floor(timeDiff / 24);
+    let days = timeDiff;
+    let totalHours = hours + (days * 24);
+    let totalHoursAsString = totalHours < 10 ? "0" + totalHours : totalHours + "";
+
+    let hourMinuteFormat = totalHoursAsString === "00"
+        ? minutesAsString + ":" + secondsAsString
+        : totalHoursAsString + ":" + minutesAsString + ":" + secondsAsString;
+
+    let highestUnit = days > 0 ? days + " Days ago"
+        : hours > 0 ? hours + " Hour ago" : minutes > 0 ? minutes + " Min ago" : "Just now";
+    return {
+        hourMinuteFormat,
+        highestUnit,
+        seconds,
+        minutes,
+        hours,
+        days,
+    }
+}

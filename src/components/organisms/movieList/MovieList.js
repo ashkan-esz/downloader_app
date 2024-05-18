@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 import {CustomFlashList, SectionMovieCard} from "../../molecules";
 import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
-import {useSelector} from "react-redux";
 
 const itemSize = Math.floor(Math.min(Mixins.getWindowHeight(33), 255)) + 19; //274
 
@@ -21,8 +20,6 @@ const MovieList = ({
                        isError,
                        retry
                    }) => {
-
-    const internet = useSelector(state => state.user.internet);
 
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (

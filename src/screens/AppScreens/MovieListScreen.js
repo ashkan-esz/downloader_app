@@ -7,11 +7,12 @@ import {FilterType} from "../../components/molecules";
 import {MovieList} from "../../components/organisms";
 import {useSelector} from "react-redux";
 import * as movieApis from "../../api/movieApis";
+import {movieTypes} from "../../utils";
 
 const MovieListScreen = () => {
     const route = useRoute();
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
+    const [types, setTypes] = useState(movieTypes.all);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
