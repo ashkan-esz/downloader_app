@@ -62,8 +62,10 @@ const SwiperCard = ({
                 <View style={style.blurViewContainer}>
                     <BlurView
                         style={style.blurView}
-                        tint={'dark'}
-                        intensity={70}
+                        // tint={'dark'}
+                        tint={'systemChromeMaterialDark'}
+                        intensity={20}
+                        experimentalBlurMethod={"dimezisBlurView"}
                     >
                         <Text style={style.title} numberOfLines={1}>
                             {title}
@@ -134,7 +136,7 @@ const style = StyleSheet.create({
         position: "absolute",
         bottom: 40,
         left: 10,
-        zIndex: 4,
+        zIndex: 6,
     },
     year: {
         bottom: 15,

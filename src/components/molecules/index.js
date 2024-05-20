@@ -1,6 +1,5 @@
 export {default as SignInCreateAcc} from './signCreatAcc';
 export {default as CustomTextInput} from './CustomTextInput';
-export {default as HomeAvatarAndSearch} from './HomeAvatarAndSearch';
 export {default as OfflineStatusBar} from './OfflineStatusBar';
 export {default as HomeTrailerCardPlaceHolder} from './placeHolders/HomeTrailerCardPlaceHolder';
 export {default as HomeMovieCardPlaceHolder} from './placeHolders/HomeMovieCardPlaceHolder';

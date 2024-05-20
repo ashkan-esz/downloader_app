@@ -1,6 +1,5 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, ScrollView, RefreshControl, StatusBar} from 'react-native';
-import {HomeAvatarAndSearch} from "../../../components/molecules";
 import {
     HomeTrailersList,
     HomeMovieList,
@@ -10,13 +9,26 @@ import {ScreenLayout} from "../../../components/layouts";
 import {useQueryClient} from "@tanstack/react-query";
 import {Mixins} from "../../../styles";
 import {useSelector} from "react-redux";
+import HomeAvatarAndSearch from "./HomeAvatarAndSearch";
 import MoviesSwiper from "./swiper/MoviesSwiper";
+import {useNavigation} from "@react-navigation/native";
 
 
 const HomeScreen = () => {
     const [refreshing, setRefreshing] = useState(false);
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
+    const navigation = useNavigation();
+    const scrollRef = useRef();
+
+    useEffect(() => {
+        const unsubscribe = navigation.getParent().addListener('tabPress', (e) => {
+            e.preventDefault();
+            scrollRef.current && scrollRef.current.scrollTo({animated: true, y: 0});
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     const containerStyle = useMemo(() => ({
         top: internet ? StatusBar.currentHeight + 5 : 10,
@@ -40,6 +52,7 @@ const HomeScreen = () => {
             <View style={containerStyle}>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
+                    ref={scrollRef}
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -75,6 +88,7 @@ const HomeScreen = () => {
                     <HomeMovieList
                         name={'Follow Month'}
                         pageType={'follow_month'}
+                        extraStyle={style.lastListPadding}
                     />
 
                 </ScrollView>
@@ -86,6 +100,9 @@ const HomeScreen = () => {
 const style = StyleSheet.create({
     avatar_searchBar: {
         marginTop: 0
+    },
+    lastListPadding: {
+        marginBottom: 45,
     }
 });
 

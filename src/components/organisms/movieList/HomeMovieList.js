@@ -14,7 +14,7 @@ import {sectionTypes} from "../../../screens/AppScreens/movieSectionsScreen/Sect
 
 const itemSize = Math.max(Mixins.getWindowHeight(29), 200) + 20; //260
 
-const HomeMovieList = ({name, pageType}) => {
+const HomeMovieList = ({name, pageType, extraStyle}) => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
@@ -76,7 +76,7 @@ const HomeMovieList = ({name, pageType}) => {
 
     if (isError) {
         return (
-            <View style={style.container}>
+            <View style={[style.container, extraStyle]}>
                 <Text style={style.sectionTitle}>{name}</Text>
                 <MovieError
                     containerStyle={style.error}
@@ -89,7 +89,7 @@ const HomeMovieList = ({name, pageType}) => {
 
     if ((data.length === 0 && isFetching) || isPending) {
         return (
-            <View style={style.container}>
+            <View style={[style.container, extraStyle]}>
                 <Text style={style.sectionTitle}>{name}</Text>
                 <View style={style.listContainer}>
                     {
@@ -121,7 +121,7 @@ const HomeMovieList = ({name, pageType}) => {
     );
 
     return (
-        <View style={style.container}>
+        <View style={[style.container, extraStyle]}>
             <Text style={style.sectionTitle}>{name}</Text>
             <Text
                 style={style.seeAll}
@@ -190,6 +190,7 @@ const style = StyleSheet.create({
 });
 
 HomeMovieList.propTypes = {
+    extraStyle: PropTypes.object,
     name: PropTypes.string.isRequired,
     pageType: PropTypes.string.isRequired,
 }

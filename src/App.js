@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {enableFreeze} from 'react-native-screens';
 // import * as SplashScreen from 'expo-splash-screen';
 // import {Asset} from 'expo-asset';
-import {AppStackNavigations, AuthNavigations} from "./navigation";
+import {AuthNavigations, TabNavigations} from "./navigation";
 import {StatusBar} from 'expo-status-bar';
 import {RootToast} from './components/atoms';
 import {GlobalOverlays, OfflineStatusBar} from "./components/molecules";
@@ -275,7 +275,7 @@ export default function App() {
                         <OfflineStatusBar/>
                         <GlobalOverlays/>
                         {
-                            isLoggedIn ? <AppStackNavigations/> : <AuthNavigations/>
+                            isLoggedIn ? <TabNavigations/> : <AuthNavigations/>
                         }
                     </ThemeProvider>
                 </QueryClientProvider>

@@ -2,7 +2,7 @@ import * as React from "react";
 import {act, render} from '@testing-library/react-native';
 import '@testing-library/jest-dom';
 import {NavigationContainer} from "@react-navigation/native";
-import AppStackNavigations from "../AppStackNavigations";
+import MovieStackNavigations from "../MovieStackNavigations";
 
 jest.mock("../../screens/AppScreens/HomeScreen/HomeScreen", () => {
     const {SearchBar} = require("@rneui/themed");
@@ -18,7 +18,7 @@ describe("home navigation", () => {
     test('renders correct screen (home)', async () => {
         let {getByTestId} = render(
             <NavigationContainer>
-                <AppStackNavigations/>
+                <MovieStackNavigations/>
             </NavigationContainer>
         );
 

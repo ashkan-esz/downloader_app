@@ -16,7 +16,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-const AppStackNavigations = () => {
+const MovieStackNavigations = () => {
     return (
         <Stack.Navigator
             initialRouteName={'Home'}
@@ -106,4 +106,4 @@ const AppStackNavigations = () => {
 };
 
 
-export default AppStackNavigations;
+export default MovieStackNavigations;
