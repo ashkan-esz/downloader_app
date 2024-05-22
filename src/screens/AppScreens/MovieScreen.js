@@ -1,5 +1,5 @@
-import React, {useCallback, useRef, useState} from 'react';
-import {View, StyleSheet, ScrollView, RefreshControl} from 'react-native';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {View, StyleSheet, ScrollView, RefreshControl, StatusBar} from 'react-native';
 import {MovieLoadingAndError, MovieLikeAndBookmark} from "../../components/atoms";
 import {MovieTopPoster, MovieScreenDownloadSection} from "../../components/molecules";
 import {MovieScreenInfoSection} from "../../components/organisms";
@@ -9,6 +9,7 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {homeStackHelpers} from "../../helper";
 import {useFollow, useIsMounted, useLikeOrDislike} from "../../hooks";
 import * as movieApis from "../../api/movieApis";
+import {useSelector} from "react-redux";
 
 //todo : show alternate title
 //todo : add like/dislike number and functionality to like
@@ -26,6 +27,11 @@ const MovieScreen = () => {
     const queryClient = useQueryClient();
     const scrollViewRef = useRef(null);
     const isMounted = useIsMounted();
+    const internet = useSelector(state => state.user.internet);
+
+    const pageTop = useMemo(() => ({
+        top: internet ? StatusBar.currentHeight + 5 : 0,
+    }), [internet]);
 
     const getData = async () => {
         let result = await movieApis.searchByID(routeParams.movieId, 'high');
@@ -93,7 +99,7 @@ const MovieScreen = () => {
 
     return (
         <ScreenLayout paddingSides={5}>
-            <View style={style.container}>
+            <View style={[style.container, pageTop]}>
                 <ScrollView
                     ref={scrollViewRef}
                     refreshControl={
@@ -106,6 +112,7 @@ const MovieScreen = () => {
                 >
 
                     <MovieTopPoster
+                        movieId={routeParams.movieId}
                         title={routeParams.title}
                         episodesDuration={episodesOrDuration}
                         poster={routeParams.posters[0]}
@@ -161,7 +168,6 @@ const style = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
-        top: 70,
     }
 });
 
