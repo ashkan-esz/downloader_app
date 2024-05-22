@@ -27,7 +27,6 @@ export default {
     "plugins": [
         "expo-av",
         "expo-splash-screen",
-        "expo-file-system",
         "expo-secure-store",
     ]
 };

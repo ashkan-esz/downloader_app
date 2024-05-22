@@ -17,9 +17,6 @@
       "image": "./src/assets/images/splashScreen.png",
       "backgroundColor": "#22222B",
       "resizeMode": "contain"
-    },
-    "assetBundlePatterns": [
-      "assets/images/*"
-    ]
+    }
   }
 }
