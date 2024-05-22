@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {AppState, I18nManager, LogBox, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {enableFreeze} from 'react-native-screens';
 // import * as SplashScreen from 'expo-splash-screen';
 // import {Asset} from 'expo-asset';
@@ -40,6 +40,13 @@ LogBox.ignoreLogs([
 enableFreeze(true);
 
 const theme = createTheme({});
+
+const myTheme = {
+    ...DefaultTheme.dark,
+    colors: {
+        background: Colors.PRIMARY,
+    },
+}
 
 try {
     I18nManager.allowRTL(false);
@@ -218,7 +225,7 @@ export default function App() {
         //     console.log(res, messaging.AuthorizationStatus.AUTHORIZED, messaging.AuthorizationStatus.PROVISIONAL)
         // });
         messaging().getToken().then(token => {
-        // console.log("--- fcm token: ", token);
+            // console.log("--- fcm token: ", token);
         })
         // messaging().onTokenRefresh(token => {
         //     console.log("--- fcm token2: ", token);
@@ -267,9 +274,9 @@ export default function App() {
             <StatusBar style="light"
                 // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
                 // backgroundColor={backgroundStyle.backgroundColor}
-                backgroundColor={Colors.PRIMARY}
+                       backgroundColor={Colors.PRIMARY}
             />
-            <NavigationContainer>
+            <NavigationContainer theme={myTheme}>
                 <QueryClientProvider client={queryClient}>
                     <ThemeProvider theme={theme}>
                         <OfflineStatusBar/>

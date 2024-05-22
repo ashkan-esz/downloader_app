@@ -1,10 +1,10 @@
 import React from "react";
 import {SignCreateAccScreen, LogInScreen, SignUpScreen} from '../screens';
 import {Colors} from "../styles";
-import {Platform} from "react-native";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {createStackNavigator} from "@react-navigation/stack";
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function authNavigation() {
     return (
@@ -17,13 +17,18 @@ export default function authNavigation() {
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     paddingLeft: 0,
-                    marginLeft: Platform.OS === 'ios' ? 0 : -15,
+                    // marginLeft: Platform.OS === 'ios' ? 0 : -15,
                 },
                 headerHideShadow: true,
                 headerTransparent: true,
                 headerShadowVisible: false,
-                animation: "fade",
-                orientation: 'portrait',
+                //----- native stack ------
+                // animation: "fade",
+                // orientation: 'portrait',
+                //----- stack ------
+                gestureEnabled: false,
+                // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                // presentation: "transparentModal",
             }}
         >
             <Stack.Screen

@@ -12,9 +12,13 @@ import {
     NotificationScreen
 } from '../screens';
 import {Colors} from "../styles";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+    CardStyleInterpolators,
+    createStackNavigator,
+} from "@react-navigation/stack";
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const MovieStackNavigations = () => {
     return (
@@ -28,8 +32,15 @@ const MovieStackNavigations = () => {
                 headerHideShadow: true,
                 headerTransparent: true,
                 headerShadowVisible: false,
-                animation: "fade",
-                orientation: 'portrait',
+                //------- native stack -----
+                // animation: "slide_from_right",
+                // orientation: 'portrait',
+                // presentation: "transparentModal",
+                //------- stack -----------
+                gestureEnabled: true,
+                gestureDirection: "horizontal",
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                presentation: "transparentModal",
             }}
         >
             <Stack.Screen
@@ -88,8 +99,11 @@ const MovieStackNavigations = () => {
                 name={'Movie'}
                 component={MovieScreen}
                 options={({route}) => ({
-                    animation: 'default',
-                    title: route.params.name
+                    title: route.params.name,
+                    // cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                    // cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+                    // cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+                    // cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
                 })}
             />
             <Stack.Screen

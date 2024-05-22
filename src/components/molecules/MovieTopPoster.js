@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 //todo : swipe to see other posters
 
 const MovieTopPoster = ({
+                            movieId,
                             title,
                             episodesDuration,
                             poster,
@@ -42,6 +43,7 @@ const MovieTopPoster = ({
                 extraStyle={style.image}
                 posters={posters.length > 0 ? posters : [poster]}
                 resizeModeStretch={true}
+                movieId={movieId}
             />
 
             <LikeIconWithAnimation
@@ -196,6 +198,7 @@ const style = StyleSheet.create({
 });
 
 MovieTopPoster.propTypes = {
+    movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     episodesDuration: PropTypes.string.isRequired,
     poster: PropTypes.object,
