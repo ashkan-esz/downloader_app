@@ -10,6 +10,7 @@ import {homeStackHelpers} from "../../helper";
 import {useFollow, useIsMounted, useLikeOrDislike} from "../../hooks";
 import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
+import {Colors} from "../../styles";
 
 //todo : show alternate title
 //todo : add like/dislike number and functionality to like
@@ -106,7 +107,8 @@ const MovieScreen = () => {
                         <RefreshControl
                             onRefresh={_onRefresh}
                             refreshing={refreshing}
-                            colors={['blue', 'red']}
+                            progressBackgroundColor={Colors.PRIMARY}
+                            colors={[Colors.BLUE_LIGHT, Colors.THIRD]}
                         />
                     }
                 >

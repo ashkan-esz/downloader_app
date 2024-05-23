@@ -7,7 +7,7 @@ import {
 } from "../../../components/organisms";
 import {ScreenLayout} from "../../../components/layouts";
 import {useQueryClient} from "@tanstack/react-query";
-import {Mixins} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import {useSelector} from "react-redux";
 import HomeAvatarAndSearch from "./HomeAvatarAndSearch";
 import MoviesSwiper from "./swiper/MoviesSwiper";
@@ -57,7 +57,8 @@ const HomeScreen = () => {
                         <RefreshControl
                             refreshing={refreshing}
                             onRefresh={_onRefresh}
-                            colors={['blue', 'red']}
+                            progressBackgroundColor={Colors.PRIMARY}
+                            colors={[Colors.BLUE_LIGHT, Colors.THIRD]}
                         />
                     }
                 >

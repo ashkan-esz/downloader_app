@@ -129,7 +129,8 @@ const ProfileScreen = () => {
                         <RefreshControl
                             onRefresh={_onRefresh}
                             refreshing={userIsLoading}
-                            colors={['blue', 'red']}
+                            progressBackgroundColor={Colors.PRIMARY}
+                            colors={[Colors.BLUE_LIGHT, Colors.THIRD]}
                         />
                     }
                 >

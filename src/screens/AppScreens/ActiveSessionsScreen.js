@@ -64,8 +64,8 @@ const ActiveSessionsScreen = () => {
         if (result.errorMessage) {
             setError(result.errorMessage);
         } else {
-            setThisDevice(result.thisDevice);
-            setActiveSessions(result.activeSessions);
+            setThisDevice(result.data.thisDevice);
+            setActiveSessions(result.data.activeSessions);
         }
         setIsFetching(false);
     }
@@ -92,12 +92,8 @@ const ActiveSessionsScreen = () => {
                         <RefreshControl
                             onRefresh={_onRefresh}
                             refreshing={isMount && isFetching}
-                            colors={['blue', 'red']}
-                            tintColor={'red'}
-                            style={{
-                                color: 'red',
-                                backgroundColor: 'red',
-                            }}
+                            progressBackgroundColor={Colors.PRIMARY}
+                            colors={[Colors.BLUE_LIGHT, Colors.THIRD]}
                         />
                     }
                 >
@@ -126,7 +122,7 @@ const ActiveSessionsScreen = () => {
                         (!isMount && isFetching) && <ActivityIndicator
                             style={style.loading}
                             size={"large"}
-                            color={"red"}
+                            color={Colors.THIRD}
                             animating={true}
                         />
                     }

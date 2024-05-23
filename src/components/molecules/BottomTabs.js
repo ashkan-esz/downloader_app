@@ -4,8 +4,15 @@ import {Colors, Mixins} from "../../styles";
 import PropTypes from "prop-types";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {getFocusedRouteNameFromRoute} from "@react-navigation/native";
+
+const hideTabBarScreens = ["Notifications", "TimeLine", "Section", "Trailers", "MovieListScreen", "Movie"];
 
 const BottomTabs = ({state, descriptors, navigation}) => {
+
+    if (hideTabBarScreens.includes(getFocusedRouteNameFromRoute(state.routes[0]))) {
+        return null;
+    }
 
     return (
         <View
@@ -72,15 +79,15 @@ const style = StyleSheet.create({
         height: 47,
         overflow: "hidden",
         position: "absolute",
-        // width: Mixins.WINDOW_WIDTH - 40,
-        // marginLeft: 20,
-        // marginRight: 20,
+        width: Mixins.WINDOW_WIDTH - 20,
+        marginLeft: 10,
+        marginRight: 10,
         // marginBottom: 5,
         // borderRadius: 24,
         backgroundColor: Colors.SECONDARY,
         bottom: 0,
 
-        width: Mixins.WINDOW_WIDTH,
+        // width: Mixins.WINDOW_WIDTH,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         borderBottomLeftRadius: 0,
@@ -107,7 +114,7 @@ const style = StyleSheet.create({
         backgroundColor: Colors.THIRD,
         position: "absolute",
         // left: (Mixins.WINDOW_WIDTH - 60) / 4 + 2,
-        left: (Mixins.WINDOW_WIDTH - 20) / 4 + 2,
+        left: (Mixins.WINDOW_WIDTH - 40) / 4 + 3,
         // left: (Mixins.WINDOW_WIDTH - 20) / 8 + 2,
         bottom: 2,
     },

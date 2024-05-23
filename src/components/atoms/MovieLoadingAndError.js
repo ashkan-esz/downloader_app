@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, ActivityIndicator} from 'react-native';
 import MovieError from "./MovieError";
 import PropTypes from 'prop-types';
+import {Colors} from "../../styles";
 
 
 const MovieLoadingAndError = ({isError, retry}) => {
@@ -16,7 +17,7 @@ const MovieLoadingAndError = ({isError, retry}) => {
         <ActivityIndicator
             style={style.loading}
             size={"large"}
-            color={"red"}
+            color={Colors.THIRD}
             animating={true}
         />
     );

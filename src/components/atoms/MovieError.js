@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 
 
-const MovieError = ({containerStyle, buttonStyle, retry, hideRetry,autoRetry, errorMessage}) => {
+const MovieError = ({containerStyle, buttonStyle, retry, hideRetry, autoRetry, errorMessage}) => {
     const internet = useSelector(state => state.user.internet);
 
     useEffect(() => {
