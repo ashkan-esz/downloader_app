@@ -34,7 +34,7 @@ const CustomSearchBar = ({onTextChange, isLoading, inputRef, closeFilterBox}) =>
             searchIcon={
                 <ActivityIndicator
                     size={"large"}
-                    color={'blue'}
+                    color={Colors.THIRD}
                     animating={isLoading}
                 />
             }

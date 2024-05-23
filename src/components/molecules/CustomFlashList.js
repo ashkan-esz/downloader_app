@@ -3,7 +3,7 @@ import {View, StyleSheet, RefreshControl, ActivityIndicator} from 'react-native'
 import {FlashList} from "@shopify/flash-list";
 import {MovieError, ScrollTop} from "../atoms";
 import {useScrollDirection} from "../../hooks";
-import {Mixins} from "../../styles";
+import {Colors, Mixins} from "../../styles";
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 
@@ -25,6 +25,7 @@ const CustomFlashList = ({
                              showScrollTopIcon = false,
                              isError,
                              retry,
+                             hideRetry,
                              isLoading,
                              isFetching,
                              isFetchingNextPage,
@@ -33,6 +34,7 @@ const CustomFlashList = ({
                              onEndReachedThreshold,
                              initialNumToRender,
                              extraHeightDiff,
+                             emptyListMessage,
                          }) => {
 
     const {scrollDirection, onScroll} = useScrollDirection();
@@ -40,8 +42,8 @@ const CustomFlashList = ({
 
     const containerHeight = useMemo(() => ({
         height: internet
-            ? Mixins.WINDOW_HEIGHT - 140 - (extraHeightDiff || 0)
-            : Mixins.WINDOW_HEIGHT - 170 - (extraHeightDiff || 0),
+            ? Mixins.WINDOW_HEIGHT - 120 - (extraHeightDiff || 0)
+            : Mixins.WINDOW_HEIGHT - 150 - (extraHeightDiff || 0),
     }), [internet, extraHeightDiff]);
 
     const _onScroll = (event) => {
@@ -52,22 +54,27 @@ const CustomFlashList = ({
     const listFooterComponent = useMemo(() => (
         isFetchingNextPage && <ActivityIndicator
             style={{
+                marginTop: 5,
                 marginBottom: 30 + (listFooterPaddingBottom || 0) + (internet ? 0 : 5),
             }}
             size={"large"}
-            color={"red"}
+            color={Colors.THIRD}
             animating={true}
         />
     ), [isFetchingNextPage, listFooterPaddingBottom, internet]);
 
-    if (isError) {
-        return (
-            <MovieError
+    const listEmptyComponent = useMemo(() => (
+        isError
+            ? <MovieError
                 containerStyle={style.notFound}
                 retry={retry}
+                hideRetry={hideRetry}
             />
-        );
-    }
+            : <MovieError
+                containerStyle={style.notFound}
+                errorMessage={emptyListMessage || "No Title Found!"}
+            />
+    ), [isError]);
 
     if (showNothing) {
         return null;
@@ -78,7 +85,7 @@ const CustomFlashList = ({
             <ActivityIndicator
                 style={style.loadingActivity}
                 size={"large"}
-                color={"red"}
+                color={Colors.THIRD}
                 animating={true}
             />
         );
@@ -102,21 +109,20 @@ const CustomFlashList = ({
                 estimatedListSize={{height: itemSize * (initialNumToRender || 3), width: Mixins.WINDOW_WIDTH - 20}}
                 initialNumToRender={initialNumToRender || 3}
                 //----------------------------------
-                onEndReached={onEndReached}
+                onEndReached={() => data.length > 0 && onEndReached()}
                 onEndReachedThreshold={onEndReachedThreshold || 2}
-                fadingEdgeLength={fadingEdgeLength || 50}
-                ListEmptyComponent={
-                    <MovieError
-                        containerStyle={style.notFound}
-                        errorMessage={"No Title Found!"}
-                    />
-                }
+                fadingEdgeLength={fadingEdgeLength || 30}
+                //----------------------------------
+                scrollEventThrottle={16}
+                //----------------------------------
+                ListEmptyComponent={listEmptyComponent}
                 ListFooterComponent={listFooterComponent}
                 refreshControl={
                     <RefreshControl
                         onRefresh={onRefresh}
                         refreshing={refreshing}
-                        colors={['blue', 'red']}
+                        progressBackgroundColor={Colors.PRIMARY}
+                        colors={[Colors.BLUE_LIGHT, Colors.THIRD]}
                     />
                 }
             />
@@ -165,6 +171,7 @@ CustomFlashList.propTypes = {
     showScrollTopIcon: PropTypes.bool,
     isError: PropTypes.bool.isRequired,
     retry: PropTypes.func,
+    hideRetry: PropTypes.bool,
     isLoading: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
     isFetchingNextPage: PropTypes.bool.isRequired,
@@ -173,6 +180,7 @@ CustomFlashList.propTypes = {
     onEndReachedThreshold: PropTypes.number,
     initialNumToRender: PropTypes.number,
     extraHeightDiff: PropTypes.number,
+    emptyListMessage: PropTypes.string,
 }
 
 

@@ -7,14 +7,36 @@ import {useSelector} from "react-redux";
 import * as profileApis from "../../../api/profileApis";
 import {Mixins} from "../../../styles";
 import NotificationItem from "./NotificationItem";
+import {useNavigation} from "@react-navigation/native";
 
 const itemSize = 90;
 
 const NotificationScreen = () => {
+    const [showNothing, setShowNothing] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
+
+    const navigation = useNavigation();
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+            setShowNothing(false);
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         const task = InteractionManager.runAfterInteractions(() => {
+    //             // setShowNothing(false);
+    //         });
+    //
+    //         return () => task.cancel();
+    //     }, [])
+    // );
+
 
     const containerStyle = useMemo(() => ({
         position: 'absolute',
@@ -50,10 +72,11 @@ const NotificationScreen = () => {
         gcTime: 2 * 60 * 1000,
         staleTime: 2 * 60 * 1000,
         notifyOnChangeProps: "all",
+        retry: 1,
     });
 
     useEffect(() => {
-        if (data.pages.flat(1).length > 0 && data.pages.flat(1).length <= 12 && data.pages[0][0].status !== 2) {
+        if (data?.pages.flat(1).length > 0 && data?.pages.flat(1).length <= 12 && data?.pages[0][0].status !== 2) {
             setTimeout(() => {
                 profileApis.batchUpdateNotificationStatus(data.pages[0][0].id, {status: 2});
                 queryClient.setQueryData(['movie', 'home-notification'], (oldData) => {
@@ -61,7 +84,7 @@ const NotificationScreen = () => {
                 });
             }, 200);
         }
-    }, [data.pages.flat(1).length]);
+    }, [data?.pages.flat(1).length]);
 
     const _onRefresh = async () => {
         setRefreshing(true);
@@ -97,9 +120,9 @@ const NotificationScreen = () => {
                 <CustomFlashList
                     flatListRef={flatListRef}
                     extraStyle={listStyle}
-                    showScrollTopIcon={data.pages[0].length > 0}
+                    showScrollTopIcon={data?.pages[0].length > 0}
                     initialNumToRender={2}
-                    data={data.pages.flat(1)}
+                    data={data?.pages.flat(1) || []}
                     keyExtractor={keyExtractor}
                     renderItem={renderItem}
                     itemSize={itemSize}
@@ -108,9 +131,12 @@ const NotificationScreen = () => {
                     refreshing={refreshing}
                     isError={isError}
                     retry={_retry}
+                    hideRetry={true}
                     isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
+                    showNothing={showNothing}
+                    emptyListMessage={"Nothing!"}
                 />
             </View>
         </ScreenLayout>
