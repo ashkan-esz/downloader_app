@@ -1,29 +1,35 @@
-export function getSerialState(latestData, nextEpisode, tab) {
+export function getSerialState(latestData, nextEpisode, seasonEpisodeOnly = false) {
+    let latestSeasonEpisode = "";
     try {
-        //todo : remove
-        let torrentSeasonEpisode = latestData.torrentLinks?.toUpperCase() || "";
-        let latestSeasonEpisode = 'S' + latestData.season + 'E' + latestData.episode;
-        if (torrentSeasonEpisode !== latestSeasonEpisode && torrentSeasonEpisode) {
-            latestSeasonEpisode = torrentSeasonEpisode;
+        let [torrentSeason, torrentEpisode] = getSeasonEpisode(latestData.torrentLinks);
+        let latestSeason = latestData.season;
+        let latestEpisode = latestData.episode;
+        if (latestSeason < torrentSeason ||
+            (latestSeason === torrentSeason && latestEpisode < torrentEpisode)) {
+            latestSeason = torrentSeason;
+            latestEpisode = torrentEpisode;
         }
-        try {
-            if (tab !== 'todaySeries') {
-                return latestSeasonEpisode;
-            }
-            if (nextEpisode && compareSeasonEpisode(latestData, nextEpisode)) {
-                if (latestData.season < nextEpisode.season) {
+        latestSeasonEpisode = 'S' + latestSeason + 'E' + latestEpisode;
+
+        if (seasonEpisodeOnly) {
+            return latestSeasonEpisode;
+        }
+        if (nextEpisode) {
+            const daysToNext = daysToNextEpisode(nextEpisode);
+            if (daysToNext < 7) {
+                if (daysToNext >= 1) {
                     return 'waiting ' + 'S' + nextEpisode.season + 'E' + nextEpisode.episode;
                 } else {
-                    return 'waiting ' + 'S' + latestData.season + 'E' + (Number(latestData.episode) + 1);
+                    return 'waiting ' + 'S' + latestSeason + 'E' + (Number(latestEpisode) + 1);
                 }
             } else {
                 return 'released ' + latestSeasonEpisode;
             }
-        } catch (error) {
+        } else {
             return 'released ' + latestSeasonEpisode;
         }
     } catch (error2) {
-        return '';
+        return latestSeasonEpisode ? 'released ' + latestSeasonEpisode : "";
     }
 }
 
@@ -51,48 +57,28 @@ export function getEpisodeCountsDuration(seasons, latestData, duration, type) {
 }
 
 export function getNumberOfReleasedEpisodes(seasons, latestData) {
+    let [torrentSeason, torrentEpisode] = getSeasonEpisode(latestData.torrentLinks);
+    let latestSeason = latestData.season;
+    let latestEpisode = latestData.episode;
+    if (latestSeason < torrentSeason ||
+        (latestSeason === torrentSeason && latestEpisode < torrentEpisode)) {
+        latestSeason = torrentSeason;
+        latestEpisode = torrentEpisode;
+    }
+
     let episodeCounter = 0;
     for (let i = 0; i < seasons.length; i++) {
-        if (seasons[i].seasonNumber <= latestData.season) {
+        if (seasons[i].seasonNumber <= latestSeason) {
             let episodes = seasons[i].episodes;
             for (let j = 0; j < episodes.length; j++) {
-                if (seasons[i].seasonNumber < latestData.season ||
-                    episodes[j].episodeNumber <= latestData.episode) {
+                if (seasons[i].seasonNumber < latestSeason ||
+                    episodes[j].episodeNumber <= latestEpisode) {
                     episodeCounter++;
                 }
             }
         }
     }
     return episodeCounter;
-}
-
-export function get_hardSub_dubbed_text(latestData, type) {
-    //todo :
-    let hardSubText;
-    if (type.includes('serial')) {
-        if (latestData.hardSub !== '') {
-            hardSubText = latestData.hardSub.toUpperCase();
-        } else {
-            hardSubText = false;
-        }
-    } else {
-        hardSubText = latestData.hardSub;
-    }
-
-    let dubbedText;
-    if (type.includes('serial')) {
-        if (latestData.dubbed !== '') {
-            dubbedText = latestData.dubbed.toUpperCase();
-        } else {
-            dubbedText = false;
-        }
-    } else {
-        dubbedText = latestData.dubbed;
-    }
-
-    return {
-        hardSubText, dubbedText
-    }
 }
 
 export function daysToNextEpisode(nextEpisode) {
@@ -114,4 +100,21 @@ export function getPartialQuality(quality, number = 2) {
         .filter(value => !value.toLowerCase().includes('mb') && !value.toLowerCase().includes('gb'))
         .slice(0, number)
         .join('.');
+}
+
+export function getSeasonEpisodeWithTitle(seasons, season, episode, type) {
+    if (!season && !episode) {
+        return "";
+    }
+    const seasonData = seasons.find(item => item.seasonNumber === season);
+    const episodeData = seasonData && seasonData.episodes.find(item => item.episodeNumber === episode);
+    return type.includes('serial')
+        ? ('S' + season + 'E' + episode) +
+        (episodeData ? ' , ' + episodeData.title : '')
+        : '';
+}
+
+export function getSeasonEpisode(input) {
+    let [_, season, episode] = input.split(/[se]/gi).map(item => Number(item));
+    return [season || 0, episode || 0];
 }

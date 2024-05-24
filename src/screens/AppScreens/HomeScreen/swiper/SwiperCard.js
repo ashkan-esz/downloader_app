@@ -19,7 +19,6 @@ const SwiperCard = ({
                         title,
                         type,
                         year,
-                        tab,
                         latestData,
                         nextEpisode,
                         rating,
@@ -78,7 +77,7 @@ const SwiperCard = ({
 
                 {latestData && <Text style={style.latestData} numberOfLines={1}>
                     {type.includes('serial')
-                        ? homeStackHelpers.getSerialState(latestData, nextEpisode, tab)
+                        ? homeStackHelpers.getSerialState(latestData, nextEpisode, true)
                         : homeStackHelpers.getPartialQuality(latestData.quality, 2)}
                 </Text>}
             </View>
@@ -160,7 +159,6 @@ SwiperCard.propTypes = {
     title: PropTypes.string.isRequired,
     type: PropTypes.string,
     year: PropTypes.string,
-    tab: PropTypes.string,
     latestData: PropTypes.object,
     nextEpisode: PropTypes.any,
     rating: PropTypes.number.isRequired,

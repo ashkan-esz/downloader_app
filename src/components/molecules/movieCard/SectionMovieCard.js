@@ -51,7 +51,7 @@ const SectionMovieCard = ({
         _onFollow,
     } = useFollow(movieId, followsCount, follow);
 
-    const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode, tab);
+    const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode);
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
 
     const typeColor = {

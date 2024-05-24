@@ -84,7 +84,6 @@ const HomeTimeLineSection = () => {
             rating={item.rating.imdb}
             malScore={item.rating.myAnimeList}
             follow={item.userStats?.follow || false}
-            tab={'todaySeries'}
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
         />

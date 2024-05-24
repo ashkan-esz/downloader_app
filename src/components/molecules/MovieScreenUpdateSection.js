@@ -14,21 +14,8 @@ const MovieScreenUpdateSection = ({data}) => {
         seasons, totalDuration, releaseDay
     } = data;
 
-    const seasonData = seasons.find(item => item.seasonNumber === latestData.season);
-    const episodeData = seasonData && seasonData.episodes.find(item => item.episodeNumber === latestData.episode);
-    const episodeText = type.includes('serial')
-        ? ('S' + latestData.season + 'E' + latestData.episode) +
-        (episodeData ? ' , ' + episodeData.title : '')
-        : '';
-
-    const nextEpisodeText = (nextEpisode && nextEpisode.episode !== latestData.episode)
-        ? ('S' + nextEpisode.season + 'E' + nextEpisode.episode + ' , ' + nextEpisode.title)
-        : 'unknown';
-
     const makeTotalDuration = totalDuration ? totalDuration.split(':')[0] + ' hour , ' +
         totalDuration.split(':')[1] + ' min' : '-';
-
-    const {hardSubText, dubbedText} = homeStackHelpers.get_hardSub_dubbed_text(latestData, type);
 
     return (
         <View style={style.container}>
@@ -48,7 +35,12 @@ const MovieScreenUpdateSection = ({data}) => {
                         <Text style={style.statement}>TotalDuration : </Text> {makeTotalDuration}
                     </Text>
                     <Text style={style.text} numberOfLines={1}>
-                        <Text style={style.statement}>Episode : </Text> {episodeText}
+                        <Text style={style.statement}>Episode : </Text>
+                        {" " + homeStackHelpers.getSeasonEpisodeWithTitle(seasons, latestData.season, latestData.episode, type)}
+                    </Text>
+                    <Text style={style.text} numberOfLines={1}>
+                        <Text style={style.statement}>Torrent-Episode : </Text>
+                        {" " + homeStackHelpers.getSeasonEpisodeWithTitle(seasons, ...homeStackHelpers.getSeasonEpisode(latestData.torrentLinks), type)}
                     </Text>
                 </View>
             }
@@ -59,31 +51,32 @@ const MovieScreenUpdateSection = ({data}) => {
             <Text style={style.text}>
                 <Text style={style.statement}>HardSub : </Text>
                 {
-                    typeof hardSubText === 'boolean'
+                    (!latestData.hardSub || type.includes("movie"))
                         ? <AntDesign
-                            name={hardSubText ? 'checkcircleo' : 'closecircleo'}
+                            name={latestData.hardSub ? 'checkcircleo' : 'closecircleo'}
                             size={22}
-                            color={hardSubText ? 'green' : 'red'}
+                            color={latestData.hardSub ? 'green' : 'red'}
                         />
-                        : hardSubText
+                        : latestData.hardSub.toUpperCase()
                 }
             </Text>
             <Text style={style.text}>
                 <Text style={style.statement}>Dubbed : </Text>
                 {
-                    typeof dubbedText === 'boolean'
+                    (!latestData.dubbed || type.includes("movie"))
                         ? <AntDesign
-                            name={dubbedText ? 'checkcircleo' : 'closecircleo'}
+                            name={latestData.dubbed ? 'checkcircleo' : 'closecircleo'}
                             size={22}
-                            color={dubbedText ? 'green' : 'red'}
+                            color={latestData.dubbed ? 'green' : 'red'}
                         />
-                        : dubbedText
+                        : latestData.dubbed.toUpperCase()
                 }
             </Text>
             {
                 status === 'running' && <View>
                     <Text style={style.text} numberOfLines={1}>
-                        <Text style={style.statement}>Next Episode : </Text> {nextEpisodeText}
+                        <Text style={style.statement}>Next Episode : </Text>
+                        {" " + homeStackHelpers.getSeasonEpisodeWithTitle(seasons, nextEpisode?.season, nextEpisode?.episode, type)}
                     </Text>
                     <Text style={style.text} numberOfLines={1}>
                         <Text style={style.statement}>Time To Next Episode

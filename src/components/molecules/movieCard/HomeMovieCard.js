@@ -16,7 +16,6 @@ const HomeMovieCard = ({
                            movieId,
                            title,
                            type,
-                           tab,
                            latestData,
                            nextEpisode,
                            rating,
@@ -75,7 +74,7 @@ const HomeMovieCard = ({
                 {
                     latestData && <Text style={style.latestData} numberOfLines={1}>
                         {type.includes('serial')
-                            ? homeStackHelpers.getSerialState(latestData, nextEpisode, tab)
+                            ? homeStackHelpers.getSerialState(latestData, nextEpisode)
                             : homeStackHelpers.getPartialQuality(latestData.quality, 2)}
                     </Text>
                 }
@@ -166,7 +165,6 @@ HomeMovieCard.propTypes = {
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     type: PropTypes.string,
-    tab: PropTypes.string,
     latestData: PropTypes.object,
     nextEpisode: PropTypes.any,
     rating: PropTypes.number.isRequired,
