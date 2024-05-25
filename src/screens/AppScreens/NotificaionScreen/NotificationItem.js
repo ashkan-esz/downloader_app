@@ -33,7 +33,7 @@ const NotificationItem = ({
                 title: title,
                 movieId: entityId,
                 posters: [{url: image}],
-                rating: 0,
+                rating: {imdb: 0, myAnimeList: 0},
             });
         }
     }, [entityId]);

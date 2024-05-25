@@ -104,7 +104,7 @@ const MovieTopPoster = ({
             </DoubleTap>
 
             <Text style={style.rating}>
-                <Text style={style.ratingNumber}>{rating}</Text> /10
+                <Text style={style.ratingNumber}>{rating.imdb}</Text> /10
             </Text>
         </View>
     );
@@ -202,7 +202,7 @@ MovieTopPoster.propTypes = {
     title: PropTypes.string.isRequired,
     episodesDuration: PropTypes.string.isRequired,
     poster: PropTypes.object,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     genres: PropTypes.array.isRequired,
     posters: PropTypes.array.isRequired,
     widePoster: PropTypes.object,

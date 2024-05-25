@@ -25,7 +25,7 @@ const HomeTrailer = ({
     const _navigateToMovieScreen = useCallback(() => {
         navigation.navigate('Movie', {
             name: title.slice(0, 20),
-            movieId, title, type, posters, rating
+            movieId, title, type, posters, rating,
         });
     }, [movieId, title, type, posters, rating]);
 
@@ -120,7 +120,7 @@ HomeTrailer.propTypes = {
     genres: PropTypes.array.isRequired,
     type: PropTypes.string,
     movieId: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     follow: PropTypes.bool.isRequired,
 };
 

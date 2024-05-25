@@ -64,7 +64,7 @@ const TimeLineMovieList = ({
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
             showNothing={showNothing}
-            extraHeightDiff={10}
+            extraHeightDiff={8}
         />
     );
 };

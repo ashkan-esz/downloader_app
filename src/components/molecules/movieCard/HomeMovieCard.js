@@ -19,7 +19,6 @@ const HomeMovieCard = ({
                            latestData,
                            nextEpisode,
                            rating,
-                           malScore,
                            noRating,
                            follow,
                        }) => {
@@ -28,7 +27,7 @@ const HomeMovieCard = ({
     const _navigateToMovieScreen = useCallback(() => {
         navigation.navigate('Movie', {
             name: title.slice(0, 20),
-            movieId, title, type, posters, rating
+            movieId, title, type, posters, rating,
         });
     }, [movieId, title, type, posters, rating]);
 
@@ -79,9 +78,9 @@ const HomeMovieCard = ({
                     </Text>
                 }
                 {
-                    !noRating && (!!rating || !!malScore) && <View style={style.ratingContainer}>
-                        {rating ? <MemoImdbIcon/> : <MemoMalIcon/>}
-                        <Text style={style.rating}>{(rating || malScore).toFixed(1)}</Text>
+                    !noRating && (!!rating.imdb || !!rating.myAnimeList) && <View style={style.ratingContainer}>
+                        {rating.imdb ? <MemoImdbIcon/> : <MemoMalIcon/>}
+                        <Text style={style.rating}>{(rating.imdb || rating.myAnimeList).toFixed(1)}</Text>
                     </View>
                 }
 
@@ -167,8 +166,7 @@ HomeMovieCard.propTypes = {
     type: PropTypes.string,
     latestData: PropTypes.object,
     nextEpisode: PropTypes.any,
-    rating: PropTypes.number.isRequired,
-    malScore: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     noRating: PropTypes.bool,
     follow: PropTypes.bool.isRequired,
 }

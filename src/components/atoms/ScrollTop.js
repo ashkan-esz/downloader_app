@@ -39,7 +39,7 @@ const style = StyleSheet.create({
     icon: {
         position: 'absolute',
         bottom: 20,
-        right: 10,
+        right: 5,
         zIndex: 10,
     }
 });

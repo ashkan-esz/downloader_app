@@ -161,7 +161,7 @@ SwiperCard.propTypes = {
     year: PropTypes.string,
     latestData: PropTypes.object,
     nextEpisode: PropTypes.any,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     follow: PropTypes.bool.isRequired,
 }
 

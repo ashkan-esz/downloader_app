@@ -111,8 +111,7 @@ const HomeMovieList = ({name, pageType, extraStyle}) => {
             movieId={item._id}
             title={item.rawTitle}
             type={item.type}
-            rating={item.rating.imdb}
-            malScore={item.rating.myAnimeList}
+            rating={item.rating}
             follow={item.userStats?.follow || false}
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}

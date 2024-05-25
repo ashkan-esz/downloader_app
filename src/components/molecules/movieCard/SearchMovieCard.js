@@ -14,7 +14,7 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, 
     const _navigateToMovieScreen = useCallback(() => {
         navigation.navigate('Movie', {
             name: title.slice(0, 20),
-            movieId, title, type, posters, rating
+            movieId, title, type, posters, rating,
         });
     }, [movieId, title, type, posters, rating]);
 
@@ -112,7 +112,7 @@ SearchMovieCard.propTypes = {
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     movieId: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.object.isRequired,
     like: PropTypes.bool.isRequired,
     dislike: PropTypes.bool.isRequired,
     follow: PropTypes.bool.isRequired,

@@ -85,7 +85,7 @@ const HomeTrailersList = () => {
             genres={item.genres}
             type={item.type}
             movieId={item._id}
-            rating={item.rating.imdb || item.rating.myAnimeList}
+            rating={item.rating}
             follow={item.userStats?.follow || false}
         />
     );

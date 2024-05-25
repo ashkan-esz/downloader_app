@@ -55,7 +55,7 @@ const SwiperItem = ({isLoading, index, item, activeIndex, length}) => {
                         year={item.year}
                         type={item.type}
                         latestData={item.latestData}
-                        rating={item.rating.imdb || item.rating.myAnimeList}
+                        rating={item.rating}
                         follow={item.userStats?.follow || false}
                     />
             }
