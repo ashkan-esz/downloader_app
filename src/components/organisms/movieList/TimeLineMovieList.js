@@ -11,7 +11,6 @@ const TimeLineMovieList = ({
                                onScroll,
                                showScrollTopIcon,
                                spacing,
-                               changedSpacing,
                                data,
                                isLoading,
                                isFetching,
@@ -20,7 +19,8 @@ const TimeLineMovieList = ({
                                refreshing,
                                onRefresh,
                                isError,
-                               retry
+                               retry,
+                               showNothing
                            }) => {
 
     const keyExtractor = (item) => item._id.toString();
@@ -59,10 +59,12 @@ const TimeLineMovieList = ({
             refreshing={refreshing}
             isError={isError}
             retry={retry}
+            hideRetry={true}
             isLoading={isLoading}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
-            showNothing={spacing !== changedSpacing}
+            showNothing={showNothing}
+            extraHeightDiff={10}
         />
     );
 };
@@ -74,7 +76,6 @@ TimeLineMovieList.propTypes = {
     onScroll: PropTypes.func,
     showScrollTopIcon: PropTypes.bool,
     spacing: PropTypes.number.isRequired,
-    changedSpacing: PropTypes.number.isRequired,
     data: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -84,6 +85,7 @@ TimeLineMovieList.propTypes = {
     onEndReached: PropTypes.func,
     isError: PropTypes.bool.isRequired,
     retry: PropTypes.func.isRequired,
+    showNothing: PropTypes.bool,
 }
 
 

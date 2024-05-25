@@ -25,7 +25,7 @@ const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
                 bottom: 20 + (extraMarginBottom | 0)
             }]}
             name="upcircle"
-            size={55}
+            size={50}
             color={Colors.GRAY_DARK}
             onPress={_scrollToTop}
             delayPressIn={0}

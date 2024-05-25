@@ -19,7 +19,7 @@ const MoviesSwiper = () => {
     async function getData() {
         let result = await movieApis.getNews(movieTypes.all, moviesDataLevel.low, 1);
         if (result !== 'error') {
-            return result;
+            return result.slice(0, 6);
         } else {
             throw new Error();
         }

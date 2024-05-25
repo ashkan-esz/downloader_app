@@ -1,29 +1,58 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import PropTypes from 'prop-types';
-import {Text} from "@rneui/themed";
 import {Typography, Colors} from "../../styles";
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 
 
 const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
+    const [innerValue, setInnerValue] = useState(spacing);
+    const opacity = useSharedValue(1);
 
-    const getDay = () => {
+    useEffect(() => {
+        opacity.value = withTiming(
+            0,
+            {
+                duration: 150,
+                easing: Easing.sin
+            },
+        )
+        setInnerValue(getDay(spacing));
+        let id = setTimeout(() => {
+            opacity.value = withTiming(
+                1,
+                {
+                    duration: 150,
+                    easing: Easing.sin
+                },
+            )
+        }, 150);
+        return () => clearTimeout(id);
+    }, [spacing]);
+
+    const animatedOpacity = useAnimatedStyle(() => {
+        return {
+            opacity: opacity.value,
+        }
+    })
+
+    const getDay = (number) => {
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const todayNumber = new Date().getDay();
-        if (spacing === todayNumber) {
-            return daysOfWeek[spacing] + ' - Today';
-        } else if (spacing === todayNumber + 1) {
-            return daysOfWeek[spacing] + ' - Tomorrow';
+        if (number === todayNumber) {
+            return daysOfWeek[number] + ' - Today';
+        } else if (number === todayNumber + 1) {
+            return daysOfWeek[number] + ' - Tomorrow';
         }
-        return daysOfWeek[spacing];
+        return daysOfWeek[number];
     }
 
     return (
         <View style={[style.container, extraStyle]}>
             <TouchableOpacity
                 style={style.leftIcon}
-                onPress={() => setSpacing((spacing + 6) % 7)}
+                onPress={() => setSpacing((sp) => (sp + 6) % 7)}
                 activeOpacity={0.5}
             >
                 <AntDesign
@@ -33,11 +62,11 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
                 />
             </TouchableOpacity>
 
-            <Text style={style.title}>{getDay()}</Text>
+            <Animated.Text style={[style.title, animatedOpacity]}>{innerValue}</Animated.Text>
 
             <TouchableOpacity
                 style={style.rightIcon}
-                onPress={() => setSpacing((spacing + 1) % 7)}
+                onPress={() => setSpacing((sp) => (sp + 1) % 7)}
                 activeOpacity={0.5}
             >
                 <AntDesign

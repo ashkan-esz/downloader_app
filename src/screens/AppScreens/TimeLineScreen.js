@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, StatusBar} from 'react-native';
 import {TimeLinePaging} from "../../components/atoms";
 import {TimeLineMovieList} from "../../components/organisms";
@@ -7,27 +7,30 @@ import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
 import {movieTypes} from "../../utils";
+import {useNavigation} from "@react-navigation/native";
 
 
 const TimeLineScreen = () => {
-    const [spacing, setSpacing] = useState(-1);
-    const [changedSpacing, setChangedSpacing] = useState(-10);
+    const [spacing, setSpacing] = useState(new Date().getDay());
+    const [showNothing, setShowNothing] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
+    const navigation = useNavigation();
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+            setShowNothing(false);
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     const containerStyle = useMemo(() => ({
         position: 'absolute',
         width: '100%',
         top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 10,
     }), [internet]);
-
-    useEffect(() => {
-        const todayNumber = new Date().getDay();
-        setSpacing(todayNumber);
-        setChangedSpacing(todayNumber);
-    }, []);
 
     async function getData({pageParam = 1, SPACING = null}) {
         if (!SPACING && spacing === -1) {
@@ -37,33 +40,32 @@ const TimeLineScreen = () => {
         if (result !== 'error') {
             return result;
         } else {
-            //todo : handle error
-            return [];
+            throw new Error();
         }
     }
 
     //prefetch data
-    useEffect(() => {
-        async function prefetchData() {
-            const todayNumber = new Date().getDay();
-            let promiseArray = [];
-            let next = (todayNumber + 1) % 7;
-            let promise1 = queryClient.prefetchInfiniteQuery({
-                queryKey: ['movie', 'timeLineScreen', next],
-                queryFn: () => getData({SPACING: next})
-            });
-            promiseArray.push(promise1);
-            let prev = (todayNumber + 6) % 7;
-            let promise2 = queryClient.prefetchInfiniteQuery({
-                queryKey: ['movie', 'timeLineScreen', prev],
-                queryFn: () => getData({SPACING: prev})
-            });
-            promiseArray.push(promise2);
-            await Promise.all(promiseArray);
-        }
-
-        prefetchData();
-    }, []);
+    // useEffect(() => {
+    //     async function prefetchData() {
+    //         const todayNumber = new Date().getDay();
+    //         let promiseArray = [];
+    //         let next = (todayNumber + 1) % 7;
+    //         let promise1 = queryClient.prefetchInfiniteQuery({
+    //             queryKey: ['movie', 'timeLineScreen', next],
+    //             queryFn: () => getData({SPACING: next})
+    //         });
+    //         promiseArray.push(promise1);
+    //         let prev = (todayNumber + 6) % 7;
+    //         let promise2 = queryClient.prefetchInfiniteQuery({
+    //             queryKey: ['movie', 'timeLineScreen', prev],
+    //             queryFn: () => getData({SPACING: prev})
+    //         });
+    //         promiseArray.push(promise2);
+    //         await Promise.all(promiseArray);
+    //     }
+    //
+    //     prefetchData();
+    // }, []);
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
         queryKey: ['movie', 'timeLineScreen', spacing],
@@ -80,11 +82,9 @@ const TimeLineScreen = () => {
     });
 
     const _onSpacingChange = (value) => {
-        if (spacing === value && flatListRef && flatListRef.current) {
-            flatListRef.current.scrollToOffset({animated: true, offset: 0});
-        }
-        setChangedSpacing(value);
-        setTimeout(() => setSpacing(value), 5);
+        setSpacing(value);
+        setShowNothing(true);
+        setTimeout(() => setShowNothing(false), 100);
     }
 
     const _onRefresh = async () => {
@@ -105,16 +105,15 @@ const TimeLineScreen = () => {
 
                 <TimeLinePaging
                     extraStyle={style.topPaging}
-                    spacing={changedSpacing || spacing}
+                    spacing={spacing}
                     setSpacing={_onSpacingChange}
                 />
 
                 <TimeLineMovieList
                     flatListRef={flatListRef}
-                    showScrollTopIcon={(data.pages[0].length > 0 && spacing === changedSpacing)}
+                    showScrollTopIcon={(data?.pages[0].length > 0)}
                     spacing={spacing}
-                    changedSpacing={changedSpacing}
-                    data={data.pages.flat(1)}
+                    data={data?.pages.flat(1) || []}
                     isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
@@ -123,6 +122,7 @@ const TimeLineScreen = () => {
                     onRefresh={_onRefresh}
                     isError={isError}
                     retry={_retry}
+                    showNothing={showNothing}
                 />
 
             </View>

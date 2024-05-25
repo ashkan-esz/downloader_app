@@ -17,8 +17,8 @@ const NotificationScreen = () => {
     const flatListRef = useRef();
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
-
     const navigation = useNavigation();
+
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('transitionEnd', (e) => {
             setShowNothing(false);
