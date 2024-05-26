@@ -1,7 +1,7 @@
 import * as React from "react";
 import {fireEvent, render} from '@testing-library/react-native';
 import '@testing-library/jest-dom';
-import SearchMovieCardsList from "../movieList/SearchMovieList";
+import SearchMovieCardsList from "../../../screens/AppScreens/MovieListScreen/SearchScreen/SearchMovieList";
 import * as ReactNative from "react-native";
 
 jest.spyOn(ReactNative.Keyboard, 'dismiss').mockImplementation(() => {});

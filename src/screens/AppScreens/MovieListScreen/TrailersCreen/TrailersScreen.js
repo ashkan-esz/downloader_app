@@ -1,11 +1,11 @@
 import React, {useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
-import {ScreenLayout} from "../../components/layouts";
-import {TrailersMovieList} from "../../components/organisms";
-import {FilterType} from "../../components/molecules";
+import {ScreenLayout} from "../../../../components/layouts";
+import TrailersMovieList from "./TrailersMovieList";
+import FilterType from "../FilterType";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelector} from "react-redux";
-import * as movieApis from "../../api/movieApis";
+import * as movieApis from "../../../../api/movieApis";
 
 
 const TrailersScreen = () => {

@@ -10,7 +10,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {moviesDataLevel, movieTypes} from "../../../utils";
-import {sectionTypes} from "../../../screens/AppScreens/movieSectionsScreen/SectionScreen";
+import {sectionTypes} from "../../../screens/AppScreens/MovieListScreen/SectionListScreen/SectionScreen";
 
 const itemSize = Math.max(Mixins.getWindowHeight(29), 200) + 20; //260
 

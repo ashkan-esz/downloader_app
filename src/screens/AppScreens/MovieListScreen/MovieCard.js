@@ -1,7 +1,9 @@
 import React, {memo, useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
-import {SectionMovieCardRating, CustomImage} from "../../atoms";
+import {CustomImage} from "../../../components/atoms";
+import MovieCardRating from "./MovieCardRating";
+import MovieCardFollow from "./MovieCardFollow";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
 import {useFollow, useWatchList} from "../../../hooks";
@@ -9,7 +11,7 @@ import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const SectionMovieCard = ({
+const MovieCard = ({
                               extraStyle,
                               tab,
                               posters,
@@ -54,6 +56,10 @@ const SectionMovieCard = ({
     const typeColor = {
         color: type.includes('movie') ? 'red' : 'cyan',
     }
+    const imageBorder = {
+        borderWidth: 0.5,
+        borderColor: type.includes('movie') ? 'red' : 'cyan',
+    }
 
     return (
         <TouchableOpacity
@@ -62,38 +68,39 @@ const SectionMovieCard = ({
             activeOpacity={0.8}
         >
             <CustomImage
-                extraStyle={[style.image, style.imageShadow]}
+                extraStyle={[style.image, imageBorder]}
                 posters={posters}
                 onPress={_navigateToMovieScreen}
                 movieId={movieId}
             />
+            <MovieCardRating rating={rating}/>
 
             <View style={style.infoContainer}>
                 <Text style={style.title} numberOfLines={1}>
                     {title}
+                    <MovieCardFollow
+                        type={type}
+                        followsCount={followsCount}
+                        watchListCount={watchListCount}
+                        isFollow={follow}
+                        isWatchList={watchList}
+                        onFollow={_onFollow}
+                        onWatchList={_onWatchList}
+                    />
                 </Text>
-                <SectionMovieCardRating
-                    rating={rating}
-                    type={type}
-                    followsCount={followsCount}
-                    watchListCount={watchListCount}
-                    isFollow={follow}
-                    isWatchList={watchList}
-                    onFollow={_onFollow}
-                    onWatchList={_onWatchList}
-                />
+
                 <View style={style.lineSeparator}/>
 
 
                 <Text style={style.year}>
                     <Text style={style.statement}>Year : </Text>{premiered.split('-')[0]}
                 </Text>
-                <Text style={style.year}>
-                    <Text style={style.statement}>Type : </Text><Text
-                    style={[style.year, typeColor]}> {
-                    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
-                }</Text>
-                </Text>
+                {/*<Text style={style.year}>*/}
+                {/*    <Text style={style.statement}>Type : </Text><Text*/}
+                {/*    style={[style.year, typeColor]}> {*/}
+                {/*    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')*/}
+                {/*}</Text>*/}
+                {/*</Text>*/}
 
                 <Text style={style.year} numberOfLines={1}>
                     <Text style={style.statement}>Genres : </Text>{genres.join(', ') || '-'}
@@ -123,23 +130,14 @@ const style = StyleSheet.create({
         backgroundColor: Colors.SECONDARY,
         borderRadius: 10
     },
-    imageShadow: {
-        shadowColor: Colors.GRAY_MEDIUM,
-        shadowOffset: {
-            width: 0,
-            height: -5,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
-        zIndex: 10,
-        marginTop: 10,
-        marginLeft: 10,
-    },
     image: {
         width: Mixins.getWindowWidth(37),
         height: Math.min(Mixins.getWindowHeight(33), 255),
         maxHeight: 255,
         borderRadius: 8,
+        zIndex: 10,
+        marginTop: 10,
+        marginLeft: 10,
     },
     infoContainer: {
         paddingTop: 5,
@@ -173,7 +171,7 @@ const style = StyleSheet.create({
     }
 });
 
-SectionMovieCard.propTypes = {
+MovieCard.propTypes = {
     extraStyle: PropTypes.object,
     tab: PropTypes.string.isRequired,
     posters: PropTypes.array.isRequired,
@@ -192,6 +190,7 @@ SectionMovieCard.propTypes = {
 }
 
 const areEqual = (prevProps, nextProps) => {
+    // todo : check
     return prevProps.posters[0] && nextProps.posters[0] &&
         prevProps.posters[0].url === nextProps.posters[0].url &&
         prevProps.followsCount === nextProps.followsCount &&
@@ -200,4 +199,4 @@ const areEqual = (prevProps, nextProps) => {
         prevProps.watchList === nextProps.watchList;
 }
 
-export default memo(SectionMovieCard, areEqual);
+export default memo(MovieCard, areEqual);

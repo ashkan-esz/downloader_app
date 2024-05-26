@@ -1,7 +1,7 @@
 import * as React from "react";
 import {fireEvent, render} from '@testing-library/react-native';
 import '@testing-library/jest-dom';
-import SearchScreen from "../SearchScreen";
+import SearchScreen from "../MovieListScreen/SearchScreen/SearchScreen";
 
 jest.mock("../../../components/atoms/CustomSearchBar", () => {
     const {Button} = require('react-native');

@@ -1,13 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {LayoutAnimation, Platform, StatusBar, StyleSheet, UIManager, View} from 'react-native';
-import {ScreenLayout} from "../../../components/layouts";
-import {SectionMovieList} from "../../../components/organisms";
-import {SectionNavBar, FilterType} from "../../../components/molecules";
+import {ScreenLayout} from "../../../../components/layouts";
+import FilterType from "../FilterType";
+import SectionMovieList from "./SectionMovieList";
+import SectionNavBar from "./SectionNavBar";
 import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import * as movieApis from "../../../api/movieApis";
+import * as movieApis from "../../../../api/movieApis";
 import {useSelector} from "react-redux";
-import {moviesDataLevel} from "../../../utils";
+import {moviesDataLevel} from "../../../../utils";
 
 export const sectionTypes = Object.freeze({
     news: Object.freeze(['news', 'updates', 'inTheaters', 'comingSoon']),

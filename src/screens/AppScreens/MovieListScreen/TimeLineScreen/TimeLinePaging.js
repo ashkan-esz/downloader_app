@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import PropTypes from 'prop-types';
-import {Typography, Colors} from "../../styles";
+import {Typography, Colors} from "../../../../styles";
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 
 

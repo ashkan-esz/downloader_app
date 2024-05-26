@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button} from "@rneui/themed";
-import {Colors, Typography} from "../../styles";
+import {Colors, Typography} from "../../../../styles";
 import PropTypes from 'prop-types';
 
 

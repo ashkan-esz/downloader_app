@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {CustomFlashList, SectionMovieCard} from "../../molecules";
-import {Mixins} from "../../../styles";
+import {useSelector} from "react-redux";
+import {CustomFlashList} from "../../../../components/molecules";
+import TrailerMovieCard from "./TrailerMovieCard";
+import {Mixins} from "../../../../styles";
 import PropTypes from 'prop-types';
 
-const itemSize = Math.floor(Math.min(Mixins.getWindowHeight(33), 255)) + 19; //274
+const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH / 1.6, 200) * 1.7) + 35; //417,472
 
-const TimeLineMovieList = ({
+const trailersMovieList = ({
                                flatListRef,
-                               onScroll,
-                               showScrollTopIcon,
-                               spacing,
                                data,
                                isLoading,
                                isFetching,
@@ -20,14 +19,24 @@ const TimeLineMovieList = ({
                                onRefresh,
                                isError,
                                retry,
-                               showNothing
+                               onScroll,
+                               showScrollTopIcon,
                            }) => {
 
+    const [onScreenViewItems, setOnScreenViewItems] = useState([]);
+    const internet = useSelector(state => state.user.internet);
+
+    const handleVieweableItemsChanged = useCallback(({viewableItems}) => {
+        setOnScreenViewItems(viewableItems.map(item => item.index));
+    }, []);
+
     const keyExtractor = (item) => item._id.toString();
-    const renderItem = ({item}) => (
-        <SectionMovieCard
-            tab={spacing === new Date().getDay() ? 'todaySeries' : ''}
+    const renderItem = ({index, item}) => (
+        <TrailerMovieCard
+            isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
+            widePoster={item.poster_wide_s3}
+            trailer={item.trailers[0].url}
             movieId={item._id}
             title={item.rawTitle}
             rating={item.rating}
@@ -35,7 +44,6 @@ const TimeLineMovieList = ({
             type={item.type}
             genres={item.genres}
             latestData={item.latestData}
-            nextEpisode={item.nextEpisode}
             followsCount={item.userStats?.follow_count || 0}
             watchListCount={item.userStats?.watchlist_count || 0}
             follow={item.userStats?.follow || false}
@@ -45,6 +53,7 @@ const TimeLineMovieList = ({
 
     return (
         <CustomFlashList
+            onViewableItemsChanged={handleVieweableItemsChanged}
             flatListRef={flatListRef}
             onScrollDo={onScroll}
             showScrollTopIcon={showScrollTopIcon}
@@ -57,23 +66,17 @@ const TimeLineMovieList = ({
             refreshing={refreshing}
             isError={isError}
             retry={retry}
-            hideRetry={true}
             isLoading={isLoading}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
-            showNothing={showNothing}
-            extraHeightDiff={8}
         />
     );
 };
 
 const style = StyleSheet.create({});
 
-TimeLineMovieList.propTypes = {
+trailersMovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,
-    onScroll: PropTypes.func,
-    showScrollTopIcon: PropTypes.bool,
-    spacing: PropTypes.number.isRequired,
     data: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -83,8 +86,9 @@ TimeLineMovieList.propTypes = {
     onEndReached: PropTypes.func,
     isError: PropTypes.bool.isRequired,
     retry: PropTypes.func.isRequired,
-    showNothing: PropTypes.bool,
-}
+    onScroll: PropTypes.func.isRequired,
+    showScrollTopIcon: PropTypes.bool,
+};
 
 
-export default TimeLineMovieList;
+export default trailersMovieList;

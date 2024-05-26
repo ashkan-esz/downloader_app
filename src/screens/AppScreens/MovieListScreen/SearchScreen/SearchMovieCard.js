@@ -4,8 +4,8 @@ import {Text} from "@rneui/themed";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {useNavigation} from "@react-navigation/native";
-import {CustomImage} from "../../atoms";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {CustomImage} from "../../../../components/atoms";
+import {Colors, Mixins, Typography} from "../../../../styles";
 import PropTypes from 'prop-types';
 
 

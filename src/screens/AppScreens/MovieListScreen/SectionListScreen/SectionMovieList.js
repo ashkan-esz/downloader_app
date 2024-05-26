@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {CustomFlashList, SectionMovieCard} from "../../molecules";
-import {Mixins} from "../../../styles";
+import {CustomFlashList} from "../../../../components/molecules";
+import MovieCard from "../MovieCard";
+import {Mixins} from "../../../../styles";
 import PropTypes from 'prop-types';
 
 const itemSize = Math.floor(Math.min(Mixins.getWindowHeight(33), 255)) + 19; //274
@@ -23,10 +24,9 @@ const SectionMovieList = ({
                               retry
                           }) => {
 
-
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
-        <SectionMovieCard
+        <MovieCard
             tab={tab}
             posters={item.posters}
             movieId={item._id}

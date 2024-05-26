@@ -1,7 +1,8 @@
 import React, {memo, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import {CustomFlashList, SearchMovieCard} from "../../molecules";
-import {Mixins, Typography} from "../../../styles";
+import {CustomFlashList} from "../../../../components/molecules";
+import SearchMovieCard from "./SearchMovieCard";
+import {Mixins, Typography} from "../../../../styles";
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 

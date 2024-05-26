@@ -1,19 +1,19 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, LayoutAnimation, Keyboard, StatusBar} from 'react-native';
-import {ScreenLayout} from '../../components/layouts';
-import {SearchMovieList} from "../../components/organisms";
-import {CustomSearchBar, FilterType} from "../../components/molecules";
+import React, {useMemo, useRef, useState} from 'react';
+import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
+import {ScreenLayout} from "../../../../components/layouts";
+import MovieList from "./MovieList";
+import FilterType from "../FilterType";
 import {useSelector} from "react-redux";
-import * as movieApis from "../../api/movieApis";
+import * as movieApis from "../../../../api/movieApis";
+import {movieTypes} from "../../../../utils";
 
-
-const SearchScreen = () => {
-    const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+const MovieListScreen = () => {
+    const route = useRoute();
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
+    const [types, setTypes] = useState(movieTypes.all);
     const [refreshing, setRefreshing] = useState(false);
-    const searchBarRef = useRef();
     const flatListRef = useRef();
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
@@ -21,17 +21,8 @@ const SearchScreen = () => {
     const containerStyle = useMemo(() => ({
         position: 'absolute',
         width: '100%',
-        top: internet ? StatusBar.currentHeight + 75 : StatusBar.currentHeight + 25,
+        top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 10,
     }), [internet]);
-
-    useEffect(() => {
-        searchBarRef.current.focus();
-    }, []);
-
-    const _onScroll = () => {
-        Keyboard.dismiss();
-        _closeFilterBox();
-    }
 
     const _closeFilterBox = () => {
         if (expanded) {
@@ -40,12 +31,9 @@ const SearchScreen = () => {
         }
     }
 
-    const getData = async (pageParam) => {
-        if (!debouncedSearchValue) {
-            return [];
-        }
-        let result = await movieApis.searchTitle(debouncedSearchValue, types, 'low', pageParam);
-        if (result !== 'error') {
+    async function getData(pageParam) {
+        let result = await movieApis.getSortedMovies(route.params.pageType, types, 'medium', pageParam);
+        if (result && result !== 'error') {
             return result;
         } else {
             //todo : handle error
@@ -54,7 +42,7 @@ const SearchScreen = () => {
     }
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
-        queryKey: ['movie', debouncedSearchValue, 'searchScreen', types],
+        queryKey: ['movie', route.params.pageType, 'movieListScreen', types],
         queryFn: ({pageParam}) => getData(pageParam),
         initialPageParam: 1,
         getNextPageParam: (lastPage, allPages) => {
@@ -64,39 +52,28 @@ const SearchScreen = () => {
             return null;
         },
         placeholderData: {pages: [[]]},
-        gcTime: 3 * 60 * 1000,
-        staleTime: 3 * 60 * 1000,
+        gcTime: 2 * 60 * 1000,
+        staleTime: 2 * 60 * 1000,
+        notifyOnChangeProps: "all",
     });
 
     const _onRefresh = async () => {
         setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: ['movie', debouncedSearchValue, 'searchScreen', types]
+            queryKey: ['movie', route.params.pageType, 'movieListScreen', types]
         });
         setRefreshing(false);
-    }
+    };
 
     const _retry = async () => {
-        setRefreshing(true);
         await queryClient.refetchQueries({
-            queryKey: ['movie', debouncedSearchValue, 'searchScreen', types]
+            queryKey: ['movie', route.params.pageType, 'movieListScreen', types]
         });
-        setRefreshing(false);
-    }
+    };
 
     return (
-        <ScreenLayout
-            backgroundColor={'#000000'}
-            paddingSides={10}>
+        <ScreenLayout paddingSides={10}>
             <View style={containerStyle}>
-
-                <CustomSearchBar
-                    onTextChange={setDebouncedSearchValue}
-                    isLoading={isPending || isFetching}
-                    inputRef={searchBarRef}
-                    closeFilterBox={_closeFilterBox}
-                />
-
                 <FilterType
                     expanded={expanded}
                     setExpanded={setExpanded}
@@ -104,22 +81,20 @@ const SearchScreen = () => {
                     setTypes={setTypes}
                 />
 
-                <SearchMovieList
+                <MovieList
                     flatListRef={flatListRef}
-                    showScrollTopIcon={(data.pages[0].length > 0)}
-                    searchValue={debouncedSearchValue}
                     data={data.pages.flat(1)}
                     isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
+                    onEndReached={fetchNextPage}
                     refreshing={refreshing}
                     onRefresh={_onRefresh}
-                    onEndReached={fetchNextPage}
                     isError={isError}
                     retry={_retry}
-                    onScroll={_onScroll}
+                    onScroll={_closeFilterBox}
+                    showScrollTopIcon={!expanded && (data.pages[0].length > 0)}
                 />
-
             </View>
         </ScreenLayout>
     );
@@ -128,4 +103,4 @@ const SearchScreen = () => {
 const style = StyleSheet.create({});
 
 
-export default SearchScreen;
+export default MovieListScreen;

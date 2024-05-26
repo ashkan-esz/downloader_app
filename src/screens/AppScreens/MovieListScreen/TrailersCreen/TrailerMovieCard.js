@@ -1,11 +1,12 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
-import {TrailerImageSwitch, SectionMovieCardRating} from "../../atoms";
+import {TrailerImageSwitch} from "../../../../components/atoms";
+import MovieCardRating from "../MovieCardRating";
 import {useNavigation} from "@react-navigation/native";
-import {useFollow, useWatchList} from "../../../hooks";
-import {homeStackHelpers} from "../../../helper";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {useFollow, useWatchList} from "../../../../hooks";
+import {homeStackHelpers} from "../../../../helper";
+import {Colors, Mixins, Typography} from "../../../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -79,8 +80,8 @@ const TrailerMovieCard = ({
                         Title : {title}
                     </Text>
 
-                    <SectionMovieCardRating
-                        likeContainerStyle={style.likeContainer}
+                    <MovieCardRating
+                        extraStyle={style.likeContainer}
                         rating={rating}
                         type={type}
                         followsCount={followsCount}

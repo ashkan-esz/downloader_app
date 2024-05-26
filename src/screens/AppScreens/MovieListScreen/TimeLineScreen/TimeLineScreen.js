@@ -1,12 +1,12 @@
 import React, {useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, StatusBar} from 'react-native';
-import {TimeLinePaging} from "../../components/atoms";
-import {TimeLineMovieList} from "../../components/organisms";
-import {ScreenLayout} from "../../components/layouts";
-import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
-import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
-import {movieTypes} from "../../utils";
+import {ScreenLayout} from "../../../../components/layouts";
+import TimeLinePaging from "./TimeLinePaging";
+import TimeLineMovieList from "./TimeLineMovieList";
+import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
+import * as movieApis from "../../../../api/movieApis";
+import {movieTypes} from "../../../../utils";
 import {useNavigation} from "@react-navigation/native";
 
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {fireEvent, render} from '@testing-library/react-native';
 import '@testing-library/jest-dom';
-import SearchMovieCard from "../../molecules/movieCard/SearchMovieCard";
+import SearchMovieCard from "../../../screens/AppScreens/MovieListScreen/SearchScreen/SearchMovieCard";
 
 describe("movie card in search Screen", () => {
 
