@@ -19,6 +19,7 @@ const HomeTrailer = ({
                          movieId,
                          rating,
                          follow,
+                         watchList,
                      }) => {
     const navigation = useNavigation();
 
@@ -40,6 +41,7 @@ const HomeTrailer = ({
                 widePoster={widePoster}
                 onLongPress={_navigateToMovieScreen}
                 follow={follow}
+                watchList={watchList}
                 movieId={movieId}
             />
 
@@ -122,6 +124,7 @@ HomeTrailer.propTypes = {
     movieId: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
 };
 
 

@@ -57,6 +57,7 @@ const SwiperItem = ({isLoading, index, item, activeIndex, length}) => {
                         latestData={item.latestData}
                         rating={item.rating}
                         follow={item.userStats?.follow || false}
+                        watchList={item.userStats?.watchlist || false}
                     />
             }
         </Animated.View>

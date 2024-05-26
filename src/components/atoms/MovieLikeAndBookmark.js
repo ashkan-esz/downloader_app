@@ -11,11 +11,14 @@ const MovieLikeAndBookmark = ({
                                   isLike,
                                   isDisLike,
                                   isFollowed,
+                                  isWatchlist,
                                   onLike,
                                   onDisLike,
                                   onFollow,
+                                  onWatchList,
                                   likesCount,
                                   dislikesCount,
+                                  type,
                                   disable
                               }) => {
     return (
@@ -45,14 +48,27 @@ const MovieLikeAndBookmark = ({
                 </Text>
 
                 <LikeIconWithAnimation
-                    extraStyle={style.bookmarkIcon}
+                    extraStyle={style.followIcon}
                     isActive={isFollowed}
-                    iconName={"bookmark"}
-                    outlineIconName={"bookmark-outline"}
+                    iconName={"book-play"}
+                    outlineIconName={"book-play-outline"}
+                    iconGroup={"MaterialCommunityIcons"}
                     onPress={onFollow}
                     disableOnPressActivation={disable}
+                    disabled={type.includes("movie")}
                     iconColor={"grey"}
-                    activeIconColor={Colors.BOOKMARK_ICON}
+                    activeIconColor={Colors.FOLLOW_ICON}
+                />
+                <LikeIconWithAnimation
+                    extraStyle={style.watchlistIcon}
+                    isActive={isWatchlist}
+                    iconName={"bookmark"}
+                    outlineIconName={"bookmark-outline"}
+                    onPress={onWatchList}
+                    disableOnPressActivation={disable}
+                    disabled={isFollowed}
+                    iconColor={"grey"}
+                    activeIconColor={Colors.BLUE_LIGHT}
                 />
             </View>
         </View>
@@ -78,10 +94,17 @@ const style = StyleSheet.create({
         marginTop: 3,
         paddingLeft: 4
     },
-    bookmarkIcon: {
+    followIcon: {
+        position: 'absolute',
+        right: 40,
+        marginTop: 3,
+        zIndex: 5,
+    },
+    watchlistIcon: {
         position: 'absolute',
         right: 5,
         marginTop: 3,
+        zIndex: 5,
     }
 });
 
@@ -90,11 +113,14 @@ MovieLikeAndBookmark.propTypes = {
     isLike: PropTypes.bool.isRequired,
     isDisLike: PropTypes.bool.isRequired,
     isFollowed: PropTypes.bool.isRequired,
+    isWatchlist: PropTypes.bool.isRequired,
     onLike: PropTypes.func.isRequired,
     onDisLike: PropTypes.func.isRequired,
     onFollow: PropTypes.func.isRequired,
+    onWatchList: PropTypes.func.isRequired,
     likesCount: PropTypes.number.isRequired,
     dislikesCount: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
     disable: PropTypes.bool,
 }
 

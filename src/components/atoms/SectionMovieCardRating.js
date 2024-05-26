@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 
 const SectionMovieCardRating = ({
                                     extraStyle, likeContainerStyle,
-                                    rating,
-                                    likesCount, dislikesCount, followsCount,
-                                    isLike, isDisLike, isFollow,
-                                    onLike, onDisLike, onFollow,
+                                    rating, type,
+                                    followsCount, watchListCount,
+                                    isFollow, isWatchList,
+                                    onFollow, onWatchList
                                 }) => {
 
     const MemoImdbIcon = memo(() => <Image
@@ -36,39 +36,18 @@ const SectionMovieCardRating = ({
             </View>
 
             <View style={[style.likeContainer, likeContainerStyle]}>
-                <IconWithTransition
-                    extraIconStyle={style.likeIcon}
-                    isActive={isLike}
-                    iconName={"heart"}
-                    outlineIconName={"heart-outline"}
-                    onPress={onLike}
-                    iconSize={25}
-                    firstViewAnimation={false}
-                />
-                <Text style={style.likeNumber}>
-                    {likesCount}
-                </Text>
 
-                <IconWithTransition
-                    extraIconStyle={style.likeIcon}
-                    isActive={isDisLike}
-                    iconName={"heart-dislike"}
-                    outlineIconName={"heart-dislike-outline"}
-                    onPress={onDisLike}
-                    iconSize={25}
-                    firstViewAnimation={false}
-                />
-                <Text style={style.likeNumber}>
-                    {dislikesCount}
-                </Text>
+                {/*todo : better design for disabled icon*/}
 
+                {/* todo : follow is disabled for movies*/}
                 <IconWithTransition
                     extraIconStyle={style.likeIcon}
                     isActive={isFollow}
-                    iconName={"bookmark"}
-                    outlineIconName={"bookmark-outline"}
+                    iconName={"book-play"}
+                    outlineIconName={"book-play-outline"}
+                    iconGroup={"MaterialCommunityIcons"}
                     iconColor={"grey"}
-                    activeIconColor={Colors.BOOKMARK_ICON}
+                    activeIconColor={Colors.FOLLOW_ICON}
                     onPress={onFollow}
                     iconSize={25}
                     firstViewAnimation={false}
@@ -76,6 +55,23 @@ const SectionMovieCardRating = ({
                 <Text style={style.likeNumber}>
                     {followsCount}
                 </Text>
+
+                {/* todo : disable when its followed */}
+                <IconWithTransition
+                    extraIconStyle={style.likeIcon}
+                    isActive={isWatchList}
+                    iconName={"bookmark"}
+                    outlineIconName={"bookmark-outline"}
+                    iconColor={"grey"}
+                    activeIconColor={Colors.BLUE_LIGHT}
+                    onPress={onWatchList}
+                    iconSize={25}
+                    firstViewAnimation={false}
+                />
+                <Text style={style.likeNumber}>
+                    {watchListCount}
+                </Text>
+
             </View>
         </View>
     );
@@ -129,15 +125,13 @@ SectionMovieCardRating.propTypes = {
     extraStyle: PropTypes.object,
     likeContainerStyle: PropTypes.object,
     rating: PropTypes.object.isRequired,
-    likesCount: PropTypes.number.isRequired,
-    dislikesCount: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
     followsCount: PropTypes.number.isRequired,
-    isLike: PropTypes.bool.isRequired,
-    isDisLike: PropTypes.bool.isRequired,
+    watchListCount: PropTypes.number.isRequired,
     isFollow: PropTypes.bool.isRequired,
-    onLike: PropTypes.func.isRequired,
-    onDisLike: PropTypes.func.isRequired,
+    isWatchList: PropTypes.bool.isRequired,
     onFollow: PropTypes.func.isRequired,
+    onWatchList: PropTypes.func.isRequired,
 }
 
 

@@ -83,6 +83,7 @@ const HomeTimeLineSection = () => {
             type={item.type}
             rating={item.rating}
             follow={item.userStats?.follow || false}
+            watchList={item.userStats?.watchlist || false}
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
         />

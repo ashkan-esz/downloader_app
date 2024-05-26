@@ -3,7 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {TrailerImageSwitch, SectionMovieCardRating} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {useFollow, useLikeOrDislike} from "../../../hooks";
+import {useFollow, useWatchList} from "../../../hooks";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
@@ -22,12 +22,10 @@ const TrailerMovieCard = ({
                               type,
                               genres,
                               latestData,
-                              likesCount,
-                              dislikesCount,
                               followsCount,
-                              like,
-                              dislike,
+                              watchListCount,
                               follow,
+                              watchList,
                           }) => {
 
     const navigation = useNavigation();
@@ -40,16 +38,14 @@ const TrailerMovieCard = ({
     }, [movieId, title, type, posters, rating]);
 
     const {
-        isLikeLoading,
-        isDislikeLoading,
-        _onLike,
-        _onDisLike
-    } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
-
-    const {
         isFollowLoading,
         _onFollow,
-    } = useFollow(movieId, followsCount, follow);
+    } = useFollow(movieId, followsCount, follow, watchListCount, watchList);
+
+    const {
+        // isWatchListLoading,
+        _onWatchList,
+    } = useWatchList(movieId, watchListCount, watchList);
 
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 4);
 
@@ -68,6 +64,7 @@ const TrailerMovieCard = ({
                 widePoster={widePoster}
                 onLongPress={memorizedNavigation}
                 follow={follow}
+                watchList={watchList}
                 hideLikeIcon={true}
                 startFullscreen={false}
                 movieId={movieId}
@@ -85,15 +82,13 @@ const TrailerMovieCard = ({
                     <SectionMovieCardRating
                         likeContainerStyle={style.likeContainer}
                         rating={rating}
-                        likesCount={likesCount}
-                        dislikesCount={dislikesCount}
+                        type={type}
                         followsCount={followsCount}
-                        isLike={like}
-                        isDisLike={dislike}
+                        watchListCount={watchListCount}
                         isFollow={follow}
-                        onLike={_onLike}
-                        onDisLike={_onDisLike}
+                        isWatchList={watchList}
                         onFollow={_onFollow}
+                        onWatchList={_onWatchList}
                     />
 
                     <View style={style.lineSeparator}/>
@@ -203,12 +198,10 @@ TrailerMovieCard.propTypes = {
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,
-    likesCount: PropTypes.number.isRequired,
-    dislikesCount: PropTypes.number.isRequired,
     followsCount: PropTypes.number.isRequired,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
+    watchListCount: PropTypes.number.isRequired,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,

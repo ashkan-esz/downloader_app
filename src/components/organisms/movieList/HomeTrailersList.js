@@ -87,6 +87,7 @@ const HomeTrailersList = () => {
             movieId={item._id}
             rating={item.rating}
             follow={item.userStats?.follow || false}
+            watchList={item.userStats?.watchlist || false}
         />
     );
 

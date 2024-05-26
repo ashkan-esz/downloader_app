@@ -8,6 +8,7 @@ import Animated, {
     withSpring
 } from "react-native-reanimated";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import PropTypes from 'prop-types';
 
 
@@ -26,7 +27,11 @@ const LikeIconWithAnimation = ({
                                    iconSize,
                                    iconColor,
                                    activeIconColor,
+                                   iconGroup,
+                                   disabled,
                                }) => {
+
+    //todo : replace this component usage with 'IconWithTransition'
 
     const mounted = useRef(false);
     const firstView = useRef(true);
@@ -110,6 +115,7 @@ const LikeIconWithAnimation = ({
         <Pressable
             style={extraStyle}
             onPress={_onPress}
+            disabled={disabled}
         >
             {
                 !activeIconOnly && liked.value !== 1 && <Animated.View
@@ -117,22 +123,44 @@ const LikeIconWithAnimation = ({
                         StyleSheet.absoluteFillObject,
                         outlineStyle
                     ]}>
-                    <Ionicons
-                        name={outlineIconName}
-                        size={iconSize || 30}
-                        color={iconColor || "red"}
-                        style={[style.icon, extraIconStyle]}
-                    />
+                    {
+                        iconGroup === "MaterialCommunityIcons"
+                            ? <MaterialCommunityIcons
+                                name={outlineIconName}
+                                size={iconSize || 30}
+                                color={iconColor || "red"}
+                                style={[style.icon, extraIconStyle]}
+                                disabled={disabled}
+                            />
+                            : <Ionicons
+                                name={outlineIconName}
+                                size={iconSize || 30}
+                                color={iconColor || "red"}
+                                style={[style.icon, extraIconStyle]}
+                                disabled={disabled}
+                            />
+                    }
                 </Animated.View>
             }
 
             <Animated.View style={fillStyle}>
-                <Ionicons
-                    name={iconName}
-                    size={iconSize || 30}
-                    color={activeIconColor || iconColor || "red"}
-                    style={[style.icon, extraIconStyle]}
-                />
+                {
+                    iconGroup === "MaterialCommunityIcons"
+                        ? <MaterialCommunityIcons
+                            name={iconName}
+                            size={iconSize || 30}
+                            color={activeIconColor || iconColor || "red"}
+                            style={[style.icon, extraIconStyle]}
+                            disabled={disabled}
+                        />
+                        : <Ionicons
+                            name={iconName}
+                            size={iconSize || 30}
+                            color={activeIconColor || iconColor || "red"}
+                            style={[style.icon, extraIconStyle]}
+                            disabled={disabled}
+                        />
+                }
             </Animated.View>
         </Pressable>
     )
@@ -160,6 +188,8 @@ LikeIconWithAnimation.propTypes = {
     iconSize: PropTypes.number,
     iconColor: PropTypes.string,
     activeIconColor: PropTypes.string,
+    MaterialCommunityIcons: PropTypes.string,
+    disabled: PropTypes.bool,
 }
 
 

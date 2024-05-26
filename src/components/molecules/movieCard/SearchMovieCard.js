@@ -2,13 +2,24 @@ import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {useNavigation} from "@react-navigation/native";
 import {CustomImage} from "../../atoms";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, rating, like, dislike, follow}) => {
+const SearchMovieCard = ({
+                             extraStyle,
+                             posters,
+                             title,
+                             premiered,
+                             type,
+                             movieId,
+                             rating,
+                             follow,
+                             watchList
+                         }) => {
     const navigation = useNavigation();
 
     const _navigateToMovieScreen = useCallback(() => {
@@ -36,22 +47,22 @@ const SearchMovieCard = ({extraStyle, posters, title, premiered, type, movieId, 
                 />
 
                 {
-                    (like || dislike || follow) && <View style={style.likeContainer}>
-                        {
-                            follow && <Ionicons
-                                style={(like || dislike) && style.bookmarkIcon}
-                                name={'bookmark'}
-                                size={22}
-                                color={Colors.BOOKMARK_ICON}
-                            />
-                        }
-                        {
-                            (like || dislike) && <Ionicons
-                                name={like ? 'heart' : 'md-heart-dislike'}
-                                size={22}
-                                color={"red"}
-                            />
-                        }
+                    follow && <View style={style.likeContainer}>
+                        <MaterialCommunityIcons
+                            name={"book-play"}
+                            size={22}
+                            color={Colors.FOLLOW_ICON}
+                        />
+                    </View>
+                }
+
+                {
+                    watchList && <View style={style.likeContainer}>
+                        <Ionicons
+                            name={'bookmark'}
+                            size={22}
+                            color={Colors.BLUE_LIGHT}
+                        />
                     </View>
                 }
 
@@ -85,13 +96,12 @@ const style = StyleSheet.create({
         backgroundColor: Colors.SECONDARY,
         borderRadius: 8,
         paddingLeft: 3,
-        paddingRight: 3,
+        paddingRight: 2,
         paddingTop: 3,
         paddingBottom: 3,
         position: 'absolute',
-    },
-    bookmarkIcon: {
-        marginBottom: 10,
+        top: 0,
+        right: 0,
     },
     title: {
         fontSize: Typography.getFontSize(16),
@@ -113,9 +123,8 @@ SearchMovieCard.propTypes = {
     type: PropTypes.string.isRequired,
     movieId: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
 }
 
 export default SearchMovieCard;

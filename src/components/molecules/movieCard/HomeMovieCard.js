@@ -3,6 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {CustomImage} from "../../atoms";
 import {homeStackHelpers} from "../../../helper";
 import {Colors, Mixins, Typography} from "../../../styles";
@@ -21,6 +22,7 @@ const HomeMovieCard = ({
                            rating,
                            noRating,
                            follow,
+                           watchList,
                        }) => {
     const navigation = useNavigation();
 
@@ -57,11 +59,19 @@ const HomeMovieCard = ({
 
                 {
                     follow && <View style={style.likeContainer}>
-
+                        <MaterialCommunityIcons
+                            name={"book-play"}
+                            size={22}
+                            color={Colors.FOLLOW_ICON}
+                        />
+                    </View>
+                }
+                {
+                    watchList && <View style={style.likeContainer}>
                         <Ionicons
                             name={'bookmark'}
                             size={22}
-                            color={Colors.BOOKMARK_ICON}
+                            color={Colors.BLUE_LIGHT}
                         />
                     </View>
                 }
@@ -116,9 +126,6 @@ const style = StyleSheet.create({
         top: 0,
         right: -1,
     },
-    bookmarkIcon: {
-        marginBottom: 10,
-    },
     title: {
         fontSize: Typography.getFontSize(18),
         color: Colors.TextColor,
@@ -169,6 +176,7 @@ HomeMovieCard.propTypes = {
     rating: PropTypes.object.isRequired,
     noRating: PropTypes.bool,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
 }
 
 

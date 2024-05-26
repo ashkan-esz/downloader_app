@@ -43,9 +43,8 @@ const SearchMovieList = ({
             type={item.type}
             movieId={item._id}
             rating={item.rating}
-            like={item.userStats?.like || false}
-            dislike={item.userStats?.dislike || false}
             follow={item.userStats?.follow || false}
+            watchList={item.userStats?.watchlist || false}
         />
     );
 

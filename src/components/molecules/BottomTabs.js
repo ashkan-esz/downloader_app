@@ -6,7 +6,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import {getFocusedRouteNameFromRoute} from "@react-navigation/native";
 
-const hideTabBarScreens = ["Notifications", "TimeLine", "Section", "Trailers", "MovieListScreen", "Movie"];
+const hideTabBarScreens = ["Notifications", "TimeLine", "Section", "Trailers", "MovieListScreen", "Movie", "Search"];
 
 const BottomTabs = ({state, descriptors, navigation}) => {
 

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import {CustomImage} from "../../../../components/atoms";
 import {getWindowWidth} from "../../../../styles/mixins";
 import {BlurView} from "expo-blur";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
 const SwiperCard = ({
@@ -23,6 +24,7 @@ const SwiperCard = ({
                         nextEpisode,
                         rating,
                         follow,
+                        watchList,
                     }) => {
     const navigation = useNavigation();
 
@@ -50,10 +52,19 @@ const SwiperCard = ({
 
                 {
                     follow && <View style={style.likeContainer}>
+                        <MaterialCommunityIcons
+                            name={"book-play"}
+                            size={22}
+                            color={Colors.FOLLOW_ICON}
+                        />
+                    </View>
+                }
+                {
+                    watchList && <View style={style.likeContainer}>
                         <Ionicons
                             name={'bookmark'}
                             size={22}
-                            color={Colors.BOOKMARK_ICON}
+                            color={Colors.BLUE_LIGHT}
                         />
                     </View>
                 }
@@ -163,6 +174,7 @@ SwiperCard.propTypes = {
     nextEpisode: PropTypes.any,
     rating: PropTypes.object.isRequired,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
 }
 
 

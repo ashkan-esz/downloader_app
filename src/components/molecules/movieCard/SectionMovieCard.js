@@ -4,7 +4,7 @@ import {Text} from "@rneui/themed";
 import {SectionMovieCardRating, CustomImage} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
-import {useLikeOrDislike, useFollow} from "../../../hooks";
+import {useFollow, useWatchList} from "../../../hooks";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
@@ -21,12 +21,10 @@ const SectionMovieCard = ({
                               genres,
                               latestData,
                               nextEpisode,
-                              likesCount,
-                              dislikesCount,
                               followsCount,
-                              like,
-                              dislike,
+                              watchListCount,
                               follow,
+                              watchList,
                           }) => {
 
     // todo : better cards
@@ -41,16 +39,14 @@ const SectionMovieCard = ({
     }, [movieId, title, type, posters, rating]);
 
     const {
-        // isLikeLoading,
-        // isDislikeLoading,
-        _onLike,
-        _onDisLike
-    } = useLikeOrDislike(movieId, likesCount, dislikesCount, like, dislike);
-
-    const {
         // isFollowLoading,
         _onFollow,
-    } = useFollow(movieId, followsCount, follow);
+    } = useFollow(movieId, followsCount, follow, watchListCount, watchList);
+
+    const {
+        // isWatchListLoading,
+        _onWatchList,
+    } = useWatchList(movieId, watchListCount, watchList);
 
     const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode);
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
@@ -78,15 +74,13 @@ const SectionMovieCard = ({
                 </Text>
                 <SectionMovieCardRating
                     rating={rating}
-                    likesCount={likesCount}
-                    dislikesCount={dislikesCount}
+                    type={type}
                     followsCount={followsCount}
-                    isLike={like}
-                    isDisLike={dislike}
+                    watchListCount={watchListCount}
                     isFollow={follow}
-                    onLike={_onLike}
-                    onDisLike={_onDisLike}
+                    isWatchList={watchList}
                     onFollow={_onFollow}
+                    onWatchList={_onWatchList}
                 />
                 <View style={style.lineSeparator}/>
 
@@ -102,7 +96,7 @@ const SectionMovieCard = ({
                 </Text>
 
                 <Text style={style.year} numberOfLines={1}>
-                    <Text style={style.statement}>Genres : </Text>{genres.join(' ,') || 'unknown'}
+                    <Text style={style.statement}>Genres : </Text>{genres.join(', ') || '-'}
                 </Text>
                 {
                     type.includes('serial') &&
@@ -186,12 +180,10 @@ SectionMovieCard.propTypes = {
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,
-    likesCount: PropTypes.number.isRequired,
-    dislikesCount: PropTypes.number.isRequired,
     followsCount: PropTypes.number.isRequired,
-    like: PropTypes.bool.isRequired,
-    dislike: PropTypes.bool.isRequired,
+    watchListCount: PropTypes.number.isRequired,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
@@ -202,12 +194,10 @@ SectionMovieCard.propTypes = {
 const areEqual = (prevProps, nextProps) => {
     return prevProps.posters[0] && nextProps.posters[0] &&
         prevProps.posters[0].url === nextProps.posters[0].url &&
-        prevProps.likesCount === nextProps.likesCount &&
-        prevProps.dislikesCount === nextProps.dislikesCount &&
         prevProps.followsCount === nextProps.followsCount &&
-        prevProps.like === nextProps.like &&
-        prevProps.dislike === nextProps.dislike &&
-        prevProps.follow === nextProps.follow;
+        prevProps.watchListCount === nextProps.watchListCount &&
+        prevProps.follow === nextProps.follow &&
+        prevProps.watchList === nextProps.watchList;
 }
 
 export default memo(SectionMovieCard, areEqual);

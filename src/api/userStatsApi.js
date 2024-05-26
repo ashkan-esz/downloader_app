@@ -38,3 +38,24 @@ export const followMovieApi = async (movieId, {remove = false, score = 0, watch_
     }
 }
 
+export const watchListMovieApi = async (movieId, {remove = false, score = 0, groupName = "default"}) => {
+    try {
+        let url = `/movies/addUserStats/watchlist_movie/${movieId}/${groupName}`;
+        let response = await API.put(url, null, {
+            params: {
+                remove: remove,
+                score: score,
+            }
+        });
+        return 'ok';
+    } catch (error) {
+        if (error.response && error.response.status === 409) {
+            if (error.response.data?.errorMessage?.toLowerCase() === "already following or watched") {
+                return "error";
+            }
+            return 'ok'; //already liked
+        }
+        return 'error';
+    }
+}
+

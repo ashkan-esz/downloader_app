@@ -7,7 +7,7 @@ import {ScreenLayout} from "../../components/layouts";
 import {useRoute} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {homeStackHelpers} from "../../helper";
-import {useFollow, useIsMounted, useLikeOrDislike} from "../../hooks";
+import {useFollow, useIsMounted, useLikeOrDislike, useWatchList} from "../../hooks";
 import * as movieApis from "../../api/movieApis";
 import {useSelector} from "react-redux";
 import {Colors} from "../../styles";
@@ -73,6 +73,17 @@ const MovieScreen = () => {
         routeParams.movieId,
         data ? data.userStats.follow_count : 0,
         data?.userStats?.follow || false,
+        data ? data.userStats.watchlist_count : 0,
+        data?.userStats?.watchlist || false,
+    );
+
+    const {
+        isWatchListLoading,
+        _onWatchList,
+    } = useWatchList(
+        routeParams.movieId,
+        data ? data.userStats.watchlist_count : 0,
+        data?.userStats?.watchlist || false,
     );
 
     const _onRefresh = async () => {
@@ -130,12 +141,15 @@ const MovieScreen = () => {
                         isLike={isLikeLoading ? !data.userStats.like : (data ? data.userStats.like : false)}
                         isDisLike={isDislikeLoading ? !data.userStats.dislike : (data ? data.userStats.dislike : false)}
                         isFollowed={isFollowLoading ? !data.userStats.follow : (data ? data.userStats.follow : false)}
+                        isWatchlist={isWatchListLoading ? !data.userStats.watchlist : (data ? data.userStats.watchlist : false)}
                         onLike={_onLike}
                         onDisLike={ _onDisLike}
                         onFollow={_onFollow}
+                        onWatchList={_onWatchList}
                         likesCount={data ? data.userStats.likes_count : 0}
                         dislikesCount={data ? data.userStats.dislikes_count : 0}
-                        disable={!data || !data.type.includes('serial') || isPending || isError || isFollowLoading || isLikeLoading || isDislikeLoading}
+                        type={data?.type || ""}
+                        disable={!data || !data.type.includes('serial') || isPending || isError || isFollowLoading || isWatchListLoading || isLikeLoading || isDislikeLoading}
                     />
 
                     {

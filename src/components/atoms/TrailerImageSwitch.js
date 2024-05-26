@@ -2,6 +2,7 @@ import React, {memo, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import CustomVideo from "./CustomVideo";
 import CustomImage from "./CustomImage";
 import {useDebounce} from "../../hooks";
@@ -17,6 +18,7 @@ const TrailerImageSwitch = ({
                                 widePoster,
                                 onLongPress,
                                 follow,
+                                watchList,
                                 hideLikeIcon,
                                 startFullscreen = true,
                                 movieId,
@@ -47,11 +49,21 @@ const TrailerImageSwitch = ({
                 />
 
                 {
-                    !hideLikeIcon && follow && <View style={style.likeContainer}>
+                   !hideLikeIcon && follow && <View style={style.likeContainer}>
+                        <MaterialCommunityIcons
+                            name={"book-play"}
+                            size={22}
+                            color={Colors.FOLLOW_ICON}
+                        />
+                    </View>
+                }
+
+                {
+                    !hideLikeIcon && watchList && <View style={style.likeContainer}>
                         <Ionicons
                             name={'bookmark'}
                             size={22}
-                            color={Colors.BOOKMARK_ICON}
+                            color={Colors.BLUE_LIGHT}
                         />
                     </View>
                 }
@@ -117,6 +129,7 @@ TrailerImageSwitch.propTypes = {
     movieId: PropTypes.string,
     onLongPress: PropTypes.func,
     follow: PropTypes.bool.isRequired,
+    watchList: PropTypes.bool.isRequired,
     hideLikeIcon: PropTypes.bool,
     startFullscreen: PropTypes.bool,
 }
