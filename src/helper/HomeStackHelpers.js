@@ -23,13 +23,13 @@ export function getSerialState(latestData, nextEpisode, seasonEpisodeOnly = fals
                     return 'waiting ' + 'S' + latestSeason + 'E' + (Number(latestEpisode) + 1);
                 }
             } else {
-                return 'released ' + latestSeasonEpisode;
+                return 'Released ' + latestSeasonEpisode;
             }
         } else {
-            return 'released ' + latestSeasonEpisode;
+            return 'Released ' + latestSeasonEpisode;
         }
     } catch (error2) {
-        return latestSeasonEpisode ? 'released ' + latestSeasonEpisode : "";
+        return latestSeasonEpisode ? 'Released ' + latestSeasonEpisode : "";
     }
 }
 
@@ -93,13 +93,19 @@ export function daysToNextEpisode(nextEpisode) {
     return differentDay > 0 ? differentDay + ' days' : 'Today';
 }
 
-export function getPartialQuality(quality, number = 2) {
-    return quality
+export function getPartialQuality(quality, number = 2, removeDub = true) {
+    let temp =  quality
         .split('-')[0]
         .split('.')
         .filter(value => !value.toLowerCase().includes('mb') && !value.toLowerCase().includes('gb'))
         .slice(0, number)
         .join('.');
+
+    if (removeDub){
+        return temp.replace(/(\.?((dubbed(\([a-zA-Z\d\-]\))?)|censored))+/gi, '')
+    }
+
+    return temp;
 }
 
 export function getSeasonEpisodeWithTitle(seasons, season, episode, type) {

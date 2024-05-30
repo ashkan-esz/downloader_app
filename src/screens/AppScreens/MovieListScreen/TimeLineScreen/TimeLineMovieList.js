@@ -11,7 +11,6 @@ const TimeLineMovieList = ({
                                flatListRef,
                                onScroll,
                                showScrollTopIcon,
-                               spacing,
                                data,
                                isLoading,
                                isFetching,
@@ -27,7 +26,6 @@ const TimeLineMovieList = ({
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <MovieCard
-            tab={spacing === new Date().getDay() ? 'todaySeries' : ''}
             posters={item.posters}
             movieId={item._id}
             title={item.rawTitle}
@@ -37,8 +35,6 @@ const TimeLineMovieList = ({
             genres={item.genres}
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
-            followsCount={item.userStats?.follow_count || 0}
-            watchListCount={item.userStats?.watchlist_count || 0}
             follow={item.userStats?.follow || false}
             watchList={item.userStats?.watchlist || false}
         />
@@ -74,7 +70,6 @@ TimeLineMovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,
     onScroll: PropTypes.func,
     showScrollTopIcon: PropTypes.bool,
-    spacing: PropTypes.number.isRequired,
     data: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,

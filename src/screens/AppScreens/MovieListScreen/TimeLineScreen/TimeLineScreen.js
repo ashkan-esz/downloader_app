@@ -112,7 +112,6 @@ const TimeLineScreen = () => {
                 <TimeLineMovieList
                     flatListRef={flatListRef}
                     showScrollTopIcon={(data?.pages[0].length > 0)}
-                    spacing={spacing}
                     data={data?.pages.flat(1) || []}
                     isLoading={isPending}
                     isFetching={isFetching}

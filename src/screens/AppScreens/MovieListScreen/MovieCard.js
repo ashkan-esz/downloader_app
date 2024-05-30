@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {CustomImage} from "../../../components/atoms";
@@ -6,30 +6,24 @@ import MovieCardRating from "./MovieCardRating";
 import MovieCardFollow from "./MovieCardFollow";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
-import {useFollow, useWatchList} from "../../../hooks";
 import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
 const MovieCard = ({
-                              extraStyle,
-                              tab,
-                              posters,
-                              movieId,
-                              title,
-                              rating,
-                              premiered,
-                              type,
-                              genres,
-                              latestData,
-                              nextEpisode,
-                              followsCount,
-                              watchListCount,
-                              follow,
-                              watchList,
-                          }) => {
-
-    // todo : better cards
+                       extraStyle,
+                       posters,
+                       movieId,
+                       title,
+                       rating,
+                       premiered,
+                       type,
+                       genres,
+                       latestData,
+                       nextEpisode,
+                       follow,
+                       watchList,
+                   }) => {
 
     const navigation = useNavigation();
 
@@ -40,25 +34,12 @@ const MovieCard = ({
         });
     }, [movieId, title, type, posters, rating]);
 
-    const {
-        // isFollowLoading,
-        _onFollow,
-    } = useFollow(movieId, followsCount, follow, watchListCount, watchList);
-
-    const {
-        // isWatchListLoading,
-        _onWatchList,
-    } = useWatchList(movieId, watchListCount, watchList);
-
     const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode);
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
 
-    const typeColor = {
-        color: type.includes('movie') ? 'red' : 'cyan',
-    }
     const imageBorder = {
         borderWidth: 0.5,
-        borderColor: type.includes('movie') ? 'red' : 'cyan',
+        borderColor: type.includes('movie') ? Colors.RED : 'cyan',
     }
 
     return (
@@ -78,16 +59,12 @@ const MovieCard = ({
             <View style={style.infoContainer}>
                 <Text style={style.title} numberOfLines={1}>
                     {title}
-                    <MovieCardFollow
-                        type={type}
-                        followsCount={followsCount}
-                        watchListCount={watchListCount}
-                        isFollow={follow}
-                        isWatchList={watchList}
-                        onFollow={_onFollow}
-                        onWatchList={_onWatchList}
-                    />
                 </Text>
+                <MovieCardFollow
+                    type={type}
+                    isFollow={follow}
+                    isWatchList={watchList}
+                />
 
                 <View style={style.lineSeparator}/>
 
@@ -95,15 +72,13 @@ const MovieCard = ({
                 <Text style={style.year}>
                     <Text style={style.statement}>Year : </Text>{premiered.split('-')[0]}
                 </Text>
-                {/*<Text style={style.year}>*/}
-                {/*    <Text style={style.statement}>Type : </Text><Text*/}
-                {/*    style={[style.year, typeColor]}> {*/}
-                {/*    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')*/}
-                {/*}</Text>*/}
-                {/*</Text>*/}
 
                 <Text style={style.year} numberOfLines={1}>
-                    <Text style={style.statement}>Genres : </Text>{genres.join(', ') || '-'}
+                    <Text style={style.statement}>Genres : </Text>
+                    {genres.filter(g => !["animation"].includes(g)).map(g => g.split('-')
+                        .map(value => value.charAt(0).toUpperCase() + value.slice(1))
+                        .join('-')
+                    ).join(', ') || '-'}
                 </Text>
                 {
                     type.includes('serial') &&
@@ -112,10 +87,18 @@ const MovieCard = ({
                     </Text>
                 }
 
-                <Text style={style.year} numberOfLines={1}>
-                    <Text style={style.statement}>Quality :</Text> {partialQuality}
-                </Text>
+                {/*<Text style={style.year} numberOfLines={1}>*/}
+                {/*    <Text style={style.statement}>Quality :</Text> {partialQuality}*/}
+                {/*</Text>*/}
+
             </View>
+
+            {
+                partialQuality && <Text style={style.quality} numberOfLines={1}>
+                    {partialQuality}
+                </Text>
+            }
+
         </TouchableOpacity>
     );
 }
@@ -128,7 +111,8 @@ const style = StyleSheet.create({
         height: Mixins.getWindowHeight(33),
         maxHeight: 255,
         backgroundColor: Colors.SECONDARY,
-        borderRadius: 10
+        borderRadius: 10,
+        paddingRight: 5,
     },
     image: {
         width: Mixins.getWindowWidth(37),
@@ -152,8 +136,8 @@ const style = StyleSheet.create({
     lineSeparator: {
         borderBottomWidth: 1,
         borderBottomColor: Colors.NAVBAR,
-        marginTop: 4,
-        marginBottom: 3,
+        marginTop: 10,
+        marginBottom: 6,
         width: '90%'
     },
     year: {
@@ -166,20 +150,30 @@ const style = StyleSheet.create({
         color: Colors.SemiCyan,
         marginTop: 2,
     },
-    paddingLeft: {
-        paddingLeft: 10,
+    quality: {
+        fontSize: Typography.getFontSize(14),
+        color: '#fff',
+        marginTop: 2,
+        position: "absolute",
+        bottom: -7,
+        left: 12,
+        // backgroundColor: "green",
+        backgroundColor: "#218380",
+        // backgroundColor: "#35605A",
+        // backgroundColor: "#558C8C",
+        borderRadius: 4,
+        paddingLeft: 5,
+        paddingRight: 5,
+        maxWidth: Mixins.getWindowWidth(37) - 5,
     }
 });
 
 MovieCard.propTypes = {
     extraStyle: PropTypes.object,
-    tab: PropTypes.string.isRequired,
     posters: PropTypes.array.isRequired,
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,
-    followsCount: PropTypes.number.isRequired,
-    watchListCount: PropTypes.number.isRequired,
     follow: PropTypes.bool.isRequired,
     watchList: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -189,14 +183,4 @@ MovieCard.propTypes = {
     nextEpisode: PropTypes.object,
 }
 
-const areEqual = (prevProps, nextProps) => {
-    // todo : check
-    return prevProps.posters[0] && nextProps.posters[0] &&
-        prevProps.posters[0].url === nextProps.posters[0].url &&
-        prevProps.followsCount === nextProps.followsCount &&
-        prevProps.watchListCount === nextProps.watchListCount &&
-        prevProps.follow === nextProps.follow &&
-        prevProps.watchList === nextProps.watchList;
-}
-
-export default memo(MovieCard, areEqual);
+export default MovieCard;

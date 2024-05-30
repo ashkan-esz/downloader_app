@@ -27,7 +27,6 @@ const SectionMovieList = ({
     const keyExtractor = (item) => item._id.toString();
     const renderItem = ({item}) => (
         <MovieCard
-            tab={tab}
             posters={item.posters}
             movieId={item._id}
             title={item.rawTitle}
@@ -37,8 +36,6 @@ const SectionMovieList = ({
             genres={item.genres}
             latestData={item.latestData}
             nextEpisode={item.nextEpisode}
-            followsCount={item.userStats?.follow_count || 0}
-            watchListCount={item.userStats?.watchlist_count || 0}
             follow={item.userStats?.follow || false}
             watchList={item.userStats?.watchlist || false}
         />
