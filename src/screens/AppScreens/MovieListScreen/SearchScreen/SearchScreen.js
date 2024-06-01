@@ -7,12 +7,13 @@ import FilterType from "../FilterType";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {useSelector} from "react-redux";
 import * as movieApis from "../../../../api/movieApis";
+import {movieTypes} from "../../../../utils";
 
 
 const SearchScreen = () => {
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
+    const [types, setTypes] = useState(movieTypes.all);
     const [refreshing, setRefreshing] = useState(false);
     const searchBarRef = useRef();
     const flatListRef = useRef();
@@ -99,6 +100,7 @@ const SearchScreen = () => {
                 />
 
                 <FilterType
+                    hidden={false}
                     expanded={expanded}
                     setExpanded={setExpanded}
                     types={types}

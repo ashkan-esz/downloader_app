@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {CustomFlashList} from "../../../../components/molecules";
 import MovieCard from "../MovieCard";
 import {Mixins} from "../../../../styles";
@@ -19,7 +18,9 @@ const MovieList = ({
                        refreshing,
                        onRefresh,
                        isError,
-                       retry
+                       retry,
+                       showNothing,
+                       extraHeightDiff,
                    }) => {
 
     const keyExtractor = (item) => item._id.toString();
@@ -52,16 +53,19 @@ const MovieList = ({
             onEndReached={onEndReached}
             onRefresh={onRefresh}
             refreshing={refreshing}
+            extraHeightDiff={extraHeightDiff}
+            scrollIconMarginBottom={4}
             isError={isError}
             retry={retry}
+            hideRetry={true}
             isLoading={isLoading}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
+            showNothing={showNothing}
         />
     );
 };
 
-const style = StyleSheet.create({});
 
 MovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,
@@ -76,6 +80,8 @@ MovieList.propTypes = {
     retry: PropTypes.func.isRequired,
     onScroll: PropTypes.func.isRequired,
     showScrollTopIcon: PropTypes.bool.isRequired,
+    showNothing: PropTypes.bool,
+    extraHeightDiff: PropTypes.number,
 }
 
 

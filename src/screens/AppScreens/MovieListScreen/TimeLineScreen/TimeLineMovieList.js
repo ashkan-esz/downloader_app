@@ -60,6 +60,7 @@ const TimeLineMovieList = ({
             isFetchingNextPage={isFetchingNextPage}
             showNothing={showNothing}
             extraHeightDiff={8}
+            scrollIconMarginBottom={8}
         />
     );
 };

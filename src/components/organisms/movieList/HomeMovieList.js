@@ -48,23 +48,20 @@ const HomeMovieList = ({name, pageType, extraStyle}) => {
     }
 
     const _onNavigate = useCallback(() => {
-        if (sectionTypes.news.includes(pageType)) {
+        if (sectionTypes.news.find(item => item.name === pageType)) {
             navigation.navigate('Section', {
                 startTab: pageType,
                 tabs: sectionTypes.news,
-                tabNames: sectionTypes.news,
             });
-        } else if (sectionTypes.upcoming.includes(pageType)) {
+        } else if (sectionTypes.upcoming.find(item => item.name === pageType)) {
             navigation.navigate('Section', {
                 startTab: pageType,
                 tabs: sectionTypes.upcoming,
-                tabNames: sectionTypes.upcoming_names,
             });
-        } else if (sectionTypes.rank.includes(pageType)) {
+        } else if (sectionTypes.rank.find(item => item.name === pageType)) {
             navigation.navigate('Section', {
                 startTab: pageType,
                 tabs: sectionTypes.rank,
-                tabNames: sectionTypes.rank_names,
             });
         } else {
             navigation.navigate('MovieListScreen', {

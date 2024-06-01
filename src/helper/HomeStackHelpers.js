@@ -94,14 +94,14 @@ export function daysToNextEpisode(nextEpisode) {
 }
 
 export function getPartialQuality(quality, number = 2, removeDub = true) {
-    let temp =  quality
+    let temp = quality
         .split('-')[0]
         .split('.')
         .filter(value => !value.toLowerCase().includes('mb') && !value.toLowerCase().includes('gb'))
         .slice(0, number)
         .join('.');
 
-    if (removeDub){
+    if (removeDub) {
         return temp.replace(/(\.?((dubbed(\([a-zA-Z\d\-]\))?)|censored))+/gi, '')
     }
 
@@ -123,4 +123,10 @@ export function getSeasonEpisodeWithTitle(seasons, season, episode, type) {
 export function getSeasonEpisode(input) {
     let [_, season, episode] = input.split(/[se]/gi).map(item => Number(item));
     return [season || 0, episode || 0];
+}
+
+export function capitalize(input) {
+    return input.split('_')
+        .map(value => value.charAt(0).toUpperCase() + value.slice(1))
+        .join(' ');
 }

@@ -1,33 +1,54 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {LayoutAnimation, Platform, StatusBar, StyleSheet, UIManager, View} from 'react-native';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {ScreenLayout} from "../../../../components/layouts";
 import FilterType from "../FilterType";
 import SectionMovieList from "./SectionMovieList";
 import SectionNavBar from "./SectionNavBar";
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../../../api/movieApis";
 import {useSelector} from "react-redux";
-import {moviesDataLevel} from "../../../../utils";
+import {moviesDataLevel, movieTypes} from "../../../../utils";
 
 export const sectionTypes = Object.freeze({
-    news: Object.freeze(['news', 'updates', 'inTheaters', 'comingSoon']),
-    upcoming: Object.freeze(['comingSoon', "animeSeasonUpcoming", 'animeTopComingSoon']),
-    upcoming_names: Object.freeze(['Coming Soon', "Anime Season", 'Anime Top Coming']),
-    rank: Object.freeze(["follow_month", "like_month", "like", "view_month"]),
-    rank_names: Object.freeze(["Follow Month", "Like Month", "Like", "View Month"]),
+    news: Object.freeze([
+        {name: 'news', label: 'News'},
+        {name: 'updates', label: 'Updates'},
+        {name: 'inTheaters', label: 'InTheaters'},
+        {name: 'comingSoon', label: 'Coming Soon'},
+    ]),
+    upcoming: Object.freeze([
+        {name: 'comingSoon', label: 'Coming Soon'},
+        {name: 'animeSeasonUpcoming', label: 'Anime Season'},
+        {name: 'animeTopComingSoon', label: 'Anime Top Coming'},
+    ]),
+    rank: Object.freeze([
+        {name: 'follow_month', label: 'Follow Month'},
+        {name: 'like_month', label: 'Like Month'},
+        {name: 'like', label: 'Like'},
+        {name: 'view_month', label: 'View Month'},
+    ]),
 });
 
 const SectionScreen = () => {
     const route = useRoute();
+    const [showNothing, setShowNothing] = useState(true);
     const [tab, setTab] = useState(route.params.startTab);
-    const [changedTab, setChangedTab] = useState('');
     const [expanded, setExpanded] = useState(false);
-    const [types, setTypes] = useState(['movie', 'serial', 'anime_movie', 'anime_serial']);
+    const [types, setTypes] = useState(movieTypes.all);
+    const [showFilterTab, setShowFilterTab] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
+    const navigation = useNavigation();
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+            setShowNothing(false);
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     const containerStyle = useMemo(() => ({
         position: 'absolute',
@@ -35,19 +56,9 @@ const SectionScreen = () => {
         top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 10,
     }), [internet]);
 
-    useEffect(() => {
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-        setTimeout(() => setChangedTab(route.params.startTab), 5)
+    const _onScroll = useCallback((event) => {
+        setShowFilterTab(event.nativeEvent.contentOffset.y < 150);
     }, []);
-
-    const _closeFilterBox = () => {
-        if (expanded) {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            setExpanded(false);
-        }
-    }
 
     async function getData({pageParam = 1, TAB}) {
         const state = TAB || tab;
@@ -62,27 +73,26 @@ const SectionScreen = () => {
         if (result && result !== 'error') {
             return result;
         } else {
-            //todo : handle error
-            return [];
+            throw new Error();
         }
     }
 
-    //prefetch data
-    useEffect(() => {
-        async function prefetchData() {
-            let promiseArray = [];
-            for (let i = 0; i < route.params.tabs.length; i++) {
-                let query = queryClient.prefetchInfiniteQuery({
-                    queryKey: ['movie', route.params.tabs[i], 'sectionScreen', types],
-                    queryFn: () => getData({TAB: route.params.tabs[i]})
-                });
-                promiseArray.push(query);
-            }
-            await Promise.all(promiseArray);
-        }
-
-        prefetchData();
-    }, []);
+    // //prefetch data
+    // useEffect(() => {
+    //     async function prefetchData() {
+    //         let promiseArray = [];
+    //         for (let i = 0; i < route.params.tabs.length; i++) {
+    //             let query = queryClient.prefetchInfiniteQuery({
+    //                 queryKey: ['movie', route.params.tabs[i].name, 'sectionScreen', types],
+    //                 queryFn: () => getData({TAB: route.params.tabs[i].name})
+    //             });
+    //             promiseArray.push(query);
+    //         }
+    //         await Promise.all(promiseArray);
+    //     }
+    //
+    //     prefetchData();
+    // }, []);
 
     const {data, fetchNextPage, isPending, isFetching, isFetchingNextPage, isError} = useInfiniteQuery({
         queryKey: ['movie', tab, 'sectionScreen', types],
@@ -100,15 +110,13 @@ const SectionScreen = () => {
         notifyOnChangeProps: "all",
     });
 
-    // console.log('----- ', data);
-
     const _onTabChange = (value) => {
-        if (tab === value && flatListRef && flatListRef.current) {
-            flatListRef.current.scrollToOffset({animated: true, offset: 0});
+        if (expanded) {
+            setExpanded(false);
         }
-        setChangedTab(value);
-        _closeFilterBox();
-        setTimeout(() => setTab(value), 2);
+        setTab(value);
+        setShowNothing(true);
+        setTimeout(() => setShowNothing(false), 100);
     }
 
     const _onRefresh = async () => {
@@ -116,7 +124,7 @@ const SectionScreen = () => {
         let promiseArray = [];
         for (let i = 0; i < route.params.tabs.length; i++) {
             let query = queryClient.refetchQueries({
-                queryKey: ['movie', route.params.tabs[i], 'sectionScreen', types]
+                queryKey: ['movie', route.params.tabs[i].name, 'sectionScreen', types]
             });
             promiseArray.push(query);
         }
@@ -135,16 +143,14 @@ const SectionScreen = () => {
             <View style={containerStyle}>
 
                 <SectionNavBar
-                    extraStyle={style.navbar}
                     sections={route.params.tabs}
-                    sectionNames={route.params.tabNames}
                     tab={tab}
-                    changedTab={changedTab}
                     onTabChange={_onTabChange}
                 />
 
                 <FilterType
                     expanded={expanded}
+                    hidden={!showFilterTab}
                     setExpanded={setExpanded}
                     types={types}
                     setTypes={setTypes}
@@ -152,9 +158,7 @@ const SectionScreen = () => {
 
                 <SectionMovieList
                     flatListRef={flatListRef}
-                    tab={tab}
-                    changedTab={changedTab}
-                    data={data.pages.flat(1)}
+                    data={data?.pages.flat(1) || []}
                     isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
@@ -163,8 +167,10 @@ const SectionScreen = () => {
                     onRefresh={_onRefresh}
                     isError={isError}
                     retry={_retry}
-                    onScroll={_closeFilterBox}
-                    showScrollTopIcon={!expanded && (data.pages[0].length > 0 && tab === changedTab)}
+                    onScroll={_onScroll}
+                    showScrollTopIcon={!expanded && (data?.pages[0].length > 0)}
+                    showNothing={showNothing}
+                    extraHeightDiff={showFilterTab ? 45 : 5}
                 />
             </View>
         </ScreenLayout>

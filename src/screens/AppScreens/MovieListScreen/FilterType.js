@@ -1,71 +1,105 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Button} from "@rneui/themed";
-import {Colors, Typography} from "../../../styles";
+import {Colors, Mixins, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
+import {homeStackHelpers} from "../../../helper";
+import Animated, {
+    useSharedValue,
+    withTiming,
+    ReduceMotion,
+    cancelAnimation,
+    useAnimatedStyle,
+} from "react-native-reanimated";
+import {movieTypes} from "../../../utils";
 
 
-const FilterType = ({expanded, setExpanded, types, setTypes}) => {
-
-    useEffect(() => {
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-    }, []);
+const FilterType = ({expanded, setExpanded, types, setTypes, hidden}) => {
+    const height = useSharedValue(45);
 
     const toggleExpand = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setExpanded(!expanded);
+        let config = {
+            duration: 800,
+            reduceMotion: ReduceMotion.Never,
+        }
+        let newHeight = expanded ? 45 : 120;
+        height.value = withTiming(newHeight, config);
+
+        if (expanded) {
+            setTimeout(() => {
+                setExpanded(false);
+            }, 400);
+        } else {
+            setExpanded(true);
+        }
     }
 
-    const buttonOpacity = {
-        opacity: expanded ? 1 : 0.7
+    const toggleType = (t) => {
+        if (types.includes(t)) {
+            setTypes(types.filter(type => type !== t));
+        } else {
+            setTypes((prev) => [...prev, t].sort((a, b) => movieTypes.all.indexOf(a) - movieTypes.all.indexOf(b)));
+        }
     }
+
+    useEffect(() => {
+        cancelAnimation(height);
+        setExpanded(false);
+        let config = {
+            duration: 800,
+            reduceMotion: ReduceMotion.Never,
+        }
+        let newHeight = !hidden ? 45 : 0;
+        height.value = withTiming(newHeight, config);
+    }, [hidden]);
+
+    const expandAnimatedStyle = useAnimatedStyle(() => {
+        let config = {
+            duration: 200,
+            reduceMotion: ReduceMotion.Never,
+        }
+        let closeConfig = {
+            duration: 10,
+            reduceMotion: ReduceMotion.Never,
+        }
+        let marginTop = expanded ? withTiming(-40, config) : withTiming(0, closeConfig);
+        let paddingTop = expanded ? withTiming(43, config) : withTiming(0, closeConfig);
+        return {
+            marginTop: marginTop,
+            paddingTop: paddingTop,
+        }
+    });
 
     return (
-        <View>
+        <Animated.View style={{height: height}}
+        >
             <Button
-                containerStyle={[style.buttonContainer, buttonOpacity]}
+                containerStyle={[style.buttonContainer, expanded && style.expanded]}
                 titleStyle={style.buttonTitle}
-                title={'Types'}
+                title={'Filter'}
                 type={"clear"}
                 onPress={toggleExpand}
             />
-            {
-                expanded && <View style={style.typesContainer}>
-                    <Button
-                        containerStyle={[
-                            style.typesButtonContainer,
-                            types.length === 2 && style.selectedType
-                        ]}
-                        titleStyle={style.typesButtonTitle}
-                        title={'Movie,Serial'}
-                        type={"clear"}
-                        onPress={() => setTypes(['movie', 'serial'])}
-                    />
-                    <Button
-                        containerStyle={[
-                            style.typesButtonContainer,
-                            types.length === 1 && types[0] === 'serial' && style.selectedType
-                        ]}
-                        titleStyle={style.typesButtonTitle}
-                        title={'Serial'}
-                        type={"clear"}
-                        onPress={() => setTypes(['serial'])}
-                    />
-                    <Button
-                        containerStyle={[
-                            style.typesButtonContainer,
-                            types.length === 1 && types[0] === 'movie' && style.selectedType
-                        ]}
-                        titleStyle={style.typesButtonTitle}
-                        title={'Movie'}
-                        type={"clear"}
-                        onPress={() => setTypes(['movie'])}
-                    />
-                </View>
-            }
-        </View>
+
+            <Animated.View style={[style.typesContainer, expandAnimatedStyle]}>
+                {
+                    movieTypes.all.map(t => (
+                        <Button
+                            key={t}
+                            containerStyle={[
+                                style.typesButtonContainer,
+                                types.includes(t) && style.selectedType
+                            ]}
+                            titleStyle={style.typesButtonTitle}
+                            title={homeStackHelpers.capitalize(t)}
+                            type={"clear"}
+                            onPress={() => toggleType(t)}
+                        />
+                    ))
+                }
+            </Animated.View>
+
+        </Animated.View>
     );
 };
 
@@ -73,41 +107,64 @@ const style = StyleSheet.create({
     buttonContainer: {
         alignSelf: 'center',
         justifyContent: 'center',
-        flex: 1,
-        width: '100%',
-        height: 35,
-        marginTop: 5,
+        flexShrink: 1,
+        width: Mixins.WINDOW_WIDTH - 35,
+        height: 30,
+        marginTop: 10,
         marginBottom: 5,
-        backgroundColor: 'purple',
-        borderRadius: 15,
+        // backgroundColor: Colors.BLACK,
+        backgroundColor: Colors.THIRD,
+        borderRadius: 8,
+        opacity: 1,
+        zIndex: 2,
+    },
+    expanded: {
+        // opacity: 0.8,
+        opacity: 0.6,
     },
     buttonTitle: {
         fontSize: Typography.getFontSize(20),
         color: '#ffffff',
         height: '100%',
+        textAlign: "center",
+        textAlignVertical: "center",
     },
     typesContainer: {
         flex: 1,
         flexDirection: 'row',
+        flexWrap: "wrap",
         width: '100%',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingBottom: 5,
+        zIndex: 1,
+        gap: 5,
+        paddingLeft: 8,
+        paddingRight: 8,
+        // backgroundColor: "#E549824C",
+        backgroundColor: "black",
+        borderRadius: 8,
+        overflow: "hidden",
     },
     typesButtonContainer: {
-        backgroundColor: Colors.RED2,
-        width: '32.5%',
-        height: 35,
+        // backgroundColor: Colors.RED2,
+        // backgroundColor: Colors.BLUE_LIGHT,
+        backgroundColor: "rgba(139,182,231,0.27)",
+        width: (Mixins.WINDOW_WIDTH - 25 - 20) / 2,
+        height: 30,
         justifyContent: 'center',
-        opacity: 0.6
+        opacity: 1,
+        zIndex: 2,
     },
     typesButtonTitle: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: Typography.getFontSize(16),
         color: '#ffffff',
         justifyContent: 'center',
+        textAlign: "center",
+        textAlignVertical: "center",
+        height: "100%",
     },
     selectedType: {
-        opacity: 1
+        backgroundColor: Colors.THIRD,
     }
 });
 
@@ -116,6 +173,7 @@ FilterType.propTypes = {
     setExpanded: PropTypes.func.isRequired,
     types: PropTypes.array.isRequired,
     setTypes: PropTypes.func.isRequired,
+    hidden: PropTypes.bool.isRequired,
 }
 
 

@@ -11,8 +11,6 @@ const SectionMovieList = ({
                               flatListRef,
                               onScroll,
                               showScrollTopIcon,
-                              tab,
-                              changedTab,
                               data,
                               isLoading,
                               isFetching,
@@ -21,7 +19,9 @@ const SectionMovieList = ({
                               refreshing,
                               onRefresh,
                               isError,
-                              retry
+                              retry,
+                              showNothing,
+                              extraHeightDiff,
                           }) => {
 
     const keyExtractor = (item) => item._id.toString();
@@ -53,24 +53,21 @@ const SectionMovieList = ({
             onEndReached={onEndReached}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            listFooterPaddingBottom={40} //todo : check better way
-            extraHeightDiff={40}
+            extraHeightDiff={extraHeightDiff}
+            scrollIconMarginBottom={4}
             isError={isError}
             retry={retry}
+            hideRetry={true}
             isLoading={isLoading}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
-            showNothing={tab !== changedTab}
+            showNothing={showNothing}
         />
     );
 };
 
-const style = StyleSheet.create({});
-
 SectionMovieList.propTypes = {
     flatListRef: PropTypes.object.isRequired,
-    tab: PropTypes.string.isRequired,
-    changedTab: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -82,6 +79,8 @@ SectionMovieList.propTypes = {
     retry: PropTypes.func.isRequired,
     onScroll: PropTypes.func.isRequired,
     showScrollTopIcon: PropTypes.bool.isRequired,
+    showNothing: PropTypes.bool,
+    extraHeightDiff: PropTypes.number,
 };
 
 

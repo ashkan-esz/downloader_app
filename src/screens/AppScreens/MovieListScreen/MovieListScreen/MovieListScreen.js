@@ -1,6 +1,6 @@
-import React, {useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, LayoutAnimation, StatusBar} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {View, StatusBar} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import {ScreenLayout} from "../../../../components/layouts";
 import MovieList from "./MovieList";
@@ -11,12 +11,22 @@ import {movieTypes} from "../../../../utils";
 
 const MovieListScreen = () => {
     const route = useRoute();
+    const [showNothing, setShowNothing] = useState(true);
     const [expanded, setExpanded] = useState(false);
     const [types, setTypes] = useState(movieTypes.all);
+    const [showFilterTab, setShowFilterTab] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const flatListRef = useRef();
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
+    const navigation = useNavigation();
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+            setShowNothing(false);
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     const containerStyle = useMemo(() => ({
         position: 'absolute',
@@ -24,20 +34,16 @@ const MovieListScreen = () => {
         top: internet ? StatusBar.currentHeight + 60 : StatusBar.currentHeight + 10,
     }), [internet]);
 
-    const _closeFilterBox = () => {
-        if (expanded) {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            setExpanded(false);
-        }
-    }
+    const _onScroll = useCallback((event) => {
+        setShowFilterTab(event.nativeEvent.contentOffset.y < 150);
+    }, []);
 
     async function getData(pageParam) {
         let result = await movieApis.getSortedMovies(route.params.pageType, types, 'medium', pageParam);
         if (result && result !== 'error') {
             return result;
         } else {
-            //todo : handle error
-            return [];
+            throw new Error();
         }
     }
 
@@ -76,6 +82,7 @@ const MovieListScreen = () => {
             <View style={containerStyle}>
                 <FilterType
                     expanded={expanded}
+                    hidden={!showFilterTab}
                     setExpanded={setExpanded}
                     types={types}
                     setTypes={setTypes}
@@ -83,7 +90,7 @@ const MovieListScreen = () => {
 
                 <MovieList
                     flatListRef={flatListRef}
-                    data={data.pages.flat(1)}
+                    data={data?.pages.flat(1) || []}
                     isLoading={isPending}
                     isFetching={isFetching}
                     isFetchingNextPage={isFetchingNextPage}
@@ -92,15 +99,14 @@ const MovieListScreen = () => {
                     onRefresh={_onRefresh}
                     isError={isError}
                     retry={_retry}
-                    onScroll={_closeFilterBox}
-                    showScrollTopIcon={!expanded && (data.pages[0].length > 0)}
+                    onScroll={_onScroll}
+                    showScrollTopIcon={!expanded && (data?.pages[0].length > 0)}
+                    showNothing={showNothing}
+                    extraHeightDiff={showFilterTab ? -5 : -50}
                 />
             </View>
         </ScreenLayout>
     );
 };
-
-const style = StyleSheet.create({});
-
 
 export default MovieListScreen;

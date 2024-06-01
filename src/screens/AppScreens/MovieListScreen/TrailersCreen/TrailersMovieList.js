@@ -21,6 +21,8 @@ const trailersMovieList = ({
                                retry,
                                onScroll,
                                showScrollTopIcon,
+                               showNothing,
+                               extraHeightDiff,
                            }) => {
 
     const [onScreenViewItems, setOnScreenViewItems] = useState([]);
@@ -64,11 +66,14 @@ const trailersMovieList = ({
             onEndReached={onEndReached}
             onRefresh={onRefresh}
             refreshing={refreshing}
+            extraHeightDiff={extraHeightDiff}
             isError={isError}
             retry={retry}
+            hideRetry={true}
             isLoading={isLoading}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
+            showNothing={showNothing}
         />
     );
 };
@@ -88,6 +93,8 @@ trailersMovieList.propTypes = {
     retry: PropTypes.func.isRequired,
     onScroll: PropTypes.func.isRequired,
     showScrollTopIcon: PropTypes.bool,
+    showNothing: PropTypes.bool,
+    extraHeightDiff: PropTypes.number,
 };
 
 
