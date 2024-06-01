@@ -1,17 +1,13 @@
-import React, {useEffect} from 'react';
-import {Platform, StyleSheet, UIManager} from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {Colors} from '../../styles';
 import PropTypes from 'prop-types';
+import Animated, {useAnimatedStyle, withTiming} from "react-native-reanimated";
 
+const AnimatedIcon = Animated.createAnimatedComponent(AntDesign);
 
 const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
-
-    useEffect(() => {
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-    }, []);
 
     const _scrollToTop = () => {
         if (flatListRef && flatListRef.current) {
@@ -19,11 +15,21 @@ const ScrollTop = ({extraStyle, show, flatListRef, extraMarginBottom}) => {
         }
     }
 
+    const rStyle = useAnimatedStyle(() => {
+        return {
+            bottom: 20 + (extraMarginBottom | 0),
+            opacity: withTiming(show ? 1 : 0),
+            transform: [
+                {
+                    scale: withTiming(show ? 1 : 0),
+                },
+            ]
+        }
+    }, [show]);
+
     return (
-        show && <AntDesign
-            style={[style.icon, extraStyle, {
-                bottom: 20 + (extraMarginBottom | 0)
-            }]}
+        <AnimatedIcon
+            style={[style.icon, extraStyle, rStyle]}
             name="upcircle"
             size={50}
             color={Colors.GRAY_DARK}

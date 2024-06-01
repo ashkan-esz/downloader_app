@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View, StyleSheet, RefreshControl, ActivityIndicator} from 'react-native';
 import {FlashList} from "@shopify/flash-list";
 import {MovieError, ScrollTop} from "../atoms";
@@ -34,6 +34,7 @@ const CustomFlashList = ({
                              onEndReachedThreshold,
                              initialNumToRender,
                              extraHeightDiff,
+                             scrollIconMarginBottom,
                              emptyListMessage,
                          }) => {
 
@@ -46,10 +47,10 @@ const CustomFlashList = ({
             : Mixins.WINDOW_HEIGHT - 150 - (extraHeightDiff || 0),
     }), [internet, extraHeightDiff]);
 
-    const _onScroll = (event) => {
-        onScrollDo && onScrollDo();
+    const _onScroll = useCallback((event) => {
+        onScrollDo && onScrollDo(event);
         onScroll(event);
-    }
+    }, []);
 
     const listFooterComponent = useMemo(() => (
         isFetchingNextPage && <ActivityIndicator
@@ -129,7 +130,7 @@ const CustomFlashList = ({
 
             <ScrollTop
                 flatListRef={flatListRef}
-                extraMarginBottom={(listFooterPaddingBottom || 0) + (internet ? 0 : 5) - (extraHeightDiff || 0)}
+                extraMarginBottom={(listFooterPaddingBottom || 0) + (internet ? 0 : 5) + (scrollIconMarginBottom || 0)}
                 show={scrollDirection === 'top' && !isLoading && !isError && showScrollTopIcon}
             />
 
@@ -180,6 +181,7 @@ CustomFlashList.propTypes = {
     onEndReachedThreshold: PropTypes.number,
     initialNumToRender: PropTypes.number,
     extraHeightDiff: PropTypes.number,
+    scrollIconMarginBottom: PropTypes.number,
     emptyListMessage: PropTypes.string,
 }
 

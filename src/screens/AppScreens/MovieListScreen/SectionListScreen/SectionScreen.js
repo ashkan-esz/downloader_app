@@ -170,7 +170,7 @@ const SectionScreen = () => {
                     onScroll={_onScroll}
                     showScrollTopIcon={!expanded && (data?.pages[0].length > 0)}
                     showNothing={showNothing}
-                    extraHeightDiff={showFilterTab ? 45 : 5}
+                    extraHeightDiff={showFilterTab ? 45 : 0}
                 />
             </View>
         </ScreenLayout>
