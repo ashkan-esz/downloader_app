@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
-import {TrailerImageSwitch} from "../../../../components/atoms";
+import {CustomVideo} from "../../../../components/atoms";
 import MovieCardRating from "../MovieCardRating";
 import {useNavigation} from "@react-navigation/native";
 import {useFollow, useWatchList} from "../../../../hooks";
@@ -15,7 +15,7 @@ const TrailerMovieCard = ({
                               isOnScreenView,
                               posters,
                               widePoster,
-                              trailer,
+                              trailers,
                               movieId,
                               title,
                               rating,
@@ -57,18 +57,15 @@ const TrailerMovieCard = ({
     return (
         <View style={[style.container, extraStyle]}>
 
-            <TrailerImageSwitch
-                videoStyle={style.video}
+            <CustomVideo
+                extraStyle={style.video}
+                posterExtraStyle={style.videoPoster}
                 isOnScreenView={isOnScreenView}
-                trailer={trailer}
-                posters={posters}
-                widePoster={widePoster}
-                onLongPress={memorizedNavigation}
+                trailers={trailers}
+                poster={widePoster || posters[0]}
+                movieId={movieId}
                 follow={follow}
                 watchList={watchList}
-                hideLikeIcon={true}
-                startFullscreen={false}
-                movieId={movieId}
             />
 
             <TouchableOpacity
@@ -146,9 +143,15 @@ const style = StyleSheet.create({
     },
     video: {
         width: '100%',
-        height: Mixins.WINDOW_WIDTH / 1.6,
+        // width: Mixins.WINDOW_WIDTH - 20,
+        height: Mixins.WINDOW_WIDTH * (9/16),
         minHeight: 200,
         borderRadius: 5,
+        marginTop: -5,
+        alignSelf: "center",
+    },
+    videoPoster: {
+        marginTop: 0,
     },
     infoContainer: {
         paddingTop: 5,
@@ -195,7 +198,7 @@ TrailerMovieCard.propTypes = {
     isOnScreenView: PropTypes.bool.isRequired,
     posters: PropTypes.array.isRequired,
     widePoster: PropTypes.object,
-    trailer: PropTypes.any.isRequired,
+    trailers: PropTypes.array.isRequired,
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,

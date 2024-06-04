@@ -1,7 +1,7 @@
 
 export {default as MovieSearchNotFound} from './MovieSearchNotFound';
 export {default as CustomVideo} from './CustomVideo';
-export {default as TrailerImageSwitch} from './TrailerImageSwitch';
+export {default as CustomVideoControls} from './CustomVideoControls';
 export {default as ScrollTop} from './ScrollTop';
 export {default as FullScreenImageView} from './FullScreenImageView';
 export {default as MovieLoadingAndError} from './MovieLoadingAndError';

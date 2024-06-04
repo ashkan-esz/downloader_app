@@ -80,7 +80,7 @@ const HomeTrailersList = () => {
             isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
             widePoster={item.poster_wide_s3}
-            trailer={item.trailers?.[0]?.url || ''}
+            trailers={item.trailers}
             title={item.rawTitle}
             genres={item.genres}
             type={item.type}
@@ -105,7 +105,7 @@ const HomeTrailersList = () => {
             <HomeScreenFlashList
                 extraStyle={style.listContainer}
                 onViewableItemsChanged={handleVieweableItemsChanged}
-                data={data.slice(0, 9)}
+                data={data.slice(0, 6)}
                 keyExtractor={_keyExtractor}
                 renderItem={_renderItem}
                 itemSize={itemSize}

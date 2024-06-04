@@ -6,7 +6,7 @@ import TrailerMovieCard from "./TrailerMovieCard";
 import {Mixins} from "../../../../styles";
 import PropTypes from 'prop-types';
 
-const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH / 1.6, 200) * 1.7) + 35; //417,472
+const itemSize = Math.floor(Math.max(Mixins.WINDOW_WIDTH * (9/16), 200) * 1.7) + 35; //417,472
 
 const trailersMovieList = ({
                                flatListRef,
@@ -38,7 +38,7 @@ const trailersMovieList = ({
             isOnScreenView={onScreenViewItems.includes(index)}
             posters={item.posters}
             widePoster={item.poster_wide_s3}
-            trailer={item.trailers[0].url}
+            trailers={item.trailers}
             movieId={item._id}
             title={item.rawTitle}
             rating={item.rating}

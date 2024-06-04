@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@react-native-community/netinfo": "11.3.1",
+    "@react-native-community/slider": "^4.5.2",
     "@react-native-firebase/app": "^20.0.0",
     "@react-native-firebase/messaging": "^20.0.0",
     "@react-navigation/bottom-tabs": "^6.5.20",
@@ -73,6 +74,7 @@
     "expo-secure-store": "~13.0.1",
     "expo-splash-screen": "~0.27.4",
     "expo-status-bar": "~1.12.1",
+    "expo-video": "^1.1.10",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

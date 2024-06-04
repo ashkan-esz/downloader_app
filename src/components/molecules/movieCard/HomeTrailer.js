@@ -1,9 +1,10 @@
 import React, {useCallback} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import {TrailerImageSwitch} from "../../atoms";
+import {CustomVideo} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
 import {Colors, Mixins, Typography} from "../../../styles";
+import {capitalize} from "../../../helper/HomeStackHelpers";
 import PropTypes from 'prop-types';
 
 
@@ -12,7 +13,7 @@ const HomeTrailer = ({
                          isOnScreenView,
                          posters,
                          widePoster,
-                         trailer,
+                         trailers,
                          title,
                          genres,
                          type,
@@ -33,16 +34,15 @@ const HomeTrailer = ({
     return (
         <View style={[style.container, extraStyle]}>
 
-            <TrailerImageSwitch
-                videoStyle={style.video}
+            <CustomVideo
+                extraStyle={style.video}
                 isOnScreenView={isOnScreenView}
-                trailer={trailer}
-                posters={posters}
-                widePoster={widePoster}
-                onLongPress={_navigateToMovieScreen}
+                trailers={trailers}
+                poster={widePoster || posters[0]}
+                movieId={movieId}
                 follow={follow}
                 watchList={watchList}
-                movieId={movieId}
+                width={Mixins.getWindowWidth(68)}
             />
 
             <Text
@@ -50,11 +50,11 @@ const HomeTrailer = ({
                 numberOfLines={1}
                 onPress={_navigateToMovieScreen}
             >
-                {title} ({type})
+                {title} ({capitalize(type)})
             </Text>
             <View style={style.genresContainer}>
                 {
-                    (genres.length > 0 && genres.slice(0, 3) || ['Unknown']).map((name, index) => {
+                    (genres.length > 0 && genres.filter(g => g !== "animation").slice(0, 3) || ['Unknown']).map((name, index) => {
                         return (
                             <View key={index} style={style.bulletGenresContainer}>
                                 <Text style={style.genres}>
@@ -117,7 +117,7 @@ HomeTrailer.propTypes = {
     isOnScreenView: PropTypes.bool.isRequired,
     posters: PropTypes.array.isRequired,
     widePoster: PropTypes.object,
-    trailer: PropTypes.string.isRequired,
+    trailers: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
     type: PropTypes.string,
