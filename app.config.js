@@ -28,6 +28,6 @@ export default {
         "expo-av",
         "expo-splash-screen",
         "expo-secure-store",
-        "expo-video",
+        // "expo-video",
     ]
 };

@@ -6,7 +6,7 @@ import {Colors, Typography} from "../../../styles";
 import PropTypes from 'prop-types';
 
 
-const MovieCardRating = ({extraStyle, rating}) => {
+const MovieCardRating = ({extraStyle, ratingContainerStyle, rating}) => {
 
     const MemoImdbIcon = memo(() => <Image
         source={require('../../../assets/icons/imdb_round.png')}
@@ -20,13 +20,14 @@ const MovieCardRating = ({extraStyle, rating}) => {
     return (
         <View style={[style.container, extraStyle]}>
             {
-                !!rating.imdb && <View style={style.ratingContainer}>
+                !!rating.imdb && <View style={[style.ratingContainer, ratingContainerStyle]}>
                     <MemoImdbIcon/>
                     <Text style={style.rating}>{rating.imdb.toFixed(1)}</Text>
                 </View>
             }
             {
-                !!rating.myAnimeList && <View style={[style.ratingContainer, rating.imdb && style.secondRating]}>
+                !!rating.myAnimeList &&
+                <View style={[style.ratingContainer, ratingContainerStyle, rating.imdb && style.secondRating]}>
                     <MemoMalIcon/>
                     <Text style={style.rating}>{rating.myAnimeList.toFixed(1)}</Text>
                 </View>
@@ -69,6 +70,7 @@ const style = StyleSheet.create({
 
 MovieCardRating.propTypes = {
     extraStyle: PropTypes.object,
+    ratingContainerStyle: PropTypes.object,
     rating: PropTypes.object.isRequired,
 }
 

@@ -105,7 +105,7 @@ const CustomVideoControls = ({
                     />
                 }
                 {
-                    (!shouldPlay || (showControls && !isBuffering)) && <AntDesign
+                    (!shouldPlay || !isBuffering) && <AntDesign
                         style={styles.playIcon}
                         name={!shouldPlay ? 'play' : 'pause'}
                         size={!shouldPlay ? 45 : 42}

@@ -5,6 +5,7 @@
 //todo : deeplink
 //todo : notifications setting page
 //todo : setting page
+//todo : use expo-video package
 //todo : add page,list for user stats lists
 //todo : show,handle movies user stats in moviePage
 //todo : add functionality of follow-watchList-... to moviePage

@@ -46,8 +46,7 @@ const trailersMovieList = ({
             type={item.type}
             genres={item.genres}
             latestData={item.latestData}
-            followsCount={item.userStats?.follow_count || 0}
-            watchListCount={item.userStats?.watchlist_count || 0}
+            nextEpisode={item.nextEpisode}
             follow={item.userStats?.follow || false}
             watchList={item.userStats?.watchlist || false}
         />

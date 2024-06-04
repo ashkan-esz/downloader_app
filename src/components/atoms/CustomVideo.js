@@ -10,9 +10,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomVideoControls from "./CustomVideoControls";
 import {GestureHandlerRootView, TapGestureHandler, State} from "react-native-gesture-handler";
 
-// todo : share trailer with telegram
-// todo : use expo-video package
-// todo : remove expo-av package
 
 const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 

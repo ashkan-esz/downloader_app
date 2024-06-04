@@ -4,10 +4,10 @@ import {Text} from "@rneui/themed";
 import {CustomVideo} from "../../../../components/atoms";
 import MovieCardRating from "../MovieCardRating";
 import {useNavigation} from "@react-navigation/native";
-import {useFollow, useWatchList} from "../../../../hooks";
 import {homeStackHelpers} from "../../../../helper";
 import {Colors, Mixins, Typography} from "../../../../styles";
 import PropTypes from 'prop-types';
+import MovieCardFollow from "../MovieCardFollow";
 
 
 const TrailerMovieCard = ({
@@ -23,8 +23,7 @@ const TrailerMovieCard = ({
                               type,
                               genres,
                               latestData,
-                              followsCount,
-                              watchListCount,
+                              nextEpisode,
                               follow,
                               watchList,
                           }) => {
@@ -38,17 +37,7 @@ const TrailerMovieCard = ({
         });
     }, [movieId, title, type, posters, rating]);
 
-    const {
-        isFollowLoading,
-        _onFollow,
-    } = useFollow(movieId, followsCount, follow, watchListCount, watchList);
-
-    const {
-        // isWatchListLoading,
-        _onWatchList,
-    } = useWatchList(movieId, watchListCount, watchList);
-
-    const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 4);
+    const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
 
     const typeColor = {
         color: type.includes('movie') ? Colors.RED2 : 'cyan',
@@ -64,8 +53,8 @@ const TrailerMovieCard = ({
                 trailers={trailers}
                 poster={widePoster || posters[0]}
                 movieId={movieId}
-                follow={follow}
-                watchList={watchList}
+                follow={false}
+                watchList={false}
             />
 
             <TouchableOpacity
@@ -77,17 +66,18 @@ const TrailerMovieCard = ({
                         Title : {title}
                     </Text>
 
-                    <MovieCardRating
-                        extraStyle={style.likeContainer}
-                        rating={rating}
-                        type={type}
-                        followsCount={followsCount}
-                        watchListCount={watchListCount}
-                        isFollow={follow}
-                        isWatchList={watchList}
-                        onFollow={_onFollow}
-                        onWatchList={_onWatchList}
-                    />
+                    <View style={style.tagsContainer}>
+                        <MovieCardFollow
+                            type={type}
+                            isFollow={follow}
+                            isWatchList={watchList}
+                        />
+                        <MovieCardRating
+                            extraStyle={style.rating}
+                            ratingContainerStyle={style.ratingContainer}
+                            rating={rating}
+                        />
+                    </View>
 
                     <View style={style.lineSeparator}/>
 
@@ -101,28 +91,36 @@ const TrailerMovieCard = ({
                         </Text>
 
                         <Text style={[style.year, style.paddingLeft]}>
-                            <Text style={style.statement}>Type : </Text><Text
-                            style={[style.year, typeColor]}> {
-                            type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
-                        }</Text>
+                            <Text style={style.statement}>Type : </Text>
+                            <Text style={[style.year, typeColor]}>
+                                {homeStackHelpers.capitalize(type)}
+                            </Text>
                         </Text>
                     </View>
 
                     <Text style={style.year} numberOfLines={1}>
-                        <Text style={style.statement}>Genres : </Text> {genres.join(', ') || 'unknown'}
+                        <Text style={style.statement}>Genres : </Text>
+                        {genres.filter(g => !["animation"].includes(g)).map(g => g.split('-')
+                            .map(value => value.charAt(0).toUpperCase() + value.slice(1))
+                            .join('-')
+                        ).join(', ') || '-'}
                     </Text>
 
                     <View style={style.flexDirectionRow}>
                         {
                             type.includes('serial') &&
                             <Text style={style.year}>
-                                <Text style={style.statement}>Episode
-                                    : </Text> {'S' + latestData.season + 'E' + latestData.episode}
+                                <Text style={style.statement}>Episode : </Text>
+                                {homeStackHelpers.getSerialState(latestData, nextEpisode)}
                             </Text>
                         }
-                        <Text style={[style.year, type.includes('serial') && style.paddingLeft]} numberOfLines={1}>
-                            <Text style={style.statement}>Quality : </Text> {partialQuality}
-                        </Text>
+                        {
+                            partialQuality &&
+                            <Text style={[style.year, type.includes('serial') && style.paddingLeft]} numberOfLines={1}>
+                                <Text style={style.statement}>Quality : </Text>
+                                {partialQuality}
+                            </Text>
+                        }
                     </View>
 
                 </View>
@@ -144,7 +142,7 @@ const style = StyleSheet.create({
     video: {
         width: '100%',
         // width: Mixins.WINDOW_WIDTH - 20,
-        height: Mixins.WINDOW_WIDTH * (9/16),
+        height: Mixins.WINDOW_WIDTH * (9 / 16),
         minHeight: 200,
         borderRadius: 5,
         marginTop: -5,
@@ -163,16 +161,32 @@ const style = StyleSheet.create({
         fontSize: Typography.getFontSize(18),
         color: '#ffffff',
     },
-    likeContainer: {
-        paddingTop: 0,
-        paddingBottom: 0,
+    tagsContainer: {
+        flex: 1,
+        flexDirection: "row",
+        gap: 5,
+    },
+    rating: {
+        position: "relative",
+        width: 60,
+        height: 29,
+        top: 0,
+        marginTop: 4,
+        left: 0,
+    },
+    ratingContainer: {
+        width: 60,
+        height: 29,
+        borderRadius: 6,
+        gap: 2,
+        paddingLeft: 2,
     },
     lineSeparator: {
         borderBottomWidth: 1,
         borderBottomColor: Colors.NAVBAR,
-        marginTop: 4,
-        marginBottom: 3,
-        width: '90%'
+        marginTop: 10,
+        marginBottom: 6,
+        width: '90%',
     },
     year: {
         fontSize: Typography.getFontSize(14),
@@ -202,14 +216,13 @@ TrailerMovieCard.propTypes = {
     movieId: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     rating: PropTypes.object.isRequired,
-    followsCount: PropTypes.number.isRequired,
-    watchListCount: PropTypes.number.isRequired,
     follow: PropTypes.bool.isRequired,
     watchList: PropTypes.bool.isRequired,
     premiered: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
     latestData: PropTypes.object.isRequired,
+    nextEpisode: PropTypes.object.isRequired,
 }
 
 
