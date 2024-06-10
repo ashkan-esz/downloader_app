@@ -17,6 +17,10 @@ const MovieCardRating = ({extraStyle, ratingContainerStyle, rating}) => {
         style={style.ratingIcon}
     />);
 
+    if (!rating.imdb && !rating.myAnimeList) {
+        return null;
+    }
+
     return (
         <View style={[style.container, extraStyle]}>
             {

@@ -11,6 +11,7 @@ import Animated, {useAnimatedStyle, withTiming} from "react-native-reanimated";
 
 
 const CustomVideoControls = ({
+                                 bottomControlsStyle,
                                  onTogglePlayPause,
                                  onToggleMute,
                                  onTogglePlaybackSpeed,
@@ -48,7 +49,7 @@ const CustomVideoControls = ({
 
     return (
         <>
-            <Animated.View style={[styles.container, rStyle]}>
+            <Animated.View style={[styles.container, bottomControlsStyle, rStyle]}>
                 <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
                 <TouchableOpacity
                     style={styles.volumeIcon}
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
 
 
 CustomVideoControls.propTypes = {
+    bottomControlsStyle: PropTypes.object,
     onTogglePlayPause: PropTypes.func.isRequired,
     onToggleMute: PropTypes.func.isRequired,
     onTogglePlaybackSpeed: PropTypes.func.isRequired,

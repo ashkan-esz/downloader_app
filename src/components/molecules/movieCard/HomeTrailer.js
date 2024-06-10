@@ -87,7 +87,7 @@ const style = StyleSheet.create({
         resizeMode: 'stretch',
     },
     title: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: Colors.TextColor,
         textAlign: 'center',
         marginTop: 5
@@ -99,16 +99,17 @@ const style = StyleSheet.create({
     },
     bulletGenresContainer: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     genres: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 12,
         textAlign: 'center',
         color: Colors.RED
     },
     bullet: {
         color: Colors.RED,
-        fontSize: Typography.getFontSize(30),
+        fontSize: 30,
+        marginLeft: -2,
     }
 });
 

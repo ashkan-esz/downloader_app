@@ -15,6 +15,7 @@ const playbackSpeedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
 const CustomVideo = ({
                          extraStyle,
+                         bottomControlsStyle,
                          posterExtraStyle,
                          isOnScreenView,
                          trailers,
@@ -212,6 +213,7 @@ const CustomVideo = ({
             }
 
             <CustomVideoControls
+                bottomControlsStyle={bottomControlsStyle}
                 onTogglePlayPause={_onTogglePlayPause}
                 onToggleMute={_onToggleMute}
                 onTogglePlaybackSpeed={_onTogglePlaybackSpeed}
@@ -249,6 +251,7 @@ const style = StyleSheet.create({
 
 CustomVideo.propTypes = {
     extraStyle: PropTypes.object,
+    bottomControlsStyle: PropTypes.object,
     posterExtraStyle: PropTypes.object,
     isOnScreenView: PropTypes.bool,
     trailers: PropTypes.array.isRequired,

@@ -48,6 +48,7 @@ const TrailerMovieCard = ({
 
             <CustomVideo
                 extraStyle={style.video}
+                bottomControlsStyle={style.videoControls}
                 posterExtraStyle={style.videoPoster}
                 isOnScreenView={isOnScreenView}
                 trailers={trailers}
@@ -148,6 +149,9 @@ const style = StyleSheet.create({
         marginTop: -5,
         alignSelf: "center",
     },
+    videoControls: {
+        paddingBottom: 10,
+    },
     videoPoster: {
         marginTop: 0,
     },
@@ -158,7 +162,7 @@ const style = StyleSheet.create({
         flexShrink: 1,
     },
     title: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: '#ffffff',
     },
     tagsContainer: {
@@ -189,12 +193,12 @@ const style = StyleSheet.create({
         width: '90%',
     },
     year: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 13,
         color: '#ffffff',
         marginTop: 3
     },
     statement: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 13,
         color: Colors.SemiCyan,
         marginTop: 2,
         zIndex: 10,
@@ -222,7 +226,7 @@ TrailerMovieCard.propTypes = {
     type: PropTypes.string.isRequired,
     genres: PropTypes.array.isRequired,
     latestData: PropTypes.object.isRequired,
-    nextEpisode: PropTypes.object.isRequired,
+    nextEpisode: PropTypes.object,
 }
 
 

@@ -12,11 +12,11 @@ const HomeTrailerCardPlaceHolder = ({extraStyle}) => {
             <MyShimmerPlaceHolder extraStyle={{
                 textAlign: 'center',
                 marginTop: 8
-            }} width={200} height={Typography.getFontSize(18)}/>
+            }} width={200} height={18}/>
             <View style={style.genresContainer}>
-                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(14)}/>
-                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(14)}/>
-                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(14)}/>
+                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(12)}/>
+                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(12)}/>
+                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(12)}/>
             </View>
         </View>
     );
@@ -39,6 +39,7 @@ const style = StyleSheet.create({
     genresContainer: {
         flexDirection: 'row',
         justifyContent: "center",
+        marginTop: 2,
     },
     genres: {
         textAlign: 'center',
