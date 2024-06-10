@@ -127,16 +127,16 @@ const style = StyleSheet.create({
         right: -1,
     },
     title: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: Colors.TextColor,
         textAlign: 'center',
         marginTop: 3,
-        marginBottom: 2
+        marginBottom: 2,
     },
     latestData: {
         color: Colors.TextColor,
         textAlign: 'center',
-        fontSize: Typography.getFontSize(14),
+        fontSize: 12,
         marginTop: -2,
         marginBottom: 0,
     },

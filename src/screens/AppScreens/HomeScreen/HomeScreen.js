@@ -75,15 +75,15 @@ const HomeScreen = () => {
                     />
                     <HomeTrailersList/>
                     <HomeMovieList
-                        name={'Coming Soon'}
+                        name={'Soon'}
                         pageType={'comingSoon'}
                     />
                     <HomeMovieList
-                        name={'Coming Soon Anime'}
+                        name={'Coming Anime'}
                         pageType={'animeTopComingSoon'}
                     />
                     <HomeMovieList
-                        name={'Top Airing Anime'}
+                        name={'Top Anime'}
                         pageType={'animeTopAiring'}
                     />
                     <HomeMovieList
