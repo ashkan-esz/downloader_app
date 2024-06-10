@@ -101,8 +101,9 @@ const style = StyleSheet.create({
     },
     error: {
         color: 'red',
-        marginTop: 5,
-        paddingLeft: 20
+        marginTop: 0,
+        paddingLeft: 20,
+        fontSize: 11,
     }
 });
 

@@ -17,3 +17,6 @@
 -keepclassmembers class com.android.installreferrer.api.** {
   *;
 }
+-keep class com.android.installreferrer.api.** {
+  *;
+}

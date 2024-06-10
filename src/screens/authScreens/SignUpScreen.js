@@ -4,29 +4,23 @@ import {Button, Text} from "@rneui/themed";
 import {Colors} from "../../styles";
 import {SignUpForm} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
-import {useSelector} from "react-redux";
 import {Image} from 'expo-image';
 
 
 const SignUpScreen = ({navigation}) => {
-    const internet = useSelector(state => state.user.internet);
-
-    const paddingBottom = {
-        paddingBottom: internet ? 0 : 53,
-    }
 
     return (
-        <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND}>
+        <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND} extraStyle={style.screen}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={style.container}
-
+                enabled={false}
             >
                 <TouchableWithoutFeedback
-                    style={[style.container, paddingBottom]}
+                    style={style.container}
                     onPress={Keyboard.dismiss}
                 >
-                    <View style={[style.inner, paddingBottom]}>
+                    <View style={style.inner}>
                         <Image
                             source={require('../../assets/icons/logo.png')}
                             style={style.logo}
@@ -61,6 +55,9 @@ const SignUpScreen = ({navigation}) => {
 };
 
 const style = StyleSheet.create({
+    screen: {
+        minHeight: 0,
+    },
     container: {
         width: '100%',
         height: '100%',
@@ -69,7 +66,7 @@ const style = StyleSheet.create({
     },
     inner: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 10,
         width: '100%',
         paddingLeft: 20,
         paddingRight: 20,
@@ -78,7 +75,7 @@ const style = StyleSheet.create({
         width: 340,
         height: 200,
         alignSelf: 'center',
-        marginBottom: 20,
+        marginBottom: 15,
     },
     header: {
         color: '#b1aeae'

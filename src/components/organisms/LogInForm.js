@@ -120,7 +120,7 @@ const style = StyleSheet.create({
         height: 50,
     },
     titleStyle: {
-        fontSize: Typography.getFontSize(20)
+        fontSize: 20,
     },
     error: {
         color: 'red',

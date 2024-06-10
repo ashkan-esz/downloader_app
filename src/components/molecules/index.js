@@ -1,4 +1,3 @@
-export {default as SignInCreateAcc} from './signCreatAcc';
 export {default as CustomTextInput} from './CustomTextInput';
 export {default as OfflineStatusBar} from './OfflineStatusBar';
 export {default as HomeTrailerCardPlaceHolder} from './placeHolders/HomeTrailerCardPlaceHolder';

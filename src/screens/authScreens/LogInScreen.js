@@ -4,27 +4,21 @@ import {Button, Text} from "@rneui/themed";
 import {Colors, Mixins} from "../../styles";
 import {LogInForm} from "../../components/organisms";
 import {ScreenLayout} from "../../components/layouts";
-import {useSelector} from "react-redux";
 import {Image} from 'expo-image';
 
 //todo : forget password
 
 const LogInScreen = ({navigation}) => {
 
-    const internet = useSelector(state => state.user.internet);
-
-    const paddingBottom = {
-        paddingBottom: internet ? 0 : 53,
-    }
-
     return (
-        <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND}>
+        <ScreenLayout backgroundColor={Colors.LOGO_BACKGROUND} extraStyle={style.screen}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={style.container}
+                enabled={false}
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View style={[style.inner, paddingBottom]}>
+                    <View style={style.inner}>
                         <Image
                             source={require('../../assets/icons/logo.png')}
                             style={style.logo}
@@ -60,6 +54,9 @@ const LogInScreen = ({navigation}) => {
 };
 
 const style = StyleSheet.create({
+    screen: {
+        minHeight: 0,
+    },
     container: {
         width: '100%',
         height: '100%',
@@ -68,7 +65,7 @@ const style = StyleSheet.create({
     },
     inner: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 10,
         width: '100%',
         paddingLeft: 20,
         paddingRight: 20,
@@ -77,7 +74,7 @@ const style = StyleSheet.create({
         width: Mixins.WINDOW_WIDTH,
         height: 300,
         alignSelf: 'center',
-        marginBottom: 60,
+        marginBottom: 50,
     },
     header: {
         color: '#b1aeae'
