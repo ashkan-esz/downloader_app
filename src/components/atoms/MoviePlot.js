@@ -100,7 +100,7 @@ const style = StyleSheet.create({
         zIndex: -1,
     },
     section: {
-        fontSize: Typography.getFontSize(24),
+        fontSize: 24,
         color: Colors.SectionHeader,
     },
     buttonGroup: {
@@ -118,17 +118,17 @@ const style = StyleSheet.create({
     },
     activeButtonTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(20),
+        fontSize: 18,
         marginLeft: -2,
     },
     plotText: {
         marginTop: 5,
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         width: '100%',
         color: '#fff',
     },
     showAllButton: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 14,
     }
 });
 

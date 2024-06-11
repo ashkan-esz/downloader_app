@@ -103,7 +103,7 @@ const style = StyleSheet.create({
         paddingRight: 8,
     },
     section: {
-        fontSize: Typography.getFontSize(24),
+        fontSize: 24,
         color: Colors.SectionHeader,
         paddingLeft: 2,
         marginBottom: 10,
@@ -113,13 +113,13 @@ const style = StyleSheet.create({
         justifyContent: 'space-between',
     },
     text: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 14,
         textTransform: 'capitalize',
         color: '#fff',
         marginTop: 5
     },
     statement: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 14,
         color: Colors.SemiCyan,
     },
 });

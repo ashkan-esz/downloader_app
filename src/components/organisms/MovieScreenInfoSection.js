@@ -27,8 +27,6 @@ const MovieScreenInfoSection = ({data, forceClosePlot, setForceClosePlot}) => {
     );
 };
 
-const style = StyleSheet.create({});
-
 MovieScreenInfoSection.propTypes = {
     data: PropTypes.object.isRequired,
     forceClosePlot: PropTypes.bool.isRequired,

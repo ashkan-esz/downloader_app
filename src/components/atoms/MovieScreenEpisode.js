@@ -1,11 +1,9 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {Button} from "@rneui/themed";
 import {LinearGradient} from "expo-linear-gradient";
 import * as Clipboard from 'expo-clipboard';
 import Share from 'react-native-share';
 import Toast from 'react-native-toast-message';
-import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -16,8 +14,8 @@ const MovieScreenEpisode = ({extraStyle, rawTitle, linkData}) => {
 
     const buttonTitleFontSize = {
         fontSize: (linkData.sourceName + ' | ' + linkData.info).length < 36
-            ? Typography.getFontSize(16)
-            : Typography.getFontSize(14),
+            ? 16
+            : 14,
         color: '#fff',
         zIndex: 10,
     }
@@ -76,7 +74,6 @@ const MovieScreenEpisode = ({extraStyle, rawTitle, linkData}) => {
     );
 };
 
-const style = StyleSheet.create({});
 
 MovieScreenEpisode.propTypes = {
     extraStyle: PropTypes.object,

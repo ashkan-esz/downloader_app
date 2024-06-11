@@ -4,7 +4,6 @@ import {Text} from "@rneui/themed";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisode from "./MovieScreenEpisode";
-import {Typography} from "../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -29,14 +28,14 @@ const MovieScreenQualityCollapsible = ({rawTitle, qualities, scrollToDownload}) 
 
     const _renderHeader = (item, index) => {
         const cyanGradient = ['rgba(34,193,195,1)', 'rgba(253,187,45,1)'];
-        const gradientStyle = item.links.length === 0
+        const gradientStyle = (item.links.length === 0 && item.torrentLinks.length === 0)
             ? [style.headerGradient, {opacity: 0.4}]
             : style.headerGradient;
 
         return (
             <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => item.links.length > 0 && toggleExpand(index)}
+                onPress={() => (item.links.length > 0 || item.torrentLinks.length > 0) && toggleExpand(index)}
             >
                 <LinearGradient
                     colors={cyanGradient}
@@ -57,7 +56,7 @@ const MovieScreenQualityCollapsible = ({rawTitle, qualities, scrollToDownload}) 
         return (
             <View style={style.contentContainer}>
                 {
-                    item.links.map((value, index) => {
+                    [...item.links, ...item.torrentLinks].map((value, index) => {
                         return (
                             <MovieScreenEpisode
                                 key={index}
@@ -91,7 +90,7 @@ const style = StyleSheet.create({
         marginBottom: 10,
     },
     headerText: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: '#fff',
         zIndex: 10,
     },

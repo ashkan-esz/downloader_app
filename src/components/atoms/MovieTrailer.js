@@ -46,7 +46,7 @@ const style = StyleSheet.create({
         textAlign: 'center',
     },
     trailerButton: {
-        fontSize: Typography.getFontSize(22),
+        fontSize: 22,
         color: '#fff',
     },
     trailerButtonUnderLine: {

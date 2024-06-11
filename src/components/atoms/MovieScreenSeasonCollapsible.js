@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {LayoutAnimation, Platform, StyleSheet, TouchableOpacity, UIManager} from 'react-native';
+import React, {useState} from 'react';
+import {LayoutAnimation, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {LinearGradient} from "expo-linear-gradient";
 import CustomAccordion from "./CustomAccordion";
 import MovieScreenEpisodeCollapsible from "./MovieScreenEpisodeCollapsible";
-import {Typography} from "../../styles";
 import {homeStackHelpers} from "../../helper";
 import PropTypes from 'prop-types';
 
@@ -12,12 +11,6 @@ import PropTypes from 'prop-types';
 
 const MovieScreenSeasonCollapsible = ({seasons, latestData, rawTitle, scrollToDownload}) => {
     const [expandedIndex, setExpandedIndex] = useState(-1);
-
-    useEffect(() => {
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-    }, []);
 
     const toggleExpand = (index) => {
         if (index === expandedIndex) {
@@ -30,7 +23,7 @@ const MovieScreenSeasonCollapsible = ({seasons, latestData, rawTitle, scrollToDo
     }
 
     const _renderHeader = (item, index) => {
-        const totalSeasonLinksNumber = item.episodes.map(item => item.links).flat(1).length;
+        const totalSeasonLinksNumber = item.episodes.map(item => item.links.concat(item.torrentLinks)).flat(1).length;
         const releasedEpisodesNumber = homeStackHelpers.getNumberOfReleasedEpisodes([item], latestData);
         const releasedEpisodesText = releasedEpisodesNumber !== item.episodes.length
             ? ` | released : ${releasedEpisodesNumber}`
@@ -88,7 +81,7 @@ const style = StyleSheet.create({
         marginBottom: 10,
     },
     headerText: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: '#fff',
     }
 });

@@ -14,8 +14,8 @@ const MovieScreenDownloadSection = ({data, scrollViewRef, onScrollToDownload}) =
     const [downloadPosition, setDownloadPosition] = useState(0);
 
     const numberOfLinks = data.type.includes('movie')
-        ? data.qualities.map(item => item.links).flat(1).length
-        : data.seasons.map(item => item.links).flat(1).length;
+        ? data.qualities.map(item => item.links.concat(item.torrentLinks)).flat(1).length
+        : data.seasons.map(item => item.episodes.map(e => e.links.concat(e.torrentLinks)).flat(1)).flat(1).length;
 
     const _scrollToDownload = () => {
         if (scrollViewRef && scrollViewRef.current) {
@@ -101,7 +101,7 @@ const style = StyleSheet.create({
         paddingRight: 10,
     },
     section: {
-        fontSize: Typography.getFontSize(24),
+        fontSize: 24,
         color: Colors.SectionHeader,
         marginBottom: 10,
     },
@@ -113,7 +113,7 @@ const style = StyleSheet.create({
         borderRadius: 5,
     },
     infoText: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 14,
         color: Colors.WARNING,
         marginLeft: 5,
         marginTop: 2,
@@ -127,7 +127,7 @@ const style = StyleSheet.create({
         marginBottom: 10,
     },
     headerText: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: '#fff',
     }
 });

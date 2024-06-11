@@ -26,7 +26,7 @@ const MovieTopPoster = ({
 
     const titleSize = {
         fontSize: title.length < 20
-            ? Typography.getFontSize(30)
+            ? 34
             : title.length < 30
                 ? Typography.getFontSize(28)
                 : Typography.getFontSize(24),
@@ -77,8 +77,10 @@ const MovieTopPoster = ({
 
                     <BlurView
                         style={style.blurView}
-                        tint={'dark'}
-                        intensity={50}
+                        // tint={'dark'}
+                        tint={'systemChromeMaterialDark'}
+                        intensity={40}
+                        experimentalBlurMethod={"dimezisBlurView"}
                     >
                         <Text style={[style.title, titleSize]}>
                             {title}
@@ -147,7 +149,7 @@ const style = StyleSheet.create({
         paddingTop: 3,
     },
     episodesDuration: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#ffffff',
         paddingLeft: 15,
         zIndex: 3,
@@ -169,7 +171,7 @@ const style = StyleSheet.create({
         zIndex: 3,
     },
     genre: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#fff',
         zIndex: 3,
     },
@@ -185,14 +187,14 @@ const style = StyleSheet.create({
     },
     rating: {
         position: 'absolute',
-        fontSize: Typography.getFontSize(20),
+        fontSize: 20,
         color: '#ffffff',
         bottom: 5,
         right: 15,
         zIndex: 3,
     },
     ratingNumber: {
-        fontSize: Typography.getFontSize(48),
+        fontSize: 48,
         color: 'red',
     },
 });

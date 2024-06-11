@@ -89,7 +89,7 @@ const style = StyleSheet.create({
         alignItems: 'center'
     },
     likeNumber: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: '#ffffff',
         marginTop: 3,
         paddingLeft: 4
