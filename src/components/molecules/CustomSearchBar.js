@@ -54,7 +54,7 @@ const style = StyleSheet.create({
     },
     searchBar: {
         borderRadius: 25,
-        backgroundColor: Colors.GRAY,
+        backgroundColor: Colors.SECONDARY,
         height: 45,
     }
 })

@@ -87,12 +87,12 @@ const style = StyleSheet.create({
     },
     title: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(22),
+        fontSize: 22,
         position: 'absolute',
         textAlign: 'center',
         alignItems: 'center',
         width: '100%',
-        marginTop: 2,
+        // marginTop: 2,
         zIndex: 1,
     },
     leftIcon: {

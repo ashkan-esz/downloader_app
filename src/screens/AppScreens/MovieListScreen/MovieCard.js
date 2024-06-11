@@ -37,10 +37,10 @@ const MovieCard = ({
     const serialState = homeStackHelpers.getSerialState(latestData, nextEpisode);
     const partialQuality = homeStackHelpers.getPartialQuality(latestData.quality, 3);
 
-    const imageBorder = {
-        borderWidth: 0.5,
-        borderColor: type.includes('movie') ? Colors.RED : 'cyan',
-    }
+    // const imageBorder = {
+    //     borderWidth: 0.5,
+    //     borderColor: type.includes('movie') ? Colors.RED : 'cyan',
+    // }
 
     return (
         <TouchableOpacity
@@ -49,9 +49,10 @@ const MovieCard = ({
             activeOpacity={0.8}
         >
             <CustomImage
-                extraStyle={[style.image, imageBorder]}
+                // extraStyle={[style.image, imageBorder]}
+                extraStyle={style.image}
                 posters={posters}
-                onPress={_navigateToMovieScreen}
+                // onPress={_navigateToMovieScreen}
                 movieId={movieId}
             />
             <MovieCardRating rating={rating}/>
@@ -130,7 +131,7 @@ const style = StyleSheet.create({
         flexShrink: 1
     },
     title: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 20,
         color: '#fff',
     },
     lineSeparator: {
@@ -141,17 +142,17 @@ const style = StyleSheet.create({
         width: '90%'
     },
     year: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: '#fff',
         marginTop: 2
     },
     statement: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: Colors.SemiCyan,
         marginTop: 2,
     },
     quality: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: '#fff',
         marginTop: 2,
         position: "absolute",

@@ -123,7 +123,7 @@ const style = StyleSheet.create({
         opacity: 0.6,
     },
     buttonTitle: {
-        fontSize: Typography.getFontSize(20),
+        fontSize: 20,
         color: '#ffffff',
         height: '100%',
         textAlign: "center",
@@ -156,7 +156,7 @@ const style = StyleSheet.create({
         zIndex: 2,
     },
     typesButtonTitle: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#ffffff',
         justifyContent: 'center',
         textAlign: "center",

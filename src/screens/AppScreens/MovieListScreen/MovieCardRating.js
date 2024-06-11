@@ -65,7 +65,7 @@ const style = StyleSheet.create({
         marginLeft: 3,
     },
     rating: {
-        fontSize: Typography.getFontSize(12),
+        fontSize: 11,
         color: "#fff",
         marginLeft: 3,
         marginRight: 5,

@@ -49,7 +49,7 @@ const style = StyleSheet.create({
         marginLeft: -1,
     },
     text: {
-        fontSize: Typography.getFontSize(12),
+        fontSize: 12,
         color: "#fff",
         marginLeft: 1,
     },

@@ -11,16 +11,16 @@ const HomeMovieCardPlaceHolder = ({extraStyle, latestData = true}) => {
 
             <MyShimmerPlaceHolder extraStyle={style.image}/>
             <MyShimmerPlaceHolder extraStyle={{
-                marginTop: 8,
+                marginTop: 5,
                 marginBottom: 2,
-            }} width={110} height={Typography.getFontSize(18)}/>
+            }} width={110} height={16}/>
 
             {
                 latestData && <MyShimmerPlaceHolder
                     width={50}
-                    height={Typography.getFontSize(14)}
+                    height={14}
                     extraStyle={{
-                        marginTop: 4,
+                        marginTop: 3,
                         marginBottom: 0,
                     }}
                 />

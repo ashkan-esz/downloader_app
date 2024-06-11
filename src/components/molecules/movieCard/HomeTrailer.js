@@ -50,7 +50,8 @@ const HomeTrailer = ({
                 numberOfLines={1}
                 onPress={_navigateToMovieScreen}
             >
-                {title} ({capitalize(type)})
+                {/*{title} ({capitalize(type)})*/}
+                {title}
             </Text>
             <View style={style.genresContainer}>
                 {

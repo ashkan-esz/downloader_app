@@ -74,7 +74,7 @@ const SwiperCard = ({
                         style={style.blurView}
                         // tint={'dark'}
                         tint={'systemChromeMaterialDark'}
-                        intensity={20}
+                        intensity={40}
                         experimentalBlurMethod={"dimezisBlurView"}
                     >
                         <Text style={style.title} numberOfLines={1}>
@@ -138,7 +138,7 @@ const style = StyleSheet.create({
         overflow: 'hidden',
     },
     title: {
-        fontSize: Typography.getFontSize(24),
+        fontSize: 24,
         color: "#fff",
         textAlign: 'left',
         marginTop: 3,
@@ -147,6 +147,7 @@ const style = StyleSheet.create({
         bottom: 40,
         left: 10,
         zIndex: 6,
+        paddingRight: 3,
     },
     year: {
         bottom: 15,
@@ -155,7 +156,7 @@ const style = StyleSheet.create({
         // color: Colors.THIRD,
         color: Colors.LIGHT,
         textAlign: 'left',
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         position: "absolute",
         top: 2,
         left: 10,
