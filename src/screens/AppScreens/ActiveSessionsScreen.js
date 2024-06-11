@@ -179,7 +179,7 @@ const style = StyleSheet.create({
         marginTop: 10,
     },
     section: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: Colors.NAVBAR,
         marginLeft: 20,
         marginTop: 20,
@@ -195,7 +195,7 @@ const style = StyleSheet.create({
     },
     text: {
         alignSelf: 'center',
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#fff',
     },
 });

@@ -35,6 +35,9 @@ LogBox.ignoreLogs([
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
 
+//todo : use firebase
+//todo : remove appCenter
+
 //------------------------------------------------
 
 enableFreeze(true);

@@ -5,7 +5,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {MyOverlay} from "../atoms";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -37,6 +37,9 @@ const DeviceSession = ({session, isLoggingOut, noActiveSession, isFirst, isLast,
         if (os === 'ios') {
             return 'apple';
         }
+        // if (os === 'android'){
+        //     return "android";
+        // }
         if (os === 'android' || os === 'desktop' || os === 'linux' || os === 'ubuntu') {
             return os;
         }
@@ -161,18 +164,18 @@ const style = StyleSheet.create({
         top: 15,
     },
     title: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#fff',
         opacity: 0.9,
     },
     subtitle: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: '#fff',
         opacity: 0.9,
         marginTop: 3,
     },
     subtitle2: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: '#fff',
         opacity: 0.4,
         marginTop: 3,
@@ -197,7 +200,7 @@ const style = StyleSheet.create({
         paddingLeft: 30,
     },
     terminationText: {
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
         color: 'red',
         marginLeft: 20,
         marginTop: 10,

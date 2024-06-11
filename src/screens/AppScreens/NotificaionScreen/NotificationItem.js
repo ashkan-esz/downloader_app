@@ -3,7 +3,7 @@ import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {CustomImage} from "../../../components/atoms";
 import {useNavigation} from "@react-navigation/native";
-import {Colors, Typography} from "../../../styles";
+import {Colors} from "../../../styles";
 import PropTypes from 'prop-types';
 import {notificationEntityTypeIds} from "../../../api/profileApis";
 import {getElapsedTime} from "../../../utils";
@@ -104,12 +104,12 @@ const style = StyleSheet.create({
         flexShrink: 1
     },
     massage: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#fff',
         paddingRight: 5,
     },
     date: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 14,
         color: Colors.TextColor,
         marginTop: 3,
     },

@@ -13,7 +13,7 @@ import {
 import Toast from 'react-native-toast-message';
 import {ProfileImage} from "../../components/molecules";
 import {useNavigation} from "@react-navigation/native";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import {MyOverlay} from "../../components/atoms";
 import {Image} from 'expo-image';
 import {showToast} from "../../utils";
@@ -241,20 +241,20 @@ const style = StyleSheet.create({
         marginTop: 10,
     },
     section: {
-        fontSize: Typography.getFontSize(24),
+        fontSize: 24,
         color: Colors.SectionHeader,
         paddingLeft: 2,
         marginTop: 15,
         marginBottom: 10,
     },
     text: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         textTransform: 'capitalize',
         color: '#fff',
         marginTop: 5
     },
     statement: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: Colors.SemiCyan,
     },
 });

@@ -15,6 +15,7 @@ const OfflineStatusBar = () => {
             dispatch(setInternet({
                 internet: netState.isConnected && netState.isInternetReachable,
                 // internet: false,
+                // internet: true,
                 connectionType: netState.type,
             }));
         });

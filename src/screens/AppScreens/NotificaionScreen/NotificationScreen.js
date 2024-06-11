@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, StatusBar} from 'react-native';
+import {View, StatusBar} from 'react-native';
 import {ScreenLayout} from "../../../components/layouts";
 import {CustomFlashList,} from "../../../components/molecules";
 import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
@@ -142,8 +142,6 @@ const NotificationScreen = () => {
         </ScreenLayout>
     );
 };
-
-const style = StyleSheet.create({});
 
 
 export default NotificationScreen;

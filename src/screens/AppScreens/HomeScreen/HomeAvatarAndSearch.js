@@ -108,7 +108,7 @@ const style = StyleSheet.create({
         color: "#fff",
     },
     notificationBadge: {
-        fontSize: Typography.getFontSize(12),
+        fontSize: 12,
         position: "absolute",
         top: -4,
         right: -1,
