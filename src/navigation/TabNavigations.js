@@ -26,7 +26,7 @@ const TabNavigations = () => {
                 // orientation: 'portrait',
                 lazy: true,
             }}
-            // detachInactiveScreens={false}
+            detachInactiveScreens={false}
         >
             <Tab.Screen name="Movie-Stack" component={MovieStackNavigations}/>
             <Tab.Screen name="Profile" component={ProfileScreen}/>

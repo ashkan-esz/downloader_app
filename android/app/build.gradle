@@ -2,6 +2,9 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.firebase.appdistribution'
 
 import com.android.build.OutputFile
 
@@ -161,6 +164,14 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+            /* Add the firebaseCrashlytics extension (by default,
+            * it's disabled to improve build speeds) and set
+            * nativeSymbolUploadEnabled to true along with a pointer to native libs. */
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
+            }
         }
     }
 

@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {AppState, I18nManager, LogBox, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native';
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme, useNavigationContainerRef} from '@react-navigation/native';
 import {enableFreeze} from 'react-native-screens';
 // import * as SplashScreen from 'expo-splash-screen';
 // import {Asset} from 'expo-asset';
@@ -17,6 +17,7 @@ import {createTheme, ThemeProvider} from "@rneui/themed";
 import NetInfo from '@react-native-community/netinfo';
 import {persistor} from "./redux/store";
 import messaging from '@react-native-firebase/messaging';
+import analytics from '@react-native-firebase/analytics';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -35,8 +36,12 @@ LogBox.ignoreLogs([
 //todo : re check react-query loading/pending/fetching flags
 //todo : re check infinite scrolling api call + react-query + redux
 
-//todo : use firebase
-//todo : remove appCenter
+//todo : fix first view of server message
+
+//todo : upload apk file to telegram channel and github
+//todo : add deeplink, also handle it in telegramBot
+//todo : replace flash-list with flat-list
+
 
 //------------------------------------------------
 
@@ -82,6 +87,8 @@ export default function App() {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     // const [appIsReady, setAppIsReady] = useState(false);
+    const routeNameRef = useRef();
+    const navigationRef = useNavigationContainerRef();
 
     // useEffect(() => {
     //     if (isLoggedIn) {
@@ -279,7 +286,28 @@ export default function App() {
                 // backgroundColor={backgroundStyle.backgroundColor}
                        backgroundColor={Colors.PRIMARY}
             />
-            <NavigationContainer theme={myTheme}>
+            <NavigationContainer
+                theme={myTheme}
+                ref={navigationRef}
+                onReady={() => {
+                    routeNameRef.current = navigationRef.getCurrentRoute().name;
+                }}
+                onStateChange={async () => {
+                    const previousRouteName = routeNameRef.current;
+                    const currentRouteName = navigationRef.getCurrentRoute().name;
+
+                    if (previousRouteName !== currentRouteName) {
+                        // Save the current route name for later comparison
+                        routeNameRef.current = currentRouteName;
+
+                        // Replace the line below to add the tracker from a mobile analytics SDK
+                        await analytics().logScreenView({
+                            screen_name: currentRouteName,
+                            screen_class: currentRouteName,
+                        });
+                    }
+                }}
+            >
                 <QueryClientProvider client={queryClient}>
                     <ThemeProvider theme={theme}>
                         <OfflineStatusBar/>
