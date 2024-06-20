@@ -4,7 +4,7 @@ import {Text} from "@rneui/themed";
 import Toast from "react-native-toast-message";
 import {ScreenLayout} from "../../components/layouts";
 import {DeviceSession} from "../../components/molecules";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import {useSelector} from "react-redux";
 import * as authApis from "../../api/authApis";
 

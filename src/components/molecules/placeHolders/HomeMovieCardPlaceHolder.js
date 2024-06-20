@@ -1,7 +1,7 @@
 import {View} from "react-native";
 import {MyShimmerPlaceHolder} from "../../atoms";
 import React from "react";
-import {Mixins, Typography} from "../../../styles";
+import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
 

@@ -6,7 +6,7 @@ import {HomeScreenFlashList, HomeTrailer, HomeTrailerCardPlaceHolder} from "../.
 import {useNavigation} from "@react-navigation/native";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../../api/movieApis";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import Entypo from 'react-native-vector-icons/Entypo';
 import {moviesDataLevel, movieTypes} from "../../../utils";
 
@@ -134,14 +134,14 @@ const style = StyleSheet.create({
     },
     sectionTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(24)
+        fontSize: 24,
     },
     seeAll: {
         position: 'absolute',
         right: 20,
         marginTop: 5,
         color: Colors.THIRD,
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
     },
     seeAllIcon: {
         position: 'absolute',

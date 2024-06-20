@@ -16,6 +16,7 @@ import {
     CardStyleInterpolators,
     createStackNavigator,
 } from "@react-navigation/stack";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 // const Stack = createNativeStackNavigator();
 const Stack = createStackNavigator();
@@ -77,9 +78,9 @@ const MovieStackNavigations = () => {
             <Stack.Screen
                 name={'Section'}
                 component={SectionScreen}
-                options={{
-                    title: 'Section',
-                }}
+                options={({route}) => ({
+                    title: route.params.name || 'Section',
+                })}
             />
             <Stack.Screen
                 name={'TimeLine'}

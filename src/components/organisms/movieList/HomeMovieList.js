@@ -6,7 +6,7 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {MovieError} from "../../atoms";
 import {HomeMovieCard, HomeMovieCardPlaceHolder, HomeScreenFlashList} from "../../molecules";
 import * as movieApis from "../../../api/movieApis";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {moviesDataLevel, movieTypes} from "../../../utils";
@@ -52,16 +52,19 @@ const HomeMovieList = ({name, pageType, extraStyle}) => {
             navigation.navigate('Section', {
                 startTab: pageType,
                 tabs: sectionTypes.news,
+                name: "News",
             });
         } else if (sectionTypes.upcoming.find(item => item.name === pageType)) {
             navigation.navigate('Section', {
                 startTab: pageType,
                 tabs: sectionTypes.upcoming,
+                name: "Up Coming",
             });
         } else if (sectionTypes.rank.find(item => item.name === pageType)) {
             navigation.navigate('Section', {
                 startTab: pageType,
                 tabs: sectionTypes.rank,
+                name: "Month Ranks",
             });
         } else {
             navigation.navigate('MovieListScreen', {
@@ -148,14 +151,14 @@ const style = StyleSheet.create({
     },
     sectionTitle: {
         color: '#ffffff',
-        fontSize: Typography.getFontSize(24)
+        fontSize: 24,
     },
     seeAll: {
         position: 'absolute',
         right: 20,
         marginTop: 5,
         color: Colors.THIRD,
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
     },
     seeAllIcon: {
         position: 'absolute',

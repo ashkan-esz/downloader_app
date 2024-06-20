@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button, Overlay, Text} from "@rneui/themed";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -27,21 +27,21 @@ const MyOverlay = ({
 
     const titleStyle = {
         color: titleColor || Colors.GRAY_LIGHT,
-        fontSize: Typography.getFontSize(titleFontSize || 20),
+        fontSize: titleFontSize || 20,
     };
     const secondTitleStyle = {
         color: titleColor || Colors.GRAY_LIGHT,
-        fontSize: Typography.getFontSize(secondTitleFontSize || 20),
+        fontSize: secondTitleFontSize || 20,
     };
 
     const leftButtonTitle = {
         color: leftColor || 'blue',
-        fontSize: Typography.getFontSize(rightOption ? 16 : 18),
+        fontSize: rightOption ? 16 : 18,
     };
 
     const rightButtonTitle = {
         color: rightColor || 'red',
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
     };
 
     return (

@@ -3,7 +3,6 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {CustomImage} from "../atoms";
 import {useSelector} from "react-redux";
-import {Typography} from "../../styles";
 
 //todo : telegram like profile picture
 
@@ -35,7 +34,7 @@ const style = StyleSheet.create({
         alignSelf: 'center',
     },
     username: {
-        fontSize: Typography.getFontSize(20),
+        fontSize: 20,
         color: '#fff',
         alignSelf: 'center',
         marginTop: 5

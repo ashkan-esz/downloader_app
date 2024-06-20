@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Animated, View, StyleSheet, Platform, UIManager, LayoutAnimation} from 'react-native';
 import {Button, Text} from "@rneui/themed";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import PropTypes from 'prop-types';
 
 

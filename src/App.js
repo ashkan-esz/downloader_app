@@ -40,7 +40,6 @@ LogBox.ignoreLogs([
 
 //todo : upload apk file to telegram channel and github
 //todo : add deeplink, also handle it in telegramBot
-//todo : replace flash-list with flat-list
 
 
 //------------------------------------------------

@@ -1,34 +1,28 @@
 import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {Button} from "@rneui/themed";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 import {homeStackHelpers} from "../../../helper";
 import Animated, {
-    useSharedValue,
     withTiming,
     ReduceMotion,
-    cancelAnimation,
-    useAnimatedStyle,
+    useAnimatedStyle, useFrameCallback,
 } from "react-native-reanimated";
 import {movieTypes} from "../../../utils";
 
 
 const FilterType = ({expanded, setExpanded, types, setTypes, hidden}) => {
-    const height = useSharedValue(45);
+
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
 
     const toggleExpand = () => {
-        let config = {
-            duration: 800,
-            reduceMotion: ReduceMotion.Never,
-        }
-        let newHeight = expanded ? 45 : 120;
-        height.value = withTiming(newHeight, config);
-
         if (expanded) {
             setTimeout(() => {
                 setExpanded(false);
-            }, 400);
+            }, 200);
         } else {
             setExpanded(true);
         }
@@ -43,15 +37,20 @@ const FilterType = ({expanded, setExpanded, types, setTypes, hidden}) => {
     }
 
     useEffect(() => {
-        cancelAnimation(height);
-        setExpanded(false);
-        let config = {
-            duration: 800,
-            reduceMotion: ReduceMotion.Never,
+        if (hidden) {
+            setExpanded(false);
         }
-        let newHeight = !hidden ? 45 : 0;
-        height.value = withTiming(newHeight, config);
     }, [hidden]);
+
+    const heightRStyle = useAnimatedStyle(() => {
+        let newHeight = hidden ? 0 : expanded ? 120 : 45;
+        return {
+            height: withTiming(newHeight, {
+                duration: 800,
+                reduceMotion: ReduceMotion.Never,
+            }),
+        }
+    }, [hidden, expanded]);
 
     const expandAnimatedStyle = useAnimatedStyle(() => {
         let config = {
@@ -68,11 +67,10 @@ const FilterType = ({expanded, setExpanded, types, setTypes, hidden}) => {
             marginTop: marginTop,
             paddingTop: paddingTop,
         }
-    });
+    }, [expanded]);
 
     return (
-        <Animated.View style={{height: height}}
-        >
+        <Animated.View style={heightRStyle}>
             <Button
                 containerStyle={[style.buttonContainer, expanded && style.expanded]}
                 titleStyle={style.buttonTitle}

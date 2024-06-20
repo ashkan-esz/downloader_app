@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../../../api/movieApis";
 import {MovieError} from "../../../../components/atoms";
-import Animated from "react-native-reanimated";
+import Animated, {useFrameCallback} from "react-native-reanimated";
 import SwiperItem, {SRC_WIDTH, CARD_LENGTH, SIDECARD_LENGTH, SPACING} from "./SwiperItem";
 import ScalingDot from "./ScalingDot";
 import {moviesDataLevel, movieTypes} from "../../../../utils";
@@ -15,6 +15,10 @@ const MoviesSwiper = () => {
     const queryClient = useQueryClient();
     // const scrollX = useSharedValue(0);
     const [activeIndex, setActiveIndex] = useState(0);
+
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
 
     async function getData() {
         let result = await movieApis.getNews(movieTypes.all, moviesDataLevel.low, 1);

@@ -1,5 +1,5 @@
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
-import React, {useEffect} from "react";
+import Animated, {Easing, useAnimatedStyle, withTiming} from "react-native-reanimated";
+import React from "react";
 import {getWindowWidth} from "../../../../styles/mixins";
 import {StyleSheet} from "react-native";
 import {Colors} from "../../../../styles";
@@ -13,30 +13,22 @@ export const SPACING = SRC_WIDTH * 0.02;
 export const SIDECARD_LENGTH = (SRC_WIDTH * 0.18) / 2;
 
 const SwiperItem = ({isLoading, index, item, activeIndex, length}) => {
-    const initSize = index === 0 && index === activeIndex ? 1 : 0.7;
-    const size = useSharedValue(initSize);
-
-    useEffect(() => {
-        if (activeIndex === index) {
-            size.value = withTiming(1, {
-                duration: 100,
-                easing: Easing.ease,
-            });
-        } else {
-            if (size.value !== "0.7") {
-                size.value = withTiming(0.7, {
-                    duration: 200,
-                    easing: Easing.ease,
-                });
-            }
-        }
-    }, [activeIndex])
 
     const cardStyle = useAnimatedStyle(() => {
         return {
-            transform: [{scaleY: size.value}],
+            transform: [{
+                scaleY: activeIndex === index
+                    ? withTiming(1, {
+                        duration: 100,
+                        easing: Easing.ease,
+                    })
+                    : withTiming(0.7, {
+                        duration: 200,
+                        easing: Easing.ease,
+                    })
+            }],
         }
-    })
+    }, [activeIndex, index]);
 
     return (
         <Animated.View style={[styles.card, cardStyle, index === activeIndex && styles.activeCard, {

@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import * as movieApis from "../../../../api/movieApis";
 import {movieTypes} from "../../../../utils";
 import {useNavigation} from "@react-navigation/native";
+import {useFrameCallback} from "react-native-reanimated";
 
 
 const TrailersScreen = () => {
@@ -20,6 +21,10 @@ const TrailersScreen = () => {
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
     const navigation = useNavigation();
+
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('transitionEnd', (e) => {

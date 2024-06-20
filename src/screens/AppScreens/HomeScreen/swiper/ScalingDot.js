@@ -1,14 +1,8 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import Animated, {
-    interpolate,
-    Extrapolation,
-    interpolateColor,
-    useAnimatedStyle,
-} from 'react-native-reanimated';
+import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import PropTypes from "prop-types";
 import {Colors} from "../../../../styles";
-// import {CARD_LENGTH, SIDECARD_LENGTH} from "./SwiperItem";
 
 const ScalingDot = ({
                         // scrollX,
@@ -28,53 +22,21 @@ const ScalingDot = ({
         activeDotScale: activeDotScale || 1.2,
     };
 
-    // const inputRange = [
-    //     (index - 1) * CARD_LENGTH + SIDECARD_LENGTH,
-    //     index * CARD_LENGTH,
-    //     (index + 1) * CARD_LENGTH - SIDECARD_LENGTH,
-    // ];
-    const inputRange = [index - 1, index, index + 1];
-    const opacityOutputRange = [defaultProps.inActiveDotOpacity, 1, defaultProps.inActiveDotOpacity];
-    const scaleOutputRange = [1, defaultProps.activeDotScale, 1];
+    const animatedStyle = useAnimatedStyle(() => {
+        let opacity = activeIndex === index ? 1 : defaultProps.inActiveDotOpacity;
+        let bgColor = activeIndex === index ? defaultProps.activeDotColor : defaultProps.inActiveDotColor;
+        let scale = activeIndex === index ? defaultProps.activeDotScale : 1;
 
-    const colorOutputRange = [
-        defaultProps.inActiveDotColor,
-        defaultProps.activeDotColor,
-        defaultProps.inActiveDotColor,
-    ];
-
-    const extrapolation = {
-        extrapolateRight: Extrapolation.CLAMP,
-        extrapolateLeft: Extrapolation.CLAMP,
-    };
-
-    // One shared value drives all three animations.
-    const animatedStyle = useAnimatedStyle(() => ({
-        opacity: interpolate(
-            // scrollX.value,
-            activeIndex,
-            inputRange,
-            opacityOutputRange,
-            extrapolation,
-        ),
-        backgroundColor: interpolateColor(
-            // scrollX.value,
-            activeIndex,
-            inputRange,
-            colorOutputRange,
-        ),
-        transform: [
-            {
-                scale: interpolate(
-                    // scrollX.value,
-                    activeIndex,
-                    inputRange,
-                    scaleOutputRange,
-                    extrapolation,
-                ),
-            },
-        ],
-    }));
+        return {
+            opacity: withTiming(opacity),
+            backgroundColor: withTiming(bgColor),
+            transform: [
+                {
+                    scale: withTiming(scale),
+                },
+            ],
+        }
+    }, [activeIndex]);
 
     return (
         <Animated.View

@@ -5,7 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {useNavigation} from "@react-navigation/native";
 import {CustomImage} from "../../../../components/atoms";
-import {Colors, Mixins, Typography} from "../../../../styles";
+import {Colors, Mixins} from "../../../../styles";
 import PropTypes from 'prop-types';
 
 
@@ -71,7 +71,7 @@ const SearchMovieCard = ({
                 </Text>
                 <Text style={style.year} numberOfLines={1}>
                     {premiered.split('-')[0]} - <Text style={[style.year, typeColor]}>{
-                    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).join(' ')
+                    type.split('_').map(item => item[0].toUpperCase() + item.slice(1)).pop()
                 }</Text>
                 </Text>
             </View>
@@ -104,12 +104,12 @@ const style = StyleSheet.create({
         right: 0,
     },
     title: {
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#ffffff',
         paddingLeft: 5,
     },
     year: {
-        fontSize: Typography.getFontSize(14),
+        fontSize: 12,
         color: '#ffffff',
         paddingLeft: 5,
     }

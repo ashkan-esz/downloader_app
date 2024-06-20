@@ -8,6 +8,7 @@ import * as profileApis from "../../../api/profileApis";
 import {Mixins} from "../../../styles";
 import NotificationItem from "./NotificationItem";
 import {useNavigation} from "@react-navigation/native";
+import {useFrameCallback} from "react-native-reanimated";
 
 const itemSize = 90;
 
@@ -18,6 +19,10 @@ const NotificationScreen = () => {
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
     const navigation = useNavigation();
+
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('transitionEnd', (e) => {

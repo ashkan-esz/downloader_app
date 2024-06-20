@@ -2,8 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import PropTypes from 'prop-types';
-import {Typography, Colors} from "../../../../styles";
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import {Colors} from "../../../../styles";
+import Animated, {
+    Easing,
+    useSharedValue,
+    withDelay,
+    withTiming,
+} from "react-native-reanimated";
 
 
 const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
@@ -17,25 +22,32 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
                 duration: 150,
                 easing: Easing.sin
             },
+            (isFinished) => {
+                if (isFinished) {
+                    opacity.value = withDelay(10, withTiming(
+                        1,
+                        {
+                            duration: 140,
+                            easing: Easing.sin
+                        },
+                    ));
+
+                }
+            }
         )
-        setInnerValue(getDay(spacing));
+
         let id = setTimeout(() => {
-            opacity.value = withTiming(
-                1,
-                {
-                    duration: 150,
-                    easing: Easing.sin
-                },
-            )
-        }, 150);
+            setInnerValue(getDay(spacing));
+        }, 120);
+
         return () => clearTimeout(id);
     }, [spacing]);
 
-    const animatedOpacity = useAnimatedStyle(() => {
-        return {
-            opacity: opacity.value,
-        }
-    })
+    // const animatedOpacity = useAnimatedStyle(() => {
+    //     return {
+    //         opacity: opacity.value,
+    //     }
+    // })
 
     const getDay = (number) => {
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -62,7 +74,8 @@ const TimeLinePaging = ({extraStyle, spacing, setSpacing}) => {
                 />
             </TouchableOpacity>
 
-            <Animated.Text style={[style.title, animatedOpacity]}>{innerValue}</Animated.Text>
+            {/*<Animated.Text style={[style.title, animatedOpacity]}>{innerValue}</Animated.Text>*/}
+            <Animated.Text style={[style.title, {opacity: opacity}]}>{innerValue}</Animated.Text>
 
             <TouchableOpacity
                 style={style.rightIcon}

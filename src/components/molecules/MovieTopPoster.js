@@ -4,7 +4,7 @@ import {Divider, Text} from "@rneui/themed";
 import {CustomImage, FullScreenImageView, DoubleTap, LikeIconWithAnimation} from "../atoms";
 import MovieTopPosterCarousel from "./MovieTopPosterCarousel";
 import {BlurView} from 'expo-blur';
-import {Mixins, Typography} from "../../styles";
+import {Mixins} from "../../styles";
 import PropTypes from 'prop-types';
 
 //todo : swipe to see other posters
@@ -28,8 +28,8 @@ const MovieTopPoster = ({
         fontSize: title.length < 20
             ? 34
             : title.length < 30
-                ? Typography.getFontSize(28)
-                : Typography.getFontSize(24),
+                ? 28
+                : 24,
     }
 
     const _handleDoubleTap = () => {

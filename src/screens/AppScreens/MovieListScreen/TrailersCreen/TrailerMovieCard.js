@@ -5,7 +5,7 @@ import {CustomVideo} from "../../../../components/atoms";
 import MovieCardRating from "../MovieCardRating";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../../helper";
-import {Colors, Mixins, Typography} from "../../../../styles";
+import {Colors, Mixins} from "../../../../styles";
 import PropTypes from 'prop-types';
 import MovieCardFollow from "../MovieCardFollow";
 

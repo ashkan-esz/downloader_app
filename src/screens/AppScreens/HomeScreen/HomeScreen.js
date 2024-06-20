@@ -12,6 +12,7 @@ import {useSelector} from "react-redux";
 import HomeAvatarAndSearch from "./HomeAvatarAndSearch";
 import MoviesSwiper from "./swiper/MoviesSwiper";
 import {useNavigation} from "@react-navigation/native";
+import Animated, {useFrameCallback} from "react-native-reanimated";
 
 
 const HomeScreen = () => {
@@ -20,6 +21,10 @@ const HomeScreen = () => {
     const internet = useSelector(state => state.user.internet);
     const navigation = useNavigation();
     const scrollRef = useRef();
+
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
 
     useEffect(() => {
         const unsubscribe = navigation.getParent().addListener('tabPress', (e) => {
@@ -50,7 +55,7 @@ const HomeScreen = () => {
     return (
         <ScreenLayout paddingSides={10}>
             <View style={containerStyle}>
-                <ScrollView
+                <Animated.ScrollView
                     showsVerticalScrollIndicator={false}
                     ref={scrollRef}
                     refreshControl={
@@ -61,6 +66,11 @@ const HomeScreen = () => {
                             colors={[Colors.BLUE_LIGHT, Colors.THIRD]}
                         />
                     }
+                    // removeClippedSubviews={true}
+                    showsHorizontalScrollIndicator={false}
+                    alwaysBounceHorizontal={false}
+                    alwaysBounceVertical={false}
+                    scrollEventThrottle={1}
                 >
 
                     <HomeAvatarAndSearch
@@ -92,7 +102,7 @@ const HomeScreen = () => {
                         extraStyle={style.lastListPadding}
                     />
 
-                </ScrollView>
+                </Animated.ScrollView>
             </View>
         </ScreenLayout>
     );

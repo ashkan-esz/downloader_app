@@ -3,8 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import {CustomVideo} from "../../atoms";
 import {useNavigation} from "@react-navigation/native";
-import {Colors, Mixins, Typography} from "../../../styles";
-import {capitalize} from "../../../helper/HomeStackHelpers";
+import {Colors, Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
 

@@ -6,6 +6,7 @@ import {useScrollDirection} from "../../hooks";
 import {Colors, Mixins} from "../../styles";
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
+import {useFrameCallback} from "react-native-reanimated";
 
 
 const CustomFlashList = ({
@@ -77,6 +78,10 @@ const CustomFlashList = ({
             />
     ), [isError]);
 
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
+
     if (showNothing) {
         return null;
     }
@@ -114,7 +119,7 @@ const CustomFlashList = ({
                 onEndReachedThreshold={onEndReachedThreshold || 2}
                 fadingEdgeLength={fadingEdgeLength || 30}
                 //----------------------------------
-                scrollEventThrottle={16}
+                scrollEventThrottle={64}
                 //----------------------------------
                 ListEmptyComponent={listEmptyComponent}
                 ListFooterComponent={listFooterComponent}

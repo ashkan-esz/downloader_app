@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 
@@ -30,7 +30,7 @@ const style = StyleSheet.create({
     },
     title: {
         alignSelf: 'center',
-        fontSize: Typography.getFontSize(20),
+        fontSize: 20,
         color: Colors.RED2,
     }
 });

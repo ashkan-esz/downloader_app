@@ -6,7 +6,7 @@ import MovieCardRating from "./MovieCardRating";
 import MovieCardFollow from "./MovieCardFollow";
 import {useNavigation} from "@react-navigation/native";
 import {homeStackHelpers} from "../../../helper";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 
 

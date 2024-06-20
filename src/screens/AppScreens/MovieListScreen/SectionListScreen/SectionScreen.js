@@ -9,6 +9,7 @@ import {useInfiniteQuery, useQueryClient} from "@tanstack/react-query";
 import * as movieApis from "../../../../api/movieApis";
 import {useSelector} from "react-redux";
 import {moviesDataLevel, movieTypes} from "../../../../utils";
+import {useFrameCallback} from "react-native-reanimated";
 
 export const sectionTypes = Object.freeze({
     news: Object.freeze([
@@ -18,15 +19,15 @@ export const sectionTypes = Object.freeze({
         {name: 'comingSoon', label: 'Coming Soon'},
     ]),
     upcoming: Object.freeze([
-        {name: 'comingSoon', label: 'Coming Soon'},
+        {name: 'comingSoon', label: 'UpComing'},
         {name: 'animeSeasonUpcoming', label: 'Anime Season'},
-        {name: 'animeTopComingSoon', label: 'Anime Top Coming'},
+        {name: 'animeTopComingSoon', label: 'Coming Anime'},
     ]),
     rank: Object.freeze([
-        {name: 'follow_month', label: 'Follow Month'},
-        {name: 'like_month', label: 'Like Month'},
-        {name: 'like', label: 'Like'},
-        {name: 'view_month', label: 'View Month'},
+        {name: 'follow_month', label: 'Follows'},
+        {name: 'like_month', label: 'Likes'},
+        {name: 'view_month', label: 'Views'},
+        {name: 'like', label: 'Total Likes'},
     ]),
 });
 
@@ -42,6 +43,10 @@ const SectionScreen = () => {
     const queryClient = useQueryClient();
     const internet = useSelector(state => state.user.internet);
     const navigation = useNavigation();
+
+    useFrameCallback(() => {
+        // This is an optimization which prevents stutter on slow momentum scrolling
+    });
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('transitionEnd', (e) => {

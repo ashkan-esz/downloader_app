@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {homeStackHelpers} from "../../helper";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import PropTypes from 'prop-types';
 
 

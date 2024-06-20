@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from '@rneui/themed';
 import PropTypes from 'prop-types';
-import {Colors, Typography} from "../../../styles";
+import {Colors} from "../../../styles";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text} from "@rneui/themed";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 
@@ -57,11 +57,11 @@ const style = StyleSheet.create({
     },
     buttonTitle: {
         color: Colors.RED2,
-        fontSize: Typography.getFontSize(18),
+        fontSize: 18,
     },
     title: {
         alignSelf: 'center',
-        fontSize: Typography.getFontSize(16),
+        fontSize: 16,
         color: '#ffffff',
         opacity: 0.9,
     }

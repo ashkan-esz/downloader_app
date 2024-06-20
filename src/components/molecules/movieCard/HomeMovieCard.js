@@ -6,7 +6,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {CustomImage} from "../../atoms";
 import {homeStackHelpers} from "../../../helper";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 import {Image} from "expo-image";
 
@@ -158,7 +158,7 @@ const style = StyleSheet.create({
         marginLeft: 3,
     },
     rating: {
-        fontSize: Typography.getFontSize(12),
+        fontSize: 12,
         color: "#fff",
         marginLeft: 3,
         marginRight: 5,

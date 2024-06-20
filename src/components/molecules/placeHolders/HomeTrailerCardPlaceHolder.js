@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Mixins, Typography} from "../../../styles";
+import {Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 import {MyShimmerPlaceHolder} from "../../atoms";
 
@@ -14,9 +14,9 @@ const HomeTrailerCardPlaceHolder = ({extraStyle}) => {
                 marginTop: 8
             }} width={200} height={18}/>
             <View style={style.genresContainer}>
-                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(12)}/>
-                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(12)}/>
-                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={Typography.getFontSize(12)}/>
+                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={12}/>
+                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={12}/>
+                <MyShimmerPlaceHolder extraStyle={style.genres} width={46} height={12}/>
             </View>
         </View>
     );

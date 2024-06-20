@@ -39,7 +39,7 @@ const HomeScreenFlashList = ({
                 renderItem={renderItem}
                 estimatedItemSize={itemSize}
                 estimatedListSize={{height: itemSize, width: Mixins.WINDOW_WIDTH - 20}}
-                initialNumToRender={4}
+                initialNumToRender={3}
                 ListEmptyComponent={
                     <MovieError
                         containerStyle={{...extraStyle, ...style.notFound}}

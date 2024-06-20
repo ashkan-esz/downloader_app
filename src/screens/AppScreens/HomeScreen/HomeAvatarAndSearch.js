@@ -4,7 +4,7 @@ import {CustomImage} from "../../../components/atoms";
 import {useNavigation} from "@react-navigation/native";
 import {SearchBar, Text} from "@rneui/themed";
 import {useSelector} from "react-redux";
-import {Colors, Mixins, Typography} from "../../../styles";
+import {Colors, Mixins} from "../../../styles";
 import PropTypes from 'prop-types';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {useQuery} from "@tanstack/react-query";

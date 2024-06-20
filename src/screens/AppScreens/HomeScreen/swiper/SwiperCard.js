@@ -4,7 +4,7 @@ import {Text} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {homeStackHelpers} from "../../../../helper";
-import {Colors, Typography} from "../../../../styles";
+import {Colors} from "../../../../styles";
 import PropTypes from 'prop-types';
 import {CustomImage} from "../../../../components/atoms";
 import {getWindowWidth} from "../../../../styles/mixins";

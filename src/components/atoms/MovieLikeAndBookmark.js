@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Text} from "@rneui/themed";
 import LikeIconWithAnimation from "./LikeIconWithAnimation";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import PropTypes from 'prop-types';
 
 

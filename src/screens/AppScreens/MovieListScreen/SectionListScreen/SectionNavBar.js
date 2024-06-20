@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Colors, Typography} from "../../../../styles";
+import {Colors} from "../../../../styles";
 import PropTypes from 'prop-types';
 import Animated, {
     Easing,
     useAnimatedStyle,
-    useSharedValue,
     withTiming,
     interpolateColor,
 } from "react-native-reanimated";
@@ -16,49 +15,26 @@ const SectionNavBar = ({extraStyle, sections, tab, onTabChange}) => {
         <View style={[style.container, extraStyle]}>
             {sections.map((value, index) => {
 
-                const color = useSharedValue(Colors.NAVBAR);
-                const size = useSharedValue(15);
-                const sectionIndex= sections.findIndex(s => s.name === tab);
+                const sectionIndex = sections.findIndex(s => s.name === tab);
 
-                useEffect(() => {
-                    color.value = interpolateColor(
-                        sectionIndex,
-                        [index - 1, index, index + 1,],
-                        [Colors.NAVBAR, "#fff", Colors.NAVBAR],
-                        // [Colors.NAVBAR, Colors.THIRD, Colors.NAVBAR],
-                        "RGB",
-                    );
-
-                    if (sectionIndex === index) {
-                        size.value = withTiming(Typography.getFontSize(18), {
+                const translateFontAnim = useAnimatedStyle(() => {
+                    return {
+                        fontSize: withTiming(sectionIndex === index ? 18 : 15, {
                             duration: 20,
                             // easing: Easing.quad,
                             easing: Easing.circle,
-                        })
-                        // color.value = withTiming("#fff",{
-                        //     duration: 20,
-                        //     // easing: Easing.quad,
-                        //     easing: Easing.circle,
-                        // })
-                    } else {
-                        size.value = withTiming(Typography.getFontSize(15), {
-                            duration: 20,
-                            easing: Easing.circle,
-                        })
-                        // color.value = withTiming(Colors.NAVBAR,{
-                        //     duration: 20,
-                        //     // easing: Easing.quad,
-                        //     easing: Easing.circle,
-                        // })
+                        }),
+                        color: interpolateColor(
+                            sectionIndex,
+                            [index - 1, index, index + 1,],
+                            [Colors.NAVBAR, "#fff", Colors.NAVBAR],
+                            // [Colors.NAVBAR, Colors.THIRD, Colors.NAVBAR],
+                            "RGB",
+                        ),
+                        marginTop: 10,
+                        marginBottom: 15,
                     }
                 }, [tab]);
-
-                const translateFontAnim = useAnimatedStyle(() => ({
-                    fontSize: size.value,
-                    color: color.value,
-                    marginTop: 10,
-                    marginBottom: 15,
-                }), [size, color]);
 
                 return (
                     <Animated.Text
@@ -88,13 +64,13 @@ const style = StyleSheet.create({
     },
     // buttonTitle: {
     //     color: Colors.NAVBAR,
-    //     fontSize: Typography.getFontSize(15),
+    //     fontSize: 15,
     //     marginTop: 10,
     //     marginBottom: 15,
     // },
     // activeButtonTitle: {
     //     color: '#ffffff',
-    //     fontSize: Typography.getFontSize(18),
+    //     fontSize: 18,
     // }
 });
 

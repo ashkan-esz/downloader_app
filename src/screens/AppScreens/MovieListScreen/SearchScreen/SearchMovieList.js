@@ -2,11 +2,11 @@ import React, {memo, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {CustomFlashList} from "../../../../components/molecules";
 import SearchMovieCard from "./SearchMovieCard";
-import {Mixins, Typography} from "../../../../styles";
+import {Mixins} from "../../../../styles";
 import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 
-const itemSize = Mixins.getWindowHeight(24) + Typography.getFontSize(16 + 14 + 3) + 20; //252,256
+const itemSize = Mixins.getWindowHeight(24) + (16 + 14 + 3) + 20; //252,256
 
 const SearchMovieList = ({
                              flatListRef,

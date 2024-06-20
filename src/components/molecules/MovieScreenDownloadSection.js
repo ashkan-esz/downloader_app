@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from "@rneui/themed";
 import {MovieScreenQualityCollapsible, MovieScreenSeasonCollapsible} from "../atoms";
-import {Typography, Colors} from "../../styles";
+import {Colors} from "../../styles";
 import {LinearGradient} from "expo-linear-gradient";
 import PropTypes from 'prop-types';
 
