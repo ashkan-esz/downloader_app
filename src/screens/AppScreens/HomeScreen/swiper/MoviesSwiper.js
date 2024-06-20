@@ -11,7 +11,7 @@ import {moviesDataLevel, movieTypes} from "../../../../utils";
 
 const _snapToInterval = CARD_LENGTH + SIDECARD_LENGTH - 2 * SPACING;
 
-const MoviesSwiper = () => {
+const MoviesSwiper = ({initialDelay}) => {
     const queryClient = useQueryClient();
     // const scrollX = useSharedValue(0);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -23,6 +23,9 @@ const MoviesSwiper = () => {
     async function getData() {
         let result = await movieApis.getNews(movieTypes.all, moviesDataLevel.low, 1);
         if (result !== 'error') {
+            if (initialDelay && (!data || data.length === 0)) {
+                await new Promise(resolve => setTimeout(resolve, initialDelay));
+            }
             return result.slice(0, 6);
         } else {
             throw new Error();

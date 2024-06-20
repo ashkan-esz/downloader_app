@@ -12,7 +12,7 @@ import {movieTypes} from "../../utils";
 
 const itemSize = Math.max(Mixins.getWindowHeight(29), 200) + 20; //260
 
-const HomeTimeLineSection = () => {
+const HomeTimeLineSection = ({initialDelay}) => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
@@ -21,6 +21,9 @@ const HomeTimeLineSection = () => {
     async function getData() {
         let result = await movieApis.getSeriesOfDay(todayNumber, 1, movieTypes.all);
         if (result !== 'error') {
+            if (initialDelay && (!data || data.length === 0)) {
+                await new Promise(resolve => setTimeout(resolve, initialDelay));
+            }
             return result.slice(0, 6);
         } else {
             throw new Error();

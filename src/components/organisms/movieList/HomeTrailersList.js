@@ -12,7 +12,7 @@ import {moviesDataLevel, movieTypes} from "../../../utils";
 
 const itemSize = Math.max(Mixins.getWindowHeight(20), 208) + 60; //268
 
-const HomeTrailersList = () => {
+const HomeTrailersList = ({initialDelay}) => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
@@ -25,6 +25,9 @@ const HomeTrailersList = () => {
     async function getData() {
         let result = await movieApis.getTrailers(movieTypes.all, moviesDataLevel.medium, 1);
         if (result !== 'error') {
+            if (initialDelay && (!data || data.length === 0)) {
+                await new Promise(resolve => setTimeout(resolve, initialDelay));
+            }
             return result;
         } else {
             throw new Error();

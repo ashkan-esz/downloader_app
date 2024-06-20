@@ -14,7 +14,7 @@ import {sectionTypes} from "../../../screens/AppScreens/MovieListScreen/SectionL
 
 const itemSize = Math.max(Mixins.getWindowHeight(29), 200) + 20; //260
 
-const HomeMovieList = ({name, pageType, extraStyle}) => {
+const HomeMovieList = ({name, pageType, initialDelay, extraStyle}) => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
@@ -23,6 +23,9 @@ const HomeMovieList = ({name, pageType, extraStyle}) => {
             ? await movieApis.getUpdates(movieTypes.all, moviesDataLevel.low, 1)
             : await movieApis.getSortedMovies(pageType, movieTypes.all, moviesDataLevel.low, 1);
         if (result !== 'error') {
+            if (initialDelay && (!data || data.length === 0)) {
+                await new Promise(resolve => setTimeout(resolve, initialDelay));
+            }
             return result.slice(0, 6);
         } else {
             throw new Error();

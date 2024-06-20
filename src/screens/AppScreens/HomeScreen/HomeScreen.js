@@ -83,24 +83,29 @@ const HomeScreen = () => {
                     <HomeMovieList
                         name={'Updates'}
                         pageType={'updates'}
+                        initialDelay={100}
                     />
-                    <HomeTrailersList/>
+                    <HomeTrailersList initialDelay={200}/>
                     <HomeMovieList
                         name={'Soon'}
                         pageType={'comingSoon'}
+                        initialDelay={200}
                     />
                     <HomeMovieList
                         name={'Coming Anime'}
                         pageType={'animeTopComingSoon'}
+                        initialDelay={300}
                     />
                     <HomeMovieList
                         name={'Top Anime'}
                         pageType={'animeTopAiring'}
+                        initialDelay={300}
                     />
                     <HomeMovieList
                         name={'Follow Month'}
                         pageType={'follow_month'}
                         extraStyle={style.lastListPadding}
+                        initialDelay={300}
                     />
 
                 </Animated.ScrollView>
