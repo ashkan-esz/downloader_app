@@ -39,6 +39,7 @@ const HomeScreenFlashList = ({
                 renderItem={renderItem}
                 estimatedItemSize={itemSize}
                 estimatedListSize={{height: itemSize, width: Mixins.WINDOW_WIDTH - 20}}
+                directionalLockEnabled={true}
                 initialNumToRender={3}
                 ListEmptyComponent={
                     <MovieError

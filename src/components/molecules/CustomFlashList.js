@@ -118,6 +118,7 @@ const CustomFlashList = ({
                 onEndReached={() => data.length > 0 && onEndReached()}
                 onEndReachedThreshold={onEndReachedThreshold || 2}
                 fadingEdgeLength={fadingEdgeLength || 30}
+                directionalLockEnabled={true}
                 //----------------------------------
                 scrollEventThrottle={64}
                 //----------------------------------

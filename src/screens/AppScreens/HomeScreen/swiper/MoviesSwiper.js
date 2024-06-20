@@ -61,6 +61,7 @@ const MoviesSwiper = () => {
     return (
         <Animated.View style={styles.container}>
             <Animated.FlatList
+                directionalLockEnabled={true}
                 scrollEventThrottle={32}
                 showsHorizontalScrollIndicator={false}
                 decelerationRate={0.4}

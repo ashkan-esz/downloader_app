@@ -71,6 +71,7 @@ const HomeScreen = () => {
                     alwaysBounceHorizontal={false}
                     alwaysBounceVertical={false}
                     scrollEventThrottle={1}
+                    directionalLockEnabled={true}
                 >
 
                     <HomeAvatarAndSearch
