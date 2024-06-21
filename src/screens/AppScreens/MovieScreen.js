@@ -126,9 +126,9 @@ const MovieScreen = () => {
 
                     <MovieTopPoster
                         movieId={routeParams.movieId}
-                        title={routeParams.title}
+                        title={data ? data.title : routeParams.title}
                         episodesDuration={episodesOrDuration}
-                        poster={routeParams.posters[0]}
+                        poster={data ? data.posters[0] : routeParams.posters[0]}
                         rating={data ? data.rating : routeParams.rating}
                         genres={data ? data.genres : []}
                         posters={data ? data.posters : []}
@@ -143,7 +143,7 @@ const MovieScreen = () => {
                         isFollowed={isFollowLoading ? !data.userStats.follow : (data ? data.userStats.follow : false)}
                         isWatchlist={isWatchListLoading ? !data.userStats.watchlist : (data ? data.userStats.watchlist : false)}
                         onLike={_onLike}
-                        onDisLike={ _onDisLike}
+                        onDisLike={_onDisLike}
                         onFollow={_onFollow}
                         onWatchList={_onWatchList}
                         likesCount={data ? data.userStats.likes_count : 0}

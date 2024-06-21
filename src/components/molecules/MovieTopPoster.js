@@ -106,7 +106,7 @@ const MovieTopPoster = ({
             </DoubleTap>
 
             <Text style={style.rating}>
-                <Text style={style.ratingNumber}>{rating.imdb}</Text> /10
+                <Text style={style.ratingNumber}>{rating.imdb || 0}</Text> /10
             </Text>
         </View>
     );

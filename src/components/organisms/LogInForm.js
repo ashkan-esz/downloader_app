@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Button, Text} from "@rneui/themed";
 import {CustomTextInput} from "../molecules";
 import {useForm, Controller} from "react-hook-form";
-import {Colors, Typography} from "../../styles";
+import {Colors} from "../../styles";
 import {useDispatch, useSelector} from "react-redux";
 import {userLogin_api, resetAuthError} from "../../redux/slices/auth.slice";
 import PropsTypes from 'prop-types';

@@ -32,7 +32,7 @@ const MoviesSwiper = ({initialDelay}) => {
         }
     }
 
-    const {data, isFetching, isError} = useQuery({
+    const {data, isFetching, isError, isPlaceholderData} = useQuery({
         queryKey: ['movie', 'news', 1],
         queryFn: getData,
         placeholderData: [{_id: "0"}, {_id: "1"}, {_id: "2"}],
@@ -57,7 +57,7 @@ const MoviesSwiper = ({initialDelay}) => {
         );
     }
 
-    if (data.length === 0 && !isFetching) {
+    if ((data.length === 0 || isPlaceholderData) && !isFetching) {
         return null;
     }
 

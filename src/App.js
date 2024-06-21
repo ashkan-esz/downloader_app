@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {AppState, I18nManager, LogBox, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native';
+import {AppState, I18nManager, Linking, LogBox, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native';
 import {NavigationContainer, DefaultTheme, useNavigationContainerRef} from '@react-navigation/native';
 import {enableFreeze} from 'react-native-screens';
 // import * as SplashScreen from 'expo-splash-screen';
@@ -37,10 +37,6 @@ LogBox.ignoreLogs([
 //todo : re check infinite scrolling api call + react-query + redux
 
 //todo : fix first view of server message
-
-//todo : upload apk file to telegram channel and github
-//todo : add deeplink, also handle it in telegramBot
-
 
 //------------------------------------------------
 
@@ -106,6 +102,9 @@ export default function App() {
         return () => subscription.remove()
     }, []);
 
+    //---------------------------------------------------
+    //---------------------------------------------------
+
     // useEffect(() => {
     //     async function prepare() {
     //         try {
@@ -146,13 +145,50 @@ export default function App() {
 
     //---------------------------------------------------
     //---------------------------------------------------
-    // const Stack = createStackNavigator();
+
+    useEffect(() => {
+        const handleDeepLink = ({url}: { url: string }) => {
+            const route = url.replace(/.*?:\/\//g, '');
+
+            // console.log(url, route)
+
+            if (route.match(/^(anime|movie|serial)/i)) {
+                // downloader_app://anime_serial/663672f4ef6c430b7d17dc63/2024
+                let [type, movieId, year] = route.split('/');
+                navigationRef?.navigate('Movie', {
+                    name: "",
+                    title: "",
+                    posters: [],
+                    rating: {},
+                    movieId, type,
+                });
+            }
+        };
+
+        const handleInitialLink = async () => {
+            const url = await Linking.getInitialURL();
+            if (typeof url === 'string') {
+                handleDeepLink({url});
+            }
+        }
+
+        let subscribe = Linking.addEventListener('url', handleDeepLink);
+        handleInitialLink();
+
+        return () => {
+            subscribe.remove();
+        };
+    }, []);
+
+    //---------------------------------------------------
+    //---------------------------------------------------
+
     const NAVIGATION_IDS = ['home', 'post', 'settings'];
 
     function buildDeepLinkFromNotificationData(data): string | null {
         const navigationId = data?.navigationId;
         if (!NAVIGATION_IDS.includes(navigationId)) {
-            console.warn('Unverified navigationId', navigationId)
+            // console.warn('Unverified navigationId', navigationId)
             return null;
         }
         if (navigationId === 'home') {
@@ -165,12 +201,12 @@ export default function App() {
         if (typeof postId === 'string') {
             return `myapp://post/${postId}`
         }
-        console.warn('Missing postId')
+        // console.warn('Missing postId')
         return null
     }
 
     const linking = {
-        prefixes: ['myapp://'],
+        prefixes: ['downloader_app://'],
         config: {
             initialRouteName: 'Home',
             screens: {
@@ -181,11 +217,13 @@ export default function App() {
         },
         async getInitialURL() {
             const url = await Linking.getInitialURL();
+            // console.log("**** ", url);
             if (typeof url === 'string') {
                 return url;
             }
             //getInitialNotification: When the application is opened from a quit state.
             const message = await messaging().getInitialNotification();
+            // console.log("******** ", message)
             const deeplinkURL = buildDeepLinkFromNotificationData(message?.data);
             if (typeof deeplinkURL === 'string') {
                 return deeplinkURL;
@@ -218,12 +256,12 @@ export default function App() {
     useEffect(() => {
         //Handling Foreground Notifications
         messaging().onMessage((message) => {
-            console.log('Foreground notification:', message);
+            // console.log('Foreground notification:', message);
         });
 
         //Handling Background Notifications
         messaging().setBackgroundMessageHandler((message) => {
-            console.log('Background notification:', message);
+            // console.log('Background notification:', message);
             // Customize the handling of the notification based on your app's requirements
             return Promise.resolve();
         });
@@ -233,9 +271,9 @@ export default function App() {
         // messaging().requestPermission().then(res => {
         //     console.log(res, messaging.AuthorizationStatus.AUTHORIZED, messaging.AuthorizationStatus.PROVISIONAL)
         // });
-        messaging().getToken().then(token => {
-            // console.log("--- fcm token: ", token);
-        })
+        // messaging().getToken().then(token => {
+        //     // console.log("--- fcm token: ", token);
+        // })
         // messaging().onTokenRefresh(token => {
         //     console.log("--- fcm token2: ", token);
         // });
@@ -243,16 +281,17 @@ export default function App() {
         //getInitialNotification: When the application is opened from a quit state.
         messaging().getInitialNotification().then(message => {
             if (message) {
-                console.log(message.notification)
-                console.log(message.data)
+                // console.log("---- app opened by push notification")
+                // console.log(message.notification)
+                // console.log(message.data)
             }
         });
 
         //onNotificationOpenedApp: When the application is running, but in the background.
         messaging().onNotificationOpenedApp(message => {
             if (message) {
-                console.log(message.notification)
-                console.log(message.data)
+                // console.log(message.notification)
+                // console.log(message.data)
             }
         });
     }, [])
@@ -286,6 +325,7 @@ export default function App() {
                        backgroundColor={Colors.PRIMARY}
             />
             <NavigationContainer
+                linking={linking}
                 theme={myTheme}
                 ref={navigationRef}
                 onReady={() => {

@@ -34,7 +34,7 @@ const requestUserPermission = async () => {
     if (enabled) {
         return (await messaging().getToken()).toString();
     } else {
-        console.log('REQUEST PERMISSION DENIED');
+        // console.log('REQUEST PERMISSION DENIED');
         return null
     }
 };
@@ -44,7 +44,7 @@ const getNewFCMToken = async () => {
         // console.log('Token:', token);
         return token;
     } catch (error) {
-        console.error('Error getting new FCM token:', error);
+        // console.error('Error getting new FCM token:', error);
         return "";
     }
 };
@@ -69,7 +69,7 @@ const enableForceLogoutIfNeeded = (error) => {
     if (
         error.response && error.response.status === 401 ||
         error.toString() === 'Error: Request failed with status code 401') {
-        console.log('--- here 1: ', error.response?.status, error.toString());
+        // console.log('--- here 1: ', error.response?.status, error.toString());
         store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
     }
 }
@@ -144,7 +144,7 @@ const handleTokenRequest = async () => {
         tokenServerError = false;
         //stale refreshToken or refreshToken doesn't match (force logout)
         if (rs.toString() === errorMessages["401"]) {
-            console.log('--- here 2: ', rs.response?.status, rs.toString());
+            // console.log('--- here 2: ', rs.response?.status, rs.toString());
             store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
             return 'logout';
         } else {
@@ -207,7 +207,7 @@ API.interceptors.response.use(
                 err.response && err.response.status === 401 ||
                 err.toString() === errorMessages["401"]) {
                 //stale refreshToken or refreshToken doesn't match (force logout)
-                console.log('--- here 3: ', err.response?.status, err.toString());
+                // console.log('--- here 3: ', err.response?.status, err.toString());
                 // console.log('--- here 3: ', err.toString(), originalConfig.url);
                 // console.log(JSON.stringify(err.response, null, 4));
                 store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
@@ -286,7 +286,7 @@ CHAT_API.interceptors.response.use(
                 err.response && err.response.status === 401 ||
                 err.toString() === errorMessages["401"]) {
                 //stale refreshToken or refreshToken doesn't match (force logout)
-                console.log('--- here 3: ', err.response?.status, err.toString());
+                // console.log('--- here 3: ', err.response?.status, err.toString());
                 // console.log('--- here 3: ', err.toString(), originalConfig.url);
                 // console.log(JSON.stringify(err.response, null, 4));
                 store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
